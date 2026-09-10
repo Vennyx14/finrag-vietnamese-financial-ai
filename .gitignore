@@ -32,6 +32,7 @@ logs/
 htmlcov/
 
 # Large datasets
+data/benchmark/**
 data/external/**
 data/raw/**
 data/processed/**
@@ -43,6 +44,7 @@ data/processed/**
 *.gz
 
 # Keep directory placeholders
+!data/benchmark/.gitkeep
 !data/external/.gitkeep
 !data/raw/.gitkeep
 !data/processed/.gitkeep
