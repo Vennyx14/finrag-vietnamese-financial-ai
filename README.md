@@ -37,14 +37,41 @@ The long-term research direction is:
 
 ## Dataset
 
-The initial research corpus will use the public ViFinQA/TiniX Vietnamese
-financial-report corpus.
+The initial research corpus uses the public ViFinQA dataset (built upon the TiniX Vietnamese financial report corpus).
 
-Raw external data will not be redistributed through this repository unless
-the applicable license explicitly permits it.
+Raw external data is kept locally and not tracked in Git.
 
-See the dataset documentation and project research notes for attribution
-and reproducibility instructions.
+### Local Setup & Placement
+
+Place the unpacked ViFinQA dataset at `data/external/ViFinQA/`:
+
+```text
+data/external/ViFinQA/
+├── code_stock.csv
+├── financial_statements/
+│   └── <TICKER>/
+│       └── <YEAR>/
+│           └── <DOCUMENT_NAME>/
+│               └── <DOCUMENT_NAME>_extracted.txt
+└── questions/
+    └── questions.jsonl
+```
+
+### Corpus Profiling
+
+To verify the dataset structure, inspect data quality, and generate the corpus manifest:
+
+```bash
+python scripts/profile_vifinqa.py
+```
+
+This generates `data/manifests/vifinqa_profile.json` containing verified counts, temporal coverage, document types, and OCR structural observations.
+
+To run foundation verification tests:
+
+```bash
+pytest
+```
 
 ## Repository Structure
 
