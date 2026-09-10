@@ -1,0 +1,51 @@
+{
+  "dataset_name": "ViFinQA",
+  "dataset_path": "data/external/ViFinQA",
+  "question_count": 1012,
+  "report_count": 1973,
+  "unique_ticker_count": 100,
+  "years": [
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025"
+  ],
+  "sample_document_paths": [
+    "data/external/ViFinQA/financial_statements/AAA/2015/AAA_financial_statements_2015_consolidated/AAA_financial_statements_2015_consolidated_extracted.txt",
+    "data/external/ViFinQA/financial_statements/AAA/2015/AAA_financial_statements_2015_separate/AAA_financial_statements_2015_separate_extracted.txt",
+    "data/external/ViFinQA/financial_statements/AAA/2016/AAA_financial_statements_2016_consolidated/AAA_financial_statements_2016_consolidated_extracted.txt"
+  ],
+  "profiling_notes": {
+    "question_schema": [
+      "id",
+      "question"
+    ],
+    "folder_structure": "financial_statements/{ticker}/{year}/{doc_folder}/{doc_name}_extracted.txt",
+    "statement_type_distribution": {
+      "consolidated": 957,
+      "separate": 954,
+      "aggregated": 7,
+      "other": 55
+    },
+    "files_with_html_tables": 1965,
+    "files_with_accounting_line_codes": 1550,
+    "files_with_page_markers": 1973,
+    "read_failures": 0,
+    "encoding_verified": "UTF-8",
+    "source_corpus": "TiniX Vietnam OCR Annual Financial Statements (subset of 100 tickers)",
+    "key_observations": [
+      "100% of the 1,973 financial statement text files decode cleanly as UTF-8 without errors.",
+      "Over 99.6% (1,965 / 1,973) of documents retain inline HTML <table> markup from OCR preprocessing.",
+      "Approximately 78.6% (1,550 / 1,973) contain explicit Vietnamese standard accounting line codes ('Mã số').",
+      "Every document contains page boundary delimiters ('===== PAGE N =====') enabling page-level provenance.",
+      "Questions in questions.jsonl provide Vietnamese natural language financial questions with unique IDs (1-1012)."
+    ]
+  }
+}
