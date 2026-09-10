@@ -1,0 +1,9 @@
+pandas
+numpy
+pyyaml
+requests
+tqdm
+pydantic
+pytest
+huggingface_hub
+datasets
