@@ -1,10 +1,12 @@
 pandas
 numpy
+pyarrow
 pyyaml
 requests
 tqdm
 pydantic
 python-dotenv
+beautifulsoup4
 
 datasets
 huggingface_hub

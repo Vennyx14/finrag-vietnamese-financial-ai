@@ -1,0 +1,112 @@
+"""Structured query representation for FinRAG retrieval pipeline.
+
+Supports deterministic regex-based parsing of Vietnamese financial queries
+to extract ticker, year, statement_scope, and search text.
+"""
+
+import re
+from typing import Optional
+
+from pydantic import BaseModel, Field
+
+
+# Common Vietnamese financial keywords mapped to search terms
+_TICKER_REGEX = re.compile(r"\b([A-Z]{3}[A-Z0-9]{0,3})\b")
+_YEAR_REGEX = re.compile(r"\b(20[0-9]{2}|19[0-9]{2})\b")
+_SCOPE_REGEX = re.compile(
+    r"\b(hợp nhất|consolidated|riêng|separate|công ty mẹ)\b", re.IGNORECASE
+)
+
+
+class FinancialQuery(BaseModel):
+    """Structured representation of a financial retrieval query."""
+
+    raw_question: Optional[str] = Field(
+        default=None, description="Original natural-language question"
+    )
+    ticker: Optional[str] = Field(
+        default=None, description="Stock ticker filter (e.g. 'FPT', 'HPG')"
+    )
+    year: Optional[int] = Field(
+        default=None, description="Fiscal year filter (e.g. 2024)"
+    )
+    statement_scope: Optional[str] = Field(
+        default=None,
+        description="Statement scope filter: 'consolidated', 'separate', 'aggregated', 'other'",
+    )
+    line_code: Optional[str] = Field(
+        default=None, description="Accounting line code filter (e.g. '10', '100')"
+    )
+    search_text: Optional[str] = Field(
+        default=None, description="Free-text search string for BM25 matching"
+    )
+
+
+def parse_query(raw_question: str) -> FinancialQuery:
+    """Parse a Vietnamese financial question into a structured FinancialQuery.
+
+    Uses deterministic regex extraction for ticker, year, scope, and search text.
+    No LLM is used.
+    """
+    if not raw_question or not raw_question.strip():
+        return FinancialQuery(raw_question=raw_question)
+
+    text = raw_question.strip()
+
+    # Extract ticker
+    ticker: Optional[str] = None
+    ticker_match = _TICKER_REGEX.search(text)
+    if ticker_match:
+        candidate = ticker_match.group(1)
+        # Exclude common Vietnamese words that look like tickers
+        vn_stopwords = {
+            "CTCP", "TMCP", "BÁO", "CÁO", "TÀI", "CHO", "NĂM",
+            "LÃI", "BÁN", "VÀ", "MÔI", "CỦA", "CÓ", "TỔN", "CHI",
+            "DỰ", "TỶ", "PHÍ", "LỢI", "VỐN", "SAU", "TRẢ", "MUA",
+            "THU", "VND", "USD",
+        }
+        if candidate not in vn_stopwords:
+            ticker = candidate
+
+    # Extract year
+    year: Optional[int] = None
+    year_match = _YEAR_REGEX.search(text)
+    if year_match:
+        year = int(year_match.group(1))
+
+    # Extract scope
+    statement_scope: Optional[str] = None
+    scope_match = _SCOPE_REGEX.search(text)
+    if scope_match:
+        scope_str = scope_match.group(1).lower()
+        if scope_str in {"hợp nhất", "consolidated"}:
+            statement_scope = "consolidated"
+        elif scope_str in {"riêng", "separate"}:
+            statement_scope = "separate"
+        elif scope_str == "công ty mẹ":
+            statement_scope = "separate"
+
+    # Build search text by removing ticker and year tokens
+    search_text = text
+    if ticker:
+        search_text = search_text.replace(ticker, "")
+    if year_match:
+        search_text = search_text.replace(year_match.group(0), "")
+    # Remove common filler words
+    for filler in ["năm", "của", "là bao nhiêu", "là", "bao nhiêu",
+                    "triệu đồng", "tỷ đồng", "nghìn đồng", "đồng",
+                    "công ty", "tập đoàn",
+                    "hợp nhất", "consolidated", "riêng", "separate", "công ty mẹ"]:
+        search_text = re.sub(r"\b" + re.escape(filler) + r"\b", "", search_text,
+                             flags=re.IGNORECASE)
+    search_text = re.sub(r"\s+", " ", search_text).strip(" ?.,;:!")
+    if not search_text:
+        search_text = None
+
+    return FinancialQuery(
+        raw_question=raw_question,
+        ticker=ticker,
+        year=year,
+        statement_scope=statement_scope,
+        search_text=search_text,
+    )
