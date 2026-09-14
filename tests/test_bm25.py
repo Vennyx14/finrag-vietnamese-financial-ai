@@ -186,6 +186,19 @@ class TestQueryParsing:
         assert q.year is None
         assert q.search_text is None
 
+    def test_parse_ticker_with_preceding_financial_acronym(self):
+        """Financial acronyms like TNDN before ticker are not misidentified as tickers."""
+        q = parse_query("Chi phí thuế TNDN VIC năm 2018")
+        assert q.ticker == "VIC"
+        assert q.year == 2018
+        assert "Chi phí thuế TNDN" in q.search_text
+
+    def test_parse_ticker_with_vnd_currency(self):
+        """Currency codes like VND before ticker do not prevent ticker extraction."""
+        q = parse_query("Doanh thu 100 VND của FPT năm 2024")
+        assert q.ticker == "FPT"
+        assert q.year == 2024
+
 
 # ====================== TOKENIZER TESTS ======================
 

@@ -55,18 +55,20 @@ def parse_query(raw_question: str) -> FinancialQuery:
 
     # Extract ticker
     ticker: Optional[str] = None
-    ticker_match = _TICKER_REGEX.search(text)
-    if ticker_match:
-        candidate = ticker_match.group(1)
-        # Exclude common Vietnamese words that look like tickers
-        vn_stopwords = {
-            "CTCP", "TMCP", "BÁO", "CÁO", "TÀI", "CHO", "NĂM",
-            "LÃI", "BÁN", "VÀ", "MÔI", "CỦA", "CÓ", "TỔN", "CHI",
-            "DỰ", "TỶ", "PHÍ", "LỢI", "VỐN", "SAU", "TRẢ", "MUA",
-            "THU", "VND", "USD",
-        }
+    vn_stopwords = {
+        "CTCP", "TMCP", "BÁO", "CÁO", "TÀI", "CHO", "NĂM",
+        "LÃI", "BÁN", "VÀ", "MÔI", "CỦA", "CÓ", "TỔN", "CHI",
+        "DỰ", "TỶ", "PHÍ", "LỢI", "VỐN", "SAU", "TRẢ", "MUA",
+        "THU", "VND", "USD", "EUR", "TNDN", "TSCD", "TSCĐ",
+        "BDS", "BĐS", "HĐKD", "HDKD", "LNST", "LNTT", "VCSH",
+        "DTT", "DTBH", "GVHB", "CPBH", "CPQL", "TNCN", "BHXH",
+        "BHYT", "BHTN", "KPCD", "KPCĐ", "LCTT", "PBT", "PAT",
+    }
+    for match in _TICKER_REGEX.finditer(text):
+        candidate = match.group(1)
         if candidate not in vn_stopwords:
             ticker = candidate
+            break
 
     # Extract year
     year: Optional[int] = None

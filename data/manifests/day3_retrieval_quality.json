@@ -1,23 +1,23 @@
 {
   "benchmark_size": 100,
   "benchmark_file": "retrieval_quality.jsonl",
-  "recall_at_1": 70.0,
-  "recall_at_5": 81.0,
-  "mrr": 0.73,
-  "context_precision_at_5": 98.0,
+  "recall_at_1": 90.0,
+  "recall_at_5": 98.0,
+  "mrr": 0.926,
+  "context_precision_at_5": 99.2,
   "metadata_filter_precision": 100.0,
   "metadata_leakage_count": 0,
   "provenance_completeness": 100.0,
-  "valid_query_resolution_rate": 63.64,
+  "valid_query_resolution_rate": 100.0,
   "invalid_query_rejection_rate": 100.0,
-  "average_query_latency_seconds": 0.0532,
-  "index_build_time_seconds": 4.53,
+  "average_query_latency_seconds": 0.043,
+  "index_build_time_seconds": 5.66,
   "total_fact_count": 338714,
   "total_tests": 7,
   "passed_tests": 7,
   "failed_tests": 0,
-  "evaluation_timestamp": "2026-09-13T18:53:12.474762+00:00",
-  "overall_status": "FAIL",
+  "evaluation_timestamp": "2026-09-14T06:58:00.323873+00:00",
+  "overall_status": "PASS",
   "known_limitations": [
     "BM25 scoring unreliable on very small candidate sets (<5 docs); keyword fallback used",
     "Query parser uses regex, not NLP; complex multi-entity queries may mismatch",
@@ -26,13 +26,13 @@
     "No Vietnamese word segmentation; BM25 relies on whitespace tokenization"
   ],
   "retrieval_smoke_15": {
-    "recall_at_1": 86.67,
+    "recall_at_1": 93.33,
     "recall_at_5": 100.0,
-    "mrr": 0.913
+    "mrr": 0.967
   },
   "retrieval_quality_100": {
-    "recall_at_1": 70.0,
-    "recall_at_5": 81.0,
-    "mrr": 0.73
+    "recall_at_1": 90.0,
+    "recall_at_5": 98.0,
+    "mrr": 0.926
   }
 }

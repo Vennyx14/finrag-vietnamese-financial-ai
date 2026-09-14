@@ -3,6 +3,7 @@
 
 Adheres to AGENTS.md rules:
 - Grounded in real data only (no fabricated fact IDs)
+- Semantically verified: candidate facts must have labels matching the financial concept
 - Exact provenance linking (gold_fact_id from financial_facts.parquet)
 - Reproducible with seed 42
 """
@@ -11,7 +12,7 @@ import json
 from pathlib import Path
 import random
 import sys
-from typing import Dict, List, Tuple
+from typing import Callable, Dict, List, Tuple
 
 import pandas as pd
 
@@ -19,38 +20,117 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-TEMPLATES: Dict[str, str] = {
-    "01": "Doanh thu bán hàng {TICKER} năm {YEAR}",
-    "02": "Các khoản giảm trừ doanh thu {TICKER} năm {YEAR}",
-    "10": "Doanh thu thuần {TICKER} năm {YEAR}",
-    "11": "Giá vốn hàng bán {TICKER} năm {YEAR}",
-    "20": "Lợi nhuận gộp {TICKER} năm {YEAR}",
-    "21": "Doanh thu hoạt động tài chính {TICKER} năm {YEAR}",
-    "22": "Chi phí tài chính {TICKER} năm {YEAR}",
-    "23": "Chi phí lãi vay {TICKER} năm {YEAR}",
-    "25": "Chi phí bán hàng {TICKER} năm {YEAR}",
-    "26": "Chi phí quản lý doanh nghiệp {TICKER} năm {YEAR}",
-    "30": "Lợi nhuận thuần từ hoạt động kinh doanh {TICKER} năm {YEAR}",
-    "40": "Thu nhập khác {TICKER} năm {YEAR}",
-    "50": "Tổng lợi nhuận kế toán trước thuế {TICKER} năm {YEAR}",
-    "51": "Chi phí thuế thu nhập doanh nghiệp {TICKER} năm {YEAR}",
-    "60": "Lợi nhuận sau thuế {TICKER} năm {YEAR}",
-    "100": "Tài sản ngắn hạn {TICKER} năm {YEAR}",
-    "110": "Tiền và các khoản tương đương tiền {TICKER} năm {YEAR}",
-    "130": "Các khoản phải thu ngắn hạn {TICKER} năm {YEAR}",
-    "200": "Tài sản dài hạn {TICKER} năm {YEAR}",
-    "220": "Tài sản cố định {TICKER} năm {YEAR}",
-    "270": "Tổng tài sản {TICKER} năm {YEAR}",
-    "300": "Nợ phải trả {TICKER} năm {YEAR}",
-    "310": "Nợ ngắn hạn {TICKER} năm {YEAR}",
-    "400": "Vốn chủ sở hữu {TICKER} năm {YEAR}",
-    "411": "Vốn góp của chủ sở hữu {TICKER} năm {YEAR}",
-    "421": "Lợi nhuận sau thuế chưa phân phối {TICKER} năm {YEAR}",
+# Line codes, query templates, and semantic label validation predicates
+SPECS: Dict[str, Tuple[str, Callable[[str], bool]]] = {
+    "01": (
+        "Doanh thu bán hàng {TICKER} năm {YEAR}",
+        lambda l: "doanh thu" in l and ("bán hàng" in l or "cung cấp" in l),
+    ),
+    "02": (
+        "Các khoản giảm trừ doanh thu {TICKER} năm {YEAR}",
+        lambda l: "giảm trừ doanh thu" in l,
+    ),
+    "10": (
+        "Doanh thu thuần {TICKER} năm {YEAR}",
+        lambda l: "doanh thu thuần" in l,
+    ),
+    "11": (
+        "Giá vốn hàng bán {TICKER} năm {YEAR}",
+        lambda l: "giá vốn" in l,
+    ),
+    "20": (
+        "Lợi nhuận gộp {TICKER} năm {YEAR}",
+        lambda l: "lợi nhuận gộp" in l,
+    ),
+    "21": (
+        "Doanh thu hoạt động tài chính {TICKER} năm {YEAR}",
+        lambda l: "tài chính" in l and "doanh thu" in l,
+    ),
+    "22": (
+        "Chi phí tài chính {TICKER} năm {YEAR}",
+        lambda l: "chi phí tài chính" in l,
+    ),
+    "23": (
+        "Chi phí lãi vay {TICKER} năm {YEAR}",
+        lambda l: "lãi vay" in l and ("chi phí" in l or l.strip().startswith("trong đó")),
+    ),
+    "25": (
+        "Chi phí bán hàng {TICKER} năm {YEAR}",
+        lambda l: "chi phí bán hàng" in l,
+    ),
+    "26": (
+        "Chi phí quản lý doanh nghiệp {TICKER} năm {YEAR}",
+        lambda l: "quản lý" in l and "chi phí" in l,
+    ),
+    "30": (
+        "Lợi nhuận thuần từ hoạt động kinh doanh {TICKER} năm {YEAR}",
+        lambda l: "thuần từ hoạt động kinh doanh" in l,
+    ),
+    "40": (
+        "Lợi nhuận khác {TICKER} năm {YEAR}",
+        lambda l: "lợi nhuận khác" in l or "lợi nhuận (lỗ) khác" in l,
+    ),
+    "50": (
+        "Tổng lợi nhuận kế toán trước thuế {TICKER} năm {YEAR}",
+        lambda l: "trước thuế" in l,
+    ),
+    "51": (
+        "Chi phí thuế TNDN hiện hành {TICKER} năm {YEAR}",
+        lambda l: ("thuế tndn" in l or "thu nhập doanh nghiệp" in l) and "chi phí" in l,
+    ),
+    "60": (
+        "Lợi nhuận sau thuế {TICKER} năm {YEAR}",
+        lambda l: "lợi nhuận sau thuế" in l,
+    ),
+    "100": (
+        "Tài sản ngắn hạn {TICKER} năm {YEAR}",
+        lambda l: "tài sản ngắn hạn" in l,
+    ),
+    "110": (
+        "Tiền và các khoản tương đương tiền {TICKER} năm {YEAR}",
+        lambda l: "tương đương tiền" in l,
+    ),
+    "130": (
+        "Các khoản phải thu ngắn hạn {TICKER} năm {YEAR}",
+        lambda l: "phải thu ngắn hạn" in l,
+    ),
+    "200": (
+        "Tài sản dài hạn {TICKER} năm {YEAR}",
+        lambda l: "tài sản dài hạn" in l,
+    ),
+    "220": (
+        "Tài sản cố định {TICKER} năm {YEAR}",
+        lambda l: "tài sản cố định" in l and "vô hình" not in l and "thuê" not in l,
+    ),
+    "270": (
+        "Tổng tài sản {TICKER} năm {YEAR}",
+        lambda l: "tổng" in l and "tài sản" in l,
+    ),
+    "300": (
+        "Nợ phải trả {TICKER} năm {YEAR}",
+        lambda l: "nợ phải trả" in l or "nộ phải trả" in l,
+    ),
+    "310": (
+        "Nợ ngắn hạn {TICKER} năm {YEAR}",
+        lambda l: "nợ ngắn hạn" in l,
+    ),
+    "400": (
+        "Vốn chủ sở hữu {TICKER} năm {YEAR}",
+        lambda l: "vốn chủ sở hữu" in l,
+    ),
+    "411": (
+        "Vốn góp của chủ sở hữu {TICKER} năm {YEAR}",
+        lambda l: "vốn góp" in l,
+    ),
+    "421": (
+        "Lợi nhuận sau thuế chưa phân phối {TICKER} năm {YEAR}",
+        lambda l: "chưa phân phối" in l,
+    ),
 }
 
 
 def main():
-    random.seed(42)
+    rng = random.Random(42)
 
     parquet_path = REPO_ROOT / "data" / "processed" / "financial_facts.parquet"
     out_benchmark_path = REPO_ROOT / "data" / "benchmark" / "retrieval_quality.jsonl"
@@ -64,74 +144,40 @@ def main():
     df = pd.read_parquet(parquet_path)
     print(f"Loaded {len(df):,} total financial facts.")
 
-    # Filter to consolidated facts with line codes in our template list
-    consolidated_df = df[
-        (df["statement_scope"] == "consolidated")
-        & (df["line_code"].isin(TEMPLATES.keys()))
-    ].copy()
+    # 26 line codes. 22 get 4, 4 get 3 -> 22*4 + 4*3 = 100 entries.
+    line_codes = list(SPECS.keys())
+    codes_for_3 = set(rng.sample(line_codes, 4))
 
-    print(f"Consolidated facts matching candidate line codes: {len(consolidated_df):,}")
-
-    # Inspect availability per line code
-    available_pairs: Dict[str, List[Tuple[str, int]]] = {}
-    for code in TEMPLATES.keys():
-        sub = consolidated_df[consolidated_df["line_code"] == code]
-        # Get unique (ticker, year) pairs
-        pairs = sub[["ticker", "year"]].drop_duplicates().values.tolist()
-        pairs = [(p[0], int(p[1])) for p in pairs]
-        # Shuffle for randomness
-        random.shuffle(pairs)
-        available_pairs[code] = pairs
-        print(f"Line code {code:4s}: {len(pairs):4d} available (ticker, year) pairs")
-
-    # Allocate target counts per line code to reach exactly 100 entries.
-    # We have 26 line codes.
-    # Base count 3 per code = 78. 22 extra slots = 22 codes get 4, 4 get 3.
-    # Ensure every code has at least 3 available.
-    line_codes = list(TEMPLATES.keys())
-    target_counts: Dict[str, int] = {code: 3 for code in line_codes}
-    
-    # 22 line codes get 4 entries
-    # Pick line codes that have >= 4 available pairs
-    codes_with_at_least_4 = [c for c in line_codes if len(available_pairs[c]) >= 4]
-    # Pick 22 of them reproducibly
-    rng = random.Random(42)
-    selected_for_4 = set(rng.sample(codes_with_at_least_4, 22))
-    for c in selected_for_4:
-        target_counts[c] = 4
-
-    total_target = sum(target_counts.values())
-    assert total_target == 100, f"Target total must be 100, got {total_target}"
-
-    # Global tracking of ticker and year usage to maximize diversity
     ticker_counts: Dict[str, int] = {}
     benchmark_entries: List[Dict] = []
+    used_keys = set()
 
     for code in line_codes:
-        k = target_counts[code]
-        pairs = available_pairs[code]
-        if len(pairs) < k:
-            raise ValueError(f"Not enough pairs for line code {code}: {len(pairs)} < {k}")
+        template, validator_fn = SPECS[code]
+        target_k = 3 if code in codes_for_3 else 4
 
-        # Sort pairs to prioritize less frequently picked tickers
+        # Filter to consolidated facts with matching line code and validated label
+        sub = df[(df["line_code"] == code) & (df["statement_scope"] == "consolidated")]
+        matched = sub[sub["original_label"].str.lower().apply(validator_fn)]
+
+        pairs = matched[["ticker", "year"]].drop_duplicates().values.tolist()
+        pairs = [(p[0], int(p[1])) for p in pairs]
+        # Sort to prioritize diversity across tickers
         pairs.sort(key=lambda p: (ticker_counts.get(p[0], 0), rng.random()))
-        chosen_pairs = pairs[:k]
 
-        template = TEMPLATES[code]
-        for ticker, year in chosen_pairs:
-            ticker_counts[ticker] = ticker_counts.get(ticker, 0) + 1
-            
-            # Find the actual first matching fact in consolidated_df
-            match = consolidated_df[
-                (consolidated_df["statement_scope"] == "consolidated")
-                & (consolidated_df["line_code"] == code)
-                & (consolidated_df["ticker"] == ticker)
-                & (consolidated_df["year"] == year)
-            ]
-            if match.empty:
-                raise ValueError(f"Match not found for {ticker} {year} {code}")
+        chosen = 0
+        for ticker, year in pairs:
+            key = (ticker, year, code)
+            if key in used_keys:
+                continue
 
-            gold_fact_id = str(match.iloc[0]["fact_id"])
+            # Pick the first matching fact record
+            fact_match = matched[(matched["ticker"] == ticker) & (matched["year"] == year)]
+            if fact_match.empty:
+                continue
+
+            fact_row = fact_match.iloc[0]
+            gold_fact_id = str(fact_row["fact_id"])
             question = template.format(TICKER=ticker, YEAR=year)
 
             entry = {
@@ -142,10 +188,18 @@ def main():
                 "gold_fact_id": gold_fact_id,
             }
             benchmark_entries.append(entry)
+            used_keys.add(key)
+            ticker_counts[ticker] = ticker_counts.get(ticker, 0) + 1
+            chosen += 1
+            if chosen == target_k:
+                break
+
+        if chosen < target_k:
+            raise ValueError(f"Could not find {target_k} pairs for line code {code}, found {chosen}")
 
     assert len(benchmark_entries) == 100, f"Expected 100 entries, got {len(benchmark_entries)}"
 
-    # Shuffle benchmark entries with fixed seed 42
+    # Shuffle benchmark entries deterministically
     rng.shuffle(benchmark_entries)
 
     # Write to JSONL
@@ -186,7 +240,7 @@ def main():
 
     print(f"\n--- BENCHMARK SUMMARY ---")
     print(f"Total entries:      {len(loaded)}")
-    print(f"Unique tickers:     {len(unique_tickers)} ({sorted(list(unique_tickers))})")
+    print(f"Unique tickers:     {len(unique_tickers)} ({len(unique_tickers)} companies)")
     print(f"Unique years:       {len(unique_years)} ({sorted(list(unique_years))})")
     print(f"Unique line codes:  {len(unique_line_codes)} ({sorted(list(unique_line_codes))})")
 

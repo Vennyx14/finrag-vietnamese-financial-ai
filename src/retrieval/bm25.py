@@ -21,9 +21,34 @@ def _build_search_text(row: Dict[str, Any]) -> str:
     """
     parts = []
 
-    label = row.get("original_label", "")
+    label = str(row.get("original_label", "") or "")
     if label:
-        parts.append(str(label))
+        # Strip formula patterns like (270 = 100 + 200) to prevent document length inflation
+        clean_label = re.sub(r"\(\s*\d+\s*=\s*[\d\s\+\-\*\/]+\s*\)", "", label).strip()
+        parts.append(clean_label if clean_label else label)
+
+        # Expand standard Vietnamese financial abbreviations and OCR quirks
+        expansions = []
+        if re.search(r"\bTNDN\b", label, re.IGNORECASE):
+            expansions.append("thuế thu nhập doanh nghiệp")
+        if re.search(r"\bTSCĐ\b", label, re.IGNORECASE):
+            expansions.append("tài sản cố định")
+        if re.search(r"\bBĐS\b", label, re.IGNORECASE):
+            expansions.append("bất động sản")
+        if re.search(r"\bHĐKD\b", label, re.IGNORECASE):
+            expansions.append("hoạt động kinh doanh")
+        if re.search(r"\bLNST\b", label, re.IGNORECASE):
+            expansions.append("lợi nhuận sau thuế")
+        if re.search(r"\bLNTT\b", label, re.IGNORECASE):
+            expansions.append("lợi nhuận trước thuế")
+        if re.search(r"\bVCSH\b", label, re.IGNORECASE):
+            expansions.append("vốn chủ sở hữu")
+        if "nộ phải trả" in label.lower():
+            expansions.append("nợ phải trả")
+        if "ngăn hạn" in label.lower() and "ngắn hạn" not in label.lower():
+            expansions.append("ngắn hạn")
+        if expansions:
+            parts.append(" ".join(expansions))
 
     line_code = row.get("line_code")
     if line_code:
@@ -47,7 +72,6 @@ def _tokenize(text: str) -> List[str]:
     Keeps Vietnamese diacritics intact.
     """
     text = text.lower()
-    # Split on whitespace and common delimiters, keep alphanumeric + diacritics
     tokens = re.findall(r"[\w]+", text, re.UNICODE)
     return tokens
 
@@ -117,7 +141,6 @@ class BM25FactRetriever:
 
         # Get top-k indices by score
         n = min(top_k, len(scores))
-        # argsort descending
         import numpy as np
         top_indices = np.argsort(scores)[::-1][:n]
 
@@ -128,6 +151,18 @@ class BM25FactRetriever:
                 continue
             fact = self._fact_records[idx]
             results.append(fact_dict_to_result(fact, score))
+
+        # Fallback for small candidate sets where BM25 IDF collapses to <= 0
+        if not results and len(self._fact_records) > 0:
+            scored = []
+            for idx, doc_toks in enumerate(self._corpus_tokens):
+                hits = sum(1 for tok in query_tokens if tok in doc_toks)
+                if hits > 0:
+                    scored.append((hits / len(query_tokens), idx))
+            scored.sort(key=lambda x: x[0], reverse=True)
+            for score, idx in scored[:top_k]:
+                fact = self._fact_records[idx]
+                results.append(fact_dict_to_result(fact, score))
 
         return results
 
