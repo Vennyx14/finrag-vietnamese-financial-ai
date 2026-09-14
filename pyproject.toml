@@ -8,6 +8,23 @@ version = "0.1.0"
 description = "Trustworthy financial question answering and analysis over Vietnamese corporate reports"
 readme = "README.md"
 requires-python = ">=3.10"
+dependencies = [
+    "pandas",
+    "numpy",
+    "pyarrow",
+    "pyyaml",
+    "requests",
+    "tqdm",
+    "pydantic",
+    "python-dotenv",
+    "beautifulsoup4",
+    "rank-bm25",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -63,6 +63,8 @@ def parse_query(raw_question: str) -> FinancialQuery:
         "BDS", "BĐS", "HĐKD", "HDKD", "LNST", "LNTT", "VCSH",
         "DTT", "DTBH", "GVHB", "CPBH", "CPQL", "TNCN", "BHXH",
         "BHYT", "BHTN", "KPCD", "KPCĐ", "LCTT", "PBT", "PAT",
+        "ROA", "ROE", "ROS", "ROIC", "EBIT", "EBITDA", "EPS",
+        "YOY", "CAGR",
     }
     for match in _TICKER_REGEX.finditer(text):
         candidate = match.group(1)

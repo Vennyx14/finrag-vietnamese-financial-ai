@@ -1,0 +1,13 @@
+pandas
+numpy
+pyarrow
+pyyaml
+requests
+tqdm
+pydantic
+python-dotenv
+beautifulsoup4
+rank-bm25
+
+[dev]
+pytest
