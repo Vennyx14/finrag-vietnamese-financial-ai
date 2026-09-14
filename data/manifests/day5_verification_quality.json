@@ -1,0 +1,1030 @@
+{
+  "manifest_version": "day5_v1",
+  "evaluation_timestamp": "2026-09-14T13:35:48.077524+00:00",
+  "total_cases": 60,
+  "valid_cases": 30,
+  "accepted_valid_cases": 30,
+  "false_rejections": 0,
+  "valid_acceptance_rate_percent": 100.0,
+  "false_rejection_rate_percent": 0.0,
+  "corrupted_cases": 30,
+  "rejected_corrupted_cases": 30,
+  "false_acceptances": 0,
+  "mutation_detection_rate_percent": 100.0,
+  "overall_verification_accuracy_percent": 100.0,
+  "average_verification_latency_ms": 0.03,
+  "overall_status": "PASS",
+  "accuracy_claim": "100.0% mutation detection and valid case acceptance on the 60-case Day 5 verification benchmark (not a claim of universal verification accuracy across all Vietnamese financial reports)",
+  "mutation_categories": {
+    "numerical": {
+      "total": 4,
+      "detected": 4
+    },
+    "formula": {
+      "total": 3,
+      "detected": 3
+    },
+    "ticker": {
+      "total": 3,
+      "detected": 3
+    },
+    "fiscal_year": {
+      "total": 3,
+      "detected": 3
+    },
+    "comparative_semantics": {
+      "total": 3,
+      "detected": 3
+    },
+    "statement_scope": {
+      "total": 3,
+      "detected": 3
+    },
+    "provenance": {
+      "total": 7,
+      "detected": 7
+    },
+    "input": {
+      "total": 1,
+      "detected": 1
+    },
+    "unit": {
+      "total": 2,
+      "detected": 2
+    },
+    "source_consistency": {
+      "total": 1,
+      "detected": 1
+    }
+  },
+  "known_limitations": [
+    "Verification operates on structured FinancialResult objects, not unstructured raw text.",
+    "Numerical verification checks standard arithmetic within 1e-4 relative tolerance.",
+    "Methodology warnings (e.g. closing balance vs 2-year average denominator) are flagged as WARNING, not REJECTED.",
+    "Source consistency check verifies path strings and page bounds; deep byte-level PDF/TXT re-parsing is out of scope for MVP.",
+    "Unit verification handles standard accounting units (VND, ratio, percentage, dimensionless); arbitrary unit conversions are deferred."
+  ],
+  "detailed_valid_cases": [
+    {
+      "id": "VAL_01",
+      "type": "valid",
+      "query": "Doanh thu thuần FPT năm 2024",
+      "metric": "net_revenue",
+      "ticker": "FPT",
+      "year": 2024,
+      "verification_status": "VERIFIED",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 14,
+      "checks_failed": 0,
+      "checks_warning": 0,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "id": "VAL_02",
+      "type": "valid",
+      "query": "Lợi nhuận sau thuế FPT năm 2024",
+      "metric": "net_income",
+      "ticker": "FPT",
+      "year": 2024,
+      "verification_status": "VERIFIED",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 14,
+      "checks_failed": 0,
+      "checks_warning": 0,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "id": "VAL_03",
+      "type": "valid",
+      "query": "Tổng tài sản FPT năm 2024",
+      "metric": "total_assets",
+      "ticker": "FPT",
+      "year": 2024,
+      "verification_status": "VERIFIED",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 14,
+      "checks_failed": 0,
+      "checks_warning": 0,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "id": "VAL_04",
+      "type": "valid",
+      "query": "Vốn chủ sở hữu FPT năm 2024",
+      "metric": "equity",
+      "ticker": "FPT",
+      "year": 2024,
+      "verification_status": "VERIFIED",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 14,
+      "checks_failed": 0,
+      "checks_warning": 0,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "id": "VAL_05",
+      "type": "valid",
+      "query": "Doanh thu thuần HPG năm 2023",
+      "metric": "net_revenue",
+      "ticker": "HPG",
+      "year": 2023,
+      "verification_status": "VERIFIED",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 14,
+      "checks_failed": 0,
+      "checks_warning": 0,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "id": "VAL_06",
+      "type": "valid",
+      "query": "Lợi nhuận sau thuế HPG năm 2023",
+      "metric": "net_income",
+      "ticker": "HPG",
+      "year": 2023,
+      "verification_status": "VERIFIED",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 14,
+      "checks_failed": 0,
+      "checks_warning": 0,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "id": "VAL_07",
+      "type": "valid",
+      "query": "Tổng tài sản HPG năm 2023",
+      "metric": "total_assets",
+      "ticker": "HPG",
+      "year": 2023,
+      "verification_status": "VERIFIED",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 14,
+      "checks_failed": 0,
+      "checks_warning": 0,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "id": "VAL_08",
+      "type": "valid",
+      "query": "Vốn chủ sở hữu HPG năm 2023",
+      "metric": "equity",
+      "ticker": "HPG",
+      "year": 2023,
+      "verification_status": "VERIFIED",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 14,
+      "checks_failed": 0,
+      "checks_warning": 0,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "id": "VAL_09",
+      "type": "valid",
+      "query": "Doanh thu thuần VNM năm 2023",
+      "metric": "net_revenue",
+      "ticker": "VNM",
+      "year": 2023,
+      "verification_status": "VERIFIED",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 14,
+      "checks_failed": 0,
+      "checks_warning": 0,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "id": "VAL_10",
+      "type": "valid",
+      "query": "Lợi nhuận sau thuế VNM năm 2023",
+      "metric": "net_income",
+      "ticker": "VNM",
+      "year": 2023,
+      "verification_status": "VERIFIED",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 14,
+      "checks_failed": 0,
+      "checks_warning": 0,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "id": "VAL_11",
+      "type": "valid",
+      "query": "Tổng tài sản VNM năm 2023",
+      "metric": "total_assets",
+      "ticker": "VNM",
+      "year": 2023,
+      "verification_status": "VERIFIED",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 14,
+      "checks_failed": 0,
+      "checks_warning": 0,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "id": "VAL_12",
+      "type": "valid",
+      "query": "Vốn chủ sở hữu VNM năm 2023",
+      "metric": "equity",
+      "ticker": "VNM",
+      "year": 2023,
+      "verification_status": "VERIFIED",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 14,
+      "checks_failed": 0,
+      "checks_warning": 0,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "id": "VAL_13",
+      "type": "valid",
+      "query": "Doanh thu thuần MWG năm 2023",
+      "metric": "net_revenue",
+      "ticker": "MWG",
+      "year": 2023,
+      "verification_status": "VERIFIED",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 14,
+      "checks_failed": 0,
+      "checks_warning": 0,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "id": "VAL_14",
+      "type": "valid",
+      "query": "Lợi nhuận sau thuế MWG năm 2023",
+      "metric": "net_income",
+      "ticker": "MWG",
+      "year": 2023,
+      "verification_status": "VERIFIED",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 14,
+      "checks_failed": 0,
+      "checks_warning": 0,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "id": "VAL_15",
+      "type": "valid",
+      "query": "Doanh thu thuần PNJ năm 2023",
+      "metric": "net_revenue",
+      "ticker": "PNJ",
+      "year": 2023,
+      "verification_status": "VERIFIED",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 14,
+      "checks_failed": 0,
+      "checks_warning": 0,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "id": "VAL_16",
+      "type": "valid",
+      "query": "Lợi nhuận sau thuế PNJ năm 2023",
+      "metric": "net_income",
+      "ticker": "PNJ",
+      "year": 2023,
+      "verification_status": "VERIFIED",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 14,
+      "checks_failed": 0,
+      "checks_warning": 0,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "id": "VAL_17",
+      "type": "valid",
+      "query": "Doanh thu thuần GAS năm 2023",
+      "metric": "net_revenue",
+      "ticker": "GAS",
+      "year": 2023,
+      "verification_status": "VERIFIED",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 14,
+      "checks_failed": 0,
+      "checks_warning": 0,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "id": "VAL_18",
+      "type": "valid",
+      "query": "Doanh thu thuần FPT năm 2023",
+      "metric": "net_revenue",
+      "ticker": "FPT",
+      "year": 2023,
+      "verification_status": "VERIFIED",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 14,
+      "checks_failed": 0,
+      "checks_warning": 0,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "id": "VAL_19",
+      "type": "valid",
+      "query": "Biên lợi nhuận ròng FPT năm 2024",
+      "metric": "net_margin",
+      "ticker": "FPT",
+      "year": 2024,
+      "verification_status": "VERIFIED",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 20,
+      "checks_failed": 0,
+      "checks_warning": 0,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "id": "VAL_20",
+      "type": "valid",
+      "query": "ROA FPT năm 2024",
+      "metric": "roa",
+      "ticker": "FPT",
+      "year": 2024,
+      "verification_status": "WARNING",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 20,
+      "checks_failed": 0,
+      "checks_warning": 1,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": [
+        "Methodology notice: 'roa' uses closing balance for denominator per MVP specification ('ROA (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Tổng tài sản (Số cuối kỳ, Mã số 270)'). Standard financial analysis may alternatively use 2-year average balance."
+      ]
+    },
+    {
+      "id": "VAL_21",
+      "type": "valid",
+      "query": "ROE FPT năm 2024",
+      "metric": "roe",
+      "ticker": "FPT",
+      "year": 2024,
+      "verification_status": "WARNING",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 20,
+      "checks_failed": 0,
+      "checks_warning": 1,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": [
+        "Methodology notice: 'roe' uses closing balance for denominator per MVP specification ('ROE (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Vốn chủ sở hữu (Số cuối kỳ, Mã số 400/410)'). Standard financial analysis may alternatively use 2-year average balance."
+      ]
+    },
+    {
+      "id": "VAL_22",
+      "type": "valid",
+      "query": "ROA HPG năm 2023",
+      "metric": "roa",
+      "ticker": "HPG",
+      "year": 2023,
+      "verification_status": "WARNING",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 20,
+      "checks_failed": 0,
+      "checks_warning": 1,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": [
+        "Methodology notice: 'roa' uses closing balance for denominator per MVP specification ('ROA (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Tổng tài sản (Số cuối kỳ, Mã số 270)'). Standard financial analysis may alternatively use 2-year average balance."
+      ]
+    },
+    {
+      "id": "VAL_23",
+      "type": "valid",
+      "query": "ROE HPG năm 2023",
+      "metric": "roe",
+      "ticker": "HPG",
+      "year": 2023,
+      "verification_status": "WARNING",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 20,
+      "checks_failed": 0,
+      "checks_warning": 1,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": [
+        "Methodology notice: 'roe' uses closing balance for denominator per MVP specification ('ROE (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Vốn chủ sở hữu (Số cuối kỳ, Mã số 400/410)'). Standard financial analysis may alternatively use 2-year average balance."
+      ]
+    },
+    {
+      "id": "VAL_24",
+      "type": "valid",
+      "query": "ROA VNM năm 2023",
+      "metric": "roa",
+      "ticker": "VNM",
+      "year": 2023,
+      "verification_status": "WARNING",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 20,
+      "checks_failed": 0,
+      "checks_warning": 1,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": [
+        "Methodology notice: 'roa' uses closing balance for denominator per MVP specification ('ROA (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Tổng tài sản (Số cuối kỳ, Mã số 270)'). Standard financial analysis may alternatively use 2-year average balance."
+      ]
+    },
+    {
+      "id": "VAL_25",
+      "type": "valid",
+      "query": "ROE VNM năm 2023",
+      "metric": "roe",
+      "ticker": "VNM",
+      "year": 2023,
+      "verification_status": "WARNING",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 20,
+      "checks_failed": 0,
+      "checks_warning": 1,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": [
+        "Methodology notice: 'roe' uses closing balance for denominator per MVP specification ('ROE (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Vốn chủ sở hữu (Số cuối kỳ, Mã số 400/410)'). Standard financial analysis may alternatively use 2-year average balance."
+      ]
+    },
+    {
+      "id": "VAL_26",
+      "type": "valid",
+      "query": "Biên lợi nhuận ròng HPG năm 2023",
+      "metric": "net_margin",
+      "ticker": "HPG",
+      "year": 2023,
+      "verification_status": "VERIFIED",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 20,
+      "checks_failed": 0,
+      "checks_warning": 0,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "id": "VAL_27",
+      "type": "valid",
+      "query": "Tăng trưởng doanh thu FPT năm 2024",
+      "metric": "revenue_growth",
+      "ticker": "FPT",
+      "year": 2024,
+      "verification_status": "VERIFIED",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 20,
+      "checks_failed": 0,
+      "checks_warning": 0,
+      "latency_ms": 1.0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "id": "VAL_28",
+      "type": "valid",
+      "query": "Tăng trưởng doanh thu HPG năm 2023",
+      "metric": "revenue_growth",
+      "ticker": "HPG",
+      "year": 2023,
+      "verification_status": "VERIFIED",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 20,
+      "checks_failed": 0,
+      "checks_warning": 0,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "id": "VAL_29",
+      "type": "valid",
+      "query": "Tăng trưởng doanh thu VNM năm 2023",
+      "metric": "revenue_growth",
+      "ticker": "VNM",
+      "year": 2023,
+      "verification_status": "VERIFIED",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 20,
+      "checks_failed": 0,
+      "checks_warning": 0,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "id": "VAL_30",
+      "type": "valid",
+      "query": "Doanh thu thuần FPT năm 2024 riêng",
+      "metric": "net_revenue",
+      "ticker": "FPT",
+      "year": 2024,
+      "verification_status": "VERIFIED",
+      "overall_pass": true,
+      "is_correct_outcome": true,
+      "checks_passed": 14,
+      "checks_failed": 0,
+      "checks_warning": 0,
+      "latency_ms": 0.0,
+      "errors": [],
+      "warnings": []
+    }
+  ],
+  "detailed_corrupted_cases": [
+    {
+      "id": "MUT_01",
+      "type": "corrupted",
+      "description": "Cat 1: Value +1% offset",
+      "category": "numerical",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Numerical discrepancy: result value 0.15150166131295625 differs from reference 0.1500016448643131 (rel_diff=0.010000 > tol 0.0001)"
+      ],
+      "warnings": []
+    },
+    {
+      "id": "MUT_02",
+      "type": "corrupted",
+      "description": "Cat 1: Value -2% offset",
+      "category": "numerical",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Numerical discrepancy: result value 0.19054875804327379 differs from reference 0.19443750820742223 (rel_diff=0.020000 > tol 0.0001)"
+      ],
+      "warnings": []
+    },
+    {
+      "id": "MUT_03",
+      "type": "corrupted",
+      "description": "Cat 1: Value 10x magnitude error",
+      "category": "numerical",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Numerical discrepancy: result value 628487943513670.0 differs from reference 62848794351367.0 (rel_diff=9.000000 > tol 0.0001)"
+      ],
+      "warnings": []
+    },
+    {
+      "id": "MUT_04",
+      "type": "corrupted",
+      "description": "Cat 1: Value sign inverted",
+      "category": "numerical",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Numerical discrepancy: result value -0.036214158296144786 differs from reference 0.036214158296144786 (rel_diff=2.000000 > tol 0.0001)"
+      ],
+      "warnings": [
+        "Methodology notice: 'roa' uses closing balance for denominator per MVP specification ('ROA (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Tổng tài sản (Số cuối kỳ, Mã số 270)'). Standard financial analysis may alternatively use 2-year average balance."
+      ]
+    },
+    {
+      "id": "MUT_05",
+      "type": "corrupted",
+      "description": "Cat 2: Ratio formula inverted (net_revenue / net_income)",
+      "category": "formula",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Formula mismatch: expected 'net_income / net_revenue', got 'net_revenue / net_income'"
+      ],
+      "warnings": []
+    },
+    {
+      "id": "MUT_06",
+      "type": "corrupted",
+      "description": "Cat 2: Formula altered operator (net_income * net_revenue)",
+      "category": "formula",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Formula mismatch: expected 'net_income / net_revenue', got 'net_income * net_revenue'"
+      ],
+      "warnings": []
+    },
+    {
+      "id": "MUT_07",
+      "type": "corrupted",
+      "description": "Cat 2: Growth formula corrupted",
+      "category": "formula",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Formula mismatch: expected '(net_revenue_current - net_revenue_previous) / net_revenue_previous', got 'current - previous'"
+      ],
+      "warnings": []
+    },
+    {
+      "id": "MUT_08",
+      "type": "corrupted",
+      "description": "Cat 3: Evidence ticker swapped to competitor",
+      "category": "ticker",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Evidence at index 0 has ticker 'HPG', expected 'FPT'",
+        "Evidence at index 0 does not correspond to input: ticker: FPT vs HPG"
+      ],
+      "warnings": []
+    },
+    {
+      "id": "MUT_09",
+      "type": "corrupted",
+      "description": "Cat 3: Denominator evidence ticker changed",
+      "category": "ticker",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Evidence at index 1 has ticker 'VIC', expected 'FPT'",
+        "Evidence at index 1 does not correspond to input: ticker: FPT vs VIC"
+      ],
+      "warnings": []
+    },
+    {
+      "id": "MUT_10",
+      "type": "corrupted",
+      "description": "Cat 3: Result ticker changed to non-existent XYZ",
+      "category": "ticker",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Evidence at index 0 has ticker 'VNM', expected 'XYZ'",
+        "Evidence at index 1 has ticker 'VNM', expected 'XYZ'"
+      ],
+      "warnings": [
+        "Methodology notice: 'roe' uses closing balance for denominator per MVP specification ('ROE (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Vốn chủ sở hữu (Số cuối kỳ, Mã số 400/410)'). Standard financial analysis may alternatively use 2-year average balance."
+      ]
+    },
+    {
+      "id": "MUT_11",
+      "type": "corrupted",
+      "description": "Cat 4: Absolute fact fiscal year shifted to 2020",
+      "category": "fiscal_year",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Evidence at index 0 has fiscal_year 2020, expected 2024",
+        "Evidence at index 0 has report_year (2024) != fiscal_year (2020) but is_comparative is False or missing",
+        "Evidence at index 0 does not correspond to input: year: 2024 vs 2020"
+      ],
+      "warnings": []
+    },
+    {
+      "id": "MUT_12",
+      "type": "corrupted",
+      "description": "Cat 4: Ratio numerator fiscal year mismatch",
+      "category": "fiscal_year",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Evidence at index 0 has fiscal_year 2023, expected 2024",
+        "Evidence at index 0 has report_year (2024) != fiscal_year (2023) but is_comparative is False or missing"
+      ],
+      "warnings": []
+    },
+    {
+      "id": "MUT_13",
+      "type": "corrupted",
+      "description": "Cat 4: Result year shifted to future year 2099",
+      "category": "fiscal_year",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Evidence at index 0 has fiscal_year 2024, expected 2099"
+      ],
+      "warnings": []
+    },
+    {
+      "id": "MUT_14",
+      "type": "corrupted",
+      "description": "Cat 5: Comparative fact with report_year!=fiscal_year but is_comparative=False",
+      "category": "comparative_semantics",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Evidence at index 0 has report_year (2024) != fiscal_year (2023) but is_comparative is False or missing"
+      ],
+      "warnings": [
+        "Methodology notice: 'roe' uses closing balance for denominator per MVP specification ('ROE (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Vốn chủ sở hữu (Số cuối kỳ, Mã số 400/410)'). Standard financial analysis may alternatively use 2-year average balance."
+      ]
+    },
+    {
+      "id": "MUT_15",
+      "type": "corrupted",
+      "description": "Cat 5: Non-comparative fact erroneously flagged is_comparative=True",
+      "category": "comparative_semantics",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Evidence at index 0 has report_year == fiscal_year (2024) but is_comparative is True"
+      ],
+      "warnings": []
+    },
+    {
+      "id": "MUT_16",
+      "type": "corrupted",
+      "description": "Cat 5: Missing comparative flag on future report year",
+      "category": "comparative_semantics",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Evidence at index 0 has report_year (2030) != fiscal_year (2023) but is_comparative is False or missing"
+      ],
+      "warnings": [
+        "Methodology notice: 'roa' uses closing balance for denominator per MVP specification ('ROA (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Tổng tài sản (Số cuối kỳ, Mã số 270)'). Standard financial analysis may alternatively use 2-year average balance."
+      ]
+    },
+    {
+      "id": "MUT_17",
+      "type": "corrupted",
+      "description": "Cat 6: Consolidated result with separate scope evidence",
+      "category": "statement_scope",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Evidence at index 0 has statement_scope 'separate', expected 'consolidated'"
+      ],
+      "warnings": []
+    },
+    {
+      "id": "MUT_18",
+      "type": "corrupted",
+      "description": "Cat 6: Mixed scope in ratio calculation",
+      "category": "statement_scope",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 1.0,
+      "errors": [
+        "Evidence at index 1 has statement_scope 'separate', expected 'consolidated'"
+      ],
+      "warnings": []
+    },
+    {
+      "id": "MUT_19",
+      "type": "corrupted",
+      "description": "Cat 6: Result statement_scope declared separate but evidence consolidated",
+      "category": "statement_scope",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Evidence at index 0 has statement_scope 'consolidated', expected 'separate'"
+      ],
+      "warnings": []
+    },
+    {
+      "id": "MUT_20",
+      "type": "corrupted",
+      "description": "Cat 7: Tampered fact_id on single evidence item",
+      "category": "provenance",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Evidence at index 0 does not correspond to input: fact_id: FPT_financial_statements_2024_consolidated_p13_t0_r4_c3 vs tampered_fact_id_001"
+      ],
+      "warnings": []
+    },
+    {
+      "id": "MUT_21",
+      "type": "corrupted",
+      "description": "Cat 7: Tampered fact_id on numerator",
+      "category": "provenance",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Evidence at index 0 does not correspond to input: fact_id: FPT_financial_statements_2024_consolidated_p13_t0_r20_c3 vs corrupted_id_numerator"
+      ],
+      "warnings": []
+    },
+    {
+      "id": "MUT_22",
+      "type": "corrupted",
+      "description": "Cat 7: Empty fact_id on denominator",
+      "category": "provenance",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Evidence at index 1 does not correspond to input: fact_id: FPT_financial_statements_2024_consolidated_p13_t0_r4_c3 vs "
+      ],
+      "warnings": []
+    },
+    {
+      "id": "MUT_23",
+      "type": "corrupted",
+      "description": "Cat 8: Evidence value tampered (+5%)",
+      "category": "provenance",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Evidence at index 0 does not correspond to input: value: 62848794351367.0 vs 65991234068935.35"
+      ],
+      "warnings": []
+    },
+    {
+      "id": "MUT_24",
+      "type": "corrupted",
+      "description": "Cat 8: Numerator evidence value doubled",
+      "category": "provenance",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Evidence at index 0 does not correspond to input: value: 9427422530444.0 vs 18854845060888.0"
+      ],
+      "warnings": []
+    },
+    {
+      "id": "MUT_25",
+      "type": "corrupted",
+      "description": "Cat 9: Evidence list truncated from 2 to 1 for ratio",
+      "category": "provenance",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Provenance length mismatch: len(inputs)=2 != len(evidence)=1"
+      ],
+      "warnings": []
+    },
+    {
+      "id": "MUT_26",
+      "type": "corrupted",
+      "description": "Cat 9: Entire evidence list emptied",
+      "category": "provenance",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Provenance length mismatch: len(inputs)=1 != len(evidence)=0"
+      ],
+      "warnings": []
+    },
+    {
+      "id": "MUT_27",
+      "type": "corrupted",
+      "description": "Cat 10: Inputs truncated from 2 to 1 for growth",
+      "category": "input",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Input count mismatch for metric 'revenue_growth': expected 2 (['net_revenue']), got 1",
+        "Independent reference calculation failed: Growth operation requires 2 inputs [prev, curr]"
+      ],
+      "warnings": []
+    },
+    {
+      "id": "MUT_28",
+      "type": "corrupted",
+      "description": "Cat 11: Absolute VND metric marked with unit USD",
+      "category": "unit",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Incompatible units: expected 'VND', got 'USD'"
+      ],
+      "warnings": []
+    },
+    {
+      "id": "MUT_29",
+      "type": "corrupted",
+      "description": "Cat 11: Ratio metric marked with unit VND",
+      "category": "unit",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Incompatible units: expected 'ratio', got 'VND'"
+      ],
+      "warnings": []
+    },
+    {
+      "id": "MUT_30",
+      "type": "corrupted",
+      "description": "Cat 12: Invalid negative page and empty table_id",
+      "category": "source_consistency",
+      "verification_status": "REJECTED",
+      "overall_pass": false,
+      "is_correct_outcome": true,
+      "latency_ms": 0.0,
+      "errors": [
+        "Evidence at index 0 does not correspond to input: page: 13 vs -5; table_id: FPT_financial_statements_2024_consolidated_p13_t0 vs ",
+        "Evidence 0 has invalid page number: -5 (must be >= 1)",
+        "Evidence 0 missing table_id"
+      ],
+      "warnings": []
+    }
+  ]
+}

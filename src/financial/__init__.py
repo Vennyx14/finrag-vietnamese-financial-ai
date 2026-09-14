@@ -37,8 +37,21 @@ from src.financial.reasoning import (
 )
 from src.financial.result import FinancialResult, fact_to_evidence
 from src.financial.schema import DocumentRecord, FinancialFact, TableRecord
+from src.financial.verification import (
+    CheckSeverity,
+    VerificationCheck,
+    VerificationEngine,
+    VerificationResult,
+    VerificationStatus,
+)
 
 __all__ = [
+    # Verification
+    "VerificationStatus",
+    "CheckSeverity",
+    "VerificationCheck",
+    "VerificationResult",
+    "VerificationEngine",
     # Schemas
     "DocumentRecord",
     "TableRecord",
