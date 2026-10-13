@@ -1,14 +1,130 @@
-# FinRAG Development Rules
+# FinRAG Development Rules (AGENTS.md)
 
-## Project
+Last reviewed: 2026-10-13
 
-FinRAG is a long-term AI/NLP research and engineering project for
-trustworthy financial question answering and analysis over Vietnamese
-corporate financial reports.
+This file is the operating contract for every human or AI agent (including Antigravity) that changes this repository. Read it fully before making any change.
 
-The project may later become a 2027 graduation thesis.
+**Precedence:** explicit user instruction in the current task > this file > README.md / PRODUCT.md / DESIGN.md / docs/. If two documents disagree, do not silently pick one: report the conflict and ask.
 
-## Core Principles
+---
+
+## 1. Project definition
+
+FinRAG is a long-term AI/NLP research and engineering project for **trustworthy financial question answering and analysis over Vietnamese corporate financial reports**. It may later become a 2027 graduation thesis.
+
+FinRAG is **one product with one QA pipeline**. Corpus-grounded question answering (find the right evidence) and numerical reasoning (derive the answer from the evidence) are capabilities inside that pipeline, not separate products. They are separate *modules* only for testing and replacement, and they communicate through shared data contracts (Section 4).
+
+### In scope (current)
+- Questions about figures and standard ratios in Vietnamese corporate financial statements: single facts, ratios, period-over-period growth, and (once milestones allow) multi-step comparisons.
+- Every answer carries: result, formula or program trace, evidence with provenance, verification status, and any assumptions.
+- Refusal or clarification when evidence is missing, ambiguous, or the request is unsupported.
+
+### Out of scope (until explicitly approved)
+- Investment advice, forecasting, opinion, or open-ended analysis ("assess…", "predict…").
+- Bank, insurance, and securities-specific statement schemas.
+- Raw PDF ingestion, dense/hybrid retrieval, knowledge graphs, autonomous agents, fine-tuning.
+- Supplied-context input mode (ViNumQA-style). The only input corpus is ViFinQA/TiniX.
+
+---
+
+## 2. Current state (as of 2026-10-13)
+
+Status labels: **REPORTED** = stated in repo docs, not re-verified by the agent; **VERIFIED** = confirmed by running it in this session; **SUSPECTED** = found by reading code, not yet reproduced.
+
+### Stage
+MVP v0.1 (data foundation → retrieval → deterministic reasoning → verification → application service → Streamlit UI) is implemented. The project is now in **hardening (milestones M0–M2)**. The older "STEP 0 / STEP 1" stage text is obsolete.
+
+### Implemented (REPORTED)
+- Data: 1,973 report files, 100 tickers, years 2015–2025, 338,714 financial facts in `data/processed/financial_facts.parquet`.
+- Retrieval: metadata filter (ticker, year, scope, line_code) + ephemeral BM25 over candidates.
+- Reasoning: `FinancialReasoningEngine` + `MetricRegistry`, 8 metrics: `net_revenue`, `net_income`, `total_assets`, `equity`, `net_margin`, `roa`, `roe`, `revenue_growth`. Operations: identity, ratio, difference, yoy_growth, percentage_change.
+- Verification: `VerificationEngine` with formula, input-count, numerical, period-semantics, scope, ticker, unit, provenance, source-consistency, and methodology checks.
+- Application: `FinRAGApplication.ask()` returning typed `FinRAGResponse` DTOs.
+- UI: Streamlit app (`ui/app.py`, `ui/theme.py`).
+- Self-authored benchmarks (REPORTED): reasoning 30 cases (25 valid, 5 invalid), verification 60 cases (30 valid, 30 mutations), retrieval 100 queries. Test suite reported as 164 tests.
+
+### Important caveats on those numbers
+- The benchmarks were written by the project authors from the same parquet and the same label rules the system uses. They are **regression tests, not accuracy estimates**. Do not describe them as accuracy on unseen data.
+- The mutation benchmark mutates `FinancialResult` objects *after* reasoning. It tests tamper detection, not wrong-fact selection or OCR/parse errors.
+- Integration tests `pytest.skip` when `data/processed/financial_facts.parquet` is absent, and `data/benchmark/**` is gitignored. On a fresh clone many tests skip. Always report skip counts, not only pass counts.
+
+### Empty placeholders (no implementation yet)
+`src/nlp/llm.py`, `src/agent/`, `src/pipeline/qa.py`, `src/evaluation/evaluator.py`, `src/financial/concepts.py`, `api/`, `scripts/run_demo.py`, `tests/test_pipeline.py`, `tests/test_retrieval.py`. There is no LLM component, planner, or program/DSL layer in the repository today.
+
+---
+
+## 3. Repository map
+
+| Path | Responsibility |
+|---|---|
+| `src/ingestion/` | Loader, HTML table parser, number parser, fact extractor, validator |
+| `src/financial/` | Schemas, metric registry, calculator, reasoning engine, result model, verification |
+| `src/retrieval/` | Metadata filter, BM25, ranking/`RetrievalResult`, retrieval engine |
+| `src/pipeline/` | `prepare_data` pipeline, `query.py` (regex query parser) |
+| `src/application/` | `FinRAGApplication` service and typed DTOs |
+| `src/nlp/`, `src/agent/`, `src/evaluation/` | Reserved for LLM provider, planner, evaluator (empty today) |
+| `ui/` | Streamlit app and design tokens (presentation only; no calculation logic) |
+| `scripts/` | Data prep, profiling, benchmark generation, evaluation runners |
+| `tests/` | Unit and integration tests |
+| `data/` | `external/` (raw), `processed/` (parquet, jsonl), `benchmark/`, `manifests/` (JSON reports) |
+| `docs/` | Architecture and portfolio notes |
+
+Layer rules: `ui` may import only `src.application`. `src.application` orchestrates; it contains no financial formulas. `src.financial` never imports from `ui` or `src.application`.
+
+---
+
+## 4. Target architecture and data contracts
+
+```
+Question
+  → Question understanding / resolution   (typed outcome, may refuse)
+  → Evidence resolution                   (retrieval + validation of facts)
+  → Computation                           (deterministic metric function, or constrained program)
+  → Trace                                 (every step, every operand → evidence)
+  → Verification                          (layered; reports what ran and what did not)
+  → Answer + citations + trace + status
+```
+
+Shared contracts (extend existing models; never create a parallel evidence model):
+
+1. **Evidence** — the existing `RetrievalResult` / `fact_to_evidence()` record: `fact_id`, `ticker`, `fiscal_year`, `report_year`, `is_comparative`, `statement_scope`, `line_code`, `original_label`, `value`, `unit`, `currency`, `page`, `table_id`, `row_id`, `source_path`, `period_label`, `document_id`.
+2. **Resolution result** (new, M1) — status `resolved | ambiguous | unsupported | needs_clarification`, plus metric, operation, entity, period, scope, and human-readable reasons.
+3. **Trace** (new, M3) — ordered steps; each step has operation, operand references (evidence IDs or earlier step IDs), output value, unit, and any conversion or rounding. Intermediate values inherit provenance from their inputs; never invent a fact ID.
+4. **Verification result** — existing `VerificationResult`, extended so each check is `PASS | FAIL | WARNING | NOT_RUN`.
+5. **Response** — existing `FinRAGResponse`, extended with resolution outcome, assumptions, and trace.
+
+Provenance chain (must never break): `Answer → FinancialResult/Trace → Input Facts → Fact ID → Row → Table → Page → Source Document`.
+
+Citation granularity today is **page / table / row / column of the OCR text file**, not PDF coordinates. Do not claim more.
+
+Verification status semantics:
+- `VERIFIED`: every executed critical check passed, no warnings. It means *the listed checks passed*, not that the answer is guaranteed correct.
+- `WARNING`: no critical failure, but methodology or data-quality notes exist (for example closing-balance ROA/ROE).
+- `REJECTED`: at least one critical check failed.
+- A check that did not run is reported as `NOT_RUN` and never counts as a pass.
+
+---
+
+## 5. Milestones and gates
+
+Work proceeds one milestone at a time. **Do not start the next milestone until the current one meets its exit criteria and the user approves.** (This preserves the original rule: do not automatically proceed to the next step.)
+
+| ID | Goal | Exit criteria |
+|---|---|---|
+| **M0** | Baseline and audit (no behavior change) | `docs/baseline.md` with pytest pass/skip counts; coverage CSV of all 1,012 ViFinQA questions through `app.ask` (parsed fields, status, error category); parquet audit (unit values, `period_label` patterns, line-code-60 usage, scope distribution); ≥100 questions hand-labelled in `data/benchmark/gold/gold_v0.jsonl`; `.gitignore` exception so the gold file is tracked |
+| **M1** | Typed resolution and abstention | `tests/test_resolution.py` written first and shown failing; `ResolutionResult` implemented; "Lợi nhuận gộp", "Tăng trưởng lợi nhuận", "Doanh thu hoạt động tài chính" queries return `unsupported`; all existing tests and the 30-case benchmark unchanged |
+| **M2** | Independent verification and data-quality flags | Expected ticker/year/scope come from an independent re-parse of the question, not from the result; accounting-identity checks (for example 270 = 300 + 400); comparative-column consistency check; `NOT_RUN` state; fact-level quality flags; unit scale normalized into a separate field |
+| **M3** | Shared evidence and trace contracts | Trace model with operand lineage; `FinancialResult` and DTOs extended compatibly; no duplicate evidence schema |
+| **M4** | Program layer | LLM provider in `src/nlp/llm.py` with a mock provider for tests; constrained DSL with allowlisted operations in `src/financial/program/`; planner emits program + bindings, never numbers; executor reuses tested arithmetic; generic program verifier |
+| **M5** | Gold benchmark and ablations | ≥150–200 labelled items split by company; oracle-bindings, oracle-facts, and full-pipeline configurations; metrics in Section 7 |
+| **M6** | Unified planner and experiments | Deterministic-only vs program-based vs combined; error analysis; decision on whether the LLM planner earns its complexity |
+
+### Deferred (needs explicit approval)
+OCR-repo ingestion adapter, raw PDF ingestion, dense/hybrid retrieval, knowledge graph, fine-tuning (SFT/GRPO), analyst agent, narrative generation, bank/insurer schemas. The OCR/preprocessing repository is a planned *input source* only; do not copy its code into this repo without a compatibility review.
+
+---
+
+## 6. Core principles
 
 1. Do not fabricate data, benchmark results, citations, or experimental findings.
 2. Clearly distinguish measured results from assumptions and heuristics.
@@ -26,15 +142,50 @@ The project may later become a 2027 graduation thesis.
 14. Never claim a system is production-grade unless it has actually been tested to that standard.
 15. Do not implement future-phase features unless explicitly requested.
 
-## Research Principles
+Additional principles:
 
+16. **No LLM arithmetic.** Every number in an answer comes from deterministic code and appears in the trace.
+17. **No arbitrary code execution.** Never `eval`/`exec` generated code. Programs use an allowlisted DSL only.
+18. **No silent fallback.** A failed or unavailable LLM call surfaces as an error. A mock provider is for tests only and must never answer user queries.
+19. **Abstain rather than guess.** Unsupported, ambiguous, or under-specified requests get a typed refusal or clarification request.
+20. **Unavailable is not passed.** A verification check that did not run is `NOT_RUN`.
+21. **Originals are immutable.** Corrected, normalized, or derived values go in separate fields; raw OCR text and original labels stay untouched.
+22. **Assumptions are recorded.** Any default (period, scope, methodology) used to answer is stored in the result and shown to the user.
+23. **Verification must not share its blind spot with the reasoner.** A check that only re-reads values the reasoner chose proves arithmetic, not correctness. Prefer independent sources: accounting identities, comparative columns, an independent parse of the question.
+
+---
+
+## 7. Research and evaluation integrity
+
+### Research principles
 1. Every research claim should have an experiment behind it.
-2. Use baselines and ablation studies where appropriate.
+2. Use baselines and ablation studies where appropriate. Baseline ladder for reasoning: regex parser → LLM zero-shot → few-shot → self-evaluation → multi-path → + verifier.
 3. Record dataset versions and experiment configurations.
 4. Record failure cases, not only successful examples.
 5. Avoid data leakage between development and evaluation sets.
 
-## Data Principles
+### Evaluation rules
+- **Gold and benchmark files are immutable to agents.** Never edit `data/benchmark/**`, gold files, or expected values in tests to make a test pass. A human changes them deliberately and records why.
+- Gold operands must be verified against the raw OCR page, and gold answers computed by a script independent of the system under test.
+- Split dev and test **by company**; freeze the test set before tuning.
+- Do not treat model- or generator-produced programs as ground truth.
+- If an LLM paraphrases questions, use a different model from the planner under test, or hand-check the paraphrases.
+- Report sample sizes and confidence intervals (for example Wilson) for any percentage on a small set.
+- Report results per question type, not only aggregate.
+
+### Metric definitions
+- **EA — Execution Accuracy**: the system's final answer matches the gold answer after unit and rounding normalization. (Not "exact answer".)
+- **PA — Program Accuracy**: the generated program is equivalent to the gold program after canonicalization. PA is noisy where gold programs are inconsistent; treat EA as primary.
+- **Concept-resolution accuracy**: the question was mapped to the correct metric, entity, period, and scope.
+- **Fact-selection accuracy**: the selected `fact_id` is the gold fact.
+- **Abstention precision / recall**: refusals are correct / unanswerable questions are refused.
+- **Verified-wrong rate**: answers that are wrong yet obtained `VERIFIED` or `WARNING`. This is the headline trust metric.
+- **Citation correctness**: the cited cell actually contains the cited value.
+- Always report latency, failure rate, and (for LLM paths) cost separately.
+
+---
+
+## 8. Data principles
 
 Preserve the following whenever available:
 
@@ -57,12 +208,117 @@ Preserve the following whenever available:
 - source_url
 - source_page
 
-## Current Development Stage
+Fields to add during M0–M2 (do not add before the audit confirms the need): `statement_type` (balance sheet / income / cash flow), `period_type` (annual / quarterly / year-to-date / half-year), `period_end_date`, `unit_scale` (stored alongside the raw value), `report_year` and `is_comparative` persisted rather than regex-derived, fact-level quality flags, and optional `ocr_confidence` / `bbox` for future ingestion adapters.
 
-Current stage:
-STEP 0 - Repository foundation
+Current fact columns: `fact_id, document_id, ticker, year, statement_scope, page, table_id, row_id, line_code, original_label, canonical_metric, value, unit, currency, source_path, period_label`. `report_year` and `is_comparative` are currently derived at retrieval time from `document_id`.
 
-Next:
-STEP 1 - ViFinQA/TiniX data foundation and corpus profiling
+Data policy:
+- Raw and processed datasets stay out of Git (`data/external/**`, `data/raw/**`, `data/processed/**`, `*.parquet`).
+- Small, human-labelled gold files are the exception. Track them under `data/benchmark/gold/` using `.gitignore` negation rules (`!data/benchmark/gold/` and `!data/benchmark/gold/**`).
+- Benchmark generators must be deterministic (fixed seeds) and their outputs reproducible from tracked inputs.
+- Secrets live only in `.env` (gitignored). Never commit API keys.
 
-Do not automatically proceed to Step 2 after completing Step 1.
+---
+
+## 9. Claims and documentation policy
+
+Do not write, in any file, README, CV text, UI string, or commit message:
+- "zero hallucination", "guaranteed", "100% auditable", "audit-grade", "institutional-grade", "production-grade" — unless the claim was actually tested to that standard (principle 14).
+- Accuracy figures without the benchmark name, size, and the statement that it is self-authored where applicable.
+
+Acceptable phrasing examples:
+- "Calculations are performed by deterministic code, not by an LLM."
+- "On our 30-case self-authored regression benchmark all cases pass."
+- "VERIFIED means the listed checks passed."
+
+When behavior changes, update README.md, PRODUCT.md, DESIGN.md, and the relevant manifest in the same change, or list exactly which docs are now stale.
+
+---
+
+## 10. Agent workflow rules
+
+Follow this loop for every task: **Understand → Plan → Implement → Diff → Test → Verify → Explain → Document → Commit.**
+
+1. **Scope to one milestone and one concern.** If a task touches more than one, stop and ask.
+2. **Read before editing.** Open the files you will change and the tests that cover them. Do not rely on memory of the repository.
+3. **Tests first** for behavior changes: write the failing test, show it failing, then implement.
+4. **Smallest diff that works.** No wholesale rewrites, renames, or package reshuffles unless the task says so. Do not modify unrelated files.
+5. **Never weaken a guard to get green.** Do not loosen verification tolerances, delete checks, skip tests, change expected values, or edit gold/benchmark files.
+6. **No hidden network or LLM calls** in tests. Use the mock provider (M4+).
+7. **Run the full suite** (`python -m pytest -rs`) before proposing a commit and report pass, fail, and skip counts.
+8. **Do not guess.** If a requirement, data field, or file is missing, say so and ask. Never invent benchmark numbers, fact IDs, or file contents.
+9. **Report format** at the end of every task:
+   - Summary (what changed and why)
+   - Files changed
+   - Commands run and their results
+   - Risks and anything not done
+   - Docs that are now stale
+10. **Commits**: one logical change per commit, imperative subject, milestone prefix (for example `M1: add typed ResolutionResult`).
+
+---
+
+## 11. Coding conventions
+
+- Python 3.11 (project declares >=3.10). Type hints on public functions. Pydantic models for contracts; keep result and DTO models frozen.
+- Deterministic by default: fixed seeds, no wall-clock-dependent logic in calculations.
+- Use `REPO_ROOT`-relative paths in scripts; no hard-coded absolute paths.
+- User-facing strings (UI, error messages shown to users) are Vietnamese. Code, comments, identifiers, and docs are English.
+- Error handling: raise typed exceptions inside `src/financial`; convert them to typed responses at the application layer. Do not swallow exceptions.
+- One parser for question understanding. Do not duplicate ticker, year, or scope extraction in new places (today it exists in both `src/pipeline/query.py` and `src/financial/reasoning.py`; consolidate during M1, do not add a third copy).
+- Prefer explicit allowlists over keyword catch-alls when mapping text to metrics.
+- Add a dependency only with a written justification, and put it in `pyproject.toml` and `requirements.txt`.
+
+---
+
+## 12. Commands
+
+```bash
+python -m pytest -rs                          # full suite, show skip reasons
+python scripts/prepare_data.py                # rebuild processed facts from ViFinQA
+python scripts/build_index.py                 # BM25 index smoke build
+python scripts/check_retrieval_quality.py     # retrieval quality manifest
+python scripts/evaluate_reasoning.py          # 30-case reasoning regression benchmark
+python scripts/evaluate_verification.py       # 60-case verification regression benchmark
+python -m streamlit run ui/app.py --server.port=8501
+```
+
+---
+
+## 13. Known issues and items to verify
+
+None of these has been reproduced yet. Treat each as **SUSPECTED** until a failing test or an audit confirms it. Fix only within the milestone shown.
+
+| # | Issue (found by reading code) | Where | Milestone |
+|---|---|---|---|
+| K1 | Keyword catch-alls: "doanh thu"→net_revenue, "lợi nhuận"→net_income, "tăng trưởng"→revenue_growth regardless of qualifiers, so "lợi nhuận gộp", "doanh thu hoạt động tài chính", "tăng trưởng lợi nhuận" may be answered with a different metric and still verify | `resolve_metric_candidate` in `src/financial/reasoning.py` | M1 |
+| K2 | Application passes the result's own ticker/year/scope to the verifier as "expected" values, so those checks cannot catch a reasoner-side parse error; the formula check compares registry to registry | `src/application/service.py`, `src/financial/verification.py` | M2 |
+| K3 | Unit scale (đồng / nghìn / triệu) is stored as a string but never normalized; verification does not compare fact units; mixed-unit growth would be silent | `src/ingestion/fact_extractor.py`, verification | M0 audit, M2 |
+| K4 | Opening-balance filter looks for `"1/1/"`; a header like `01/01/2024` does not contain it | `resolve_fact` in `src/financial/reasoning.py` | M0 audit |
+| K5 | Line code 60 is overloaded (income statement net profit vs cash-flow opening cash); no `statement_type` in the fact schema | schema, metrics | M2 |
+| K6 | Only `year` as temporal key; quarterly or year-to-date reports could be mixed with annual | schema, extractor | M0 audit |
+| K7 | `report_year` derived by regex `_(\d{4})_` from `document_id` instead of stored | `src/retrieval/ranking.py` | M2 |
+| K8 | Ticker extraction takes the first 3–6 uppercase token outside a stop-word list (for example "BCTC" could be taken as a ticker); stop-word list duplicated in two files | `src/pipeline/query.py`, `src/financial/reasoning.py` | M1 |
+| K9 | Fact selection uses BM25 top-20 then filters by line code; `FinancialQuery.line_code` exists but is not used to hard-filter by `expected_line_codes` | `resolve_fact`, `src/retrieval/engine.py` | M1/M2 |
+| K10 | `parse_vietnamese_number` single-dot rule with three trailing digits (for example `0.123`) is ambiguous | `src/ingestion/table_parser.py` | M0 audit |
+| K11 | UI interpolates OCR labels and backend error text into HTML with `unsafe_allow_html=True` without escaping | `ui/theme.py`, `ui/app.py` | M2 (UI hardening) |
+| K12 | Integration tests skip without the parquet; benchmark files are gitignored | `tests/`, `.gitignore` | M0 |
+| K13 | Dependency drift: `requirements.txt` lists unused heavy packages (sentence-transformers, faiss-cpu, openai, networkx, …); `pyproject.toml` lacks `streamlit`; `src/finrag.egg-info/SOURCES.txt` omits `application/` and `ui/` | repo root | M0 |
+| K14 | Documentation drift: README, `docs/CV_PROJECT.md`, and PRODUCT.md previously contained claims that conflict with Section 9; test-count and benchmark statements are unverified | docs | M0 |
+
+---
+
+## 14. Definition of done (per change)
+
+A change is done only when all of the following hold:
+- Behavior is covered by a test that fails without the change.
+- Full suite passes; skip count reported and explained.
+- No benchmark, gold file, or expected value was edited to achieve this.
+- Layer rules in Section 3 are respected.
+- Affected docs are updated or listed as stale.
+- The report format in Section 10 was delivered.
+
+---
+
+## 15. Maintaining this file
+
+Update Section 2 (state) and Section 5 (milestone status) at the end of every milestone. Move items out of Section 13 only when a test proves them fixed or disproved. Keep the original principles 1–15 and the original data-principles list intact; add, do not delete.
