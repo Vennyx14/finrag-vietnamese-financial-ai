@@ -111,13 +111,72 @@ Work proceeds one milestone at a time. **Do not start the next milestone until t
 
 | ID | Goal | Exit criteria |
 |---|---|---|
-| **M0** | Baseline and audit (no behavior change) | `docs/baseline.md` with pytest pass/skip counts; coverage CSV of all 1,012 ViFinQA questions through `app.ask` (parsed fields, status, error category); parquet audit (unit values, `period_label` patterns, line-code-60 usage, scope distribution); ≥100 questions hand-labelled in `data/benchmark/gold/gold_v0.jsonl`; `.gitignore` exception so the gold file is tracked |
-| **M1** | Typed resolution and abstention | `tests/test_resolution.py` written first and shown failing; `ResolutionResult` implemented; "Lợi nhuận gộp", "Tăng trưởng lợi nhuận", "Doanh thu hoạt động tài chính" queries return `unsupported`; all existing tests and the 30-case benchmark unchanged |
+| **M0** | Baseline and audit (observe only; no logic changes) | `docs/baseline.md` with pytest pass / fail / skip counts and any environment errors; coverage report over all 1,012 ViFinQA questions through `app.ask` (parsed fields, status, error category) with measured run time; **probe results**: the actual current output for each K1 probe query, recorded as observed behavior; parquet audit (unit values, `period_label` patterns, line-code-60 usage, scope distribution); ≥100 questions hand-labelled in `data/benchmark/gold/gold_v0.jsonl`; `.gitignore` exception so the gold file is tracked; the list of files M1 is allowed to change (section 5.1) |
+| **M1** | Typed resolution and abstention | Defined in section 5.1 (scope, allowed files, test design, exit criteria). Success is measured by correctness and over-refusal on the labelled set, never by the number of refusals |
 | **M2** | Independent verification and data-quality flags | Expected ticker/year/scope come from an independent re-parse of the question, not from the result; accounting-identity checks (for example 270 = 300 + 400); comparative-column consistency check; `NOT_RUN` state; fact-level quality flags; unit scale normalized into a separate field |
 | **M3** | Shared evidence and trace contracts | Trace model with operand lineage; `FinancialResult` and DTOs extended compatibly; no duplicate evidence schema |
 | **M4** | Program layer | LLM provider in `src/nlp/llm.py` with a mock provider for tests; constrained DSL with allowlisted operations in `src/financial/program/`; planner emits program + bindings, never numbers; executor reuses tested arithmetic; generic program verifier |
 | **M5** | Gold benchmark and ablations | ≥150–200 labelled items split by company; oracle-bindings, oracle-facts, and full-pipeline configurations; metrics in Section 7 |
 | **M6** | Unified planner and experiments | Deterministic-only vs program-based vs combined; error analysis; decision on whether the LLM planner earns its complexity |
+
+### 5.1 M1 — typed resolution: scope, rules, tests, exit criteria
+
+**Purpose:** never silently answer a different metric than the one asked, and refuse only when refusal is actually needed. Fewer wrong answers must not be bought with over-refusal.
+
+**Statuses.** Expected status depends on the **metric registry and schema at the time**, not on the wording alone. When the registry changes, the expected statuses in the case table are reviewed by a human.
+
+| Status | Meaning |
+|---|---|
+| `resolved` | The question maps to exactly one registered metric and every qualifier in the question is accounted for. May carry `assumptions` (for example a bare "doanh thu" read as net revenue because the registry declares that alias). |
+| `ambiguous` | Two or more registered readings are plausible and no default policy applies. Reasons list the candidates. |
+| `unsupported` | The reading is understood but no registered metric or operation covers it. |
+| `needs_clarification` | An essential parameter is missing (ticker, period, or a required qualifier). |
+
+Precedence rule: `unsupported` when **no** candidate reading is registered; `ambiguous` when **two or more** registered readings remain; otherwise `resolved`. This rule is a decision for the project owner; change it here before M1 starts if a different policy is wanted.
+
+**Open decisions to settle before M1 (record the answer in this file):**
+1. Bare "lợi nhuận" (no qualifier). Recommended: `resolved` to `net_income` with the recorded assumption "hiểu là lợi nhuận sau thuế", displayed to the user. Alternative: `ambiguous`.
+2. Bare "doanh thu". Recommended: `resolved` to `net_revenue` per the registry alias, with an assumption note.
+3. "Tăng trưởng" applied to something other than revenue (for example "tăng trưởng lợi nhuận"). Under the precedence rule this is `unsupported` while no profit-growth metric is registered, with a message naming what is supported. If the owner prefers `ambiguous` or `needs_clarification` here, record it.
+4. Qualified terms not in the registry ("lợi nhuận gộp", "doanh thu hoạt động tài chính"): `unsupported` while unregistered; they become `resolved` only if a registered metric with a matching definition and validated line codes is added in a separate, approved change.
+
+**Test design (written and reviewed before any implementation):**
+- **Case table** `tests/fixtures/resolution_cases.jsonl`, authored by a human: `question`, `expected_status`, `expected_metric` (or null), expected reason keyword, and a note on the registry state it assumes.
+- **Invariant tests** that survive registry changes: if a question contains a qualifier term (for example "gộp", "trước thuế", "hoạt động kinh doanh", "hoạt động tài chính", "khác"), the result must not be `resolved` to a metric whose registered definition does not account for that qualifier.
+- **Backward-compatibility tests**: every query that resolves today keeps the same metric, operation, year(s), and scope.
+- **Probe tests** for the K1 suspects. First assert the *observed* current behavior recorded in M0; they are changed to the new expected behavior only after the owner approves the case table. If a probe shows the suspected bug does not exist, update K1 and drop the case rather than forcing a failure.
+
+**Allowed to change in M1:**
+- New `src/financial/resolution.py`.
+- `src/financial/reasoning.py`, only the query-parsing and metric-resolution functions (`extract_*`, `resolve_metric_candidate`, `parse_reasoning_request`); the `FinancialReasoningEngine` class is not changed. Re-export moved names so existing imports keep working.
+- `src/application/service.py` and `src/application/models.py`, additively.
+- `ui/` only to show the resolution reason using the existing error component.
+- New tests and fixtures.
+
+**Not allowed in M1:** `src/financial/verification.py`, `calculator.py`, `metrics.py` (no new metrics), retrieval code, benchmark scripts and manifests, gold files, existing expected values, any LLM call.
+
+**Backward-compatibility contract:**
+- `parse_reasoning_request` still raises `InvalidRequestError` for empty input, no ticker, and no year, with the same message prefixes (existing tests depend on them).
+- Truly unrecognized metrics keep the message "Could not identify supported financial metric…" and the application keeps `status=ERROR`, `error_category=USER_INPUT_ERROR`, and a Vietnamese message containing "chưa được hỗ trợ".
+- Resolution outcome is exposed through a **new optional field** (for example `FinRAGResponse.resolution`); existing fields and enum values are not removed or renamed. The UI may show refusal states more distinctly (see DESIGN.md, planned components) without changing the response status contract.
+
+**Exit criteria:**
+1. All pre-existing tests pass unchanged; pass / fail / skip counts compared with `docs/baseline.md`.
+2. The 30-case reasoning benchmark and 60-case verification benchmark outputs are unchanged (diff the manifests ignoring timestamps and latency).
+3. New case-table, invariant, compatibility, and probe tests pass.
+4. Coverage is re-run and a **status-transition report** is produced: every question whose status changed since M0, grouped by transition (for example `resolved → unsupported`). On the gold-labelled subset, every `resolved → non-resolved` transition is reviewed by a human. A previously correct, answerable gold question must not become non-resolved without a recorded justification.
+5. On `gold_v0` report, with counts: resolution accuracy, resolution rate, refusal precision and recall, and over-refusal rate. **The number of refusals going up is neither success nor failure.**
+6. K1 in section 13 is updated with evidence (confirmed, partly confirmed, or disproved), and any user-visible wording change is reflected in PRODUCT.md and DESIGN.md.
+
+### 5.2 Three evaluation sources (kept separate)
+
+| Source | What it is | What it can show | What it cannot show |
+|---|---|---|---|
+| **Baseline** | Existing tests and benchmarks run before changing code | Current pass / fail / skip state; regressions | Accuracy on unseen questions; the benchmarks are self-authored |
+| **Coverage report** | All 1,012 ViFinQA questions through `app.ask`, no gold answers needed | Distribution of statuses and error categories; what changes between milestones | Whether any answer is correct |
+| **Gold benchmark** | Human-labelled questions with independently verified operands and answers, split by company | Accuracy, refusal precision / recall, over-refusal, verified-wrong rate | Behavior on question types not represented in the sample; wide confidence intervals at small sizes |
+
+Running questions through `app.ask` does not prove answers are right unless there is a gold label to compare against. Run time of the coverage script is measured in M0 and reported; do not assume it is cheap or expensive beforehand.
 
 ### Deferred (needs explicit approval)
 OCR-repo ingestion adapter, raw PDF ingestion, dense/hybrid retrieval, knowledge graph, fine-tuning (SFT/GRPO), analyst agent, narrative generation, bank/insurer schemas. The OCR/preprocessing repository is a planned *input source* only; do not copy its code into this repo without a compatibility review.
@@ -178,7 +237,9 @@ Additional principles:
 - **PA — Program Accuracy**: the generated program is equivalent to the gold program after canonicalization. PA is noisy where gold programs are inconsistent; treat EA as primary.
 - **Concept-resolution accuracy**: the question was mapped to the correct metric, entity, period, and scope.
 - **Fact-selection accuracy**: the selected `fact_id` is the gold fact.
-- **Abstention precision / recall**: refusals are correct / unanswerable questions are refused.
+- **Resolution rate**: share of questions that reach `resolved`. Always read together with accuracy; a low rate with high accuracy can mean over-refusal.
+- **Abstention precision / recall**: precision = of the refusals, how many were for questions that truly cannot be answered; recall = of the truly unanswerable questions, how many were refused.
+- **Over-refusal rate**: share of answerable (gold-labelled) questions that were refused or sent to clarification.
 - **Verified-wrong rate**: answers that are wrong yet obtained `VERIFIED` or `WARNING`. This is the headline trust metric.
 - **Citation correctness**: the cited cell actually contains the cited value.
 - Always report latency, failure rate, and (for LLM paths) cost separately.
@@ -290,7 +351,7 @@ None of these has been reproduced yet. Treat each as **SUSPECTED** until a faili
 
 | # | Issue (found by reading code) | Where | Milestone |
 |---|---|---|---|
-| K1 | Keyword catch-alls: "doanh thu"→net_revenue, "lợi nhuận"→net_income, "tăng trưởng"→revenue_growth regardless of qualifiers, so "lợi nhuận gộp", "doanh thu hoạt động tài chính", "tăng trưởng lợi nhuận" may be answered with a different metric and still verify | `resolve_metric_candidate` in `src/financial/reasoning.py` | M1 |
+| K1 | Keyword catch-alls: "doanh thu"→net_revenue, "lợi nhuận"→net_income, "tăng trưởng"→revenue_growth regardless of qualifiers, so "lợi nhuận gộp", "doanh thu hoạt động tài chính", "tăng trưởng lợi nhuận" may be answered with a different metric and still verify | `resolve_metric_candidate` in `src/financial/reasoning.py` | Confirm with M0 probes; fix in M1 |
 | K2 | Application passes the result's own ticker/year/scope to the verifier as "expected" values, so those checks cannot catch a reasoner-side parse error; the formula check compares registry to registry | `src/application/service.py`, `src/financial/verification.py` | M2 |
 | K3 | Unit scale (đồng / nghìn / triệu) is stored as a string but never normalized; verification does not compare fact units; mixed-unit growth would be silent | `src/ingestion/fact_extractor.py`, verification | M0 audit, M2 |
 | K4 | Opening-balance filter looks for `"1/1/"`; a header like `01/01/2024` does not contain it | `resolve_fact` in `src/financial/reasoning.py` | M0 audit |
