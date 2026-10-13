@@ -31,7 +31,9 @@ General-purpose LLMs are unreliable with financial figures: they pick the wrong 
 
 ## 5. Supported scope (current)
 
-**Corpus:** ViFinQA / TiniX annual financial statements (OCR text with inline tables): 1,973 report files, 100 tickers, report years 2015–2025, 338,714 extracted facts. Coverage varies by ticker and year; a missing company-year returns "data not found". The regression benchmarks currently cover six tickers (FPT, HPG, VNM, MWG, PNJ, GAS), so behavior on other tickers is less tested.
+**Corpus:** ViFinQA / TiniX annual financial statements (OCR text with inline tables): 1,973 report files from 100 tickers, report years 2015–2025. Structured facts (338,714) exist for **78 tickers**; the 22 commercial banks and financial institutions in the corpus have no extracted facts because their statements do not follow the Circular 200/133 line-code layout, so questions about them cannot be answered. Coverage varies by ticker and year; a missing company-year returns "data not found". The regression benchmarks currently cover six tickers (FPT, HPG, VNM, MWG, PNJ, GAS), so behavior on other tickers is less tested.
+
+**Measured coverage (M0 audit, 2026-10-13):** of the 1,012 natural-language questions shipped with ViFinQA, 142 (14.0%) currently receive an answer and 870 are refused or fail. This is answer coverage, not accuracy: some answered questions are known to be answered with the wrong metric, and the true error rate is not yet measured. Fixing this is the purpose of milestone M1.
 
 **Metrics (8):**
 

@@ -29,13 +29,13 @@ FinRAG is **one product with one QA pipeline**. Corpus-grounded question answeri
 
 ## 2. Current state (as of 2026-10-13)
 
-Status labels: **REPORTED** = stated in repo docs, not re-verified by the agent; **VERIFIED** = confirmed by running it in this session; **SUSPECTED** = found by reading code, not yet reproduced.
+Status labels: **REPORTED** = stated in repo docs, not re-verified by the agent; **VERIFIED** = confirmed by running it (source named); **SUSPECTED** = found by reading code, not yet reproduced; **NOT OBSERVED** = looked for and not found in the current corpus.
 
 ### Stage
 MVP v0.1 (data foundation → retrieval → deterministic reasoning → verification → application service → Streamlit UI) is implemented. The project is now in **hardening (milestones M0–M2)**. The older "STEP 0 / STEP 1" stage text is obsolete.
 
 ### Implemented (REPORTED)
-- Data: 1,973 report files, 100 tickers, years 2015–2025, 338,714 financial facts in `data/processed/financial_facts.parquet`.
+- Data: 1,973 report files from 100 tickers, report years 2015–2025. The processed parquet holds 338,714 financial facts from **78 tickers** (VERIFIED in M0). The 22 missing tickers are commercial banks and financial institutions whose statements do not use the Circular 200/133 line-code layout, so no facts were extracted for them.
 - Retrieval: metadata filter (ticker, year, scope, line_code) + ephemeral BM25 over candidates.
 - Reasoning: `FinancialReasoningEngine` + `MetricRegistry`, 8 metrics: `net_revenue`, `net_income`, `total_assets`, `equity`, `net_margin`, `roa`, `roe`, `revenue_growth`. Operations: identity, ratio, difference, yoy_growth, percentage_change.
 - Verification: `VerificationEngine` with formula, input-count, numerical, period-semantics, scope, ticker, unit, provenance, source-consistency, and methodology checks.
@@ -47,6 +47,16 @@ MVP v0.1 (data foundation → retrieval → deterministic reasoning → verifica
 - The benchmarks were written by the project authors from the same parquet and the same label rules the system uses. They are **regression tests, not accuracy estimates**. Do not describe them as accuracy on unseen data.
 - The mutation benchmark mutates `FinancialResult` objects *after* reasoning. It tests tamper detection, not wrong-fact selection or OCR/parse errors.
 - Integration tests `pytest.skip` when `data/processed/financial_facts.parquet` is absent, and `data/benchmark/**` is gitignored. On a fresh clone many tests skip. Always report skip counts, not only pass counts.
+
+### M0 measured results (VERIFIED by an Antigravity run on 2026-10-13; reproduce before relying on them)
+Environment: Windows, Python 3.11.9, pytest 9.1.1. Full details belong in `docs/baseline.md`.
+
+- Tests: 164 collected, **164 passed**, 0 skipped, 14.92 s, with the parquet and benchmark files present locally. On a clean clone without them, integration tests skip or the retrieval-benchmark test fails.
+- Question coverage over all 1,012 ViFinQA questions through `FinRAGApplication.ask()`: 138 SUCCESS, 4 WARNING (142 answered, 14.0%); 870 ERROR (786 `USER_INPUT_ERROR`, 74 `DATA_NOT_FOUND`, 10 `SYSTEM_ERROR`). Run time 20.45 s total, about 20 ms per question.
+- **The 14.0% is answer coverage, not accuracy.** At least four answered questions are already known to be wrong or not answering the question asked: ID 31 (a specific revenue sub-item answered with consolidated net revenue), IDs 155 and 211 (profit *before* tax answered with profit after tax), ID 410 (a three-company "highest ROE" question answered with one company's ROE). The true error rate among the 142 is unknown until they are labelled.
+- Parquet: 338,714 rows, 16 columns; `canonical_metric` is 100% null; `unit` is null for 209,505 rows (61.8%), `VND` 113,074, `triệu VND` 3,528, `Đồng Việt Nam` 1,870. Observed case: VIC 2018–2019 carries `unit = triệu VND` with unscaled values.
+- Line code 60 appears 5,820 times: 2,241 are cash-flow opening cash, 3,579 are income-statement profit after tax. There is no `statement_type` column.
+- Period labels: 936 distinct; top are "Số cuối năm" (42,372), "Số đầu năm" (36,435), "Năm nay" (29,288). No quarterly or monthly reports were observed.
 
 ### Empty placeholders (no implementation yet)
 `src/nlp/llm.py`, `src/agent/`, `src/pipeline/qa.py`, `src/evaluation/evaluator.py`, `src/financial/concepts.py`, `api/`, `scripts/run_demo.py`, `tests/test_pipeline.py`, `tests/test_retrieval.py`. There is no LLM component, planner, or program/DSL layer in the repository today.
@@ -111,9 +121,11 @@ Work proceeds one milestone at a time. **Do not start the next milestone until t
 
 | ID | Goal | Exit criteria |
 |---|---|---|
-| **M0** | Baseline and audit (observe only; no logic changes) | `docs/baseline.md` with pytest pass / fail / skip counts and any environment errors; coverage report over all 1,012 ViFinQA questions through `app.ask` (parsed fields, status, error category) with measured run time; **probe results**: the actual current output for each K1 probe query, recorded as observed behavior; parquet audit (unit values, `period_label` patterns, line-code-60 usage, scope distribution); ≥100 questions hand-labelled in `data/benchmark/gold/gold_v0.jsonl`; `.gitignore` exception so the gold file is tracked; the list of files M1 is allowed to change (section 5.1) |
+| **M0** | Baseline and audit (observe only; no logic changes) | `docs/baseline.md` with pytest pass / fail / skip counts and any environment errors; coverage report over all 1,012 ViFinQA questions through `app.ask` (parsed fields, status, error category) with measured run time; **probe results**: the actual current output for each K1 probe query, recorded as observed behavior; parquet audit (unit values, `period_label` patterns, line-code-60 usage, scope distribution); ≥100 questions hand-labelled in `data/benchmark/gold/gold_v0.jsonl`; `.gitignore` exception so the gold file is tracked; the list of files M1 is allowed to change (section 5.1). **Status (2026-10-13): partly complete.** Done: baseline, coverage run, parquet audit. Still open: hand-labelled `gold_v0.jsonl` (human work; agents must not fabricate it), `.gitignore` exception, and a count of period labels such as `01/01/YYYY` that the opening-balance filter would miss (K4). Do not commit question text from the coverage CSV unless the owner approves (see K18) |
 | **M1** | Typed resolution and abstention | Defined in section 5.1 (scope, allowed files, test design, exit criteria). Success is measured by correctness and over-refusal on the labelled set, never by the number of refusals |
-| **M2** | Independent verification and data-quality flags | Expected ticker/year/scope come from an independent re-parse of the question, not from the result; accounting-identity checks (for example 270 = 300 + 400); comparative-column consistency check; `NOT_RUN` state; fact-level quality flags; unit scale normalized into a separate field |
+| **M1b** | Parser consolidation | One canonical ticker/year/scope extractor shared by `parse_query` and `parse_reasoning_request`; retrieval benchmarks and `test_bm25` parsing tests unchanged. Separate change after M1 is green (K8) |
+| **M2a** | Data semantics | `unit_scale` stored beside the raw value, with an explicit "unit unknown" state instead of guessing (K3, K16); `statement_type` inferred from evidence and validated by hand on a sample, with its source recorded (K5); each change has its own tests and a re-run of the existing benchmarks |
+| **M2b** | Independent verification | Expected ticker/year/scope come from an independent re-parse of the question, not from the result; accounting-identity checks (for example 270 = 300 + 400), which need `statement_type` from M2a; comparative-column consistency check; `NOT_RUN` state; fact-level quality flags |
 | **M3** | Shared evidence and trace contracts | Trace model with operand lineage; `FinancialResult` and DTOs extended compatibly; no duplicate evidence schema |
 | **M4** | Program layer | LLM provider in `src/nlp/llm.py` with a mock provider for tests; constrained DSL with allowlisted operations in `src/financial/program/`; planner emits program + bindings, never numbers; executor reuses tested arithmetic; generic program verifier |
 | **M5** | Gold benchmark and ablations | ≥150–200 labelled items split by company; oracle-bindings, oracle-facts, and full-pipeline configurations; metrics in Section 7 |
@@ -132,28 +144,32 @@ Work proceeds one milestone at a time. **Do not start the next milestone until t
 | `unsupported` | The reading is understood but no registered metric or operation covers it. |
 | `needs_clarification` | An essential parameter is missing (ticker, period, or a required qualifier). |
 
-Precedence rule: `unsupported` when **no** candidate reading is registered; `ambiguous` when **two or more** registered readings remain; otherwise `resolved`. This rule is a decision for the project owner; change it here before M1 starts if a different policy is wanted.
+Precedence rule: `unsupported` when **no** candidate reading is registered; `ambiguous` when **two or more** registered readings remain; otherwise `resolved`. Use `ambiguous` or `needs_clarification` only when a clarification from the user could lead to an answer the system can actually produce; if no reading is answerable today, asking the user to clarify does not help and the status is `unsupported` (the message may still list the candidate readings and what is supported). These rules are decisions for the project owner; change them here before M1 starts if a different policy is wanted.
+
+The resolution result carries at least: `status`, `metric` and `operation` (if determined), entity or entity list, fiscal year or list of periods, `statement_scope`, `reason`, `actionable_guidance`, and `assumptions`. Keep the four failure kinds distinct: question not understood, task not supported, data not found, system error.
 
 **Open decisions to settle before M1 (record the answer in this file):**
 1. Bare "lợi nhuận" (no qualifier). Recommended: `resolved` to `net_income` with the recorded assumption "hiểu là lợi nhuận sau thuế", displayed to the user. Alternative: `ambiguous`.
 2. Bare "doanh thu". Recommended: `resolved` to `net_revenue` per the registry alias, with an assumption note.
 3. "Tăng trưởng" applied to something other than revenue (for example "tăng trưởng lợi nhuận"). Under the precedence rule this is `unsupported` while no profit-growth metric is registered, with a message naming what is supported. If the owner prefers `ambiguous` or `needs_clarification` here, record it.
-4. Qualified terms not in the registry ("lợi nhuận gộp", "doanh thu hoạt động tài chính"): `unsupported` while unregistered; they become `resolved` only if a registered metric with a matching definition and validated line codes is added in a separate, approved change.
+4. Qualified terms not in the registry ("lợi nhuận gộp", "lợi nhuận trước thuế", "doanh thu hoạt động tài chính", other specific revenue or income sub-items): `unsupported` while unregistered; they become `resolved` only if a registered metric with a matching definition and validated line codes is added in a separate, approved change.
+5. Questions about several companies or a ranking across companies (for example "trong nhóm HPG, HSG và NKG, ROE cao nhất"). Recommended: `unsupported` with a reason naming cross-company comparison, because the engine handles one entity per request today. This is a statement about current capability, not a permanent classification; when multi-entity operations are supported the same question becomes `resolved`.
 
 **Test design (written and reviewed before any implementation):**
 - **Case table** `tests/fixtures/resolution_cases.jsonl`, authored by a human: `question`, `expected_status`, `expected_metric` (or null), expected reason keyword, and a note on the registry state it assumes.
 - **Invariant tests** that survive registry changes: if a question contains a qualifier term (for example "gộp", "trước thuế", "hoạt động kinh doanh", "hoạt động tài chính", "khác"), the result must not be `resolved` to a metric whose registered definition does not account for that qualifier.
 - **Backward-compatibility tests**: every query that resolves today keeps the same metric, operation, year(s), and scope.
+- **Observed-case fixtures** from the M0 audit: ViFinQA question IDs 31, 155, 211, and 410 (store the ID, the expected status, and the reason; keep question text out of Git unless the owner approves, see K18). These are real failures, so they take priority over invented examples.
 - **Probe tests** for the K1 suspects. First assert the *observed* current behavior recorded in M0; they are changed to the new expected behavior only after the owner approves the case table. If a probe shows the suspected bug does not exist, update K1 and drop the case rather than forcing a failure.
 
 **Allowed to change in M1:**
 - New `src/financial/resolution.py`.
 - `src/financial/reasoning.py`, only the query-parsing and metric-resolution functions (`extract_*`, `resolve_metric_candidate`, `parse_reasoning_request`); the `FinancialReasoningEngine` class is not changed. Re-export moved names so existing imports keep working.
-- `src/application/service.py` and `src/application/models.py`, additively.
+- `src/application/service.py` and `src/application/models.py`, additively. This includes one small, separately committed fix and test: `_classify_reasoning_error` currently sends "No candidate fact satisfied validation rules…" to `SYSTEM_ERROR`; it should be `DATA_NOT_FOUND` (K15). Confirm from the coverage CSV that this explains the 10 `SYSTEM_ERROR` cases before changing it.
 - `ui/` only to show the resolution reason using the existing error component.
 - New tests and fixtures.
 
-**Not allowed in M1:** `src/financial/verification.py`, `calculator.py`, `metrics.py` (no new metrics), retrieval code, benchmark scripts and manifests, gold files, existing expected values, any LLM call.
+**Not allowed in M1:** `src/pipeline/query.py` and any merge of the two parsers (that is M1b), unit-scale or `statement_type` changes (M2a), `src/financial/verification.py`, `calculator.py`, `metrics.py` (no new metrics), retrieval code, benchmark scripts and manifests, gold files, existing expected values, any LLM call.
 
 **Backward-compatibility contract:**
 - `parse_reasoning_request` still raises `InvalidRequestError` for empty input, no ticker, and no year, with the same message prefixes (existing tests depend on them).
@@ -347,24 +363,28 @@ python -m streamlit run ui/app.py --server.port=8501
 
 ## 13. Known issues and items to verify
 
-None of these has been reproduced yet. Treat each as **SUSPECTED** until a failing test or an audit confirms it. Fix only within the milestone shown.
+Status column: **CONFIRMED** (M0 audit evidence), **PARTLY** (pattern seen, impact not shown), **NOT OBSERVED**, or **SUSPECTED** (code reading only). Fix only within the milestone shown.
 
-| # | Issue (found by reading code) | Where | Milestone |
-|---|---|---|---|
-| K1 | Keyword catch-alls: "doanh thu"→net_revenue, "lợi nhuận"→net_income, "tăng trưởng"→revenue_growth regardless of qualifiers, so "lợi nhuận gộp", "doanh thu hoạt động tài chính", "tăng trưởng lợi nhuận" may be answered with a different metric and still verify | `resolve_metric_candidate` in `src/financial/reasoning.py` | Confirm with M0 probes; fix in M1 |
-| K2 | Application passes the result's own ticker/year/scope to the verifier as "expected" values, so those checks cannot catch a reasoner-side parse error; the formula check compares registry to registry | `src/application/service.py`, `src/financial/verification.py` | M2 |
-| K3 | Unit scale (đồng / nghìn / triệu) is stored as a string but never normalized; verification does not compare fact units; mixed-unit growth would be silent | `src/ingestion/fact_extractor.py`, verification | M0 audit, M2 |
-| K4 | Opening-balance filter looks for `"1/1/"`; a header like `01/01/2024` does not contain it | `resolve_fact` in `src/financial/reasoning.py` | M0 audit |
-| K5 | Line code 60 is overloaded (income statement net profit vs cash-flow opening cash); no `statement_type` in the fact schema | schema, metrics | M2 |
-| K6 | Only `year` as temporal key; quarterly or year-to-date reports could be mixed with annual | schema, extractor | M0 audit |
-| K7 | `report_year` derived by regex `_(\d{4})_` from `document_id` instead of stored | `src/retrieval/ranking.py` | M2 |
-| K8 | Ticker extraction takes the first 3–6 uppercase token outside a stop-word list (for example "BCTC" could be taken as a ticker); stop-word list duplicated in two files | `src/pipeline/query.py`, `src/financial/reasoning.py` | M1 |
-| K9 | Fact selection uses BM25 top-20 then filters by line code; `FinancialQuery.line_code` exists but is not used to hard-filter by `expected_line_codes` | `resolve_fact`, `src/retrieval/engine.py` | M1/M2 |
-| K10 | `parse_vietnamese_number` single-dot rule with three trailing digits (for example `0.123`) is ambiguous | `src/ingestion/table_parser.py` | M0 audit |
-| K11 | UI interpolates OCR labels and backend error text into HTML with `unsafe_allow_html=True` without escaping | `ui/theme.py`, `ui/app.py` | M2 (UI hardening) |
-| K12 | Integration tests skip without the parquet; benchmark files are gitignored | `tests/`, `.gitignore` | M0 |
-| K13 | Dependency drift: `requirements.txt` lists unused heavy packages (sentence-transformers, faiss-cpu, openai, networkx, …); `pyproject.toml` lacks `streamlit`; `src/finrag.egg-info/SOURCES.txt` omits `application/` and `ui/` | repo root | M0 |
-| K14 | Documentation drift: README, `docs/CV_PROJECT.md`, and PRODUCT.md previously contained claims that conflict with Section 9; test-count and benchmark statements are unverified | docs | M0 |
+| # | Issue | Status | Where | Milestone |
+|---|---|---|---|---|
+| K1 | Keyword catch-alls: "doanh thu"→net_revenue, "lợi nhuận"→net_income, "tăng trưởng"→revenue_growth regardless of qualifiers, so "lợi nhuận gộp", "doanh thu hoạt động tài chính", "tăng trưởng lợi nhuận" may be answered with a different metric and still verify | CONFIRMED (IDs 31, 155, 211, 410) | `resolve_metric_candidate` in `src/financial/reasoning.py` | Confirm with M0 probes; fix in M1 |
+| K2 | Application passes the result's own ticker/year/scope to the verifier as "expected" values, so those checks cannot catch a reasoner-side parse error; the formula check compares registry to registry | SUSPECTED | `src/application/service.py`, `src/financial/verification.py` | M2b |
+| K3 | Unit scale (đồng / nghìn / triệu) is stored as a string but never normalized; verification does not compare fact units; mixed-unit growth would be silent | CONFIRMED (VIC 2018–2019) | `src/ingestion/fact_extractor.py`, verification | M2a |
+| K4 | Opening-balance filter looks for `"1/1/"`; a header like `01/01/2024` does not contain it | PARTLY (pattern in code; count of `01/01/YYYY` labels and any wrong answer not yet shown) | `resolve_fact` in `src/financial/reasoning.py` | M0 count, then fix with M2a |
+| K5 | Line code 60 is overloaded (income statement net profit vs cash-flow opening cash); no `statement_type` in the fact schema | CONFIRMED (5,820 uses of code 60; label exclusion currently masks it) | schema, metrics | M2a |
+| K6 | Only `year` as temporal key; quarterly or year-to-date reports could be mixed with annual | NOT OBSERVED in ViFinQA (annual only); keep for future ingestion | schema, extractor | M0 audit |
+| K7 | `report_year` derived by regex `_(\d{4})_` from `document_id` instead of stored | SUSPECTED | `src/retrieval/ranking.py` | M2a |
+| K8 | Ticker extraction takes the first 3–6 uppercase token outside a stop-word list (for example "BCTC" could be taken as a ticker); stop-word list duplicated in two files | SUSPECTED | `src/pipeline/query.py`, `src/financial/reasoning.py` | M1b |
+| K9 | Fact selection uses BM25 top-20 then filters by line code; `FinancialQuery.line_code` exists but is not used to hard-filter by `expected_line_codes` | SUSPECTED | `resolve_fact`, `src/retrieval/engine.py` | M1/M2 |
+| K10 | `parse_vietnamese_number` single-dot rule with three trailing digits (for example `0.123`) is ambiguous | SUSPECTED | `src/ingestion/table_parser.py` | M0 audit |
+| K11 | UI interpolates OCR labels and backend error text into HTML with `unsafe_allow_html=True` without escaping | SUSPECTED | `ui/theme.py`, `ui/app.py` | M2 (UI hardening) |
+| K12 | Integration tests skip without the parquet; benchmark files are gitignored | CONFIRMED | `tests/`, `.gitignore` | M0 |
+| K13 | Dependency drift: `requirements.txt` lists unused heavy packages (sentence-transformers, faiss-cpu, openai, networkx, …); `pyproject.toml` lacks `streamlit`; `src/finrag.egg-info/SOURCES.txt` omits `application/` and `ui/` | SUSPECTED | repo root | M0 |
+| K14 | Documentation drift: README, `docs/CV_PROJECT.md`, and PRODUCT.md previously contained claims that conflict with Section 9; test-count and benchmark statements are unverified | PARTLY (the 100-ticker fact claim was wrong, now fixed) | docs | M0 |
+| K15 | `_classify_reasoning_error` maps "No candidate fact satisfied validation rules…" to `SYSTEM_ERROR` instead of `DATA_NOT_FOUND` | SUSPECTED (reported by the M0 agent; confirm against the 10 `SYSTEM_ERROR` rows) | `src/application/service.py` | M1 (separate commit) |
+| K16 | `unit` is null for 61.8% of facts and unit scale is not applied (`triệu VND` seen); a missing unit must become an explicit "unknown" state, never an assumed VND | CONFIRMED (counts); impact on answers not yet measured | `src/ingestion/fact_extractor.py`, schema | M2a |
+| K17 | Facts exist for 78 of 100 tickers; the 22 banks and financial institutions have no facts, which likely accounts for some of the `USER_INPUT_ERROR` / `DATA_NOT_FOUND` outcomes in the coverage run (for example bank-only terms such as deposit interest or loan balances; confirm from the CSV) | CONFIRMED | ingestion | Documented limitation; bank schemas deferred |
+| K18 | `data/manifests/question_coverage.csv` may contain ViFinQA question text; raw dataset content should stay out of Git unless the owner approves | SUSPECTED | `scripts/run_question_coverage.py` | M0 (decide: gitignore the file, or store IDs and parsed fields only) |
 
 ---
 
