@@ -99,38 +99,17 @@ class FinancialReasoningRequest(BaseModel):
         return s
 
 
-def extract_ticker(text: str) -> Optional[str]:
-    """Deterministically extract Vietnamese corporate ticker symbol."""
-    vn_stopwords = {
-        "CTCP", "TMCP", "BÁO", "CÁO", "TÀI", "CHO", "NĂM",
-        "LÃI", "BÁN", "VÀ", "MÔI", "CỦA", "CÓ", "TỔN", "CHI",
-        "DỰ", "TỶ", "PHÍ", "LỢI", "VỐN", "SAU", "TRẢ", "MUA",
-        "THU", "VND", "USD", "EUR", "TNDN", "TSCD", "TSCĐ",
-        "BDS", "BĐS", "HĐKD", "HDKD", "LNST", "LNTT", "VCSH",
-        "DTT", "DTBH", "GVHB", "CPBH", "CPQL", "TNCN", "BHXH",
-        "BHYT", "BHTN", "KPCD", "KPCĐ", "LCTT", "PBT", "PAT",
-        "ROA", "ROE", "ROS", "ROIC", "EBIT", "EBITDA", "EPS",
-        "YOY", "CAGR",
-    }
-    for match in re.finditer(r"\b([A-Z]{3}[A-Z0-9]{0,3})\b", text):
-        cand = match.group(1)
-        if cand not in vn_stopwords:
-            return cand
-    return None
-
-
-def extract_fiscal_years(text: str) -> List[int]:
-    """Deterministically extract fiscal years from query text."""
-    return [int(m.group(0)) for m in re.finditer(r"\b(20[0-9]{2}|19[0-9]{2})\b", text)]
-
-
-def extract_statement_scope(text: str, default: str = "consolidated") -> str:
-    """Detect accounting statement scope: 'consolidated' or 'separate'."""
-    if re.search(r"\b(riêng|separate|công ty mẹ)\b", text, re.IGNORECASE):
-        return "separate"
-    elif re.search(r"\b(hợp nhất|consolidated)\b", text, re.IGNORECASE):
-        return "consolidated"
-    return default
+from src.financial.resolution import (
+    extract_all_tickers,
+    extract_fiscal_years,
+    extract_statement_scope,
+    extract_ticker,
+    resolve_query,
+    ResolutionResult,
+    ResolutionStatus,
+    VN_STOPWORDS,
+    MULTI_ENTITY_INDICATORS,
+)
 
 
 def resolve_metric_candidate(
@@ -141,27 +120,10 @@ def resolve_metric_candidate(
     Returns:
         Tuple of (canonical_metric_name, operation).
     """
-    reg = registry or default_metric_registry
-    text_lower = text.lower()
-
-    if "tăng trưởng" in text_lower or "growth" in text_lower:
-        return reg.canonicalize_name("revenue_growth"), "yoy_growth"
-    elif "biên lợi nhuận" in text_lower or "net margin" in text_lower or "tỷ suất lợi nhuận ròng" in text_lower:
-        return reg.canonicalize_name("net_margin"), "ratio"
-    elif re.search(r"\broa\b", text_lower) or ("tổng tài sản" in text_lower and ("sinh lời" in text_lower or "tỷ suất" in text_lower)):
-        return reg.canonicalize_name("roa"), "ratio"
-    elif re.search(r"\broe\b", text_lower) or ("vốn chủ sở hữu" in text_lower and ("sinh lời" in text_lower or "tỷ suất" in text_lower)):
-        return reg.canonicalize_name("roe"), "ratio"
-    elif "doanh thu thuần" in text_lower or "doanh thu" in text_lower:
-        return reg.canonicalize_name("net_revenue"), "identity"
-    elif "lợi nhuận sau thuế" in text_lower or "lnst" in text_lower or "lợi nhuận" in text_lower:
-        return reg.canonicalize_name("net_income"), "identity"
-    elif "tổng tài sản" in text_lower:
-        return reg.canonicalize_name("total_assets"), "identity"
-    elif "vốn chủ sở hữu" in text_lower:
-        return reg.canonicalize_name("equity"), "identity"
-    else:
+    res = resolve_query(text, registry=registry)
+    if res.status != ResolutionStatus.RESOLVED or not res.metric or not res.operation:
         raise InvalidRequestError(f"Could not identify supported financial metric in query: '{text}'")
+    return res.metric, res.operation
 
 
 def parse_reasoning_request(
@@ -174,45 +136,46 @@ def parse_reasoning_request(
     - Extracts fiscal year(s)
     - Detects statement scope ('hợp nhất' -> 'consolidated', 'riêng' -> 'separate')
     - Detects canonical metric and operation based on financial keywords
+    - Rejects unsupported, ambiguous, and multi-company comparison queries
     """
     if not raw_question or not raw_question.strip():
         raise InvalidRequestError("Empty question string provided")
 
     text = raw_question.strip()
 
-    ticker = extract_ticker(text)
+    res = resolve_query(text, registry=registry)
+
+    # Multi-company comparison rejection
+    if len(res.entities) > 1 or (len(res.entities) >= 1 and any(ind in text.lower() for ind in MULTI_ENTITY_INDICATORS)):
+        raise InvalidRequestError(f"Could not identify stock ticker in query: '{raw_question}' (multi-company query unsupported)")
+
+    ticker = res.ticker
     if not ticker:
         raise InvalidRequestError(f"Could not identify stock ticker in query: '{raw_question}'")
 
-    year_matches = extract_fiscal_years(text)
-    scope = extract_statement_scope(text)
-    metric, operation = resolve_metric_candidate(text, registry=registry)
+    if res.status == ResolutionStatus.UNSUPPORTED:
+        raise InvalidRequestError(f"Could not identify supported financial metric in query: '{raw_question}'")
 
-    # Determine year parameters
-    if operation in {"yoy_growth", "percentage_change"}:
-        if len(year_matches) >= 2:
-            years = [min(year_matches[:2]), max(year_matches[:2])]
-            year = years[1]
-        elif len(year_matches) == 1:
-            curr_y = year_matches[0]
-            years = [curr_y - 1, curr_y]
-            year = curr_y
-        else:
+    if res.operation in {"yoy_growth", "percentage_change"}:
+        if not res.years:
             raise InvalidRequestError(f"Growth calculation requires at least one fiscal year in query: '{raw_question}'")
+        year = res.fiscal_year
+        years = res.years
     else:
-        if not year_matches:
+        if not res.fiscal_year:
             raise InvalidRequestError(f"No fiscal year found in query: '{raw_question}'")
-        year = year_matches[0]
+        year = res.fiscal_year
         years = None
 
     return FinancialReasoningRequest(
         ticker=ticker,
-        metric=metric,
+        metric=res.metric,
         year=year,
         years=years,
-        statement_scope=scope,
-        operation=operation,
+        statement_scope=res.statement_scope,
+        operation=res.operation,
     )
+
 
 
 class FinancialReasoningEngine:

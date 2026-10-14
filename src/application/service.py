@@ -15,6 +15,7 @@ from src.application.models import (
     ErrorCategory,
     EvidenceDTO,
     FinRAGResponse,
+    ResolutionDTO,
     ResponseStatus,
     VerificationCheckDTO,
     VerificationDTO,
@@ -29,6 +30,7 @@ from src.financial.reasoning import (
     MissingFactError,
     UnsupportedMetricError,
 )
+from src.financial.resolution import ResolutionResult, ResolutionStatus, resolve_query
 from src.financial.result import FinancialResult
 from src.financial.verification import (
     VerificationEngine,
@@ -84,7 +86,46 @@ class FinRAGApplication:
                 status=ResponseStatus.ERROR,
                 error_category=ErrorCategory.USER_INPUT_ERROR,
                 error_message="Vui lòng nhập câu hỏi tài chính (ví dụ: 'Biên lợi nhuận ròng FPT năm 2024').",
+                resolution=ResolutionDTO(
+                    status=ResolutionStatus.NEEDS_CLARIFICATION.value,
+                    reason="Câu hỏi rỗng hoặc chỉ chứa khoảng trắng.",
+                    actionable_guidance="Vui lòng nhập câu hỏi tài chính (ví dụ: 'Biên lợi nhuận ròng FPT năm 2024').",
+                ),
                 latency_ms=0.0,
+                is_trusted=False,
+            )
+
+        # 0. Deterministic Query Resolution & Intent Validation
+        resolution_res = resolve_query(clean_query, registry=self.registry)
+        resolution_dto = ResolutionDTO(
+            status=resolution_res.status.value,
+            metric=resolution_res.metric,
+            operation=resolution_res.operation,
+            ticker=resolution_res.ticker,
+            entities=resolution_res.entities,
+            fiscal_year=resolution_res.fiscal_year,
+            years=resolution_res.years,
+            statement_scope=resolution_res.statement_scope,
+            reason=resolution_res.reason,
+            actionable_guidance=resolution_res.actionable_guidance,
+            assumptions=resolution_res.assumptions,
+        )
+
+        if not resolution_res.is_resolved:
+            elapsed_ms = (time.time() - t0) * 1000
+            err_cat = ErrorCategory.USER_INPUT_ERROR
+            err_msg = resolution_res.actionable_guidance or resolution_res.reason or "Yêu cầu không được hỗ trợ."
+            return FinRAGResponse(
+                query=raw_query,
+                status=ResponseStatus.ERROR,
+                error_category=err_cat,
+                error_message=err_msg,
+                ticker=resolution_res.ticker,
+                fiscal_year=resolution_res.fiscal_year,
+                years=resolution_res.years,
+                statement_scope=resolution_res.statement_scope,
+                resolution=resolution_dto,
+                latency_ms=round(elapsed_ms, 2),
                 is_trusted=False,
             )
 
@@ -94,6 +135,7 @@ class FinRAGApplication:
                 status=ResponseStatus.ERROR,
                 error_category=ErrorCategory.SYSTEM_ERROR,
                 error_message=f"Dữ liệu tài chính chưa sẵn sàng tại '{self.parquet_path}'.",
+                resolution=resolution_dto,
                 latency_ms=0.0,
                 is_trusted=False,
             )
@@ -108,6 +150,7 @@ class FinRAGApplication:
                 status=ResponseStatus.ERROR,
                 error_category=ErrorCategory.SYSTEM_ERROR,
                 error_message=f"Lỗi hệ thống khi xử lý câu hỏi: {str(e)}",
+                resolution=resolution_dto,
                 latency_ms=round(elapsed_ms, 2),
                 is_trusted=False,
             )
@@ -125,6 +168,7 @@ class FinRAGApplication:
                 fiscal_year=res.year,
                 years=res.years,
                 statement_scope=res.statement_scope,
+                resolution=resolution_dto,
                 latency_ms=round(elapsed_ms, 2),
                 is_trusted=False,
             )
@@ -231,6 +275,7 @@ class FinRAGApplication:
             calculation=calc_dto,
             verification=ver_dto,
             evidence=evidence_dtos,
+            resolution=resolution_dto,
             latency_ms=round(elapsed_ms, 2),
             is_trusted=is_trusted,
         )
@@ -254,7 +299,7 @@ class FinRAGApplication:
                 ErrorCategory.USER_INPUT_ERROR,
                 "Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",
             )
-        elif "no facts retrieved" in err_lower:
+        elif "no facts retrieved" in err_lower or "no candidate fact satisfied validation rules" in err_lower:
             return (
                 ErrorCategory.DATA_NOT_FOUND,
                 f"Không tìm thấy số liệu trong báo cáo tài chính đã xử lý: {raw_err}.",

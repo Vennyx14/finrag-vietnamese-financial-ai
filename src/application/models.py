@@ -139,6 +139,24 @@ class CalculationDTO(BaseModel):
     methodology: Optional[str] = None
 
 
+class ResolutionDTO(BaseModel):
+    """Presentation model for query understanding and metric resolution."""
+
+    model_config = ConfigDict(frozen=True)
+
+    status: str
+    metric: Optional[str] = None
+    operation: Optional[str] = None
+    ticker: Optional[str] = None
+    entities: List[str] = Field(default_factory=list)
+    fiscal_year: Optional[int] = None
+    years: Optional[List[int]] = None
+    statement_scope: Optional[str] = "consolidated"
+    reason: Optional[str] = None
+    actionable_guidance: Optional[str] = None
+    assumptions: List[str] = Field(default_factory=list)
+
+
 class FinRAGResponse(BaseModel):
     """Top-level unified application response."""
 
@@ -155,9 +173,11 @@ class FinRAGResponse(BaseModel):
     calculation: Optional[CalculationDTO] = None
     verification: Optional[VerificationDTO] = None
     evidence: List[EvidenceDTO] = Field(default_factory=list)
+    resolution: Optional[ResolutionDTO] = None
     latency_ms: float = 0.0
     is_trusted: bool = False
 
     @property
     def has_warnings(self) -> bool:
         return bool(self.verification and len(self.verification.warnings) > 0)
+
