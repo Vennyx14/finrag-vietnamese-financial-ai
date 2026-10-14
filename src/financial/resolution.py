@@ -13,18 +13,13 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 from pydantic import BaseModel, ConfigDict, Field
 
 from src.financial.metrics import MetricRegistry, default_metric_registry
-
-VN_STOPWORDS: Set[str] = {
-    "CTCP", "TMCP", "BÁO", "CÁO", "TÀI", "CHO", "NĂM",
-    "LÃI", "BÁN", "VÀ", "MÔI", "CỦA", "CÓ", "TỔN", "CHI",
-    "DỰ", "TỶ", "PHÍ", "LỢI", "VỐN", "SAU", "TRẢ", "MUA",
-    "THU", "VND", "USD", "EUR", "TNDN", "TSCD", "TSCĐ",
-    "BDS", "BĐS", "HĐKD", "HDKD", "LNST", "LNTT", "VCSH",
-    "DTT", "DTBH", "GVHB", "CPBH", "CPQL", "TNCN", "BHXH",
-    "BHYT", "BHTN", "KPCD", "KPCĐ", "LCTT", "PBT", "PAT",
-    "ROA", "ROE", "ROS", "ROIC", "EBIT", "EBITDA", "EPS",
-    "YOY", "CAGR", "BCTC", "QUÝ",
-}
+from src.pipeline.query import (
+    VN_STOPWORDS,
+    extract_all_tickers,
+    extract_fiscal_years,
+    extract_statement_scope,
+    extract_ticker,
+)
 
 MULTI_ENTITY_INDICATORS = [
     "trong nhóm", "các công ty", "so sánh giữa", "so sánh",
@@ -64,36 +59,6 @@ class ResolutionResult(BaseModel):
         return self.status == ResolutionStatus.RESOLVED
 
 
-def extract_all_tickers(text: str) -> List[str]:
-    """Deterministically extract all candidate Vietnamese corporate ticker symbols."""
-    seen = set()
-    tickers = []
-    for match in re.finditer(r"\b([A-Z]{3}[A-Z0-9]{0,3})\b", text):
-        cand = match.group(1)
-        if cand not in VN_STOPWORDS and cand not in seen:
-            seen.add(cand)
-            tickers.append(cand)
-    return tickers
-
-
-def extract_ticker(text: str) -> Optional[str]:
-    """Deterministically extract first ticker symbol (backward compatible)."""
-    tickers = extract_all_tickers(text)
-    return tickers[0] if tickers else None
-
-
-def extract_fiscal_years(text: str) -> List[int]:
-    """Deterministically extract fiscal years from query text."""
-    return [int(m.group(0)) for m in re.finditer(r"\b(20[0-9]{2}|19[0-9]{2})\b", text)]
-
-
-def extract_statement_scope(text: str, default: str = "consolidated") -> str:
-    """Detect accounting statement scope: 'consolidated' or 'separate'."""
-    if re.search(r"\b(riêng|separate|công ty mẹ)\b", text, re.IGNORECASE):
-        return "separate"
-    elif re.search(r"\b(hợp nhất|consolidated)\b", text, re.IGNORECASE):
-        return "consolidated"
-    return default
 
 
 def resolve_query(
@@ -142,7 +107,7 @@ def resolve_query(
     primary_ticker = tickers[0] if tickers else None
 
     # 2. Scope extraction
-    scope = extract_statement_scope(text)
+    scope = extract_statement_scope(text, default="consolidated") or "consolidated"
 
     # 3. Temporal extraction
     year_matches = extract_fiscal_years(text)
