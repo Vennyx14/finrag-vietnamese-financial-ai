@@ -1,6 +1,6 @@
 {
   "manifest_version": "day5_v1",
-  "evaluation_timestamp": "2026-09-14T13:35:48.077524+00:00",
+  "evaluation_timestamp": "2026-10-14T08:40:48.582973+00:00",
   "total_cases": 60,
   "valid_cases": 30,
   "accepted_valid_cases": 30,
@@ -12,7 +12,7 @@
   "false_acceptances": 0,
   "mutation_detection_rate_percent": 100.0,
   "overall_verification_accuracy_percent": 100.0,
-  "average_verification_latency_ms": 0.03,
+  "average_verification_latency_ms": 0.07,
   "overall_status": "PASS",
   "accuracy_claim": "100.0% mutation detection and valid case acceptance on the 60-case Day 5 verification benchmark (not a claim of universal verification accuracy across all Vietnamese financial reports)",
   "mutation_categories": {
@@ -129,7 +129,7 @@
       "checks_passed": 14,
       "checks_failed": 0,
       "checks_warning": 0,
-      "latency_ms": 0.0,
+      "latency_ms": 0.66,
       "errors": [],
       "warnings": []
     },
@@ -146,7 +146,7 @@
       "checks_passed": 14,
       "checks_failed": 0,
       "checks_warning": 0,
-      "latency_ms": 0.0,
+      "latency_ms": 0.59,
       "errors": [],
       "warnings": []
     },
@@ -163,7 +163,7 @@
       "checks_passed": 14,
       "checks_failed": 0,
       "checks_warning": 0,
-      "latency_ms": 0.0,
+      "latency_ms": 0.56,
       "errors": [],
       "warnings": []
     },
@@ -231,7 +231,7 @@
       "checks_passed": 14,
       "checks_failed": 0,
       "checks_warning": 0,
-      "latency_ms": 0.0,
+      "latency_ms": 0.59,
       "errors": [],
       "warnings": []
     },
@@ -350,7 +350,7 @@
       "checks_passed": 14,
       "checks_failed": 0,
       "checks_warning": 0,
-      "latency_ms": 0.0,
+      "latency_ms": 0.52,
       "errors": [],
       "warnings": []
     },
@@ -532,7 +532,7 @@
       "checks_passed": 20,
       "checks_failed": 0,
       "checks_warning": 0,
-      "latency_ms": 1.0,
+      "latency_ms": 0.0,
       "errors": [],
       "warnings": []
     },
@@ -597,7 +597,7 @@
       "verification_status": "REJECTED",
       "overall_pass": false,
       "is_correct_outcome": true,
-      "latency_ms": 0.0,
+      "latency_ms": 0.51,
       "errors": [
         "Numerical discrepancy: result value 0.15150166131295625 differs from reference 0.1500016448643131 (rel_diff=0.010000 > tol 0.0001)"
       ],
@@ -727,7 +727,7 @@
       "verification_status": "REJECTED",
       "overall_pass": false,
       "is_correct_outcome": true,
-      "latency_ms": 0.0,
+      "latency_ms": 0.51,
       "errors": [
         "Evidence at index 0 has ticker 'VNM', expected 'XYZ'",
         "Evidence at index 1 has ticker 'VNM', expected 'XYZ'"
@@ -849,7 +849,7 @@
       "verification_status": "REJECTED",
       "overall_pass": false,
       "is_correct_outcome": true,
-      "latency_ms": 1.0,
+      "latency_ms": 0.0,
       "errors": [
         "Evidence at index 1 has statement_scope 'separate', expected 'consolidated'"
       ],
@@ -905,7 +905,7 @@
       "verification_status": "REJECTED",
       "overall_pass": false,
       "is_correct_outcome": true,
-      "latency_ms": 0.0,
+      "latency_ms": 0.51,
       "errors": [
         "Evidence at index 1 does not correspond to input: fact_id: FPT_financial_statements_2024_consolidated_p13_t0_r4_c3 vs "
       ],
