@@ -1,7 +1,8 @@
 """Tests for FinRAG Benchmark Human Review Packets (data/benchmark/review_packets/).
 
 Validates structural schema, absence of unauthorized VERIFIED status,
-presence of manual verification steps, evidence grounding, and calculation parity.
+presence of manual verification steps, evidence grounding, calculation parity,
+and strict separation between ground_truth_status and expected_system_behavior.
 """
 
 import json
@@ -28,9 +29,19 @@ REQUIRED_PACKET_KEYS = {
     "manual_verification_steps",
     "reviewer_decision",
     "reviewer_notes",
+    "ground_truth_status",
+    "expected_system_behavior",
+    "gold_value",
+    "gold_unit",
+    "formula_id",
+    "numeric_tolerance",
+    "evidence_fact_ids",
+    "source_provenance",
 }
 
 VALID_PROPOSED_STATUSES = {"ANSWERABLE", "UNSUPPORTED", "AMBIGUOUS", "INSUFFICIENT_EVIDENCE"}
+VALID_GROUND_TRUTH_STATUSES = {"ANSWERABLE", "AMBIGUOUS", "UNANSWERABLE_IN_CORPUS", "NON_EXISTENT_LINE"}
+VALID_SYSTEM_BEHAVIORS = {"RESOLVE_AND_CALCULATE", "REFUSE_UNSUPPORTED", "REFUSE_AMBIGUOUS", "REFUSE_INSUFFICIENT_EVIDENCE"}
 VALID_REVIEW_STATES = {"NEEDS_REVIEW", "NEEDS_EVIDENCE"}  # AI cannot auto-mark VERIFIED
 
 
@@ -64,6 +75,8 @@ def test_packet_schema_integrity():
 
         assert pkt["packet_id"] == f"FRG-{idx:04d}"
         assert pkt["proposed_expected_status"] in VALID_PROPOSED_STATUSES
+        assert pkt["ground_truth_status"] in VALID_GROUND_TRUTH_STATUSES
+        assert pkt["expected_system_behavior"] in VALID_SYSTEM_BEHAVIORS
         assert pkt["review_state"] in VALID_REVIEW_STATES
         assert pkt["review_state"] != "VERIFIED", f"Packet {cid} illegally marked VERIFIED before human review!"
 
@@ -114,3 +127,47 @@ def test_packet_calculation_consistency():
             assert calc.get("calculated_gold_value") is not None, f"Packet {cid} is ANSWERABLE but lacks gold value"
             assert isinstance(calc.get("operands"), dict) and len(calc["operands"]) >= 1
             assert calc.get("output_unit") is not None
+
+
+def test_ground_truth_and_system_behavior_separation():
+    """Verify the decoupled semantics: questions with valid source truth but unsupported system registry."""
+    packets = {p["case_id"]: p for p in load_all_packets()}
+
+    # Disputed cases with valid source ground truth but unsupported FinRAG MVP registry
+    unsupported_with_truth = ["CAND_005", "CAND_006", "CAND_008", "CAND_025"]
+    for cid in unsupported_with_truth:
+        pkt = packets[cid]
+        assert pkt["ground_truth_status"] == "ANSWERABLE", (
+            f"Case {cid} has valid financial truth in report; ground_truth_status should be ANSWERABLE"
+        )
+        assert pkt["expected_system_behavior"] == "REFUSE_UNSUPPORTED", (
+            f"Case {cid} is not in 8 MVP metrics; expected_system_behavior should be REFUSE_UNSUPPORTED"
+        )
+        assert pkt["gold_value"] is not None, f"Case {cid} should have non-null gold_value"
+        assert pkt["formula_id"] is not None, f"Case {cid} should have documented formula_id"
+
+    # Unsupported questions with missing corpus data
+    missing_data_cases = ["CAND_026", "CAND_027", "CAND_028"]
+    for cid in missing_data_cases:
+        pkt = packets[cid]
+        assert pkt["ground_truth_status"] == "UNANSWERABLE_IN_CORPUS"
+        assert pkt["expected_system_behavior"] == "REFUSE_INSUFFICIENT_EVIDENCE"
+        assert pkt["gold_value"] is None
+
+    # Omitted / Non-existent line case
+    msn_pkt = packets["CAND_030"]
+    assert msn_pkt["ground_truth_status"] == "NON_EXISTENT_LINE"
+    assert msn_pkt["expected_system_behavior"] == "REFUSE_INSUFFICIENT_EVIDENCE"
+    assert msn_pkt["gold_value"] is None
+
+
+def test_numeric_tolerance_structure():
+    """Verify that any case with a non-null gold_value specifies tolerance."""
+    packets = load_all_packets()
+    for pkt in packets:
+        cid = pkt["case_id"]
+        if pkt["gold_value"] is not None:
+            tol = pkt["numeric_tolerance"]
+            assert isinstance(tol, dict), f"Case {cid} has gold_value but no numeric_tolerance dict"
+            assert "rel_tol" in tol or "abs_tol" in tol, f"Case {cid} tolerance lacks rel_tol/abs_tol"
+            assert "display_rounding" in tol
