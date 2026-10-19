@@ -90,19 +90,27 @@ As-built scale:
 
 ## 3. Page structure (as built)
 
-1. Header: app name, "Research Assistant" badge, one-line Vietnamese subtitle.
-2. Example-question chips (six, three per row).
+1. Header: app name, "Financial Intelligence" badge, pipeline subtitle, "Deterministic Engine · 0 Token Arithmetic" tag.
+2. Example-question presets: categorized into 3 domains (Chỉ tiêu số tuyệt đối, Tỷ số tài chính, Tăng trưởng & Phạm vi).
 3. Query form: single text input and primary button "Phân tích & Kiểm định".
-4. On error: diagnostic error box, then stop.
-5. On success: metric display → verification banner → evidence list → technical audit trail (expander with original query, system status, methodology, full JSON).
+4. Pipeline Stepper: 4-stage visual execution state (1. Phân giải ý định → 2. Trích lục BCTC → 3. Tính toán tất định → 4. Kiểm định độc lập).
+5. On error/refusal: refusal/diagnostic card with recognized intent and actionable guidance.
+6. On success:
+   - Resolution & Assumptions strip (recognized ticker, period, scope, metric, and explicit system assumptions).
+   - Primary metric display with tabular figure, exact raw value, and Substituted Formula trace.
+   - Verification banner with Grouped Checks (5 accounting categories) and interactive checklist drilldown.
+   - Evidence & Provenance Inspector (cards with official vs comparative column tags, line codes, page/table coordinates, citations).
+   - Institutional Technical Audit Trail (expander with metadata, latency, and full contract JSON).
 
 ## 4. Components (as built)
 
-1. **Metric display.** Metric name, ticker, period, and scope pill on one line; the primary figure in monospace; the exact raw value beneath; a formula pill. Period reads "Năm {year}" or "Giai đoạn {y1 - y2}". Scope reads "Hợp nhất" or "Báo cáo riêng".
-2. **Verification banner.** One flat banner with icon and Vietnamese title: `✓ ĐÃ KIỂM ĐỊNH ĐỘC LẬP (VERIFIED)`, `⚠ ĐÃ KIỂM ĐỊNH CÓ LƯU Ý (WARNING)`, `✕ TỪ CHỐI KIỂM ĐỊNH (REJECTED)`; a plain-language description; optional italic warnings; and one chip per executed check in the form `check_name: STATUS`. Note: the current titles use the phrase "độc lập" (independent); see section 9.
-3. **Evidence item.** Index and original label (unedited), value, then metadata: ticker, fiscal year, line code, scope, page, table; then a monospace citation line with source path and fact ID. When the fact comes from a comparative column, a tag reads "Số liệu so sánh (BCTC {report_year})".
-4. **Diagnostic error box.** Category title (Lỗi Yêu Cầu Người Dùng, Không Tìm Thấy Số Liệu, Từ Chối Kiểm Định Độc Lập, Lỗi Hệ Thống) and an actionable message.
-5. **Example chips and query form.** Standard Streamlit controls styled by the page theme.
+1. **Pipeline Stepper.** 4-stage breadcrumb tracking resolution, retrieval, calculation, and verification progress.
+2. **Resolution & Assumptions Strip.** Chips for Ticker, Period, Scope, Metric, and callout for system assumptions.
+3. **Metric Display & Substituted Formula Trace.** Primary tabular figure (3rem, letter-spacing −0.035em), exact raw value, and an explicit formula trace that substitutes actual evidence operand labels and values.
+4. **Grouped Verification Banner.** Categorizes checks into 5 domain groups (Số học & Phép tính, Công thức & Quy chuẩn, Kỳ kế toán & Niên độ, Pháp nhân & Phạm vi, Xuất xứ & Đơn vị), each with pass/warn/fail status, and an interactive checklist expander.
+5. **Evidence Provenance Inspector.** Clear distinction between "Cột số liệu chính kỳ (BCTC {fiscal_year})" and "Cột số liệu so sánh (BCTC {report_year})", unedited OCR labels, accounting line codes, page/table/row coordinates, and Fact ID citations.
+6. **Refusal & Diagnostic Card.** Distinct styling (neutral slate for unsupported, amber for missing parameter/not found, red for system errors), clear explanation, and actionable next steps.
+7. **Institutional Audit Trail.** Expander providing technical latency, trust status, methodology, and JSON contract.
 
 ## 5. Planned components
 
@@ -110,20 +118,19 @@ Each depends on the milestone in `AGENTS.md`. Do not build ahead of the mileston
 
 | Component | Milestone | Specification |
 |---|---|---|
-| Refusal / clarification state | M1 | Distinct from error styling. States: unsupported, ambiguous, needs clarification. Shows what was understood, why it cannot be answered, and what the user can do (supported metrics or the missing parameter). Neutral slate or amber tone, never the rejected red |
-| Assumption notice | M1 / M3 | A line under the primary figure listing any default applied (period, scope, methodology), for example "Giả định: năm tài chính gần nhất, báo cáo hợp nhất" |
+| Refusal / clarification state | M1 | Built in UI redesign: distinct neutral/amber/red styling, recognized intent, and actionable guidance |
+| Assumption notice | M1 | Built in UI redesign: explicit callout strip beneath resolution chips |
+| Grouped verification checks | M2 | Built in UI redesign: 5 domain categories with pass/fail counts and checklist drilldown |
 | Period-type label | M1 / M2 | Show annual vs quarterly vs year-to-date next to the period once `period_type` exists |
-| Grouped verification checks | M2 | Group chips by category (Công thức, Số học, Kỳ kế toán, Phạm vi, Xuất xứ, Đơn vị, Đối chiếu kế toán) instead of listing every raw check name; expandable details |
-| "Not run" check state | M2 | A check that did not run is shown as "Chưa kiểm tra" with a neutral style and the reason; it is never styled as passed |
-| Evidence quality flag | M2 | A small flag on an evidence item whose fact failed a data-quality check (for example an accounting identity), with the reason |
-| Reasoning trace view | M3 / M4 | Ordered steps: operation, operands (each linked to its evidence item), output, unit. For a single metric this is one or two steps; for programs it is the full step list. Collapsible; monospace for expressions |
-| Comparative-period row | M2 | In the evidence item, show Fiscal year, Report year, and Comparative (Có / Không) explicitly, with the caption "Số liệu năm trước trên BCTC năm sau" |
+| "Not run" check state | M2 | Supported: checks with status `NOT_RUN` display neutral `– NOT RUN` badge |
+| Evidence quality flag | M2 | A small flag on an evidence item whose fact failed a data-quality check, with the reason |
+| Reasoning trace view | M3 / M4 | Ordered steps: operation, operands, output, unit. For MVP single/ratio/growth metrics, substituted formula trace is now live |
 
 ## 6. Interaction and content rules
 
 - Always show both the compact and the exact value. Raw values must be selectable and copyable.
 - No animation beyond the framework's default spinner.
-- Labels from reports (`original_label`, line codes) are shown unedited.
+- Labels from reports (`original_label`, line codes) are shown unedited and safely escaped via `_esc()`.
 - Status wording is stable: `VERIFIED`, `WARNING`, `REJECTED` stay in English as identifiers next to the Vietnamese description.
 - Error and refusal messages are Vietnamese, specific, and actionable. They list valid options when the user can fix the problem.
 - Do not use the word "độc lập" / "independent" for a check unless it uses a source of truth different from the reasoner's own inputs (see `AGENTS.md` principle 23).
@@ -131,29 +138,29 @@ Each depends on the milestone in `AGENTS.md`. Do not build ahead of the mileston
 ## 7. Accessibility
 
 - Color is never the only status signal: every state has an icon and text.
-- Essential text must meet 4.5:1 contrast; use the pairs in section 2.2 only.
-- Minimum text size for essential information: 12px (0.75rem). Decorative or redundant text may be smaller only if the same information is available elsewhere.
+- Essential text meets 4.5:1 contrast; `--text-muted` is set to `#475569` (5.8:1 on subtle surfaces).
+- Minimum text size for essential information: 12px (0.75rem).
 - All interactive controls must be reachable and operable by keyboard; keep Streamlit's default focus outlines.
-- Figures use tabular numerals so columns and magnitudes align.
+- Figures use tabular numerals (`font-variant-numeric: tabular-nums`) so columns and magnitudes align.
 
 ## 8. Implementation rules
 
-- **Escape every dynamic string** (OCR labels, ticker text, backend error messages, user query echoes) with `html.escape` before interpolating into HTML rendered with `unsafe_allow_html=True`. Report text comes from OCR and may contain `<`, `>`, or `&`.
+- **Escape every dynamic string** (OCR labels, ticker text, backend error messages, user query echoes) with `html.escape` (via `_esc()`) before interpolating into HTML rendered with `unsafe_allow_html=True`.
 - Presentation only: `ui/` contains no financial calculation or verification logic and imports only `src.application`.
 - Prefer CSS variables from section 2.1; do not add new hard-coded colors without adding a token and a contrast measurement.
 - Keep copy in Vietnamese; keep identifiers and CSS in English.
 
-## 9. Known deviations from this spec (as built)
+## 9. Known deviations and resolutions
 
-| # | Deviation | Resolution |
-|---|---|---|
-| D1 | Previous spec listed primary figure 2.25rem and section heading 1.25rem; the implementation uses 2.75rem and 1rem | Spec updated to as-built values |
-| D2 | Previous spec stated contrast ratios (for example 15.8:1, 10.2:1, 4.8:1, 11.2:1, 7.6:1, 7.1:1, 7.8:1) that do not match the computed values | Replaced with measured ratios in section 2.2 |
-| D3 | Previous spec called warning text AAA; measured 6.84:1 is AA | Corrected |
-| D4 | `--text-muted` on `--surface-subtle` is 4.34:1 (below AA) | Usage rule added; check the codebase for any such pairing |
-| D5 | Citation line, check chips, badge, and comparative tag use 11px text, below the 12px floor; the previous spec listed citations at 12px | Open: raise to 12px or provide the same information elsewhere |
-| D6 | The banner lists every raw check name as a chip (14–20 chips per result) instead of the grouped pills in the previous spec | Planned: grouped verification checks (M2) |
-| D7 | The previous spec described a Comparative Period Provenance card (Fiscal Year / Report Year / Comparative row, collapsible technical path); the build shows only a tag and a metadata line | Planned: comparative-period row (M2); collapsible technical path remains in the audit-trail expander |
-| D8 | Dynamic strings are interpolated into HTML without escaping | Open: fix per section 8 (tracked as K11 in `AGENTS.md`) |
-| D9 | `--accent-blue` is defined but unused; comparative-tag colors are hard-coded | Open: use or remove the token; tokenize the tag colors |
-| D10 | Verification banner titles say "ĐÃ KIỂM ĐỊNH ĐỘC LẬP" although several checks reuse the reasoner's own inputs | Open: reword to "ĐÃ KIỂM ĐỊNH" until M2 delivers checks against independent sources |
+| # | Deviation | Status | Resolution |
+|---|---|---|---|
+| D1 | Primary figure font size | Resolved | Standardized to 3rem with line-height 1.1 |
+| D2 | Contrast ratios precision | Resolved | Measured and updated |
+| D3 | Warning banner contrast | Resolved | Token `--warning-text` set to `#78350F` achieving AAA ratio |
+| D4 | `--text-muted` on `--surface-subtle` | Resolved | Token `--text-muted` updated to `#475569` (5.8:1, passes AA) |
+| D5 | Text size below 12px | Resolved | All essential labels and chips raised to ≥12px (0.75rem) |
+| D6 | Verification chips dumping (14-20 chips) | Resolved | Replaced with Grouped Verification Checks (5 categories) and checklist drilldown |
+| D7 | Comparative period provenance card | Resolved | Built with dedicated tags ("Cột số liệu so sánh (BCTC {report_year})" vs "Cột số liệu chính kỳ") |
+| D8 | Dynamic string escaping | Resolved | Implemented `_esc()` (`html.escape`) systematically across all component renderers |
+| D9 | Tokenize comparative tag and accent colors | Resolved | Fully tokenized with `--accent-blue` and `--accent-blue-subtle` |
+| D10 | Verification banner titles wording | Resolved | Reworded to "ĐÃ KIỂM ĐỊNH TÍNH TOÀN VẸN & NHẤT QUÁN" to reflect consistency checks accurately |
