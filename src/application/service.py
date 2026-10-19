@@ -240,6 +240,9 @@ class FinRAGApplication:
                     row_id=ev.get("row_id"),
                     source_path=ev["source_path"],
                     statement_scope=ev.get("statement_scope", "consolidated"),
+                    statement_type=ev.get("statement_type"),
+                    unit_scale=float(ev.get("unit_scale", 1.0)),
+                    unit_status=str(ev.get("unit_status", "unknown")),
                 )
             )
 

@@ -100,6 +100,26 @@ class FinancialFact(BaseModel):
         default=None,
         description="Column header or reporting period (e.g. 'Số cuối năm', '31/12/2015')",
     )
+    statement_type: Optional[str] = Field(
+        default=None,
+        description="Statement type: 'balance_sheet', 'income_statement', 'cash_flow', etc.",
+    )
+    unit_scale: float = Field(
+        default=1.0,
+        description="Scale multiplier to convert raw value to VND base (e.g. 1.0, 1e3, 1e6, 1e9)",
+    )
+    unit_status: str = Field(
+        default="unknown",
+        description="Unit status: 'declared' if explicitly found in report, or 'unknown'",
+    )
+    report_year: Optional[int] = Field(
+        default=None,
+        description="Report filing/document year",
+    )
+    is_comparative: Optional[bool] = Field(
+        default=None,
+        description="True if fact is from a comparative period",
+    )
 
     @field_validator("fact_id", "document_id", "ticker", "table_id", "row_id", "source_path")
     @classmethod

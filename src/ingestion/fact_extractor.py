@@ -131,6 +131,17 @@ def extract_facts_from_table(
 
             fact_id = f"{table_record.table_id}_r{r_idx}_c{c_idx}"
 
+            from src.financial.semantics import infer_statement_type, parse_unit_scale
+
+            fact_unit_scale, fact_unit_status, clean_unit = parse_unit_scale(unit)
+            final_unit = clean_unit if clean_unit else unit
+            stmt_type = infer_statement_type(
+                line_code=raw_code,
+                original_label=original_label,
+                period_label=period_label,
+            )
+            is_comp = (observation_year != doc_record.year)
+
             fact = FinancialFact(
                 fact_id=fact_id,
                 document_id=doc_record.document_id,
@@ -144,10 +155,15 @@ def extract_facts_from_table(
                 original_label=original_label,
                 canonical_metric=None,
                 value=num_val,
-                unit=unit,
+                unit=final_unit,
                 currency=currency,
                 source_path=doc_record.source_path,
                 period_label=period_label,
+                statement_type=stmt_type,
+                unit_scale=fact_unit_scale,
+                unit_status=fact_unit_status,
+                report_year=doc_record.year,
+                is_comparative=is_comp,
             )
             facts.append(fact)
 

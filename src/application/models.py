@@ -90,6 +90,9 @@ class EvidenceDTO(BaseModel):
     row_id: Optional[str] = None
     source_path: str
     statement_scope: Optional[str] = "consolidated"
+    statement_type: Optional[str] = None
+    unit_scale: float = 1.0
+    unit_status: str = "unknown"
 
     @property
     def comparative_label(self) -> str:

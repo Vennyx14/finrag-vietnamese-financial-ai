@@ -248,10 +248,19 @@ class FinancialReasoningEngine:
                 if any(kw in lbl_lower for kw in metric_def.exclusion_keywords):
                     continue
 
-            # Opening balance filter for balance sheet items
-            if metric_def.prefer_closing_balance and r.period_label:
-                p_lower = r.period_label.lower()
-                if "đầu năm" in p_lower or "1/1/" in p_lower or p_lower.startswith("1/1"):
+            # Statement type check (if metric specifies a specific statutory statement type)
+            if (
+                metric_def.statement_type
+                and metric_def.statement_type != "composite"
+                and r.statement_type
+            ):
+                if r.statement_type != metric_def.statement_type:
+                    continue
+
+            # Opening balance filter for balance sheet items (K4)
+            if metric_def.prefer_closing_balance:
+                from src.financial.semantics import is_opening_period_label
+                if is_opening_period_label(r.period_label):
                     continue
 
             valid_candidates.append(r)
@@ -262,15 +271,15 @@ class FinancialReasoningEngine:
             )
 
         # Step 2: Disambiguation check
-        # Group candidates by numerical value
-        first_val = valid_candidates[0].value
+        # Group candidates by normalized numerical value (accounting for unit scale)
+        first_val = valid_candidates[0].normalized_value
         different_values = [
-            c.value for c in valid_candidates
-            if not math.isclose(c.value, first_val, rel_tol=1e-4, abs_tol=1.0)
+            c.normalized_value for c in valid_candidates
+            if not math.isclose(c.normalized_value, first_val, rel_tol=1e-4, abs_tol=1.0)
         ]
 
         if different_values:
-            val_summary = sorted(list({c.value for c in valid_candidates}))
+            val_summary = sorted(list({c.normalized_value for c in valid_candidates}))
             raise AmbiguousFactError(
                 f"Multiple ambiguous facts found with conflicting values for {ticker} {year} '{metric_name}': {val_summary}"
             )
@@ -309,7 +318,7 @@ class FinancialReasoningEngine:
                     metric_name=metric_def.name,
                     statement_scope=request.statement_scope,
                 )
-                value = compute_absolute(fact.value)
+                value = compute_absolute(fact.normalized_value)
 
                 return FinancialResult(
                     metric=metric_def.name,
@@ -347,7 +356,7 @@ class FinancialReasoningEngine:
                     statement_scope=request.statement_scope,
                 )
 
-                ratio_value = compute_ratio(num_fact.value, den_fact.value)
+                ratio_value = compute_ratio(num_fact.normalized_value, den_fact.normalized_value)
 
                 return FinancialResult(
                     metric=metric_def.name,
@@ -389,7 +398,7 @@ class FinancialReasoningEngine:
                     statement_scope=request.statement_scope,
                 )
 
-                growth_val, warnings = compute_yoy_growth(curr_fact.value, prev_fact.value)
+                growth_val, warnings = compute_yoy_growth(curr_fact.normalized_value, prev_fact.normalized_value)
 
                 return FinancialResult(
                     metric=metric_def.name,
@@ -429,7 +438,7 @@ class FinancialReasoningEngine:
                     statement_scope=request.statement_scope,
                 )
 
-                diff_value = compute_difference(m_fact.value, s_fact.value)
+                diff_value = compute_difference(m_fact.normalized_value, s_fact.normalized_value)
 
                 return FinancialResult(
                     metric=metric_def.name,
@@ -471,7 +480,7 @@ class FinancialReasoningEngine:
                     statement_scope=request.statement_scope,
                 )
 
-                change_val, warnings = compute_percentage_change(curr_fact.value, prev_fact.value)
+                change_val, warnings = compute_percentage_change(curr_fact.normalized_value, prev_fact.normalized_value)
 
                 return FinancialResult(
                     metric=metric_def.name,

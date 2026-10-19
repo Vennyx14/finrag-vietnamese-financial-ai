@@ -71,6 +71,10 @@ class MetricDefinition(BaseModel):
         default="consolidated",
         description="Default accounting statement scope: 'consolidated' or 'separate'",
     )
+    statement_type: Optional[str] = Field(
+        default=None,
+        description="Statutory statement type: 'balance_sheet', 'income_statement', 'cash_flow', or 'composite'",
+    )
 
     @property
     def metric_id(self) -> str:
@@ -107,6 +111,7 @@ _DEFAULT_METRICS: Dict[str, MetricDefinition] = {
         prefer_closing_balance=False,
         aliases=["net_revenue", "revenue", "doanh_thu_thuan", "doanh_thu"],
         methodology="Doanh thu thuần từ Báo cáo kết quả hoạt động kinh doanh (Mã số 10)",
+        statement_type="income_statement",
     ),
     "net_income": MetricDefinition(
         name="net_income",
@@ -129,6 +134,7 @@ _DEFAULT_METRICS: Dict[str, MetricDefinition] = {
         prefer_closing_balance=False,
         aliases=["net_income", "profit", "pat", "loi_nhuan_sau_thue"],
         methodology="Lợi nhuận sau thuế TNDN từ Báo cáo kết quả hoạt động kinh doanh (Mã số 60)",
+        statement_type="income_statement",
     ),
     "total_assets": MetricDefinition(
         name="total_assets",
@@ -147,6 +153,7 @@ _DEFAULT_METRICS: Dict[str, MetricDefinition] = {
         prefer_closing_balance=True,
         aliases=["total_assets", "assets", "tong_tai_san"],
         methodology="Tổng tài sản từ Bảng cân đối kế toán (Mã số 270, số cuối năm)",
+        statement_type="balance_sheet",
     ),
     "equity": MetricDefinition(
         name="equity",
@@ -165,6 +172,7 @@ _DEFAULT_METRICS: Dict[str, MetricDefinition] = {
         prefer_closing_balance=True,
         aliases=["equity", "von_chu_so_huu", "shareholders_equity"],
         methodology="Vốn chủ sở hữu từ Bảng cân đối kế toán (Mã số 400 hoặc 410, số cuối năm)",
+        statement_type="balance_sheet",
     ),
     "net_margin": MetricDefinition(
         name="net_margin",
@@ -179,6 +187,7 @@ _DEFAULT_METRICS: Dict[str, MetricDefinition] = {
         search_keywords="Biên lợi nhuận ròng",
         aliases=["net_margin", "profit_margin"],
         methodology="Biên lợi nhuận ròng = Lợi nhuận sau thuế (Mã số 60) / Doanh thu thuần (Mã số 10)",
+        statement_type="income_statement",
     ),
     "revenue_growth": MetricDefinition(
         name="revenue_growth",
@@ -193,6 +202,7 @@ _DEFAULT_METRICS: Dict[str, MetricDefinition] = {
         search_keywords="Tăng trưởng doanh thu",
         aliases=["revenue_growth", "yoy_revenue_growth", "growth_revenue"],
         methodology="Tăng trưởng doanh thu = (Doanh thu thuần năm hiện tại - Doanh thu thuần năm trước) / Doanh thu thuần năm trước",
+        statement_type="income_statement",
     ),
     "roa": MetricDefinition(
         name="roa",
@@ -208,6 +218,7 @@ _DEFAULT_METRICS: Dict[str, MetricDefinition] = {
         denominator_policy="closing_balance",
         methodology="ROA (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Tổng tài sản (Số cuối kỳ, Mã số 270)",
         aliases=["roa", "return_on_assets"],
+        statement_type="composite",
     ),
     "roe": MetricDefinition(
         name="roe",
@@ -223,6 +234,7 @@ _DEFAULT_METRICS: Dict[str, MetricDefinition] = {
         denominator_policy="closing_balance",
         methodology="ROE (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Vốn chủ sở hữu (Số cuối kỳ, Mã số 400/410)",
         aliases=["roe", "return_on_equity"],
+        statement_type="composite",
     ),
 }
 

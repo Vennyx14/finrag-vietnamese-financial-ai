@@ -320,13 +320,13 @@ class VerificationEngine:
             if operation == "identity":
                 if len(result.inputs) < 1:
                     raise ValueError("Identity operation requires at least 1 input")
-                recomputed = float(result.inputs[0].value)
+                recomputed = float(result.inputs[0].normalized_value)
 
             elif operation == "ratio":
                 if len(result.inputs) < 2:
                     raise ValueError("Ratio operation requires at least 2 inputs")
-                num = float(result.inputs[0].value)
-                den = float(result.inputs[1].value)
+                num = float(result.inputs[0].normalized_value)
+                den = float(result.inputs[1].normalized_value)
                 if abs(den) < 1e-12:
                     raise ZeroDivisionError("Reference denominator is zero")
                 recomputed = num / den
@@ -334,15 +334,15 @@ class VerificationEngine:
             elif operation == "difference":
                 if len(result.inputs) < 2:
                     raise ValueError("Difference operation requires at least 2 inputs")
-                minuend = float(result.inputs[0].value)
-                subtrahend = float(result.inputs[1].value)
+                minuend = float(result.inputs[0].normalized_value)
+                subtrahend = float(result.inputs[1].normalized_value)
                 recomputed = minuend - subtrahend
 
             elif operation in {"yoy_growth", "percentage_change"}:
                 if len(result.inputs) < 2:
                     raise ValueError("Growth operation requires 2 inputs [prev, curr]")
-                prev = float(result.inputs[0].value)
-                curr = float(result.inputs[1].value)
+                prev = float(result.inputs[0].normalized_value)
+                curr = float(result.inputs[1].normalized_value)
                 if abs(prev) < 1e-12:
                     raise ZeroDivisionError("Reference base period value is zero")
                 # When base period is negative, standard financial practice uses abs(prev)
@@ -687,6 +687,22 @@ class VerificationEngine:
                 )
             )
             errors.append(msg)
+
+        # Check input evidence unit scale consistency
+        if len(result.inputs) > 1:
+            scales = [getattr(inp, "unit_scale", 1.0) for inp in result.inputs]
+            if len(set(scales)) > 1:
+                # Multiple inputs had different unit scales; verified they were normalized
+                checks.append(
+                    VerificationCheck(
+                        check_name="input_unit_scales_normalized",
+                        status="PASS",
+                        severity=CheckSeverity.INFORMATIONAL,
+                        expected="Inputs normalized to base currency",
+                        actual=f"Scales {scales} normalized",
+                        message="Input facts with differing unit scales were successfully normalized before calculation",
+                    )
+                )
 
     def _verify_provenance(
         self,
