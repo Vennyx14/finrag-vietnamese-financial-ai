@@ -4,6 +4,7 @@ Defines Pydantic models for documents, tables, and extracted financial facts
 with end-to-end provenance preservation.
 """
 
+from enum import Enum
 from typing import Any, List, Optional
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
@@ -61,6 +62,14 @@ class TableRecord(BaseModel):
         if not v or not v.strip():
             raise ValueError(f"Field '{info.field_name}' must not be empty")
         return v.strip()
+
+
+class CheckStatus(str, Enum):
+    """Individual check status for M2b verification."""
+    PASS = "PASS"
+    FAIL = "FAIL"
+    WARNING = "WARNING"
+    NOT_RUN = "NOT_RUN"
 
 
 class FinancialFact(BaseModel):

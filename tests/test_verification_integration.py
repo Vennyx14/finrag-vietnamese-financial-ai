@@ -49,25 +49,27 @@ class TestVerificationIntegration:
     """End-to-end integration tests over real ViFinQA financial data."""
 
     def test_verify_real_absolute_fpt_net_revenue(self, reasoning_engine, verifier):
-        """Absolute revenue: FPT 2024 must verify with VERIFIED and exact value match."""
+        """Absolute revenue: FPT 2024 must verify successfully and exact value match."""
         req = FinancialReasoningRequest(ticker="FPT", metric="net_revenue", year=2024)
         res = reasoning_engine.reason(req)
         assert res.is_success
 
         v = verifier.verify(res, expected_ticker="FPT", expected_year=2024)
-        assert v.status == VerificationStatus.VERIFIED
+        # M2b: May be WARNING if unit_status='unknown' for fact quality
+        assert v.status in [VerificationStatus.VERIFIED, VerificationStatus.WARNING]
         assert v.overall_pass is True
         assert len(v.errors) == 0
         assert math.isclose(v.verified_value, 62_848_794_351_367.0, rel_tol=1e-5)
 
     def test_verify_real_ratio_fpt_net_margin(self, reasoning_engine, verifier):
-        """Ratio margin: FPT 2024 net margin must verify with VERIFIED (15.00%)."""
+        """Ratio margin: FPT 2024 net margin must verify successfully (15.00%)."""
         req = FinancialReasoningRequest(ticker="FPT", metric="net_margin", year=2024)
         res = reasoning_engine.reason(req)
         assert res.is_success
 
         v = verifier.verify(res, expected_ticker="FPT", expected_year=2024)
-        assert v.status == VerificationStatus.VERIFIED
+        # M2b: May be WARNING if unit_status='unknown' for fact quality
+        assert v.status in [VerificationStatus.VERIFIED, VerificationStatus.WARNING]
         assert v.overall_pass is True
         assert len(v.errors) == 0
         expected_margin = 9_427_422_530_444.0 / 62_848_794_351_367.0
@@ -88,13 +90,14 @@ class TestVerificationIntegration:
         assert math.isclose(v.verified_value, expected_roa, rel_tol=1e-5)
 
     def test_verify_real_growth_fpt_revenue_growth(self, reasoning_engine, verifier):
-        """Growth metric: FPT 2024 revenue growth must verify as VERIFIED (+19.44%)."""
+        """Growth metric: FPT 2024 revenue growth must verify successfully (+19.44%)."""
         req = FinancialReasoningRequest(ticker="FPT", metric="revenue_growth", years=[2023, 2024])
         res = reasoning_engine.reason(req)
         assert res.is_success
 
         v = verifier.verify(res, expected_ticker="FPT")
-        assert v.status == VerificationStatus.VERIFIED
+        # M2b: May be WARNING if unit_status='unknown' for fact quality
+        assert v.status in [VerificationStatus.VERIFIED, VerificationStatus.WARNING]
         assert v.overall_pass is True
         assert len(v.errors) == 0
         expected_growth = (62_848_794_351_367.0 - 52_617_900_827_385.0) / 52_617_900_827_385.0
@@ -142,13 +145,15 @@ class TestVerificationIntegration:
         res_con = reasoning_engine.reason(req_con)
         v_con = verifier.verify(res_con, expected_scope="consolidated")
         assert v_con.overall_pass is True
-        assert v_con.status == VerificationStatus.VERIFIED
+        # M2b: May be WARNING if unit_status='unknown' for fact quality
+        assert v_con.status in [VerificationStatus.VERIFIED, VerificationStatus.WARNING]
 
         req_sep = FinancialReasoningRequest(ticker="FPT", metric="net_revenue", year=2024, statement_scope="separate")
         res_sep = reasoning_engine.reason(req_sep)
         v_sep = verifier.verify(res_sep, expected_scope="separate")
         assert v_sep.overall_pass is True
-        assert v_sep.status == VerificationStatus.VERIFIED
+        # M2b: May be WARNING if unit_status='unknown' for fact quality
+        assert v_sep.status in [VerificationStatus.VERIFIED, VerificationStatus.WARNING]
 
         # Verifying separate result when consolidated was expected -> REJECTED
         v_mismatch = verifier.verify(res_sep, expected_scope="consolidated")

@@ -240,7 +240,8 @@ class TestApplicationResolutionIntegration:
 
     def test_app_ask_returns_resolution_dto_on_valid_query(self, app):
         resp = app.ask("Doanh thu thuần FPT năm 2024")
-        assert resp.status == ResponseStatus.SUCCESS
+        # M2b: May be WARNING if unit_status='unknown' for fact quality
+        assert resp.status in [ResponseStatus.SUCCESS, ResponseStatus.WARNING]
         assert resp.resolution is not None
         assert resp.resolution.status == "resolved"
         assert resp.resolution.metric == "net_revenue"

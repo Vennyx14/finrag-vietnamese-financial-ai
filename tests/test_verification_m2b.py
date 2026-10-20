@@ -1,0 +1,546 @@
+"""M2b tests for Independent Verification & Accounting Identities.
+
+Tests the new M2b features:
+1. Independent query re-parse check (K2 fix)
+2. Accounting identity checks (270 = 300 + 400, 270 = 100 + 200)
+3. Fact quality checks (unit_status)
+4. NOT_RUN check status
+"""
+
+import pytest
+
+from src.financial.result import FinancialResult, fact_to_evidence
+from src.financial.verification import (
+    CheckSeverity,
+    VerificationCheck,
+    VerificationEngine,
+    VerificationStatus,
+)
+from src.retrieval.ranking import RetrievalResult
+
+
+def make_test_fact(
+    fact_id: str,
+    ticker: str,
+    year: int,
+    original_label: str,
+    line_code: str,
+    value: float,
+    unit: str = "VND",
+    statement_scope: str = "consolidated",
+    report_year: int = None,
+    is_comparative: bool = None,
+    page: int = 10,
+    table_id: str = "tab_01",
+    row_id: str = "row_01",
+    source_path: str = "data/test_report.txt",
+    unit_scale: float = 1.0,
+    unit_status: str = "declared",
+) -> RetrievalResult:
+    """Helper to build a RetrievalResult for M2b testing."""
+    rep_yr = report_year if report_year is not None else year
+    comp = is_comparative if is_comparative is not None else (rep_yr != year)
+    return RetrievalResult(
+        fact_id=fact_id,
+        score=10.0,
+        ticker=ticker,
+        year=year,
+        original_label=original_label,
+        line_code=line_code,
+        value=value,
+        unit=unit,
+        currency="VND",
+        page=page,
+        table_id=table_id,
+        row_id=row_id,
+        source_path=source_path,
+        period_label=f"31/12/{year}",
+        statement_scope=statement_scope,
+        document_id=f"{ticker}_{rep_yr}_{statement_scope}_doc",
+        report_year=rep_yr,
+        is_comparative=comp,
+        unit_scale=unit_scale,
+        unit_status=unit_status,
+    )
+
+
+@pytest.fixture
+def engine():
+    return VerificationEngine()
+
+
+class TestIndependentQueryParse:
+    """Test M2b independent query re-parse check (K2 fix)."""
+
+    def test_independent_parse_ticker_match(self, engine):
+        """When query mentions FPT and result uses FPT, check passes."""
+        f_rev = make_test_fact("f1", "FPT", 2024, "Doanh thu thuần", "10", 10000.0)
+        result = FinancialResult(
+            metric="net_revenue",
+            operation="identity",
+            methodology="Test",
+            value=10000.0,
+            unit="VND",
+            formula="net_revenue",
+            inputs=[f_rev],
+            evidence=[fact_to_evidence(f_rev)],
+            ticker="FPT",
+            year=2024,
+            statement_scope="consolidated",
+            status="SUCCESS",
+            warnings=[],
+            error_message=None,
+        )
+
+        query_text = "Doanh thu của FPT năm 2024 là bao nhiêu?"
+        v = engine.verify(result, query_text=query_text)
+
+        # Should have independent_ticker_parse check with PASS
+        ticker_check = next((c for c in v.checks if c.check_name == "independent_ticker_parse"), None)
+        assert ticker_check is not None
+        assert ticker_check.status == "PASS"
+        assert v.status in [VerificationStatus.VERIFIED, VerificationStatus.WARNING]
+
+    def test_independent_parse_ticker_mismatch(self, engine):
+        """When query mentions HPG but result uses FPT, check fails."""
+        f_rev = make_test_fact("f1", "FPT", 2024, "Doanh thu thuần", "10", 10000.0)
+        result = FinancialResult(
+            metric="net_revenue",
+            operation="identity",
+            methodology="Test",
+            value=10000.0,
+            unit="VND",
+            formula="net_revenue",
+            inputs=[f_rev],
+            evidence=[fact_to_evidence(f_rev)],
+            ticker="FPT",
+            year=2024,
+            statement_scope="consolidated",
+            status="SUCCESS",
+            warnings=[],
+            error_message=None,
+        )
+
+        query_text = "Doanh thu của HPG năm 2024 là bao nhiêu?"  # mentions HPG, not FPT
+        v = engine.verify(result, query_text=query_text)
+
+        ticker_check = next((c for c in v.checks if c.check_name == "independent_ticker_parse"), None)
+        assert ticker_check is not None
+        assert ticker_check.status == "FAIL"
+        assert ticker_check.expected == "HPG"
+        assert ticker_check.actual == "FPT"
+        assert v.status == VerificationStatus.REJECTED
+
+    def test_independent_parse_year_mismatch(self, engine):
+        """When query mentions 2023 but result uses 2024, check fails."""
+        f_rev = make_test_fact("f1", "FPT", 2024, "Doanh thu thuần", "10", 10000.0)
+        result = FinancialResult(
+            metric="net_revenue",
+            operation="identity",
+            methodology="Test",
+            value=10000.0,
+            unit="VND",
+            formula="net_revenue",
+            inputs=[f_rev],
+            evidence=[fact_to_evidence(f_rev)],
+            ticker="FPT",
+            year=2024,
+            statement_scope="consolidated",
+            status="SUCCESS",
+            warnings=[],
+            error_message=None,
+        )
+
+        query_text = "Doanh thu của FPT năm 2023 là bao nhiêu?"  # year mismatch
+        v = engine.verify(result, query_text=query_text)
+
+        year_check = next((c for c in v.checks if c.check_name == "independent_year_parse"), None)
+        assert year_check is not None
+        assert year_check.status == "FAIL"
+        assert year_check.expected == 2023
+        assert year_check.actual == 2024
+
+    def test_independent_parse_not_run_when_no_query_text(self, engine):
+        """When query_text is None, independent parse checks are not run."""
+        f_rev = make_test_fact("f1", "FPT", 2024, "Doanh thu thuần", "10", 10000.0)
+        result = FinancialResult(
+            metric="net_revenue",
+            operation="identity",
+            methodology="Test",
+            value=10000.0,
+            unit="VND",
+            formula="net_revenue",
+            inputs=[f_rev],
+            evidence=[fact_to_evidence(f_rev)],
+            ticker="FPT",
+            year=2024,
+            statement_scope="consolidated",
+            status="SUCCESS",
+            warnings=[],
+            error_message=None,
+        )
+
+        v = engine.verify(result, query_text=None)
+
+        # Should not have independent parse checks
+        ticker_check = next((c for c in v.checks if c.check_name == "independent_ticker_parse"), None)
+        assert ticker_check is None
+
+
+class TestAccountingIdentities:
+    """Test M2b accounting identity checks."""
+
+    def test_identity_270_300_400_passes(self, engine):
+        """When 270 = 300 + 400, identity check passes."""
+        f_270 = make_test_fact("f270", "FPT", 2024, "Tổng cộng tài sản", "270", 10000.0)
+        f_300 = make_test_fact("f300", "FPT", 2024, "Nợ phải trả", "300", 6000.0)
+        f_400 = make_test_fact("f400", "FPT", 2024, "Vốn chủ sở hữu", "400", 4000.0)
+
+        result = FinancialResult(
+            metric="total_assets",
+            operation="identity",
+            methodology="Test",
+            value=10000.0,
+            unit="VND",
+            formula="total_assets",
+            inputs=[f_270, f_300, f_400],
+            evidence=[fact_to_evidence(f_270), fact_to_evidence(f_300), fact_to_evidence(f_400)],
+            ticker="FPT",
+            year=2024,
+            statement_scope="consolidated",
+            status="SUCCESS",
+            warnings=[],
+            error_message=None,
+        )
+
+        v = engine.verify(result)
+
+        identity_check = next((c for c in v.checks if c.check_name == "accounting_identity_270_300_400"), None)
+        assert identity_check is not None
+        assert identity_check.status == "PASS"
+
+    def test_identity_270_300_400_violation(self, engine):
+        """When 270 ≠ 300 + 400, identity check warns."""
+        f_270 = make_test_fact("f270", "FPT", 2024, "Tổng cộng tài sản", "270", 10000.0)
+        f_300 = make_test_fact("f300", "FPT", 2024, "Nợ phải trả", "300", 6000.0)
+        f_400 = make_test_fact("f400", "FPT", 2024, "Vốn chủ sở hữu", "400", 3000.0)  # 6000 + 3000 = 9000 ≠ 10000
+
+        result = FinancialResult(
+            metric="total_assets",
+            operation="identity",
+            methodology="Test",
+            value=10000.0,
+            unit="VND",
+            formula="total_assets",
+            inputs=[f_270, f_300, f_400],
+            evidence=[fact_to_evidence(f_270), fact_to_evidence(f_300), fact_to_evidence(f_400)],
+            ticker="FPT",
+            year=2024,
+            statement_scope="consolidated",
+            status="SUCCESS",
+            warnings=[],
+            error_message=None,
+        )
+
+        v = engine.verify(result)
+
+        identity_check = next((c for c in v.checks if c.check_name == "accounting_identity_270_300_400"), None)
+        assert identity_check is not None
+        assert identity_check.status == "WARNING"
+        # Aggregate status may be REJECTED or WARNING depending on other checks
+        assert v.status in [VerificationStatus.WARNING, VerificationStatus.REJECTED]
+
+    def test_identity_270_100_200_not_run_when_missing(self, engine):
+        """When line codes 100/200 are missing, identity check is NOT_RUN."""
+        f_270 = make_test_fact("f270", "FPT", 2024, "Tổng cộng tài sản", "270", 10000.0)
+
+        result = FinancialResult(
+            metric="total_assets",
+            operation="identity",
+            methodology="Test",
+            value=10000.0,
+            unit="VND",
+            formula="total_assets",
+            inputs=[f_270],
+            evidence=[fact_to_evidence(f_270)],
+            ticker="FPT",
+            year=2024,
+            statement_scope="consolidated",
+            status="SUCCESS",
+            warnings=[],
+            error_message=None,
+        )
+
+        v = engine.verify(result)
+
+        identity_check = next((c for c in v.checks if c.check_name == "accounting_identity_270_100_200"), None)
+        assert identity_check is not None
+        assert identity_check.status == "NOT_RUN"
+        assert "missing line codes" in identity_check.message
+
+
+
+
+
+class TestFactQuality:
+    """Test M2b fact quality checks."""
+
+    def test_unit_status_unknown_generates_warning(self, engine):
+        """When unit_status='unknown', fact quality check warns."""
+        f_rev = make_test_fact("f1", "FPT", 2024, "Doanh thu thuần", "10", 10000.0, unit_status="unknown")
+        result = FinancialResult(
+            metric="net_revenue",
+            operation="identity",
+            methodology="Test",
+            value=10000.0,
+            unit="VND",
+            formula="net_revenue",
+            inputs=[f_rev],
+            evidence=[fact_to_evidence(f_rev)],
+            ticker="FPT",
+            year=2024,
+            statement_scope="consolidated",
+            status="SUCCESS",
+            warnings=[],
+            error_message=None,
+        )
+
+        v = engine.verify(result)
+
+        quality_check = next((c for c in v.checks if c.check_name == "fact_quality_unit_status"), None)
+        assert quality_check is not None
+        assert quality_check.status == "WARNING"
+        assert "unit_status='unknown'" in quality_check.message
+        assert v.status == VerificationStatus.WARNING
+
+    def test_unit_status_declared_passes(self, engine):
+        """When unit_status='declared', fact quality check passes."""
+        f_rev = make_test_fact("f1", "FPT", 2024, "Doanh thu thuần", "10", 10000.0, unit_status="declared")
+        result = FinancialResult(
+            metric="net_revenue",
+            operation="identity",
+            methodology="Test",
+            value=10000.0,
+            unit="VND",
+            formula="net_revenue",
+            inputs=[f_rev],
+            evidence=[fact_to_evidence(f_rev)],
+            ticker="FPT",
+            year=2024,
+            statement_scope="consolidated",
+            status="SUCCESS",
+            warnings=[],
+            error_message=None,
+        )
+
+        v = engine.verify(result)
+
+        quality_check = next((c for c in v.checks if c.check_name == "fact_quality_unit_status"), None)
+        assert quality_check is not None
+        assert quality_check.status == "PASS"
+
+
+class TestNOTRUNStatus:
+    """Test that NOT_RUN check status is properly reported."""
+
+    def test_not_run_checks_appear_in_summary(self, engine):
+        """NOT_RUN checks are counted in summary."""
+        f_270 = make_test_fact("f270", "FPT", 2024, "Tổng cộng tài sản", "270", 10000.0)
+        result = FinancialResult(
+            metric="total_assets",
+            operation="identity",
+            methodology="Test",
+            value=10000.0,
+            unit="VND",
+            formula="total_assets",
+            inputs=[f_270],
+            evidence=[fact_to_evidence(f_270)],
+            ticker="FPT",
+            year=2024,
+            statement_scope="consolidated",
+            status="SUCCESS",
+            warnings=[],
+            error_message=None,
+        )
+
+        v = engine.verify(result)
+
+        # Should have at least 2 NOT_RUN checks for missing identity line codes
+        not_run_count = sum(1 for c in v.checks if c.status == "NOT_RUN")
+        assert not_run_count >= 2
+
+        # Summary should include not run count
+        summary = v.summary()
+        assert "not run" in summary.lower()
+
+
+class TestMultiYearAndComparativeM2b:
+    """Additional M2b tests for multi-year independent parsing and comparative reconciliation."""
+
+    def test_independent_parse_multi_year_chronological(self, engine):
+        """Query with '2023 đến 2024' must match target year 2024 without failure."""
+        f_2023 = make_test_fact("f23", "FPT", 2023, "Doanh thu thuần", "10", 10000.0)
+        f_2024 = make_test_fact("f24", "FPT", 2024, "Doanh thu thuần", "10", 12000.0)
+        result = FinancialResult(
+            metric="revenue_growth",
+            operation="yoy_growth",
+            methodology="YoY Growth",
+            value=0.20,
+            unit="ratio",
+            formula="(net_revenue_current - net_revenue_previous) / net_revenue_previous",
+            inputs=[f_2023, f_2024],
+            evidence=[fact_to_evidence(f_2023), fact_to_evidence(f_2024)],
+            ticker="FPT",
+            year=2024,
+            statement_scope="consolidated",
+            status="SUCCESS",
+            warnings=[],
+            error_message=None,
+        )
+
+        query_text = "Tăng trưởng doanh thu FPT năm 2023 đến 2024"
+        v = engine.verify(result, query_text=query_text)
+
+        year_check = next((c for c in v.checks if c.check_name == "independent_year_parse"), None)
+        assert year_check is not None
+        assert year_check.status == "PASS"
+
+    def test_independent_parse_multi_year_inverted(self, engine):
+        """Query with '2024 so với 2023' must match target year 2024 without failure."""
+        f_2023 = make_test_fact("f23", "FPT", 2023, "Doanh thu thuần", "10", 10000.0)
+        f_2024 = make_test_fact("f24", "FPT", 2024, "Doanh thu thuần", "10", 12000.0)
+        result = FinancialResult(
+            metric="revenue_growth",
+            operation="yoy_growth",
+            methodology="YoY Growth",
+            value=0.20,
+            unit="ratio",
+            formula="(net_revenue_current - net_revenue_previous) / net_revenue_previous",
+            inputs=[f_2023, f_2024],
+            evidence=[fact_to_evidence(f_2023), fact_to_evidence(f_2024)],
+            ticker="FPT",
+            year=2024,
+            statement_scope="consolidated",
+            status="SUCCESS",
+            warnings=[],
+            error_message=None,
+        )
+
+        query_text = "Tăng trưởng doanh thu FPT năm 2024 so với 2023"
+        v = engine.verify(result, query_text=query_text)
+
+        year_check = next((c for c in v.checks if c.check_name == "independent_year_parse"), None)
+        assert year_check is not None
+        assert year_check.status == "PASS"
+
+    def test_independent_parse_multi_year_mismatch(self, engine):
+        """Query mentions 2021 đến 2022 but result uses 2024 -> must FAIL."""
+        f_2024 = make_test_fact("f24", "FPT", 2024, "Doanh thu thuần", "10", 12000.0)
+        result = FinancialResult(
+            metric="revenue_growth",
+            operation="yoy_growth",
+            methodology="YoY Growth",
+            value=0.20,
+            unit="ratio",
+            formula="growth",
+            inputs=[f_2024],
+            evidence=[fact_to_evidence(f_2024)],
+            ticker="FPT",
+            year=2024,
+            statement_scope="consolidated",
+            status="SUCCESS",
+            warnings=[],
+            error_message=None,
+        )
+
+        query_text = "Tăng trưởng doanh thu FPT năm 2021 đến 2022"
+        v = engine.verify(result, query_text=query_text)
+
+        year_check = next((c for c in v.checks if c.check_name == "independent_year_parse"), None)
+        assert year_check is not None
+        assert year_check.status == "FAIL"
+
+    def test_accounting_identities_scoped_out_for_income_statement(self, engine):
+        """Income statement queries should not be polluted with BS identity checks."""
+        f_rev = make_test_fact("f10", "FPT", 2024, "Doanh thu thuần", "10", 10000.0)
+        result = FinancialResult(
+            metric="net_revenue",
+            operation="identity",
+            methodology="Test",
+            value=10000.0,
+            unit="VND",
+            formula="net_revenue",
+            inputs=[f_rev],
+            evidence=[fact_to_evidence(f_rev)],
+            ticker="FPT",
+            year=2024,
+            statement_scope="consolidated",
+            status="SUCCESS",
+            warnings=[],
+            error_message=None,
+        )
+
+        v = engine.verify(result)
+        bs_checks = [c for c in v.checks if "accounting_identity" in c.check_name]
+        assert len(bs_checks) == 0
+
+    def test_comparative_reconciliation_pass(self, engine):
+        """When original and comparative facts match within tolerance, check PASS."""
+        f_orig = make_test_fact(
+            "f_orig", "FPT", 2023, "Doanh thu", "10", 10000.0, report_year=2023, is_comparative=False
+        )
+        f_comp = make_test_fact(
+            "f_comp", "FPT", 2023, "Doanh thu", "10", 10000.0, report_year=2024, is_comparative=True
+        )
+        result = FinancialResult(
+            metric="net_revenue",
+            operation="identity",
+            methodology="Test",
+            value=10000.0,
+            unit="VND",
+            formula="net_revenue",
+            inputs=[f_orig],
+            evidence=[fact_to_evidence(f_orig)],
+            ticker="FPT",
+            year=2023,
+            statement_scope="consolidated",
+            status="SUCCESS",
+            warnings=[],
+            error_message=None,
+        )
+
+        v = engine.verify(result, supporting_facts=[f_comp])
+        comp_check = next((c for c in v.checks if "comparative_reconciliation_10_2023" in c.check_name), None)
+        assert comp_check is not None
+        assert comp_check.status == "PASS"
+
+    def test_comparative_reconciliation_warning_on_restatement(self, engine):
+        """When original and comparative facts differ (restatement), check emits WARNING."""
+        f_orig = make_test_fact(
+            "f_orig", "FPT", 2023, "Doanh thu", "10", 10000.0, report_year=2023, is_comparative=False
+        )
+        f_comp = make_test_fact(
+            "f_comp", "FPT", 2023, "Doanh thu", "10", 9500.0, report_year=2024, is_comparative=True
+        )
+        result = FinancialResult(
+            metric="net_revenue",
+            operation="identity",
+            methodology="Test",
+            value=10000.0,
+            unit="VND",
+            formula="net_revenue",
+            inputs=[f_orig],
+            evidence=[fact_to_evidence(f_orig)],
+            ticker="FPT",
+            year=2023,
+            statement_scope="consolidated",
+            status="SUCCESS",
+            warnings=[],
+            error_message=None,
+        )
+
+        v = engine.verify(result, supporting_facts=[f_comp])
+        comp_check = next((c for c in v.checks if "comparative_reconciliation_10_2023" in c.check_name), None)
+        assert comp_check is not None
+        assert comp_check.status == "WARNING"
+        assert "restatement" in comp_check.message.lower()

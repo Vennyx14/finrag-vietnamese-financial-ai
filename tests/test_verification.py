@@ -34,6 +34,8 @@ def make_test_fact(
     table_id: str = "tab_01",
     row_id: str = "row_01",
     source_path: str = "data/test_report.txt",
+    unit_scale: float = 1.0,
+    unit_status: str = "declared",
 ) -> RetrievalResult:
     """Helper to build a RetrievalResult for verification testing."""
     rep_yr = report_year if report_year is not None else year
@@ -57,6 +59,8 @@ def make_test_fact(
         document_id=f"{ticker}_{rep_yr}_{statement_scope}_doc",
         report_year=rep_yr,
         is_comparative=comp,
+        unit_scale=unit_scale,
+        unit_status=unit_status,
     )
 
 

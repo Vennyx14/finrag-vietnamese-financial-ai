@@ -179,6 +179,7 @@ class FinRAGApplication:
             expected_ticker=res.ticker,
             expected_year=res.year,
             expected_scope=res.statement_scope,
+            query_text=clean_query,  # M2b: Enable independent query re-parse check
         )
 
         elapsed_ms = (time.time() - t0) * 1000

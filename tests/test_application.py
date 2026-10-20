@@ -90,13 +90,14 @@ class TestApplicationExecution:
 
     def test_application_service_real_query_success(self, app):
         resp = app.ask("Doanh thu thuần FPT năm 2024")
-        assert resp.status == ResponseStatus.SUCCESS
+        # M2b: May be WARNING if unit_status='unknown' for fact quality
+        assert resp.status in [ResponseStatus.SUCCESS, ResponseStatus.WARNING]
         assert resp.is_trusted is True
         assert resp.calculation is not None
         assert resp.calculation.formatted_value == "₫62.85T"
         assert resp.calculation.raw_value_display == "62,848,794,351,367 VND"
         assert resp.verification is not None
-        assert resp.verification.status == "VERIFIED"
+        assert resp.verification.status in ["VERIFIED", "WARNING"]
         assert len(resp.evidence) == 1
         assert resp.evidence[0].ticker == "FPT"
         assert resp.evidence[0].fiscal_year == 2024
@@ -122,7 +123,8 @@ class TestApplicationExecution:
 
     def test_application_service_growth_query(self, app):
         resp = app.ask("Tăng trưởng doanh thu FPT năm 2024")
-        assert resp.status == ResponseStatus.SUCCESS
+        # M2b: May be WARNING if unit_status='unknown' for fact quality
+        assert resp.status in [ResponseStatus.SUCCESS, ResponseStatus.WARNING]
         assert resp.is_trusted is True
         assert resp.calculation.formatted_value == "+19.44%"
         assert len(resp.evidence) == 2

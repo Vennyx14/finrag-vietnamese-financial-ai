@@ -13,6 +13,9 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from src.financial.metrics import MetricDefinition, MetricRegistry, default_metric_registry
 from src.financial.result import FinancialResult
+from src.financial.schema import CheckStatus
+from src.financial.semantics import infer_statement_type
+from src.pipeline.query import extract_ticker, extract_fiscal_years, extract_statement_scope
 from src.retrieval.ranking import RetrievalResult
 
 
@@ -36,7 +39,7 @@ class VerificationCheck(BaseModel):
     model_config = ConfigDict(frozen=True)
 
     check_name: str = Field(..., description="Name or identifier of the check")
-    status: str = Field(..., description="'PASS', 'FAIL', or 'WARNING'")
+    status: CheckStatus = Field(..., description="Check status: PASS, FAIL, WARNING, or NOT_RUN")
     severity: CheckSeverity = Field(
         default=CheckSeverity.CRITICAL, description="Impact level if check fails"
     )
@@ -81,11 +84,12 @@ class VerificationResult(BaseModel):
             "PASS": sum(1 for c in self.checks if c.status == "PASS"),
             "FAIL": sum(1 for c in self.checks if c.status == "FAIL"),
             "WARNING": sum(1 for c in self.checks if c.status == "WARNING"),
+            "NOT_RUN": sum(1 for c in self.checks if c.status == "NOT_RUN"),
         }
         return (
             f"[{self.status.value}] {self.metric} ({self.ticker}): "
             f"{check_counts['PASS']} passed, {check_counts['FAIL']} failed, "
-            f"{check_counts['WARNING']} warnings"
+            f"{check_counts['WARNING']} warnings, {check_counts['NOT_RUN']} not run"
         )
 
 
@@ -109,8 +113,15 @@ class VerificationEngine:
         expected_ticker: Optional[str] = None,
         expected_year: Optional[int] = None,
         expected_scope: Optional[str] = None,
+        query_text: Optional[str] = None,
+        supporting_facts: Optional[List[RetrievalResult]] = None,
     ) -> VerificationResult:
-        """Run all verification rules on a FinancialResult and aggregate status."""
+        """Run all verification rules on a FinancialResult and aggregate status.
+        
+        Args:
+            query_text: Optional raw question text for independent re-parse (M2b).
+            supporting_facts: Optional auxiliary facts for accounting identity & comparative checks (M2b).
+        """
         checks: List[VerificationCheck] = []
         errors: List[str] = []
         warnings: List[str] = []
@@ -120,7 +131,7 @@ class VerificationEngine:
             checks.append(
                 VerificationCheck(
                     check_name="result_status",
-                    status="FAIL",
+                    status=CheckStatus.FAIL,
                     severity=CheckSeverity.CRITICAL,
                     expected="SUCCESS with non-null value",
                     actual=f"status={result.status}, value={result.value}",
@@ -138,7 +149,7 @@ class VerificationEngine:
                 checks.append(
                     VerificationCheck(
                         check_name="metric_registration",
-                        status="FAIL",
+                        status=CheckStatus.FAIL,
                         severity=CheckSeverity.CRITICAL,
                         expected="Registered metric in registry",
                         actual=result.metric,
@@ -177,6 +188,19 @@ class VerificationEngine:
 
         # 10. Methodology verification (non-critical warnings)
         self._verify_methodology(result, metric_def, checks, warnings)
+
+        # M2b: 11. Independent question re-parse (K2 fix)
+        if query_text:
+            self._verify_independent_query_parse(result, query_text, checks, errors, warnings)
+
+        # M2b: 12. Accounting identity checks
+        self._verify_accounting_identities(result, checks, warnings, supporting_facts=supporting_facts)
+
+        # M2b: 13. Fact quality flags
+        self._verify_fact_quality(result, checks, warnings)
+
+        # M2b: 14. Comparative cross-period consistency check
+        self._verify_comparative_consistency(result, checks, warnings, supporting_facts=supporting_facts)
 
         return self._aggregate_result(result, checks, errors, warnings, recomputed_val)
 
@@ -934,6 +958,511 @@ class VerificationEngine:
             )
             warnings.append(w)
 
+    def _verify_independent_query_parse(
+        self,
+        result: FinancialResult,
+        query_text: str,
+        checks: List[VerificationCheck],
+        errors: List[str],
+        warnings: List[str],
+    ) -> None:
+        """M2b: Independent re-parse of query parameters (K2 fix).
+        
+        Re-parse ticker, year, and scope from raw query_text using canonical extractors
+        and verify they match the facts used in the result. This ensures the verifier
+        detects if the reasoner misread the question.
+        """
+        # Extract from query independently
+        indep_ticker = extract_ticker(query_text)
+        indep_years = extract_fiscal_years(query_text)
+        indep_scope = extract_statement_scope(query_text, default=None)
+
+        # 1. Check ticker
+        if indep_ticker:
+            result_ticker = result.ticker
+            if result_ticker != indep_ticker:
+                msg = (
+                    f"Independent query parse: ticker mismatch. "
+                    f"Question mentions '{indep_ticker}' but result used '{result_ticker}'."
+                )
+                checks.append(
+                    VerificationCheck(
+                        check_name="independent_ticker_parse",
+                        status=CheckStatus.FAIL,
+                        severity=CheckSeverity.CRITICAL,
+                        expected=indep_ticker,
+                        actual=result_ticker,
+                        message=msg,
+                    )
+                )
+                errors.append(msg)
+            else:
+                checks.append(
+                    VerificationCheck(
+                        check_name="independent_ticker_parse",
+                        status=CheckStatus.PASS,
+                        severity=CheckSeverity.CRITICAL,
+                        expected=indep_ticker,
+                        actual=result_ticker,
+                        message=f"Ticker '{result_ticker}' matches independent parse.",
+                    )
+                )
+        else:
+            checks.append(
+                VerificationCheck(
+                    check_name="independent_ticker_parse",
+                    status=CheckStatus.NOT_RUN,
+                    severity=CheckSeverity.INFO,
+                    expected=None,
+                    actual=None,
+                    message="No ticker found in independent parse; check not run.",
+                )
+            )
+
+        # 2. Check year (supporting single-year and multi-year / growth queries)
+        if indep_years:
+            if len(indep_years) > 1:
+                # Multi-year query (growth metric, time interval, or comparative query)
+                is_growth_or_change = (
+                    result.operation in {"yoy_growth", "percentage_change", "difference"}
+                    or (
+                        self.registry
+                        and self.registry.is_registered(result.metric)
+                        and self.registry.get(result.metric).operation in {"yoy_growth", "percentage_change"}
+                    )
+                )
+                target_year_expected = max(indep_years) if is_growth_or_change else None
+
+                if target_year_expected is not None and result.year == target_year_expected:
+                    checks.append(
+                        VerificationCheck(
+                            check_name="independent_year_parse",
+                            status=CheckStatus.PASS,
+                            severity=CheckSeverity.CRITICAL,
+                            expected=target_year_expected,
+                            actual=result.year,
+                            message=(
+                                f"Target year {result.year} matches expected latest year {target_year_expected} "
+                                f"for multi-year query {indep_years}."
+                            ),
+                        )
+                    )
+                elif result.year in indep_years:
+                    checks.append(
+                        VerificationCheck(
+                            check_name="independent_year_parse",
+                            status=CheckStatus.PASS,
+                            severity=CheckSeverity.CRITICAL,
+                            expected=indep_years,
+                            actual=result.year,
+                            message=f"Year {result.year} is present in parsed query years {indep_years}.",
+                        )
+                    )
+                else:
+                    msg = (
+                        f"Independent query parse: year mismatch. "
+                        f"Question mentions years {indep_years} but result used {result.year}."
+                    )
+                    checks.append(
+                        VerificationCheck(
+                            check_name="independent_year_parse",
+                            status=CheckStatus.FAIL,
+                            severity=CheckSeverity.CRITICAL,
+                            expected=indep_years,
+                            actual=result.year,
+                            message=msg,
+                        )
+                    )
+                    errors.append(msg)
+            else:
+                expected_single_year = indep_years[0]
+                if result.year != expected_single_year:
+                    msg = (
+                        f"Independent query parse: year mismatch. "
+                        f"Question mentions {expected_single_year} but result used {result.year}."
+                    )
+                    checks.append(
+                        VerificationCheck(
+                            check_name="independent_year_parse",
+                            status=CheckStatus.FAIL,
+                            severity=CheckSeverity.CRITICAL,
+                            expected=expected_single_year,
+                            actual=result.year,
+                            message=msg,
+                        )
+                    )
+                    errors.append(msg)
+                else:
+                    checks.append(
+                        VerificationCheck(
+                            check_name="independent_year_parse",
+                            status=CheckStatus.PASS,
+                            severity=CheckSeverity.CRITICAL,
+                            expected=expected_single_year,
+                            actual=result.year,
+                            message=f"Year {result.year} matches independent parse.",
+                        )
+                    )
+        else:
+            checks.append(
+                VerificationCheck(
+                    check_name="independent_year_parse",
+                    status=CheckStatus.NOT_RUN,
+                    severity=CheckSeverity.INFO,
+                    expected=None,
+                    actual=None,
+                    message="No year found in independent parse; check not run.",
+                )
+            )
+
+        # 3. Check scope
+        if indep_scope:
+            result_scope = result.statement_scope
+            if result_scope != indep_scope:
+                msg = (
+                    f"Independent query parse: scope mismatch. "
+                    f"Question mentions '{indep_scope}' but result used '{result_scope}'."
+                )
+                checks.append(
+                    VerificationCheck(
+                        check_name="independent_scope_parse",
+                        status=CheckStatus.FAIL,
+                        severity=CheckSeverity.CRITICAL,
+                        expected=indep_scope,
+                        actual=result_scope,
+                        message=msg,
+                    )
+                )
+                errors.append(msg)
+            else:
+                checks.append(
+                    VerificationCheck(
+                        check_name="independent_scope_parse",
+                        status=CheckStatus.PASS,
+                        severity=CheckSeverity.CRITICAL,
+                        expected=indep_scope,
+                        actual=result_scope,
+                        message=f"Scope '{result_scope}' matches independent parse.",
+                    )
+                )
+        else:
+            checks.append(
+                VerificationCheck(
+                    check_name="independent_scope_parse",
+                    status=CheckStatus.NOT_RUN,
+                    severity=CheckSeverity.INFO,
+                    expected=None,
+                    actual=None,
+                    message="No scope found in independent parse; check not run.",
+                )
+            )
+
+    def _verify_accounting_identities(
+        self,
+        result: FinancialResult,
+        checks: List[VerificationCheck],
+        warnings: List[str],
+        supporting_facts: Optional[List[RetrievalResult]] = None,
+    ) -> None:
+        """M2b: Verify accounting identities using statement_type from M2a.
+        
+        Balance Sheet identities:
+        - Identity 1: Total Assets (270) = Total Liabilities (300) + Total Equity (400)
+        - Identity 2: Total Assets (270) = Current Assets (100) + Non-current Assets (200)
+        
+        Only evaluated when relevant to Balance Sheet statements or metrics.
+        If supporting line codes are not present, mark as NOT_RUN.
+        """
+        metric_def = self.registry.get(result.metric) if self.registry and self.registry.is_registered(result.metric) else None
+        is_bs_metric = (
+            metric_def is not None
+            and getattr(metric_def, "statement_type", None) in ("balance_sheet", "composite")
+        )
+        has_bs_input = any(
+            (inp.line_code in {"270", "100", "200", "300", "400"} or
+             infer_statement_type(inp.line_code, inp.original_label) == "balance_sheet")
+            for inp in result.inputs
+        )
+
+        if not (is_bs_metric or has_bs_input):
+            # Not a Balance Sheet metric or input; do not pollute report with unrelated BS checks
+            return
+
+        # Build a map of line_code -> fact value from result inputs and supporting facts
+        line_code_map: Dict[str, RetrievalResult] = {}
+        if supporting_facts:
+            for sf in supporting_facts:
+                if sf.line_code:
+                    line_code_map[sf.line_code] = sf
+        for inp in result.inputs:
+            if inp.line_code:
+                line_code_map[inp.line_code] = inp
+
+        # Identity 1: 270 = 300 + 400
+        self._check_identity_270_300_400(line_code_map, checks, warnings)
+        # Identity 2: 270 = 100 + 200
+        self._check_identity_270_100_200(line_code_map, checks, warnings)
+
+    def _check_identity_270_300_400(
+        self,
+        line_code_map: Dict[str, RetrievalResult],
+        checks: List[VerificationCheck],
+        warnings: List[str],
+    ) -> None:
+        """Check identity: Total Assets (270) = Liabilities (300) + Equity (400)."""
+        if "270" in line_code_map and "300" in line_code_map and "400" in line_code_map:
+            stmt_types = [
+                infer_statement_type(f.line_code, f.original_label)
+                for f in [line_code_map["270"], line_code_map["300"], line_code_map["400"]]
+            ]
+            if all(st == "balance_sheet" for st in stmt_types):
+                v_270 = line_code_map["270"].value * line_code_map["270"].unit_scale
+                v_300 = line_code_map["300"].value * line_code_map["300"].unit_scale
+                v_400 = line_code_map["400"].value * line_code_map["400"].unit_scale
+                expected_270 = v_300 + v_400
+                diff = abs(v_270 - expected_270)
+                
+                if diff <= 1.0:
+                    checks.append(
+                        VerificationCheck(
+                            check_name="accounting_identity_270_300_400",
+                            status=CheckStatus.PASS,
+                            severity=CheckSeverity.CRITICAL,
+                            expected=f"{expected_270:.2f}",
+                            actual=f"{v_270:.2f}",
+                            message=f"Accounting identity verified: 270 ({v_270:.2f}) = 300 ({v_300:.2f}) + 400 ({v_400:.2f}).",
+                        )
+                    )
+                else:
+                    msg = (
+                        f"Accounting identity violation: Total Assets (270) = {v_270:.2f} "
+                        f"but Liabilities (300) + Equity (400) = {expected_270:.2f}. Diff: {diff:.2f} VND."
+                    )
+                    checks.append(
+                        VerificationCheck(
+                            check_name="accounting_identity_270_300_400",
+                            status=CheckStatus.WARNING,
+                            severity=CheckSeverity.WARNING,
+                            expected=f"{expected_270:.2f}",
+                            actual=f"{v_270:.2f}",
+                            message=msg,
+                        )
+                    )
+                    warnings.append(msg)
+            else:
+                checks.append(
+                    VerificationCheck(
+                        check_name="accounting_identity_270_300_400",
+                        status=CheckStatus.NOT_RUN,
+                        severity=CheckSeverity.INFO,
+                        expected=None,
+                        actual=None,
+                        message="Line codes 270/300/400 present but statement_type not all balance_sheet; check not run.",
+                    )
+                )
+        else:
+            missing = [c for c in ["270", "300", "400"] if c not in line_code_map]
+            checks.append(
+                VerificationCheck(
+                    check_name="accounting_identity_270_300_400",
+                    status=CheckStatus.NOT_RUN,
+                    severity=CheckSeverity.INFO,
+                    expected=None,
+                    actual=None,
+                    message=f"Accounting identity check not run: missing line codes {missing}.",
+                )
+            )
+
+    def _check_identity_270_100_200(
+        self,
+        line_code_map: Dict[str, RetrievalResult],
+        checks: List[VerificationCheck],
+        warnings: List[str],
+    ) -> None:
+        """Check identity: Total Assets (270) = Current Assets (100) + Non-current Assets (200)."""
+        if "270" in line_code_map and "100" in line_code_map and "200" in line_code_map:
+            stmt_types = [
+                infer_statement_type(f.line_code, f.original_label)
+                for f in [line_code_map["270"], line_code_map["100"], line_code_map["200"]]
+            ]
+            if all(st == "balance_sheet" for st in stmt_types):
+                v_270 = line_code_map["270"].value * line_code_map["270"].unit_scale
+                v_100 = line_code_map["100"].value * line_code_map["100"].unit_scale
+                v_200 = line_code_map["200"].value * line_code_map["200"].unit_scale
+                expected_270 = v_100 + v_200
+                diff = abs(v_270 - expected_270)
+                
+                if diff <= 1.0:
+                    checks.append(
+                        VerificationCheck(
+                            check_name="accounting_identity_270_100_200",
+                            status=CheckStatus.PASS,
+                            severity=CheckSeverity.CRITICAL,
+                            expected=f"{expected_270:.2f}",
+                            actual=f"{v_270:.2f}",
+                            message=f"Accounting identity verified: 270 ({v_270:.2f}) = 100 ({v_100:.2f}) + 200 ({v_200:.2f}).",
+                        )
+                    )
+                else:
+                    msg = (
+                        f"Accounting identity violation: Total Assets (270) = {v_270:.2f} "
+                        f"but Current Assets (100) + Non-current Assets (200) = {expected_270:.2f}. Diff: {diff:.2f} VND."
+                    )
+                    checks.append(
+                        VerificationCheck(
+                            check_name="accounting_identity_270_100_200",
+                            status=CheckStatus.WARNING,
+                            severity=CheckSeverity.WARNING,
+                            expected=f"{expected_270:.2f}",
+                            actual=f"{v_270:.2f}",
+                            message=msg,
+                        )
+                    )
+                    warnings.append(msg)
+            else:
+                checks.append(
+                    VerificationCheck(
+                        check_name="accounting_identity_270_100_200",
+                        status=CheckStatus.NOT_RUN,
+                        severity=CheckSeverity.INFO,
+                        expected=None,
+                        actual=None,
+                        message="Line codes 270/100/200 present but statement_type not all balance_sheet; check not run.",
+                    )
+                )
+        else:
+            missing = [c for c in ["270", "100", "200"] if c not in line_code_map]
+            checks.append(
+                VerificationCheck(
+                    check_name="accounting_identity_270_100_200",
+                    status=CheckStatus.NOT_RUN,
+                    severity=CheckSeverity.INFO,
+                    expected=None,
+                    actual=None,
+                    message=f"Accounting identity check not run: missing line codes {missing}.",
+                )
+            )
+
+    def _verify_fact_quality(
+        self,
+        result: FinancialResult,
+        checks: List[VerificationCheck],
+        warnings: List[str],
+    ) -> None:
+        """M2b: Check fact-level quality flags.
+        
+        Flags WARNING if any input fact has unit_status='unknown'.
+        """
+        for inp in result.inputs:
+            if inp.unit_status == "unknown":
+                msg = (
+                    f"Fact quality warning: fact '{inp.fact_id}' has unit_status='unknown'. "
+                    f"Unit '{inp.unit}' could not be parsed; value may be unscaled."
+                )
+                checks.append(
+                    VerificationCheck(
+                        check_name="fact_quality_unit_status",
+                        status=CheckStatus.WARNING,
+                        severity=CheckSeverity.WARNING,
+                        expected="declared",
+                        actual="unknown",
+                        message=msg,
+                    )
+                )
+                warnings.append(msg)
+            else:
+                checks.append(
+                    VerificationCheck(
+                        check_name="fact_quality_unit_status",
+                        status=CheckStatus.PASS,
+                        severity=CheckSeverity.INFO,
+                        expected="declared",
+                        actual=inp.unit_status,
+                        message=f"Fact '{inp.fact_id}' has unit_status='{inp.unit_status}'.",
+                    )
+                )
+
+    def _verify_comparative_consistency(
+        self,
+        result: FinancialResult,
+        checks: List[VerificationCheck],
+        warnings: List[str],
+        supporting_facts: Optional[List[RetrievalResult]] = None,
+    ) -> None:
+        """M2b: Check comparative figure reconciliation across reports.
+        
+        When a comparative fact (reported in year T for period T-1) and an original ending
+        fact (reported in year T-1 for period T-1) both exist for the same line code and scope,
+        verify that their scaled values match within 1.0 VND tolerance.
+        """
+        all_facts: List[RetrievalResult] = list(result.inputs)
+        if supporting_facts:
+            all_facts.extend(supporting_facts)
+
+        grouped: Dict[tuple, List[RetrievalResult]] = {}
+        for f in all_facts:
+            if f.line_code and f.year:
+                key = (f.ticker, f.statement_scope, f.line_code, f.year)
+                grouped.setdefault(key, []).append(f)
+
+        compared_pairs = 0
+        for key, facts in grouped.items():
+            if len(facts) >= 2:
+                orig_facts = [f for f in facts if f.report_year == f.year and not f.is_comparative]
+                comp_facts = [f for f in facts if f.report_year > f.year or f.is_comparative]
+
+                if orig_facts and comp_facts:
+                    compared_pairs += 1
+                    orig_val = orig_facts[0].value * orig_facts[0].unit_scale
+                    comp_val = comp_facts[0].value * comp_facts[0].unit_scale
+                    diff = abs(orig_val - comp_val)
+
+                    ticker, scope, line_code, fiscal_year = key
+                    if diff <= 1.0:
+                        checks.append(
+                            VerificationCheck(
+                                check_name=f"comparative_reconciliation_{line_code}_{fiscal_year}",
+                                status=CheckStatus.PASS,
+                                severity=CheckSeverity.CRITICAL,
+                                expected=f"{orig_val:.2f}",
+                                actual=f"{comp_val:.2f}",
+                                message=(
+                                    f"Comparative figure for line {line_code} (year {fiscal_year}) "
+                                    f"reconciles with original report ({orig_val:.2f} VND)."
+                                ),
+                            )
+                        )
+                    else:
+                        msg = (
+                            f"Comparative figure discrepancy for line {line_code} ({ticker} {fiscal_year}): "
+                            f"Original report ({orig_facts[0].report_year}) = {orig_val:.2f} VND vs "
+                            f"Comparative report ({comp_facts[0].report_year}) = {comp_val:.2f} VND. "
+                            f"Diff: {diff:.2f} VND (possible accounting restatement or reclassification)."
+                        )
+                        checks.append(
+                            VerificationCheck(
+                                check_name=f"comparative_reconciliation_{line_code}_{fiscal_year}",
+                                status=CheckStatus.WARNING,
+                                severity=CheckSeverity.WARNING,
+                                expected=f"{orig_val:.2f}",
+                                actual=f"{comp_val:.2f}",
+                                message=msg,
+                            )
+                        )
+                        warnings.append(msg)
+
+        if compared_pairs == 0:
+            checks.append(
+                VerificationCheck(
+                    check_name="comparative_reconciliation",
+                    status=CheckStatus.NOT_RUN,
+                    severity=CheckSeverity.INFO,
+                    expected=None,
+                    actual=None,
+                    message="No cross-report comparative fact pairs available in inputs; check not run.",
+                )
+            )
+
     def _aggregate_result(
         self,
         result: FinancialResult,
@@ -944,9 +1473,9 @@ class VerificationEngine:
     ) -> VerificationResult:
         """Aggregate status: REJECTED if any critical check fails; else WARNING if warnings; else VERIFIED."""
         has_critical_failure = any(
-            c.status == "FAIL" and c.severity == CheckSeverity.CRITICAL for c in checks
+            c.status == CheckStatus.FAIL and c.severity == CheckSeverity.CRITICAL for c in checks
         )
-        has_warnings = len(warnings) > 0 or any(c.status == "WARNING" for c in checks)
+        has_warnings = len(warnings) > 0 or any(c.status == CheckStatus.WARNING for c in checks)
 
         if has_critical_failure:
             status = VerificationStatus.REJECTED
