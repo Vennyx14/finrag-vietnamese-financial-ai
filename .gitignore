@@ -45,6 +45,8 @@ data/processed/**
 
 # Keep directory placeholders
 !data/benchmark/.gitkeep
+!data/benchmark/gold/
+!data/benchmark/gold/**
 !data/external/.gitkeep
 !data/raw/.gitkeep
 !data/processed/.gitkeep

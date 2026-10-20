@@ -91,7 +91,6 @@ def run_coverage(
 
         results.append({
             "question_id": q_id,
-            "question": q_text,
             "ticker": ticker_val,
             "year_or_period": year_or_period,
             "resolved_metric": metric_val,
@@ -108,11 +107,10 @@ def run_coverage(
 
     total_time = time.time() - t_start
 
-    # Write output CSV
+    # Write output CSV (excluding raw question text per K18 and Section 8 data policy)
     output_csv_path.parent.mkdir(parents=True, exist_ok=True)
     fieldnames = [
         "question_id",
-        "question",
         "ticker",
         "year_or_period",
         "resolved_metric",

@@ -3,7 +3,7 @@
 > A trustworthy, provenance-aware AI system for financial question answering, numerical reasoning, and financial research over Vietnamese corporate reports.
 
 ## 1. Overview
-FinRAG is an early-stage research and engineering project aimed at solving the reliability problem of LLMs in financial domains. It focuses on Vietnamese corporate financial statements, extracting raw financial facts and applying deterministic numerical reasoning to answer natural-language queries with 100% auditable provenance.
+FinRAG is an early-stage research and engineering project aimed at solving the reliability problem of LLMs in financial domains. It focuses on Vietnamese corporate financial statements, extracting raw financial facts and applying deterministic numerical reasoning to answer natural-language queries with deterministic, traceable provenance.
 
 ## 2. Problem
 Modern LLMs are notoriously unreliable for financial reasoning. They frequently hallucinate numbers, fabricate arithmetic operations, silently substitute missing data, and provide answers without source-level traceabilty. In a high-stakes environment like corporate finance and auditing, such flaws make standard RAG (Retrieval-Augmented Generation) systems unusable.
@@ -16,7 +16,7 @@ Modern LLMs are notoriously unreliable for financial reasoning. They frequently 
 
 ## 4. System Architecture
 
-The MVP FinRAG system completely decouples Natural Language intent parsing from Financial Computation to guarantee mathematically sound outcomes.
+The MVP FinRAG system completely decouples Natural Language intent parsing from Financial Computation to provide deterministic numerical computation.
 
 ```mermaid
 graph TD
