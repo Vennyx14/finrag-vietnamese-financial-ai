@@ -7,10 +7,10 @@
 ## Test Results
 
 ```
-============================ 291 passed in 19.42s =============================
+============================ 298 passed in 19.66s =============================
 ```
 
-**Baseline comparison** (from M0): M0 had 164 tests; M2b now has **291 tests** (+127 tests), 0 failures, 0 skipped.
+**Baseline comparison** (from M0): M0 had 164 tests; M2b now has **298 tests** (+134 tests), 0 failures, 0 skipped.
 
 ## Deliverables Completed
 
