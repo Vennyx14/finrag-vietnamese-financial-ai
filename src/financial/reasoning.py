@@ -144,26 +144,34 @@ def parse_reasoning_request(
     text = raw_question.strip()
 
     res = resolve_query(text, registry=registry)
+    return build_reasoning_request_from_resolution(res, raw_question=text)
 
+
+def build_reasoning_request_from_resolution(
+    res: ResolutionResult,
+    raw_question: str = "",
+) -> FinancialReasoningRequest:
+    """Build a FinancialReasoningRequest directly from a pre-computed ResolutionResult."""
+    raw_text = raw_question or res.raw_query or ""
     # Multi-company comparison rejection
-    if len(res.entities) > 1 or (len(res.entities) >= 1 and any(ind in text.lower() for ind in MULTI_ENTITY_INDICATORS)):
-        raise InvalidRequestError(f"Could not identify stock ticker in query: '{raw_question}' (multi-company query unsupported)")
+    if len(res.entities) > 1 or (len(res.entities) >= 1 and any(ind in raw_text.lower() for ind in MULTI_ENTITY_INDICATORS)):
+        raise InvalidRequestError(f"Could not identify stock ticker in query: '{raw_text}' (multi-company query unsupported)")
 
     ticker = res.ticker
     if not ticker:
-        raise InvalidRequestError(f"Could not identify stock ticker in query: '{raw_question}'")
+        raise InvalidRequestError(f"Could not identify stock ticker in query: '{raw_text}'")
 
     if res.status == ResolutionStatus.UNSUPPORTED:
-        raise InvalidRequestError(f"Could not identify supported financial metric in query: '{raw_question}'")
+        raise InvalidRequestError(f"Could not identify supported financial metric in query: '{raw_text}'")
 
     if res.operation in {"yoy_growth", "percentage_change"}:
         if not res.years:
-            raise InvalidRequestError(f"Growth calculation requires at least one fiscal year in query: '{raw_question}'")
+            raise InvalidRequestError(f"Growth calculation requires at least one fiscal year in query: '{raw_text}'")
         year = res.fiscal_year
         years = res.years
     else:
         if not res.fiscal_year:
-            raise InvalidRequestError(f"No fiscal year found in query: '{raw_question}'")
+            raise InvalidRequestError(f"No fiscal year found in query: '{raw_text}'")
         year = res.fiscal_year
         years = None
 
@@ -516,6 +524,21 @@ class FinancialReasoningEngine:
                 status="ERROR",
                 error_message=str(e),
             )
+
+    def reason_from_resolution(self, res: ResolutionResult, raw_question: str = "") -> FinancialResult:
+        """Execute reasoning directly from a pre-computed ResolutionResult without duplicate parsing."""
+        try:
+            req = build_reasoning_request_from_resolution(res, raw_question=raw_question)
+        except InvalidRequestError as e:
+            return FinancialResult(
+                metric=res.metric or "unknown",
+                operation=res.operation or "unknown",
+                formula="",
+                ticker=res.ticker or "UNKNOWN",
+                status="ERROR",
+                error_message=str(e),
+            )
+        return self.reason(req)
 
     def reason_from_query(self, raw_question: str) -> FinancialResult:
         """Parse natural-language query and execute end-to-end reasoning."""

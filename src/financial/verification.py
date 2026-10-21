@@ -33,6 +33,51 @@ class CheckSeverity(str, Enum):
     INFO = "INFO"
 
 
+# Canonical metric lexical indicator patterns for independent metric verification
+METRIC_QUERY_PATTERNS: Dict[str, Dict[str, List[str]]] = {
+    "net_revenue": {
+        "positive": ["doanh thu", "doanh so", "doanh số", "revenue", "sales", "dt "],
+        "conflicting": ["lợi nhuận", "lãi", "tổng tài sản", "vốn chủ sở hữu", "vcsh"],
+        "requires_absence_of": ["tăng trưởng", "tang truong", "growth"],
+    },
+    "net_income": {
+        "positive": ["lợi nhuận", "lãi ròng", "lãi sau thuế", "lnst", "net income", "profit", "lãi thuần"],
+        "conflicting": ["doanh thu", "tổng tài sản", "vốn chủ sở hữu", "vcsh"],
+        "requires_absence_of": ["biên", "margin"],
+    },
+    "total_assets": {
+        "positive": ["tổng tài sản", "tong tai san", "tài sản", "tai san", "assets"],
+        "conflicting": ["doanh thu", "lợi nhuận", "vốn chủ sở hữu", "vcsh"],
+        "requires_absence_of": ["roa", "sinh lời", "sinh loi"],
+    },
+    "equity": {
+        "positive": ["vốn chủ sở hữu", "vốn chủ", "vcsh", "equity"],
+        "conflicting": ["doanh thu", "lợi nhuận", "tổng tài sản"],
+        "requires_absence_of": ["roe", "sinh lời", "sinh loi"],
+    },
+    "net_margin": {
+        "positive": ["biên lợi nhuận", "bien loi nhuan", "biên ròng", "bien rong", "tỷ suất lợi nhuận trên doanh thu", "tỷ suất lợi nhuận ròng", "net margin", "profit margin", "margin"],
+        "conflicting": [],
+        "requires_absence_of": [],
+    },
+    "revenue_growth": {
+        "positive": ["tăng trưởng", "tang truong", "tốc độ tăng trưởng", "growth"],
+        "conflicting": [],
+        "requires_absence_of": [],
+    },
+    "roa": {
+        "positive": ["roa", "sinh lời trên tổng tài sản", "sinh loi tren tong tai san", "return on assets", "sinh lời tài sản"],
+        "conflicting": ["roe"],
+        "requires_absence_of": [],
+    },
+    "roe": {
+        "positive": ["roe", "sinh lời trên vốn chủ sở hữu", "sinh lời trên vốn", "return on equity"],
+        "conflicting": ["roa"],
+        "requires_absence_of": [],
+    },
+}
+
+
 class VerificationCheck(BaseModel):
     """Result of an individual verification rule."""
 
@@ -1156,6 +1201,135 @@ class VerificationEngine:
                     message="No scope found in independent parse; check not run.",
                 )
             )
+
+        # 4. Check metric independently from question keywords
+        self._verify_independent_metric_parse(result, query_text, checks, errors, warnings)
+
+    def _verify_independent_metric_parse(
+        self,
+        result: FinancialResult,
+        query_text: str,
+        checks: List[VerificationCheck],
+        errors: List[str],
+        warnings: List[str],
+    ) -> None:
+        """M2b / Finding 1: Independently verify that query_text asked for result.metric.
+        
+        Prevents shared reasoner/verifier blind spot where a misidentified metric
+        verifies successfully because the verifier only checked ticker/year/scope.
+        """
+        q_lower = query_text.lower().strip()
+        metric_name = result.metric
+
+        patterns = METRIC_QUERY_PATTERNS.get(metric_name)
+        if not patterns:
+            # Fall back to registry aliases if metric not in known patterns table
+            if self.registry and self.registry.is_registered(metric_name):
+                m_def = self.registry.get(metric_name)
+                has_alias = any(a.lower() in q_lower for a in m_def.aliases)
+                if has_alias:
+                    checks.append(
+                        VerificationCheck(
+                            check_name="independent_metric_parse",
+                            status=CheckStatus.PASS,
+                            severity=CheckSeverity.CRITICAL,
+                            expected=metric_name,
+                            actual=metric_name,
+                            message=f"Metric '{metric_name}' is supported by alias in query text.",
+                        )
+                    )
+                    return
+            checks.append(
+                VerificationCheck(
+                    check_name="independent_metric_parse",
+                    status=CheckStatus.WARNING,
+                    severity=CheckSeverity.WARNING,
+                    expected=metric_name,
+                    actual=None,
+                    message=f"Independent metric check: no pattern registered for metric '{metric_name}'.",
+                )
+            )
+            warnings.append(f"No metric pattern registered for '{metric_name}'")
+            return
+
+        pos_terms = patterns["positive"]
+        conflict_terms = patterns["conflicting"]
+        forbidden_terms = patterns["requires_absence_of"]
+
+        has_positive = any(term in q_lower for term in pos_terms)
+        has_forbidden = any(term in q_lower for term in forbidden_terms)
+        conflicts_found = [term for term in conflict_terms if term in q_lower]
+
+        # Case A: Clear positive match without forbidden qualifier
+        if has_positive and not has_forbidden:
+            checks.append(
+                VerificationCheck(
+                    check_name="independent_metric_parse",
+                    status=CheckStatus.PASS,
+                    severity=CheckSeverity.CRITICAL,
+                    expected=metric_name,
+                    actual=metric_name,
+                    message=f"Metric '{metric_name}' is independently supported by query text.",
+                )
+            )
+            return
+
+        # Case B: Query asks for a qualified/different operation (e.g. asking for growth but getting identity revenue)
+        if has_positive and has_forbidden:
+            forbidden_matched = [term for term in forbidden_terms if term in q_lower]
+            msg = (
+                f"Independent metric parse mismatch: query text '{query_text}' contains qualifier "
+                f"{forbidden_matched} which indicates a derived or different metric, "
+                f"but result computed '{metric_name}'."
+            )
+            checks.append(
+                VerificationCheck(
+                    check_name="independent_metric_parse",
+                    status=CheckStatus.FAIL,
+                    severity=CheckSeverity.CRITICAL,
+                    expected=f"Derived metric requiring {forbidden_matched}",
+                    actual=metric_name,
+                    message=msg,
+                )
+            )
+            errors.append(msg)
+            return
+
+        # Case C: Conflicting metric detected and zero positive evidence for result.metric
+        if conflicts_found and not has_positive:
+            msg = (
+                f"Independent metric parse mismatch: query text '{query_text}' contains terms "
+                f"{conflicts_found} indicating a different metric, with no supporting keywords for '{metric_name}'."
+            )
+            checks.append(
+                VerificationCheck(
+                    check_name="independent_metric_parse",
+                    status=CheckStatus.FAIL,
+                    severity=CheckSeverity.CRITICAL,
+                    expected=f"Metric matching keywords {conflicts_found}",
+                    actual=metric_name,
+                    message=msg,
+                )
+            )
+            errors.append(msg)
+            return
+
+        # Case D: No positive match, but also no conflicting terms
+        msg = (
+            f"Independent metric check notice: query text '{query_text}' lacks explicit primary keywords "
+            f"for metric '{metric_name}'. Result may be an ungrounded inference."
+        )
+        checks.append(
+            VerificationCheck(
+                check_name="independent_metric_parse",
+                status=CheckStatus.WARNING,
+                severity=CheckSeverity.WARNING,
+                expected=metric_name,
+                actual=None,
+                message=msg,
+            )
+        )
+        warnings.append(msg)
 
     def _verify_accounting_identities(
         self,

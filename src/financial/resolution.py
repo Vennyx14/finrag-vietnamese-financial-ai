@@ -323,8 +323,47 @@ def resolve_query(
     # 7. Year validation for resolved metric
     if resolved_op in {"yoy_growth", "percentage_change"}:
         if len(year_matches) >= 2:
-            years = [min(year_matches[:2]), max(year_matches[:2])]
-            fiscal_year = years[1]
+            y_min, y_max = min(year_matches[:2]), max(year_matches[:2])
+            year_gap = y_max - y_min
+            if year_gap == 0:
+                return ResolutionResult(
+                    status=ResolutionStatus.NEEDS_CLARIFICATION,
+                    metric=resolved_metric,
+                    operation=resolved_op,
+                    ticker=primary_ticker,
+                    entities=tickers,
+                    statement_scope=scope,
+                    assumptions=assumptions,
+                    reason=f"Growth calculation requires two distinct years, but got identical years: {y_min}.",
+                    actionable_guidance=(
+                        "Vui lòng nêu rõ hai năm tài chính khác nhau cần tính tăng trưởng "
+                        "(ví dụ: 'năm 2024 so với 2023')."
+                    ),
+                    raw_query=text,
+                )
+            if year_gap > 1:
+                return ResolutionResult(
+                    status=ResolutionStatus.UNSUPPORTED,
+                    metric=resolved_metric,
+                    operation=resolved_op,
+                    ticker=primary_ticker,
+                    entities=tickers,
+                    statement_scope=scope,
+                    assumptions=assumptions,
+                    reason=(
+                        f"Non-consecutive multi-year growth calculation between {y_min} and {y_max} "
+                        f"(gap: {year_gap} years) is unsupported. FinRAG MVP only supports "
+                        f"consecutive Year-over-Year (YoY) growth."
+                    ),
+                    actionable_guidance=(
+                        f"FinRAG MVP hiện chỉ hỗ trợ tính tăng trưởng liên tiếp theo từng năm (YoY, "
+                        f"ví dụ: 'năm 2024 so với 2023' hoặc 'năm 2024'). Tăng trưởng nhiều năm "
+                        f"không liên tiếp ({y_min} - {y_max}) chưa được hỗ trợ."
+                    ),
+                    raw_query=text,
+                )
+            years = [y_min, y_max]
+            fiscal_year = y_max
         elif len(year_matches) == 1:
             curr_y = year_matches[0]
             years = [curr_y - 1, curr_y]

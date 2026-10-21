@@ -544,3 +544,127 @@ class TestMultiYearAndComparativeM2b:
         assert comp_check is not None
         assert comp_check.status == "WARNING"
         assert "restatement" in comp_check.message.lower()
+
+
+class TestIndependentMetricParseAndRobustness:
+    """Tests for Finding 1 (independent metric check), Finding 2 (consecutive growth), and Finding 3 (exception safety)."""
+
+    def test_independent_metric_parse_match_passes(self, engine):
+        """When query asks for revenue and result is net_revenue, check passes."""
+        f_rev = make_test_fact("f10", "FPT", 2024, "Doanh thu thuần", "10", 10000.0)
+        result = FinancialResult(
+            metric="net_revenue",
+            operation="identity",
+            methodology="Test",
+            value=10000.0,
+            unit="VND",
+            formula="net_revenue",
+            inputs=[f_rev],
+            evidence=[fact_to_evidence(f_rev)],
+            ticker="FPT",
+            year=2024,
+            statement_scope="consolidated",
+            status="SUCCESS",
+            warnings=[],
+            error_message=None,
+        )
+
+        v = engine.verify(result, query_text="Doanh thu thuần FPT năm 2024")
+        metric_check = next((c for c in v.checks if c.check_name == "independent_metric_parse"), None)
+        assert metric_check is not None
+        assert metric_check.status == "PASS"
+
+    def test_independent_metric_parse_conflict_rejects(self, engine):
+        """Finding 1 fix: When query asks for revenue but result is net_income, verifier rejects."""
+        f_inc = make_test_fact("f60", "FPT", 2024, "Lợi nhuận sau thuế", "60", 9000.0)
+        result = FinancialResult(
+            metric="net_income",
+            operation="identity",
+            methodology="Test",
+            value=9000.0,
+            unit="VND",
+            formula="net_income",
+            inputs=[f_inc],
+            evidence=[fact_to_evidence(f_inc)],
+            ticker="FPT",
+            year=2024,
+            statement_scope="consolidated",
+            status="SUCCESS",
+            warnings=[],
+            error_message=None,
+        )
+
+        # Query clearly asks for Doanh thu (revenue), not Profit
+        v = engine.verify(result, query_text="Doanh thu FPT năm 2024")
+        metric_check = next((c for c in v.checks if c.check_name == "independent_metric_parse"), None)
+        assert metric_check is not None
+        assert metric_check.status == "FAIL"
+        assert v.status == VerificationStatus.REJECTED
+
+    def test_independent_metric_parse_growth_qualifier_conflict_rejects(self, engine):
+        """When query asks for growth but result computed identity revenue, verifier rejects."""
+        f_rev = make_test_fact("f10", "FPT", 2024, "Doanh thu thuần", "10", 10000.0)
+        result = FinancialResult(
+            metric="net_revenue",
+            operation="identity",
+            methodology="Test",
+            value=10000.0,
+            unit="VND",
+            formula="net_revenue",
+            inputs=[f_rev],
+            evidence=[fact_to_evidence(f_rev)],
+            ticker="FPT",
+            year=2024,
+            statement_scope="consolidated",
+            status="SUCCESS",
+            warnings=[],
+            error_message=None,
+        )
+
+        # Query asks for growth, but result is identity revenue
+        v = engine.verify(result, query_text="Tăng trưởng doanh thu FPT năm 2024")
+        metric_check = next((c for c in v.checks if c.check_name == "independent_metric_parse"), None)
+        assert metric_check is not None
+        assert metric_check.status == "FAIL"
+        assert v.status == VerificationStatus.REJECTED
+
+    def test_growth_non_consecutive_years_unsupported(self):
+        """Finding 2 fix: Gap of > 1 year in growth query must be UNSUPPORTED, not labeled as YoY."""
+        from src.financial.resolution import resolve_query, ResolutionStatus
+
+        res = resolve_query("Tăng trưởng doanh thu FPT năm 2021 đến 2024")
+        assert res.status == ResolutionStatus.UNSUPPORTED
+        assert "Non-consecutive" in res.reason
+        assert "gap: 3 years" in res.reason
+
+    def test_growth_consecutive_years_resolved(self):
+        """Finding 2 verification: Exactly consecutive years (gap = 1) resolves cleanly to YoY."""
+        from src.financial.resolution import resolve_query, ResolutionStatus
+
+        res = resolve_query("Tăng trưởng doanh thu FPT năm 2023 đến 2024")
+        assert res.status == ResolutionStatus.RESOLVED
+        assert res.operation == "yoy_growth"
+        assert res.years == [2023, 2024]
+        assert res.fiscal_year == 2024
+
+    def test_growth_identical_years_needs_clarification(self):
+        """Finding 2 verification: Same year twice in growth query needs clarification."""
+        from src.financial.resolution import resolve_query, ResolutionStatus
+
+        res = resolve_query("Tăng trưởng doanh thu FPT năm 2024 và 2024")
+        assert res.status == ResolutionStatus.NEEDS_CLARIFICATION
+        assert "identical years" in res.reason
+
+    def test_verification_exception_safety(self):
+        """Finding 3 fix: When verifier raises an exception, ask() returns SYSTEM_ERROR without throwing."""
+        from unittest.mock import patch
+        from src.application import FinRAGApplication
+        from src.application.models import ResponseStatus, ErrorCategory
+
+        app = FinRAGApplication()
+        with patch.object(app.verification_engine, "verify", side_effect=RuntimeError("Simulated engine crash")):
+            resp = app.ask("Doanh thu FPT năm 2024")
+            assert resp.status == ResponseStatus.ERROR
+            assert resp.error_category == ErrorCategory.SYSTEM_ERROR
+            assert "Simulated engine crash" in resp.error_message
+            assert resp.is_trusted is False
