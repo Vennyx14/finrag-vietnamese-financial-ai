@@ -1,44 +1,46 @@
 # Reference Review: Papers and Repositories
 
-**Status:** Initial map; source notes need a fresh line-by-line audit before implementation.
-**Last prepared:** 2026-10-16
+**Status:** Completed detailed line-by-line audit of 5 local PDFs and 6 external repositories.  
+**Last updated:** 2026-10-23  
 
-## Papers supplied
+---
 
-| Source | Main theme | Candidate transfer to FinRAG | Status / caution |
-|---|---|---|---|
-| FinLongDocQA, `2604.03664v1...pdf` | Document-level numerical reasoning across single/multiple financial tables; iterative retrieval and verification | Evidence completeness checks; error taxonomy; conditional retrieval loop after baseline | Paper abstract and introductory material reviewed; verify tables, detailed results, and license before citing exact metrics |
-| DocAgent, EMNLP 2025 | Structured outline, interactive selective reading, reviewer, memory for long multimodal documents | Document outline and selective read tools; independent review concept | Do not adopt full multi-agent architecture by default; current corpus is mostly extracted text/HTML tables, not raw scanned PDFs |
-| ViNumQA small language model study, FJCAI 2026 | Vietnamese financial numerical reasoning; prompting, self-evaluation, data correction/fine-tuning experiments | Evaluation design and constrained reasoning baselines | Dataset access/labels and paper's exact experimental conditions must be checked before comparison |
-| Financial Statement Analysis with LLMs (Kim, Muhn, Nikolaev, 2024) | LLM analysis of standardized financial statements and prediction of earnings direction | Separate quantitative retrieval/calculation from higher-level financial analysis; study prompt design and evaluation | Research result is about a particular forecasting task/setup; not evidence that an LLM can safely answer arbitrary grounded QA |
-| MetaGraph (arXiv:2509.09544v3) | Ontology-guided extraction of a typed knowledge graph from a corpus of finance NLP papers; meta-analysis of 681 papers | A structured literature map and provenance-aware research catalog | This is a research-survey methodology, not a production financial QA architecture |
+## 1. Audited Papers (Local PDFs)
 
-## Repositories supplied
+| Paper | Venue / Version | Key Focus | Verified Findings / Metrics (SOURCE FACT) | Candidate Transfer to FinRAG (FINRAG INFERENCE) | Audit Status |
+|---|---|---|---|---|---|
+| **ViNumQA SLM Study** (`FJCAI_2026_paper_185.pdf`) | FJCAI 2026, Cần Thơ | Vietnamese NumQA on SLMs (≤14B) with 4,074 triples | Qwen3-8B 2-step self-eval achieved PA 59.56%, EA 64.19% (Table VI). Fine-tuning on noisy data underperformed zero-shot. Gold data has 5-10% inconsistencies. | Separate PA & EA metrics; 10 allowlisted DSL operators; caution on unverified SFT. | `CODE_AUDITED` |
+| **FinLongDocQA** (`2604.03664v1...pdf`) | arXiv:2604.03664, Apr 2026 | Document-level numerical QA across multiple tables | 1,456 filings, 7,527 QA pairs, mean 129k tokens. FinLongDocAgent EM: 41.34% (Gemini-3-Flash). Error analysis (Table 9): 62% retrieval error, 19% evidence utilization, 11% value extraction, 8% arithmetic. | Evidence completeness checking before computing; iterative retrieval when operands missing; page-level chunking. | `CODE_AUDITED` |
+| **DocAgent** (`2025.emnlp-main.893_DocAgent.pdf`) | EMNLP 2025 | Hierarchical document agent with reviewer & memory | Outperforms baselines on DocBench (79.9% vs. 63.1% GPT-4o). Actor & Reviewer tool IoU is only 15.3% (complementary check). Accesses only 24.2% of pages. | Hierarchical structure indexing (`report -> statement -> table -> row/line_code -> cell`); independent reviewer validation. | `CODE_AUDITED` |
+| **Financial Statement Analysis with LLMs** | UChicago Booth WP 2024-65 | Earnings direction prediction from standardized statements | GPT-4 CoT achieves 60.35% Acc / 60.90% F1, beating human analysts (52.71% at 1 mo). Lookahead bias ruled out (firm name guess 0.07%). Long-short alpha 10% annualized. | Clear scope separation: factual QA vs. financial forecasting. Value of ratio analysis in financial interpretation. | `CODE_AUDITED` |
+| **MetaGraph** (`2509.09544v3.pdf`) | arXiv:2509.09544, May 2026 (Bloomberg) | Meta-analysis of 681 Financial NLP papers (2022–2025) | Financial QA grew to 33% of all papers (dominant task). Chunk retrieval represents 95.18% of RAG. Lack of transparency and inaccuracies are #1 growing concern. | Confirms FinRAG's system-level RAG approach with strict provenance and deterministic verification. | `CODE_AUDITED` |
 
-| Repository | Candidate lesson | Do not assume |
-|---|---|---|
-| `phaihoang17/AI_financial` | Evidence/citation discipline, safe execution and evaluation gates (verify exact code paths) | README descriptions prove the features work or are secure |
-| `YuhangWuAI/tablerag` | Table-level retrieval/filtering and table representations | Old dependency stack or majority voting is appropriate for FinRAG |
-| `jacobyhsi/TabRAG` | Structured tabular document representation/parsing | Large VLM/embedding setup is feasible on a 4 GB VRAM GPU; code/data licenses are interchangeable |
-| `ThanhDatVN/vinumqa-numerical-reasoning` | DSL/evaluator/benchmark adapter patterns | The repository necessarily includes all official labels or reproduces the official benchmark |
+---
 
-## Priority ranking
+## 2. Audited Repositories (Local Clones under `research/_external_repos/`)
 
-1. **Now:** finish M1 semantic resolution and safe abstention. Use source notes as design context, not as a reason to broaden scope.
-2. **Next:** independent evaluation harness with separate reports for retrieval, concept resolution, evidence selection, arithmetic, citation and refusal.
-3. **Then:** evidence-bound operands and verifier checks that compare the question to the selected facts, not only recompute arithmetic.
-4. **After measurable need:** table-aware retrieval and conditional iterative retrieval.
-5. **Later:** document outline, multi-table/multi-document reasoning and raw-PDF OCR.
-6. **Optional research track:** financial statement analysis/forecasting; keep distinct from grounded QA until product requirements justify it.
+| Repository | Commit SHA | License | Core Capabilities Observed | Critical Guardrails & Risks | Audit Status |
+|---|---|---|---|---|---|
+| `phaihoang17/AI_financial` | `e5541a04...` | **NO_LICENSE_FILE** (All Rights Reserved) | 9-gate production evaluation harness (`production_gate.py`), multi-angle verification, scale unit handling. | **No license:** Zero code copying permitted (ADR-0003). Text-to-Pandas arbitrary execution violates FinRAG principles. | `CODE_AUDITED` |
+| `ThanhDatVN/vinumqa-numerical-reasoning` | `281bdcd7...` | **MIT License** | Fail-closed 10-operator DSL executor (`vinumqa/dsl.py`), Vietnamese cell normalization, PA/EA evaluator. | Supplied-context benchmark only; external dataset must stay isolated from production corpus (ADR-0001). | `CODE_AUDITED` |
+| `AI-Application-and-Integration-Lab/FinLongDocQA` | `643af8b3...` | **AI²Lab NTU License** (Non-commercial) | Multi-round AutoGen agents (Expansion, Solving, Evaluation), dense BGE indexing over page chunks. | Non-commercial license. Avoid wholesale AutoGen multi-agent complexity; adopt deterministic control loops instead. | `CODE_AUDITED` |
+| `lisun-ai/DocAgent` | `56f6291c...` | **CC BY-NC 4.0** (Non-commercial) | XML hierarchical outline parser, tool calling (`search`, `get_section_content`), Reviewer validation. | Non-commercial license. Avoid heavy multimodal image-rendering pipelines for text-extracted tables. | `CODE_AUDITED` |
+| `YuhangWuAI/tablerag` | `0ab7a72f...` | **GPL-3.0** (Strong Copyleft) | Table linearization with column headers, row filtering, ColBERT multi-vector retrieval. | **GPL-3.0 copyleft risk:** Copying any code forces GPL on FinRAG. Learn high-level linearization pattern only. | `CODE_AUDITED` |
+| `jacobyhsi/TabRAG` | `c3aba419...` | **CC BY-NC 4.0** (Non-commercial) | Visual table object detection (YOLO/vision models) from raw PDF images, ICL prompt generation. | High compute requirements (VRAM heavy); FinRAG already operates on extracted HTML tables and Parquet facts. | `CODE_AUDITED` |
 
-## Project constraints
+---
 
-- Intended production corpus: TiniX/ViFinQA only, unless a reviewed decision changes this.
-- Evaluation data must remain separate from production retrieval.
-- Existing corpus includes extracted text/HTML tables; it does not by itself validate OCR accuracy on original scans.
-- The processed data has known unit, period/scope and coverage issues; do not train or evaluate against unverified values.
-- Current laptop GPU memory is limited; prefer deterministic components and small controlled experiments before heavy VLM/embedding stacks.
+## 3. Key Synthesized Insights for FinRAG Roadmap
 
-## Evidence discipline
-
-Do not cite exact numerical results in project documentation until the exact paper table/section and experimental setting have been checked. Do not label a source `REPRODUCED` unless FinRAG actually reran it.
+1. **For M3 (Evidence and Trace Contracts):**
+   - Provenance must trace directly from calculated answer $\rightarrow$ AST trace steps $\rightarrow$ verified fact IDs $\rightarrow$ cell/row/table/page.
+   - Separate execution evaluation into **PA (Program Accuracy)** and **EA (Execution Accuracy)**.
+2. **For M4 (Constrained Program Layer):**
+   - Adopt a constrained, allowlisted DSL (inspired by `vinumqa/dsl.py`) with 10 explicit operators (`add`, `subtract`, `multiply`, `divide`, `exp`, `greater`, `table_max`, `table_min`, `table_sum`, `table_average`) and explicit `#N` argument binding.
+   - Completely reject arbitrary Python code execution (`eval`/`exec`/Text-to-Pandas) to guarantee 100% mathematical determinism and prevent RCE risks.
+3. **For Retrieval & Verification Loops:**
+   - Multi-round iterative retrieval (as demonstrated in FinLongDocQA) should be triggered *only* when the verifier detects missing operands, not as an open-ended multi-agent chat.
+   - The Reviewer/Verifier must validate question-to-evidence alignment from an independent perspective (as proven in DocAgent's low 15.3% tool overlap).
+4. **License and Corpus Hygiene (ADR-0001, ADR-0003):**
+   - External codebases (`tablerag` GPL-3, `AI_financial` unfree, `DocAgent`/`FinLongDocQA` CC-BY-NC) must never be copied into FinRAG source.
+   - Production corpus remains strictly Vietnamese corporate financial reports (TiniX/ViFinQA); benchmark datasets remain evaluation-only adapters.

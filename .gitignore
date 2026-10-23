@@ -43,6 +43,10 @@ data/processed/**
 *.tar
 *.gz
 
+# Local research kit: external repo clones and source PDFs
+research/_external_repos/
+research/papers/source_pdfs/*.pdf
+
 # Keep directory placeholders
 !data/benchmark/.gitkeep
 !data/benchmark/gold/

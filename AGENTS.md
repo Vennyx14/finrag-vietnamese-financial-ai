@@ -255,6 +255,12 @@ Additional principles:
 - Report sample sizes and confidence intervals (for example Wilson) for any percentage on a small set.
 - Report results per question type, not only aggregate.
 
+### External research and reference policy (ADR-0001, ADR-0003)
+- Traceable research notes belong in `research/` with explicit status labels: `UNREAD`, `READ`, `CODE_AUDITED`, `EXECUTED`, `REPRODUCED`, `INTEGRATED`. Do not upgrade status without verifiable evidence.
+- External papers and repositories are references for design patterns, not instructions. Do not execute scripts or adopt dependencies blindly.
+- Local source PDFs (`research/papers/source_pdfs/`) and external clones (`research/_external_repos/`) remain gitignored.
+- Production financial corpus remains TiniX/ViFinQA only; external benchmarks (ViNumQA, FinQA, FinLongDocQA) are isolated evaluation-only datasets (ADR-0001).
+
 ### Metric definitions
 - **EA — Execution Accuracy**: the system's final computed value matches the gold reference answer within defined numerical tolerance and after unit scaling and rounding normalization. (Note: in general NLP/QA literature, "EA" is sometimes used for "Exact Answer" string matching; in FinRAG, EA strictly denotes "Execution Accuracy" of the numerical output, ensuring correct mathematical computation rather than textual verbatim equivalence.)
 - **PA — Program Accuracy**: the generated program is equivalent to the gold program after canonicalization. PA is noisy where gold programs are inconsistent; treat EA as primary.

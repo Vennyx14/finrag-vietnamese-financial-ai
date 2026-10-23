@@ -1,23 +1,40 @@
 # Repository Review — phaihoang17/AI_financial
 
 - **URL:** https://github.com/phaihoang17/AI_financial
-- **Audit status:** Initial reference note; pin the current commit and inspect relevant code before implementation.
-- **License:** Must be checked in the repository at the chosen commit. Do not assume.
+- **Commit SHA:** `e5541a04c0237b2c4b9669361306f2ea55f397f8`
+- **Audit Date:** 2026-10-23
+- **License:** `NO_LICENSE_FILE` (No open source license found; All Rights Reserved under standard copyright law).
+- **Audit Status:** `CODE_AUDITED` (Source code, schemas, and test fixtures inspected; no execution of untrusted scripts).
 
-## Candidate areas to inspect
+---
 
-The prior README-level review described a financial QA system emphasizing Text-to-Pandas as an option, citations, verification, bounded retries, isolated execution, negative controls, and review gates. These descriptions are leads for inspection, not independently verified guarantees.
+## 1. System Overview & Entry Points
 
-## What to inspect
+**CODE OBSERVATION:**
+- **Entry Points:**
+  - `src.text_to_pandas.pipeline.PandasPipeline.ask`: Primary API for NL-to-Pandas processing.
+  - `src.text_to_pandas.run`: CLI entry point for running single questions or batches against a catalog.
+  - `src.evaluation.production_gate`: 9-gate automated evaluation verification runner.
+- **Key Modules:**
+  - `src/understanding/`: Modular query parsing (`company_resolver.py`, `temporal_parser.py`, `metric_normalizer.py`, `operation_detector.py`, `statement_scope_resolver.py`).
+  - `src/verification/`: Multi-angle validation (`evidence_support.py`, `financial_logic.py`, `grounding.py`, `numeric.py`, `scale_unit.py`, `verifier.py`).
+  - `src/sandbox/`: Execution sandbox for generated Pandas code (relies on containerized / nsjail isolation in production).
+  - `src/evaluation/`: Golden review harness, latency tracking, cost tracking, and production gates (`production_gate.py`).
 
-1. Entry point and end-to-end query flow.
-2. How evidence is represented and attached to results.
-3. Whether generated code can execute arbitrary Python or access the filesystem/network.
-4. What the sandbox actually isolates and which OS/runtime guarantees it depends on.
-5. Whether verification independently validates the requested concept and evidence, or merely recomputes an answer.
-6. How negative controls and gold cases are maintained.
-7. Tests that demonstrate the claimed safety and correctness behavior.
+---
 
-## FinRAG application
+## 2. Safety and Execution Risks
 
-Borrow the evaluation discipline and evidence/result contracts if they fit. Do not copy execution/sandbox code until security and license review. Do not enable Text-to-Pandas as the default reasoning path; first compare it against deterministic operations and a constrained DSL.
+**CODE OBSERVATION & FINRAG INFERENCE:**
+- **Text-to-Pandas execution:** The system generates Python/Pandas scripts to compute answers. Running arbitrary generated Python code is an inherent remote code execution (RCE) security hazard. `AI_financial` attempts to contain this via an isolated worker/sandbox.
+- **Conflict with FinRAG Principles:** FinRAG Principle 16 ("No LLM arithmetic") and Principle 17 ("No arbitrary code execution; never `eval`/`exec` generated code") forbid executing unverified Python code for numerical financial QA.
+- **License Restriction (ADR-0003):** Because `AI_financial` does not provide an open-source license, **no code can be copied into FinRAG**.
+
+---
+
+## 3. Valuable Reusable Engineering Patterns
+
+**FINRAG INFERENCE:**
+1. **Production Gate Discipline:** The concept of formal gates (`production_gate.py` with 9 explicit criteria: holdout test accuracy, code execution success, 100% provenance verification, 0 hallucinated numbers, safe refusal rate) is directly applicable to FinRAG's milestone criteria (M0–M6).
+2. **Multi-Angle Verification:** Dividing verification into typed checks (`evidence_support`, `grounding`, `scale_unit`, `financial_logic`) mirrors and validates FinRAG's M2b `VerificationEngine` design.
+3. **Strict Unit/Scale Handling:** Explicitly enforcing `RAW VND` vs. `PERCENT` vs. `unknown` scale states to prevent silent multiplier corruption.
