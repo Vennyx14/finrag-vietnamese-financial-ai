@@ -1,0 +1,40 @@
+{
+  "kit_name": "FinRAG Research Knowledge Kit",
+  "prepared_date": "2026-10-16",
+  "notes": "Markdown notes are initial maps based on prior source review and limited PDF front-matter/abstract inspection; Antigravity must verify detailed claims.",
+  "pdfs_included": [
+    "research/papers/source_pdfs/2604.03664v1_Document_Level Numerical Reasoning across Single and Multiple Tables in Financial Reports.pdf",
+    "research/papers/source_pdfs/2025.emnlp-main.893_DocAgent.pdf",
+    "research/papers/source_pdfs/FJCAI_2026_paper_185.pdf",
+    "research/papers/source_pdfs/Financial Statement Analysis with LLMs.pdf",
+    "research/papers/source_pdfs/2509.09544v3.pdf"
+  ],
+  "markdown_files": [
+    "README_RESEARCH_KIT.md",
+    "docs/decisions/ADR-0001-corpus-and-evaluation-policy.md",
+    "docs/decisions/ADR-0002-evidence-provenance.md",
+    "docs/decisions/ADR-0003-external-code-and-license-policy.md",
+    "docs/decisions/ADR-0004-safe-numerical-reasoning.md",
+    "research/README.md",
+    "research/papers/docagent.md",
+    "research/papers/financial_statement_analysis_llms.md",
+    "research/papers/finlongdocqa.md",
+    "research/papers/metagraph.md",
+    "research/papers/vinumqa_slm_study.md",
+    "research/patterns/evidence_grounded_reasoning.md",
+    "research/patterns/independent_verification.md",
+    "research/patterns/research_to_decision.md",
+    "research/patterns/safe_dsl_execution.md",
+    "research/patterns/table_aware_retrieval.md",
+    "research/prompts/00_validate_and_integrate_kit.md",
+    "research/prompts/01_source_audit.md",
+    "research/prompts/02_implementation_planning.md",
+    "research/prompts/03_reference_repo_setup.md",
+    "research/prompts/04_external_repo_manual_commands.md",
+    "research/reference_review.md",
+    "research/repositories/ai_financial.md",
+    "research/repositories/jacobyhsi_tabrag.md",
+    "research/repositories/vinumqa_numerical_reasoning.md",
+    "research/repositories/yuhangwu_tablerag.md"
+  ]
+}
