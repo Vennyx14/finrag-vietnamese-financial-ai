@@ -668,3 +668,157 @@ class TestIndependentMetricParseAndRobustness:
             assert resp.error_category == ErrorCategory.SYSTEM_ERROR
             assert "Simulated engine crash" in resp.error_message
             assert resp.is_trusted is False
+
+
+class TestAuditReportFixesF01ToF09:
+    """Specific regression tests for findings F-01 to F-09 from finrag_m2b_audit_report.md."""
+
+    def test_f06_multi_scale_unit_normalization_check_uses_info_severity(self, engine):
+        """F-06 fix: Multi-unit normalization check must use CheckSeverity.INFO without AttributeError."""
+        f1 = make_test_fact("f1", "VIC", 2019, "Lợi nhuận sau thuế", "60", 5000.0, unit_scale=1e6)
+        f2 = make_test_fact("f2", "VIC", 2019, "Doanh thu thuần", "10", 50000000000.0, unit_scale=1.0)
+        result = FinancialResult(
+            metric="net_margin",
+            operation="ratio",
+            methodology="Test",
+            value=0.10,
+            unit="ratio",
+            formula="net_income / net_revenue",
+            inputs=[f1, f2],
+            evidence=[fact_to_evidence(f1), fact_to_evidence(f2)],
+            ticker="VIC",
+            year=2019,
+            statement_scope="consolidated",
+            status="SUCCESS",
+            warnings=[],
+            error_message=None,
+        )
+
+        v = engine.verify(result)
+        norm_check = next((c for c in v.checks if c.check_name == "input_unit_scales_normalized"), None)
+        assert norm_check is not None
+        assert norm_check.status == "PASS"
+        assert norm_check.severity == CheckSeverity.INFO
+
+    def test_f01_multi_metric_query_triggers_warning_in_verifier(self, engine):
+        """F-01 fix: Query with both positive indicator and conflicting terms emits WARNING."""
+        f_rev = make_test_fact("f10", "FPT", 2024, "Doanh thu thuần", "10", 10000.0)
+        result = FinancialResult(
+            metric="net_revenue",
+            operation="identity",
+            methodology="Test",
+            value=10000.0,
+            unit="VND",
+            formula="net_revenue",
+            inputs=[f_rev],
+            evidence=[fact_to_evidence(f_rev)],
+            ticker="FPT",
+            year=2024,
+            statement_scope="consolidated",
+            status="SUCCESS",
+            warnings=[],
+            error_message=None,
+        )
+
+        # Query has "doanh thu" (positive) and "lợi nhuận" (conflicting)
+        v = engine.verify(result, query_text="So sánh doanh thu và lợi nhuận FPT năm 2024")
+        metric_check = next((c for c in v.checks if c.check_name == "independent_metric_parse"), None)
+        assert metric_check is not None
+        assert metric_check.status == "WARNING"
+        assert metric_check.severity == CheckSeverity.WARNING
+        assert "conflicting" in metric_check.message.lower()
+
+    def test_f01_revenue_growth_conflicting_term_triggers_warning(self, engine):
+        """F-01 fix: revenue_growth with conflicting profit term emits WARNING in verifier."""
+        f_prev = make_test_fact("f1", "FPT", 2023, "Doanh thu thuần", "10", 10000.0)
+        f_curr = make_test_fact("f2", "FPT", 2024, "Doanh thu thuần", "10", 12000.0)
+        result = FinancialResult(
+            metric="revenue_growth",
+            operation="yoy_growth",
+            methodology="Test",
+            value=0.20,
+            unit="percentage",
+            formula="(curr - prev) / abs(prev)",
+            inputs=[f_prev, f_curr],
+            evidence=[fact_to_evidence(f_prev), fact_to_evidence(f_curr)],
+            ticker="FPT",
+            year=2024,
+            years=[2023, 2024],
+            statement_scope="consolidated",
+            status="SUCCESS",
+            warnings=[],
+            error_message=None,
+        )
+
+        v = engine.verify(result, query_text="Tăng trưởng lợi nhuận FPT năm 2024")
+        metric_check = next((c for c in v.checks if c.check_name == "independent_metric_parse"), None)
+        assert metric_check is not None
+        assert metric_check.status == "WARNING"
+
+    def test_f03_growth_with_three_or_more_years_needs_clarification(self):
+        """F-03 fix: Growth query with 3+ years returns NEEDS_CLARIFICATION rather than silently dropping 3rd year."""
+        from src.financial.resolution import resolve_query, ResolutionStatus
+
+        res = resolve_query("Tăng trưởng doanh thu FPT 2019 2020 2021")
+        assert res.status == ResolutionStatus.NEEDS_CLARIFICATION
+        assert "3 năm" in res.reason
+
+    def test_f04_sub_annual_period_queries_unsupported(self):
+        """F-04 fix: Sub-annual tokens (Q1-Q4, quý, 6 tháng, 9T) are UNSUPPORTED in FinRAG MVP."""
+        from src.financial.resolution import resolve_query, ResolutionStatus
+
+        queries = [
+            "Doanh thu FPT Q1 2024",
+            "Doanh thu FPT quý 2 năm 2024",
+            "Doanh thu FPT quý IV năm 2023",
+            "Lợi nhuận FPT 6 tháng đầu năm 2024",
+            "Lợi nhuận sau thuế HPG 9T 2023",
+            "Biên lợi nhuận VNM bán niên 2024",
+        ]
+        for q in queries:
+            res = resolve_query(q)
+            assert res.status == ResolutionStatus.UNSUPPORTED, f"Query '{q}' should be UNSUPPORTED"
+            assert "quý/nửa năm" in res.reason or "annual" in res.actionable_guidance.lower()
+
+    def test_f05_classify_reasoning_error_sanitizes_fallback(self):
+        """F-05 fix: Unknown internal errors return sanitized user message instead of raw stack traces."""
+        from src.application.service import FinRAGApplication
+        from src.application.models import ErrorCategory
+
+        app = FinRAGApplication()
+        cat, msg = app._classify_reasoning_error("InternalDatabaseDriverSegmentationFault: at 0xdeadbeef")
+        assert cat == ErrorCategory.SYSTEM_ERROR
+        assert "FinRAG gặp lỗi hệ thống nội bộ" in msg
+        assert "0xdeadbeef" not in msg
+
+    def test_f09_accounting_identity_relative_tolerance(self, engine):
+        """F-09 fix: Relative tolerance permits small rounding differences for large values."""
+        # Assets: 100,000,000,000.0 VND (100 billion VND)
+        # Liabilities + Equity: 99,999,999,500.0 VND (difference is 500 VND = 0.0000005% of assets)
+        # Under old 1.0 VND fixed tolerance, 500 VND difference would fail!
+        # Under new 0.01% relative tolerance, 500 VND is well within 10,000,000 VND tolerance.
+        f_270 = make_test_fact("f270", "HPG", 2024, "Tổng cộng tài sản", "270", 100_000_000_000.0)
+        f_300 = make_test_fact("f300", "HPG", 2024, "Nợ phải trả", "300", 60_000_000_000.0)
+        f_400 = make_test_fact("f400", "HPG", 2024, "Vốn chủ sở hữu", "400", 39_999_999_500.0)
+
+        result = FinancialResult(
+            metric="total_assets",
+            operation="identity",
+            methodology="Test",
+            value=100_000_000_000.0,
+            unit="VND",
+            formula="total_assets",
+            inputs=[f_270, f_300, f_400],
+            evidence=[fact_to_evidence(f_270), fact_to_evidence(f_300), fact_to_evidence(f_400)],
+            ticker="HPG",
+            year=2024,
+            statement_scope="consolidated",
+            status="SUCCESS",
+            warnings=[],
+            error_message=None,
+        )
+
+        v = engine.verify(result)
+        identity_check = next((c for c in v.checks if c.check_name == "accounting_identity_270_300_400"), None)
+        assert identity_check is not None
+        assert identity_check.status == "PASS"

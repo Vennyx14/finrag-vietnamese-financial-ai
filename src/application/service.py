@@ -4,9 +4,12 @@ Coordinates retrieval, reasoning, and independent verification into a unified,
 client-agnostic application service.
 """
 
+import logging
 from pathlib import Path
 import time
 from typing import Any, Dict, List, Optional
+
+_logger = logging.getLogger(__name__)
 
 import pandas as pd
 
@@ -331,4 +334,8 @@ class FinRAGApplication:
                 ErrorCategory.DATA_NOT_FOUND,
                 "Phát hiện nhiều số liệu mâu thuẫn cho chỉ tiêu này trong các bảng BCTC. Hệ thống từ chối tự ý chọn số để bảo vệ tính chính xác.",
             )
-        return (ErrorCategory.SYSTEM_ERROR, raw_err)
+        _logger.error("FinRAG unclassified reasoning error: %s", raw_err, exc_info=False)
+        return (
+            ErrorCategory.SYSTEM_ERROR,
+            "FinRAG gặp lỗi hệ thống nội bộ. Vui lòng thử lại hoặc liên hệ hỗ trợ.",
+        )

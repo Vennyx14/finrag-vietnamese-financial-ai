@@ -232,6 +232,32 @@ def resolve_query(
                 raw_query=text,
             )
 
+    # 4e. Sub-annual / Interim period detection (Quarterly, Semi-annual)
+    interim_period_patterns = [
+        r"\bq[1-4]\b",
+        r"\bquý\s*([1-4]|i{1,3}|iv)\b",
+        r"\b[369]\s*tháng\b",
+        r"\b[369]t\b",
+        r"\bnửa\s*đầu\b",
+        r"\bnửa\s*cuối\b",
+        r"\bbán\s*niên\b",
+    ]
+    for pat in interim_period_patterns:
+        if re.search(pat, text_lower):
+            return ResolutionResult(
+                status=ResolutionStatus.UNSUPPORTED,
+                ticker=primary_ticker,
+                entities=tickers,
+                statement_scope=scope,
+                fiscal_year=year_matches[0] if year_matches else None,
+                reason="Dữ liệu theo quý/nửa năm chưa được hỗ trợ (FinRAG MVP chỉ hỗ trợ báo cáo năm tài chính).",
+                actionable_guidance=(
+                    "FinRAG MVP chỉ hỗ trợ dữ liệu năm tài chính đầy đủ (annual). "
+                    "Báo cáo quý (Q1/Q2/Q3/Q4) và báo cáo 6 tháng/bán niên chưa được hỗ trợ."
+                ),
+                raw_query=text,
+            )
+
     # 5. Missing Ticker or Year Checks (NEEDS_CLARIFICATION)
     if not primary_ticker:
         return ResolutionResult(
@@ -322,8 +348,27 @@ def resolve_query(
 
     # 7. Year validation for resolved metric
     if resolved_op in {"yoy_growth", "percentage_change"}:
-        if len(year_matches) >= 2:
-            y_min, y_max = min(year_matches[:2]), max(year_matches[:2])
+        if len(year_matches) > 2:
+            return ResolutionResult(
+                status=ResolutionStatus.NEEDS_CLARIFICATION,
+                metric=resolved_metric,
+                operation=resolved_op,
+                ticker=primary_ticker,
+                entities=tickers,
+                statement_scope=scope,
+                assumptions=assumptions,
+                reason=(
+                    f"Phát hiện {len(year_matches)} năm trong câu hỏi ({year_matches}). "
+                    f"FinRAG MVP chỉ hỗ trợ tính tăng trưởng giữa hai năm liên tiếp."
+                ),
+                actionable_guidance=(
+                    "Vui lòng chỉ nêu hai năm tài chính cần tính tăng trưởng "
+                    "(ví dụ: 'năm 2024 so với 2023')."
+                ),
+                raw_query=text,
+            )
+        elif len(year_matches) == 2:
+            y_min, y_max = min(year_matches), max(year_matches)
             year_gap = y_max - y_min
             if year_gap == 0:
                 return ResolutionResult(

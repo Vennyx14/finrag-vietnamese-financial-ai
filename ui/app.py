@@ -151,6 +151,15 @@ def main():
         # RENDER 5 TIERS OF FINRAG PIPELINE
         # ======================================================================
 
+        # Handle REJECTED status with prominent audit warning (F-08)
+        if resp.status == ResponseStatus.REJECTED:
+            st.error(
+                "🚨 **KẾT QUẢ ĐÃ BỊ TỪ CHỐI (REJECTED BY INDEPENDENT VERIFIER)**\n\n"
+                "Số liệu hoặc phương pháp tính toán vi phạm kiểm định nghiêm ngặt độc lập "
+                "(Critical Verification Check). Để bảo vệ tính toàn vẹn tài chính, FinRAG từ chối "
+                "xác nhận độ tin cậy của kết quả này. Vui lòng xem chi tiết vi phạm tại Tầng 3 bên dưới."
+            )
+
         # TẦNG 01: Phân giải ý định & Giả định nghiệp vụ
         render_tier_1_resolution(
             resolution=resp.resolution,

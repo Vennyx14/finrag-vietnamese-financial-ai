@@ -36,7 +36,7 @@ class CheckSeverity(str, Enum):
 # Canonical metric lexical indicator patterns for independent metric verification
 METRIC_QUERY_PATTERNS: Dict[str, Dict[str, List[str]]] = {
     "net_revenue": {
-        "positive": ["doanh thu", "doanh so", "doanh số", "revenue", "sales", "dt "],
+        "positive": ["doanh thu", "revenue", "sales", "dt "],
         "conflicting": ["lợi nhuận", "lãi", "tổng tài sản", "vốn chủ sở hữu", "vcsh"],
         "requires_absence_of": ["tăng trưởng", "tang truong", "growth"],
     },
@@ -62,7 +62,7 @@ METRIC_QUERY_PATTERNS: Dict[str, Dict[str, List[str]]] = {
     },
     "revenue_growth": {
         "positive": ["tăng trưởng", "tang truong", "tốc độ tăng trưởng", "growth"],
-        "conflicting": [],
+        "conflicting": ["lợi nhuận", "tổng tài sản", "tài sản", "vốn chủ sở hữu", "vốn chủ", "vcsh"],
         "requires_absence_of": [],
     },
     "roa": {
@@ -766,7 +766,7 @@ class VerificationEngine:
                     VerificationCheck(
                         check_name="input_unit_scales_normalized",
                         status="PASS",
-                        severity=CheckSeverity.INFORMATIONAL,
+                        severity=CheckSeverity.INFO,
                         expected="Inputs normalized to base currency",
                         actual=f"Scales {scales} normalized",
                         message="Input facts with differing unit scales were successfully normalized before calculation",
@@ -1260,8 +1260,8 @@ class VerificationEngine:
         has_forbidden = any(term in q_lower for term in forbidden_terms)
         conflicts_found = [term for term in conflict_terms if term in q_lower]
 
-        # Case A: Clear positive match without forbidden qualifier
-        if has_positive and not has_forbidden:
+        # Case A1: Positive match, no forbidden qualifiers, no conflicting metrics
+        if has_positive and not has_forbidden and not conflicts_found:
             checks.append(
                 VerificationCheck(
                     check_name="independent_metric_parse",
@@ -1272,6 +1272,26 @@ class VerificationEngine:
                     message=f"Metric '{metric_name}' is independently supported by query text.",
                 )
             )
+            return
+
+        # Case A2: Positive match but conflicting metric terms also present (multi-metric or ambiguous query)
+        if has_positive and not has_forbidden and conflicts_found:
+            msg = (
+                f"Independent metric check: query supports '{metric_name}' via positive indicators "
+                f"but also contains conflicting metric terms {conflicts_found}. "
+                f"Query may be a multi-metric or comparative request."
+            )
+            checks.append(
+                VerificationCheck(
+                    check_name="independent_metric_parse",
+                    status=CheckStatus.WARNING,
+                    severity=CheckSeverity.WARNING,
+                    expected=metric_name,
+                    actual=metric_name,
+                    message=msg,
+                )
+            )
+            warnings.append(msg)
             return
 
         # Case B: Query asks for a qualified/different operation (e.g. asking for growth but getting identity revenue)
@@ -1395,8 +1415,9 @@ class VerificationEngine:
                 v_400 = line_code_map["400"].value * line_code_map["400"].unit_scale
                 expected_270 = v_300 + v_400
                 diff = abs(v_270 - expected_270)
+                abs_tolerance = max(abs(v_270) * 1e-4, 1.0)
                 
-                if diff <= 1.0:
+                if diff <= abs_tolerance:
                     checks.append(
                         VerificationCheck(
                             check_name="accounting_identity_270_300_400",
@@ -1465,8 +1486,9 @@ class VerificationEngine:
                 v_200 = line_code_map["200"].value * line_code_map["200"].unit_scale
                 expected_270 = v_100 + v_200
                 diff = abs(v_270 - expected_270)
+                abs_tolerance = max(abs(v_270) * 1e-4, 1.0)
                 
-                if diff <= 1.0:
+                if diff <= abs_tolerance:
                     checks.append(
                         VerificationCheck(
                             check_name="accounting_identity_270_100_200",
