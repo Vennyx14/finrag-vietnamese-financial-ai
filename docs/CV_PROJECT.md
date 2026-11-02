@@ -6,18 +6,18 @@
 - **Developed a Streamlit application** separating the presentation tier from the financial core, providing actionable error diagnostics, transparent exact-value tracing, and explicit comparative period tagging.
 
 ### Portfolio Description
-FinRAG is a trustworthy, provenance-aware AI system designed to answer natural-language financial questions over Vietnamese corporate reports. Addressing the critical flaw of numerical hallucinations in modern LLM-based systems, this project explicitly decouples intent parsing from mathematical reasoning. The system retrieves facts from a pre-indexed corpus of 353,338 accounting figures (ViFinQA) and uses a deterministic financial reasoning engine to calculate metrics. Furthermore, it incorporates an independent Verification Layer that checks each result, from formula soundness to row-level provenance, and reports which checks ran.
+FinRAG is a trustworthy, provenance-aware AI system designed to answer natural-language financial questions over Vietnamese corporate reports. Addressing the critical flaw of numerical hallucinations in modern LLM-based systems, this project explicitly decouples intent parsing from mathematical reasoning. The system retrieves facts from a pre-indexed corpus of 349,539 accounting figures (ViFinQA) and uses a deterministic financial reasoning engine to calculate metrics. Furthermore, it incorporates an independent Verification Layer that checks each result, from formula soundness to row-level provenance, and reports which checks ran.
 
 ### Technical Stack
 - **Languages:** Python 3.11
 - **Data Engineering:** Pandas, PyArrow, Parquet
 - **Information Retrieval:** BM25, exact schema-matching, typed metadata filters
-- **Backend/Architecture:** Pydantic (strict typed DTOs), Pytest (514-test suite)
+- **Backend/Architecture:** Pydantic (strict typed DTOs), Pytest (523-test suite)
 - **Frontend:** Streamlit, UI design tokens (WCAG AAA/AA, tabular-nums)
 
 ### Measurable Results
-- **514/514** unit and integration tests passing with local data present (0 failures, 0 skips).
-- **353,338** financial facts processed, indexed, and available for querying.
+- **523/523** unit and integration tests passing with local data present (0 failures, 0 skips).
+- **349,539** financial facts processed, indexed, and available for querying.
 - **30/30** cases pass on the self-authored reasoning regression benchmark (not accuracy on unseen data).
 - **30/30** mutations detected and **30/30** valid results accepted on the 60-case self-authored verification regression benchmark (not accuracy on unseen data).
 - About **190 ms** average query latency on the reasoning benchmark, run locally.

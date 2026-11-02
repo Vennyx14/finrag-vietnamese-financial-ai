@@ -129,7 +129,7 @@
     "aggregated": 7,
     "other": 55
   },
-  "processing_time_seconds": 32.48,
+  "processing_time_seconds": 27.13,
   "failure_details": {
     "parsing_failures_sample": [],
     "fact_failures_sample": []

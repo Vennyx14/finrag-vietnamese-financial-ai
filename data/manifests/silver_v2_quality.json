@@ -258,7 +258,7 @@
       "split": "dev_v0",
       "question_origin": "verbatim",
       "expected": "REFUSE_UNSUPPORTED",
-      "status": "ERROR",
+      "status": "WARNING",
       "outcome": "CORRECT"
     },
     {
@@ -266,7 +266,7 @@
       "split": "dev_v0",
       "question_origin": "verbatim",
       "expected": "REFUSE_UNSUPPORTED",
-      "status": "ERROR",
+      "status": "SUCCESS",
       "outcome": "CORRECT"
     },
     {
@@ -282,7 +282,7 @@
       "split": "dev_v0",
       "question_origin": "authored",
       "expected": "REFUSE_UNSUPPORTED",
-      "status": "ERROR",
+      "status": "WARNING",
       "outcome": "CORRECT"
     },
     {
@@ -290,7 +290,7 @@
       "split": "dev_v0",
       "question_origin": "verbatim",
       "expected": "REFUSE_INSUFFICIENT_EVIDENCE",
-      "status": "ERROR",
+      "status": "SUCCESS",
       "outcome": "CORRECT"
     },
     {
@@ -298,7 +298,7 @@
       "split": "dev_v0",
       "question_origin": "verbatim",
       "expected": "REFUSE_UNSUPPORTED",
-      "status": "ERROR",
+      "status": "WARNING",
       "outcome": "CORRECT"
     },
     {

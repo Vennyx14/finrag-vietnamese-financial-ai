@@ -1,5 +1,5 @@
 {
-  "evaluation_timestamp": "2026-11-02T07:13:40.044054+00:00",
+  "evaluation_timestamp": "2026-11-02T07:45:34.706132+00:00",
   "total_test_cases": 30,
   "valid_query_count": 25,
   "valid_query_correct_count": 25,
@@ -11,7 +11,7 @@
   "accuracy_claim": "100.0% on the current 30-case validated MVP benchmark (not a claim of universal accuracy across all Vietnamese financial reports)",
   "evaluation_scope": "30-case hardened benchmark (25 valid, 5 invalid/rejection)",
   "evidence_completeness_percent": 100.0,
-  "average_latency_ms": 190.38,
+  "average_latency_ms": 185.28,
   "overall_status": "PASS",
   "known_limitations": [
     "MVP supports 8 canonical metrics (4 absolute, 4 derived); other metrics are safely rejected.",
@@ -31,7 +31,7 @@
       "is_status_match": true,
       "is_value_match": true,
       "evidence_complete": true,
-      "latency_ms": 171.3,
+      "latency_ms": 186.47,
       "error_message": null
     },
     {
@@ -44,7 +44,7 @@
       "is_status_match": true,
       "is_value_match": true,
       "evidence_complete": true,
-      "latency_ms": 146.96,
+      "latency_ms": 154.26,
       "error_message": null
     },
     {
@@ -57,7 +57,7 @@
       "is_status_match": true,
       "is_value_match": true,
       "evidence_complete": true,
-      "latency_ms": 149.3,
+      "latency_ms": 142.97,
       "error_message": null
     },
     {
@@ -70,7 +70,7 @@
       "is_status_match": true,
       "is_value_match": true,
       "evidence_complete": true,
-      "latency_ms": 227.9,
+      "latency_ms": 211.6,
       "error_message": null
     },
     {
@@ -83,7 +83,7 @@
       "is_status_match": true,
       "is_value_match": true,
       "evidence_complete": true,
-      "latency_ms": 159.31,
+      "latency_ms": 145.34,
       "error_message": null
     },
     {
@@ -96,7 +96,7 @@
       "is_status_match": true,
       "is_value_match": true,
       "evidence_complete": true,
-      "latency_ms": 153.09,
+      "latency_ms": 153.08,
       "error_message": null
     },
     {
@@ -109,7 +109,7 @@
       "is_status_match": true,
       "is_value_match": true,
       "evidence_complete": true,
-      "latency_ms": 154.4,
+      "latency_ms": 142.33,
       "error_message": null
     },
     {
@@ -122,7 +122,7 @@
       "is_status_match": true,
       "is_value_match": true,
       "evidence_complete": true,
-      "latency_ms": 225.86,
+      "latency_ms": 215.6,
       "error_message": null
     },
     {
@@ -135,7 +135,7 @@
       "is_status_match": true,
       "is_value_match": true,
       "evidence_complete": true,
-      "latency_ms": 149.13,
+      "latency_ms": 139.46,
       "error_message": null
     },
     {
@@ -148,7 +148,7 @@
       "is_status_match": true,
       "is_value_match": true,
       "evidence_complete": true,
-      "latency_ms": 152.15,
+      "latency_ms": 143.19,
       "error_message": null
     },
     {
@@ -161,7 +161,7 @@
       "is_status_match": true,
       "is_value_match": true,
       "evidence_complete": true,
-      "latency_ms": 156.56,
+      "latency_ms": 143.11,
       "error_message": null
     },
     {
@@ -174,7 +174,7 @@
       "is_status_match": true,
       "is_value_match": true,
       "evidence_complete": true,
-      "latency_ms": 234.09,
+      "latency_ms": 217.14,
       "error_message": null
     },
     {
@@ -187,7 +187,7 @@
       "is_status_match": true,
       "is_value_match": true,
       "evidence_complete": true,
-      "latency_ms": 160.57,
+      "latency_ms": 144.59,
       "error_message": null
     },
     {
@@ -200,7 +200,7 @@
       "is_status_match": true,
       "is_value_match": true,
       "evidence_complete": true,
-      "latency_ms": 153.14,
+      "latency_ms": 142.22,
       "error_message": null
     },
     {
@@ -213,7 +213,7 @@
       "is_status_match": true,
       "is_value_match": true,
       "evidence_complete": true,
-      "latency_ms": 151.48,
+      "latency_ms": 150.39,
       "error_message": null
     },
     {
@@ -226,7 +226,7 @@
       "is_status_match": true,
       "is_value_match": true,
       "evidence_complete": true,
-      "latency_ms": 156.9,
+      "latency_ms": 152.0,
       "error_message": null
     },
     {
@@ -239,7 +239,7 @@
       "is_status_match": true,
       "is_value_match": true,
       "evidence_complete": true,
-      "latency_ms": 150.15,
+      "latency_ms": 143.33,
       "error_message": null
     },
     {
@@ -252,7 +252,7 @@
       "is_status_match": true,
       "is_value_match": true,
       "evidence_complete": true,
-      "latency_ms": 294.03,
+      "latency_ms": 280.87,
       "error_message": null
     },
     {
@@ -265,7 +265,7 @@
       "is_status_match": true,
       "is_value_match": true,
       "evidence_complete": true,
-      "latency_ms": 290.03,
+      "latency_ms": 277.32,
       "error_message": null
     },
     {
@@ -278,7 +278,7 @@
       "is_status_match": true,
       "is_value_match": true,
       "evidence_complete": true,
-      "latency_ms": 385.94,
+      "latency_ms": 350.8,
       "error_message": null
     },
     {
@@ -291,7 +291,7 @@
       "is_status_match": true,
       "is_value_match": true,
       "evidence_complete": true,
-      "latency_ms": 305.46,
+      "latency_ms": 287.99,
       "error_message": null
     },
     {
@@ -304,7 +304,7 @@
       "is_status_match": true,
       "is_value_match": true,
       "evidence_complete": true,
-      "latency_ms": 375.62,
+      "latency_ms": 365.86,
       "error_message": null
     },
     {
@@ -317,7 +317,7 @@
       "is_status_match": true,
       "is_value_match": true,
       "evidence_complete": true,
-      "latency_ms": 299.82,
+      "latency_ms": 301.43,
       "error_message": null
     },
     {
@@ -330,7 +330,7 @@
       "is_status_match": true,
       "is_value_match": true,
       "evidence_complete": true,
-      "latency_ms": 295.71,
+      "latency_ms": 355.72,
       "error_message": null
     },
     {
@@ -343,7 +343,7 @@
       "is_status_match": true,
       "is_value_match": true,
       "evidence_complete": true,
-      "latency_ms": 314.07,
+      "latency_ms": 321.38,
       "error_message": null
     },
     {
@@ -356,7 +356,7 @@
       "is_status_match": true,
       "is_value_match": false,
       "evidence_complete": false,
-      "latency_ms": 155.12,
+      "latency_ms": 144.23,
       "error_message": "No facts retrieved for XYZ 2024 'net_revenue' (scope: consolidated)"
     },
     {
@@ -369,7 +369,7 @@
       "is_status_match": true,
       "is_value_match": false,
       "evidence_complete": false,
-      "latency_ms": 142.24,
+      "latency_ms": 144.56,
       "error_message": "No facts retrieved for FPT 2099 'net_income' (scope: consolidated)"
     },
     {
@@ -382,7 +382,7 @@
       "is_status_match": true,
       "is_value_match": false,
       "evidence_complete": false,
-      "latency_ms": 0.0,
+      "latency_ms": 1.07,
       "error_message": "Could not identify supported financial metric in query: 'Tỷ lệ an toàn vốn FPT năm 2024'"
     },
     {
@@ -408,7 +408,7 @@
       "is_status_match": true,
       "is_value_match": false,
       "evidence_complete": false,
-      "latency_ms": 1.0,
+      "latency_ms": 0.0,
       "error_message": "Could not identify stock ticker in query: 'Năm 2024'"
     }
   ]
