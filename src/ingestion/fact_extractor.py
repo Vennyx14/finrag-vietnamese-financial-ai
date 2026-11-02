@@ -40,6 +40,8 @@ SCALE_NAMES = {
 }
 CURRENCY_REGEX = re.compile(r"\b(VND|USD|đồng|dong)\b", re.IGNORECASE)
 YEAR_REGEX = re.compile(r"\b(19\d\d|20\d\d)\b")
+SECTION_MARKER_MAX_LENGTH = 3
+RESTATEMENT_COLUMN_REGEX = re.compile(r"(?<!sau )(?<!đã )điều\s*chỉnh", re.IGNORECASE)
 PRIOR_PERIOD_REGEX = re.compile(
     r"\b(năm\s*trước|số\s*đầu\s*năm|đầu\s*kỳ|trước)\b", re.IGNORECASE
 )
@@ -122,6 +124,48 @@ def apply_document_unit_fallback(facts: List[FinancialFact]) -> List[FinancialFa
     ]
 
 
+def _align_row(
+    row: List[str], line_code_col: int, label_col: int, header_width: int
+) -> tuple[int, str, int]:
+    """Locate the code, label, and value offset of a row wider than its header.
+
+    OCR can add a leading cell or split a section letter from its label. Rows no
+    wider than the header are read by their header positions.
+    """
+    code_col = line_code_col
+    value_offset = 0
+    if len(row) > header_width:
+        if not LINE_CODE_PATTERN.match(row[line_code_col].strip()):
+            for candidate in (line_code_col + 1, line_code_col + 2):
+                if candidate < len(row) and LINE_CODE_PATTERN.match(row[candidate].strip()):
+                    code_col = candidate
+                    value_offset = candidate - line_code_col
+                    break
+        elif len(row[label_col].strip()) <= SECTION_MARKER_MAX_LENGTH:
+            value_offset = len(row) - header_width
+
+    label = row[label_col + (code_col - line_code_col)].strip()
+    if len(label) <= SECTION_MARKER_MAX_LENGTH:
+        text_cells = [
+            cell.strip()
+            for idx, cell in enumerate(row)
+            if idx != code_col and any(ch.isalpha() for ch in cell)
+        ]
+        label = max(text_cells, key=len, default=label)
+    return code_col, label, value_offset
+
+
+def _quality_flag(
+    header_idx: int, index_cols: List[int], period_label: Optional[str]
+) -> Optional[str]:
+    """Mark cells that are not the reported amount of their period."""
+    if header_idx in index_cols:
+        return "section_index"
+    if period_label and RESTATEMENT_COLUMN_REGEX.search(period_label):
+        return "restatement_column"
+    return None
+
+
 def extract_facts_from_table(
     table_record: TableRecord,
     doc_record: DocumentRecord,
@@ -144,6 +188,7 @@ def extract_facts_from_table(
     line_code_col = struct_info["line_code_col"]
     label_col = struct_info["label_col"]
     value_cols = struct_info["value_cols"]
+    index_cols = struct_info["index_cols"]
     header_row_idx = struct_info["header_row_idx"]
     headers = struct_info["headers"]
 
@@ -163,8 +208,10 @@ def extract_facts_from_table(
         if len(row) <= max(line_code_col, label_col):
             continue
 
-        raw_code = row[line_code_col].strip()
-        original_label = row[label_col].strip()
+        code_col, original_label, value_offset = _align_row(
+            row, line_code_col, label_col, len(headers)
+        )
+        raw_code = row[code_col].strip()
 
         # Verify that raw_code is a valid accounting line code
         if not LINE_CODE_PATTERN.match(raw_code):
@@ -176,7 +223,8 @@ def extract_facts_from_table(
 
         row_id = f"{table_record.table_id}_r{r_idx}"
 
-        for c_idx in value_cols:
+        for header_idx in value_cols:
+            c_idx = header_idx + value_offset
             if c_idx >= len(row):
                 continue
 
@@ -189,7 +237,7 @@ def extract_facts_from_table(
                 continue
 
             # Identify period label from column header if available
-            period_label = headers[c_idx] if c_idx < len(headers) else None
+            period_label = headers[header_idx]
 
             # Determine fiscal year for this specific column observation
             observation_year = doc_record.year
@@ -237,6 +285,7 @@ def extract_facts_from_table(
                 unit_status=fact_unit_status,
                 report_year=doc_record.year,
                 is_comparative=is_comp,
+                quality_flag=_quality_flag(header_idx, index_cols, period_label),
             )
             facts.append(fact)
 

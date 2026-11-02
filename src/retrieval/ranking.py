@@ -43,6 +43,9 @@ class RetrievalResult(BaseModel):
     unit_scale: float = Field(
         default=1.0, description="Scale multiplier to convert raw cell value to base VND currency"
     )
+    quality_flag: Optional[str] = Field(
+        default=None, description="Set when the cell is not a reported amount"
+    )
     unit_status: str = Field(
         default="unknown", description="Unit status ('declared' or 'unknown')"
     )
@@ -144,5 +147,6 @@ def fact_dict_to_result(fact: Dict[str, Any], score: float) -> RetrievalResult:
         statement_type=statement_type,
         unit_scale=float(unit_scale),
         unit_status=str(unit_status),
+        quality_flag=_normalize_optional(fact.get("quality_flag")),
     )
 

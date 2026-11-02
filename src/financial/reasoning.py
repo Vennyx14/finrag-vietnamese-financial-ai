@@ -243,6 +243,8 @@ class FinancialReasoningEngine:
                 continue
             if r.statement_scope and r.statement_scope != statement_scope:
                 continue
+            if r.quality_flag:
+                continue
 
             lbl_lower = r.original_label.lower()
 

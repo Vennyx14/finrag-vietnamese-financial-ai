@@ -19,13 +19,13 @@ TAG_CLEAN_REGEX = re.compile(r"<[^>]+>")
 WHITESPACE_REGEX = re.compile(r"\s+")
 
 LINE_CODE_HEADER_REGEX = re.compile(
-    r"\b(mã\s*số|mã\s*chỉ\s*tiêu|mã|code)\b", re.IGNORECASE
+    r"\b(m[ãáàạảaâêé]\s*s[ốóôồõo]|mã\s*chỉ\s*tiêu|mã|codes?)\b", re.IGNORECASE
 )
 LABEL_HEADER_REGEX = re.compile(
-    r"\b(chỉ\s*tiêu|tài\s*sản|nguồn\s*vốn|khoản\s*mục|nội\s*dung|danh\s*mục)\b",
+    r"\b(ch[ỉíìi]\s*ti[êềếe]u|tài\s*sản|nguồn\s*vốn|khoản\s*mục|nội\s*dung|danh\s*mục|items?|assets|resources)\b",
     re.IGNORECASE,
 )
-NOTE_HEADER_REGEX = re.compile(r"\b(thuyết\s*minh|tm|note)\b", re.IGNORECASE)
+NOTE_HEADER_REGEX = re.compile(r"\b(thuy[ếêe]t\s*minh|tm|notes?)\b", re.IGNORECASE)
 LINE_CODE_PATTERN = re.compile(r"^[0-9]{1,3}[a-zA-Z]?$")
 
 
@@ -215,7 +215,9 @@ def inspect_table_structure(rows: List[List[str]]) -> Dict[str, Any]:
     if label_col is None:
         label_col = 0 if line_code_col != 0 else 1
 
-    # Remaining columns are candidate value columns
+    # Remaining columns are candidate value columns. Columns left of both the
+    # label and the code hold section numbers such as "5.", not amounts.
+    index_cols = list(range(min(line_code_col, label_col)))
     value_cols = [
         c_idx
         for c_idx in range(len(header_cells))
@@ -230,6 +232,7 @@ def inspect_table_structure(rows: List[List[str]]) -> Dict[str, Any]:
         "label_col": label_col,
         "note_cols": sorted(list(note_cols)),
         "value_cols": value_cols,
+        "index_cols": index_cols,
         "header_row_idx": header_row_idx,
         "headers": header_cells,
     }

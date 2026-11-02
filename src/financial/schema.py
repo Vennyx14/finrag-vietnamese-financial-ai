@@ -117,6 +117,10 @@ class FinancialFact(BaseModel):
         default=1.0,
         description="Scale multiplier to convert raw value to VND base (e.g. 1.0, 1e3, 1e6, 1e9)",
     )
+    quality_flag: Optional[str] = Field(
+        default=None,
+        description="Set when the cell is not a reported amount, e.g. 'section_index'",
+    )
     unit_status: str = Field(
         default="unknown",
         description="Unit status: 'declared' if explicitly found in report, or 'unknown'",
