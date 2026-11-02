@@ -206,6 +206,7 @@ def extract_facts_from_table(
     label_col = struct_info["label_col"]
     value_cols = struct_info["value_cols"]
     index_cols = struct_info["index_cols"]
+    note_cols = struct_info["note_cols"]
     header_row_idx = struct_info["header_row_idx"]
     headers = struct_info["headers"]
 
@@ -229,6 +230,12 @@ def extract_facts_from_table(
             row, line_code_col, label_col, len(headers)
         )
         raw_code = row[code_col].strip()
+        # A row that lost its note cell has its amounts one column to the left.
+        if len(row) < len(headers) and note_cols:
+            note_cell = re.sub(r"\D", "", row[note_cols[0]]) if note_cols[0] < len(row) else ""
+            if len(note_cell) >= MIN_AMOUNT_DIGITS:
+                value_offset = len(row) - len(headers)
+
         amount_cols = [col for col in value_cols if col not in index_cols]
         if amount_cols:
             value_offset += _note_cell_offset(row, amount_cols[0] + value_offset, len(headers))

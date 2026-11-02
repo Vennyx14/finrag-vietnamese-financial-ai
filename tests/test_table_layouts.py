@@ -203,3 +203,22 @@ def test_blank_cell_in_a_row_as_wide_as_the_header_does_not_shift_it():
         ["10", "Doanh thu thuần", "", "42.658.610.841"],
     ))
     assert [(f.value, f.period_label) for f in facts] == [(42658610841.0, "Năm trước")]
+
+
+def test_row_missing_its_note_cell_keeps_year_columns():
+    facts = extract(table(
+        ["Mã số", "CHỈ TIÊU", "Thuyết minh", "Năm nay", "Năm trước"],
+        ["20", "Lưu chuyển tiền thuần từ hoạt động kinh doanh", "499.984.886.725", "(2.173.431.969.202)"],
+    ))
+    assert [(f.value, f.period_label) for f in facts] == [
+        (499984886725.0, "Năm nay"),
+        (-2173431969202.0, "Năm trước"),
+    ]
+
+
+def test_short_row_without_an_amount_in_the_note_cell_is_read_by_position():
+    facts = extract(table(
+        ["Mã số", "CHỈ TIÊU", "Thuyết minh", "Năm nay", "Năm trước"],
+        ["20", "Lưu chuyển tiền thuần", "12", "499.984.886.725"],
+    ))
+    assert [(f.value, f.period_label) for f in facts] == [(499984886725.0, "Năm nay")]
