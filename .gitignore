@@ -66,3 +66,6 @@ faiss_index/
 tmp/
 temp/
 *.tmp
+
+# Packaging metadata
+*.egg-info/
