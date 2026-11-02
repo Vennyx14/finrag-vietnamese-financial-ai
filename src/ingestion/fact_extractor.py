@@ -41,6 +41,8 @@ SCALE_NAMES = {
 CURRENCY_REGEX = re.compile(r"\b(VND|USD|đồng|dong)\b", re.IGNORECASE)
 YEAR_REGEX = re.compile(r"\b(19\d\d|20\d\d)\b")
 SECTION_MARKER_MAX_LENGTH = 3
+NOTE_CELL_REGEX = re.compile(r"^\d{1,2}(?:\.\d{1,2})?[a-z]?$", re.IGNORECASE)
+MIN_AMOUNT_DIGITS = 7
 RESTATEMENT_COLUMN_REGEX = re.compile(r"(?<!sau )(?<!đã )điều\s*chỉnh", re.IGNORECASE)
 PRIOR_PERIOD_REGEX = re.compile(
     r"\b(năm\s*trước|số\s*đầu\s*năm|đầu\s*kỳ|trước)\b", re.IGNORECASE
@@ -155,6 +157,19 @@ def _align_row(
     return code_col, label, value_offset
 
 
+def _note_cell_offset(row: List[str], first_value_col: int, header_width: int) -> int:
+    """Return 1 when a note number sits where the first amount should be."""
+    if first_value_col + 1 >= len(row):
+        return 0
+    cell = row[first_value_col].strip()
+    if len(re.sub(r"\D", "", row[first_value_col + 1])) < MIN_AMOUNT_DIGITS:
+        return 0
+    if NOTE_CELL_REGEX.match(cell):
+        return 1
+    # A blank note cell shifts the row only when the row is wider than its header.
+    return 1 if not cell and len(row) > header_width else 0
+
+
 def _quality_flag(
     header_idx: int, index_cols: List[int], period_label: Optional[str]
 ) -> Optional[str]:
@@ -163,6 +178,8 @@ def _quality_flag(
         return "section_index"
     if period_label and RESTATEMENT_COLUMN_REGEX.search(period_label):
         return "restatement_column"
+    if period_label and period_label.strip() == "%":
+        return "percentage_column"
     return None
 
 
@@ -212,6 +229,9 @@ def extract_facts_from_table(
             row, line_code_col, label_col, len(headers)
         )
         raw_code = row[code_col].strip()
+        amount_cols = [col for col in value_cols if col not in index_cols]
+        if amount_cols:
+            value_offset += _note_cell_offset(row, amount_cols[0] + value_offset, len(headers))
 
         # Verify that raw_code is a valid accounting line code
         if not LINE_CODE_PATTERN.match(raw_code):

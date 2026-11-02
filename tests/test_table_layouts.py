@@ -141,3 +141,65 @@ def test_restated_comparative_header_is_not_flagged():
         ["Doanh thu thuần", "10", "1.000", "900"],
     ))
     assert [f.quality_flag for f in facts] == [None, None]
+
+
+def test_note_number_in_the_first_value_column_is_skipped():
+    facts = extract(table(
+        ["", "CHỈ TIÊU", "Mã số Thuyết minh", "Năm nay", "Năm trước"],
+        ["3.", "Doanh thu thuần", "10", "27", "23.213.536.857.725", "42.658.610.841.354"],
+        ["5.", "Lợi nhuận gộp", "20", "", "8.722.878.985.489", "9.682.404.684.601"],
+    ))
+    assert values(facts, "10") == [23213536857725.0, 42658610841354.0]
+    assert values(facts, "20") == [8722878985489.0, 9682404684601.0]
+    assert facts[-1].period_label == "Năm trước"
+
+
+def test_note_in_a_row_as_wide_as_the_header_is_skipped():
+    facts = extract(table(
+        ["Mã số", "CHỈ TIÊU", "Năm nay"],
+        ["21", "Doanh thu hoạt động tài chính", "28", "600.093.309.692"],
+    ))
+    assert values(facts, "21") == [600093309692.0]
+
+
+def test_small_real_value_followed_by_a_small_value_is_kept():
+    facts = extract(table(
+        ["Mã số", "CHỈ TIÊU", "Năm nay", "Năm trước"],
+        ["70", "Lãi cơ bản trên cổ phiếu", "28", "31"],
+    ))
+    assert values(facts, "70") == [28.0, 31.0]
+
+
+def test_percentage_column_is_flagged():
+    facts = extract(table(
+        ["Mã số", "CHỈ TIÊU", "2022", "2021", "%"],
+        ["60", "Lợi nhuận sau thuế", "1.000.000", "900.000", "11"],
+    ))
+    assert values(facts, "60") == [1000000.0, 900000.0]
+
+
+def test_repeated_code_column_is_not_a_value():
+    facts = extract(table(
+        ["Mã số", "CHỈ TIÊU", "Năm nay", "Mã số", "Năm trước"],
+        ["270", "TỔNG CỘNG TÀI SẢN", "1.000.000", "270", "900.000"],
+    ))
+    assert values(facts, "270") == [1000000.0, 900000.0]
+
+
+def test_scrambled_note_title_keeps_the_period_columns():
+    facts = extract(table(
+        ["TÀI SẢN", "Mã số minh", "Thuyết", "31/12/2024 VND", "01/01/2024 VND"],
+        ["TỔNG TÀI SẢN", "270", "", "22.258.539.466.780", "22.725.714.842.507"],
+    ))
+    assert [(f.value, f.period_label) for f in facts] == [
+        (22258539466780.0, "31/12/2024 VND"),
+        (22725714842507.0, "01/01/2024 VND"),
+    ]
+
+
+def test_blank_cell_in_a_row_as_wide_as_the_header_does_not_shift_it():
+    facts = extract(table(
+        ["Mã số", "CHỈ TIÊU", "Năm nay", "Năm trước"],
+        ["10", "Doanh thu thuần", "", "42.658.610.841"],
+    ))
+    assert [(f.value, f.period_label) for f in facts] == [(42658610841.0, "Năm trước")]

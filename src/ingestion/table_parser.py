@@ -25,7 +25,7 @@ LABEL_HEADER_REGEX = re.compile(
     r"\b(ch[ỉíìi]\s*ti[êềếe]u|tài\s*sản|nguồn\s*vốn|khoản\s*mục|nội\s*dung|danh\s*mục|items?|assets|resources)\b",
     re.IGNORECASE,
 )
-NOTE_HEADER_REGEX = re.compile(r"\b(thuy[ếêe]t\s*minh|tm|notes?)\b", re.IGNORECASE)
+NOTE_HEADER_REGEX = re.compile(r"\b(thuy[ếêe]t(\s*minh)?|tm|notes?)\b", re.IGNORECASE)
 LINE_CODE_PATTERN = re.compile(r"^[0-9]{1,3}[a-zA-Z]?$")
 
 
@@ -224,6 +224,7 @@ def inspect_table_structure(rows: List[List[str]]) -> Dict[str, Any]:
         if c_idx != line_code_col
         and c_idx != label_col
         and c_idx not in note_cols
+        and not LINE_CODE_HEADER_REGEX.search(header_cells[c_idx])
     ]
 
     return {

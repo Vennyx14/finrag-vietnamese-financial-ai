@@ -307,6 +307,17 @@ class FinancialReasoningEngine:
         ]
 
         if different_values:
+            # K22: a later report restates an earlier figure, so the latest report wins.
+            # The verifier's comparative reconciliation raises the warning.
+            latest_year = max(c.report_year or 0 for c in valid_candidates)
+            latest = [c for c in valid_candidates if (c.report_year or 0) == latest_year]
+            latest_agrees = all(
+                math.isclose(c.normalized_value, latest[0].normalized_value, rel_tol=1e-4, abs_tol=1.0)
+                for c in latest
+            )
+            if latest_agrees and len(latest) < len(valid_candidates):
+                return latest[0]
+
             val_summary = sorted(list({c.normalized_value for c in valid_candidates}))
             raise AmbiguousFactError(
                 f"Multiple ambiguous facts found with conflicting values for {ticker} {year} '{metric_name}': {val_summary}"
