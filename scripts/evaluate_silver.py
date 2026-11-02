@@ -79,7 +79,10 @@ def score_case(case: Dict[str, Any], response: FinRAGResponse) -> str:
             return "OVER_REFUSAL"
         return "CORRECT" if value_matches(case, response.calculation.value) else "WRONG_ANSWER"
     if answered:
-        return "OVER_ANSWER"
+        # A refusal label records past capability. A labelled value still decides the answer.
+        if case.get("gold_value") is None:
+            return "OVER_ANSWER"
+        return "CORRECT" if value_matches(case, response.calculation.value) else "WRONG_ANSWER"
     return "CORRECT" if response.error_category in REFUSAL_CATEGORIES[expected] else "WRONG_REFUSAL"
 
 
@@ -132,7 +135,7 @@ def evaluate(cases: List[Dict[str, Any]], app: FinRAGApplication) -> Dict[str, A
     for result in results:
         by_type.setdefault(result["expected"], []).append(result)
     return {
-        "benchmark": "silver_v1",
+        "benchmark": "silver_v2",
         "label_note": "LLM-prefilled labels accepted by the owner; not human-verified gold.",
         "overall": summarize(results),
         "verbatim_vifinqa": summarize([r for r in results if r["question_origin"] == "verbatim"]),
@@ -151,12 +154,12 @@ def main(argv: Optional[List[str]] = None) -> int:
     parser.add_argument(
         "--silver-path",
         type=Path,
-        default=REPO_ROOT / "data" / "processed" / "gold_drafts" / "silver_v1.jsonl",
+        default=REPO_ROOT / "data" / "processed" / "gold_drafts" / "silver_v2.jsonl",
     )
     parser.add_argument(
         "--manifest-path",
         type=Path,
-        default=REPO_ROOT / "data" / "manifests" / "silver_v1_quality.json",
+        default=REPO_ROOT / "data" / "manifests" / "silver_v2_quality.json",
     )
     args = parser.parse_args(argv)
     if not args.silver_path.exists():

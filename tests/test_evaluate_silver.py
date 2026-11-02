@@ -71,10 +71,6 @@ def test_answerable_refusal_is_over_refusal():
     assert score_case(case("RESOLVE_AND_CALCULATE"), response) == "OVER_REFUSAL"
 
 
-def test_answering_an_unsupported_question_is_over_answer():
-    assert score_case(case("REFUSE_UNSUPPORTED"), answer(2e9)) == "OVER_ANSWER"
-
-
 def test_expected_refusal_is_correct():
     response = refusal(ErrorCategory.USER_INPUT_ERROR)
     assert score_case(case("REFUSE_UNSUPPORTED"), response) == "CORRECT"
@@ -110,3 +106,12 @@ def test_wilson_interval_matches_hand_value():
     low, high = wilson_interval(5, 10)
     assert low == pytest.approx(0.2366, abs=1e-4)
     assert high == pytest.approx(0.7634, abs=1e-4)
+
+
+def test_refusal_label_with_a_value_scores_the_answer():
+    assert score_case(case("REFUSE_UNSUPPORTED"), answer(2e9)) == "CORRECT"
+    assert score_case(case("REFUSE_UNSUPPORTED"), answer(9e9)) == "WRONG_ANSWER"
+
+
+def test_refusal_label_without_a_value_is_an_over_answer():
+    assert score_case(case("REFUSE_UNSUPPORTED", gold_value=None), answer(2e9)) == "OVER_ANSWER"
