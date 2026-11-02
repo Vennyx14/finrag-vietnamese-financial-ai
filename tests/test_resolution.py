@@ -218,13 +218,13 @@ def app():
 class TestApplicationResolutionIntegration:
     """Tests that FinRAGApplication integrates ResolutionResult and populates resolution DTO."""
 
-    def test_app_ask_returns_unsupported_on_false_positive_query_155(self, app):
+    def test_app_ask_answers_profit_before_tax_with_line_50_query_155(self, app):
+        # The original false positive answered line 60 (2,349,673,770,275).
+        # Line 50 entered the catalog in M4 layer 1, as the owner approved.
         resp = app.ask("Lợi nhuận trước thuế của công ty mẹ QNS năm 2023 là bao nhiêu trăm tỷ đồng?")
-        assert resp.status == ResponseStatus.ERROR
-        assert resp.error_category == ErrorCategory.USER_INPUT_ERROR
-        assert resp.resolution is not None
-        assert resp.resolution.status == "unsupported"
-        assert "trước thuế" in resp.error_message.lower()
+        assert resp.status == ResponseStatus.SUCCESS
+        assert resp.calculation.value == 2_612_821_126_851.0
+        assert [e.line_code for e in resp.evidence] == ["50"]
 
     def test_app_ask_returns_unsupported_on_multi_company_query_410(self, app):
         q = (

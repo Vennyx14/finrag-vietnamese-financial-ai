@@ -27,12 +27,19 @@ from src.application.models import (
     format_metric_value,
     format_vnd,
 )
+from src.financial.calculator import InvalidNumericValueError, ZeroDenominatorError
 from src.financial.metrics import MetricRegistry, default_metric_registry
+from src.financial.program.catalog import build_extended_registry
+from src.financial.program.executor import ProgramExecutor
+from src.financial.program.models import Program
+from src.financial.program.planner import plan_question
+from src.financial.program.verifier import verify_program
 from src.financial.reasoning import (
     FinancialReasoningEngine,
     FinancialReasoningRequest,
     InvalidRequestError,
     MissingFactError,
+    ReasoningError,
     UnsupportedMetricError,
 )
 from src.financial.resolution import ResolutionResult, ResolutionStatus, resolve_query
@@ -83,6 +90,13 @@ class FinRAGApplication:
             self.reasoning_engine = None
 
         self.verification_engine = verification_engine or VerificationEngine(self.registry)
+        self.program_executor: Optional[ProgramExecutor] = None
+        if self.retriever is not None:
+            self.program_executor = ProgramExecutor(
+                FinancialReasoningEngine(
+                    retriever=self.retriever, registry=build_extended_registry()
+                )
+            )
 
     def _collect_supporting_facts(self, res: FinancialResult) -> List[RetrievalResult]:
         """Gather facts the verifier can check an answer against.
@@ -175,6 +189,12 @@ class FinRAGApplication:
             assumptions=resolution_res.assumptions,
         )
 
+        program = None
+        if not resolution_res.is_resolved and self.program_executor is not None:
+            program = plan_question(clean_query)
+        if program is not None:
+            return self._answer_with_program(program, raw_query, clean_query, resolution_dto, t0)
+
         if not resolution_res.is_resolved:
             elapsed_ms = (time.time() - t0) * 1000
             err_cat = ErrorCategory.USER_INPUT_ERROR
@@ -249,155 +269,221 @@ class FinRAGApplication:
                 query_text=clean_query,  # M2b: Enable independent query re-parse check
                 supporting_facts=self._collect_supporting_facts(res),
             )
-
-            elapsed_ms = (time.time() - t0) * 1000
-
-            # 4. Map into typed DTOs
-            metric_def = self.registry.get(res.metric) if self.registry.is_registered(res.metric) else None
-            display_name = metric_def.vietnamese_name if metric_def else res.metric
-
-            compact_val, raw_val = format_metric_value(res.value, unit=res.unit, operation=res.operation)
-
-            calc_dto = CalculationDTO(
-                metric=res.metric,
-                display_name=display_name,
-                operation=res.operation,
-                formula=res.formula,
-                value=res.value,
-                formatted_value=compact_val,
-                raw_value_display=raw_val,
-                unit=res.unit,
-                methodology=res.methodology,
-            )
-
-            ver_dto = VerificationDTO(
-                status=ver_res.status.value,
-                overall_pass=ver_res.overall_pass,
-                summary=ver_res.summary(),
-                checks=[
-                    VerificationCheckDTO(
-                        name=c.check_name,
-                        status=c.status,
-                        severity=c.severity.value,
-                        message=c.message,
-                    )
-                    for c in ver_res.checks
-                ],
-                errors=ver_res.errors,
-                warnings=ver_res.warnings,
-            )
-
-            evidence_dtos = []
-            for ev in res.evidence:
-                ev_val = float(ev.get("value", 0.0))
-                ev_unit = ev.get("unit") or "VND"
-                ev_compact, _ = format_metric_value(ev_val, unit=ev_unit)
-                evidence_dtos.append(
-                    EvidenceDTO(
-                        fact_id=ev["fact_id"],
-                        ticker=ev["ticker"],
-                        fiscal_year=ev.get("fiscal_year") or ev["year"],
-                        report_year=ev.get("report_year"),
-                        is_comparative=bool(ev.get("is_comparative", False)),
-                        line_code=ev.get("line_code"),
-                        original_label=ev["original_label"],
-                        value=ev_val,
-                        formatted_value=ev_compact,
-                        unit=ev_unit,
-                        page=ev["page"],
-                        table_id=ev["table_id"],
-                        row_id=ev.get("row_id"),
-                        source_path=ev["source_path"],
-                        statement_scope=ev.get("statement_scope", "consolidated"),
-                        statement_type=ev.get("statement_type"),
-                        unit_scale=float(ev.get("unit_scale", 1.0)),
-                        unit_status=str(ev.get("unit_status", "unknown")),
-                    )
-                )
-
-            # Build TraceDTO if trace exists on FinancialResult (M3)
-            trace_dto: Optional[TraceDTO] = None
-            if res.trace is not None:
-                trace_steps = []
-                for s in res.trace.steps:
-                    op_for_format = (
-                        res.operation
-                        if s.step_id == res.trace.final_step_id
-                        else s.operation
-                    )
-                    s_compact, _ = format_metric_value(
-                        s.output_value, unit=s.unit, operation=op_for_format
-                    )
-                    trace_steps.append(
-                        TraceStepDTO(
-                            step_id=s.step_id,
-                            operation=s.operation,
-                            operand_ids=list(s.operand_ids),
-                            input_values=list(s.input_values),
-                            output_value=s.output_value,
-                            formatted_output=s_compact,
-                            unit=s.unit,
-                            unit_scale=s.unit_scale,
-                            description=s.description,
-                        )
-                    )
-                trace_dto = TraceDTO(
-                    steps=trace_steps,
-                    final_step_id=res.trace.final_step_id,
-                )
-
-            # 5. Determine overall application status
-            if ver_res.status == VerificationStatus.REJECTED:
-                app_status = ResponseStatus.REJECTED
-                err_cat = ErrorCategory.VERIFICATION_REJECTED
-                err_msg = (
-                    f"Kết quả tính toán bị từ chối kiểm định: "
-                    f"{'; '.join(ver_res.errors)}"
-                )
-                is_trusted = False
-            elif ver_res.status == VerificationStatus.WARNING:
-                app_status = ResponseStatus.WARNING
-                err_cat = None
-                err_msg = None
-                is_trusted = True
-            else:
-                app_status = ResponseStatus.SUCCESS
-                err_cat = None
-                err_msg = None
-                is_trusted = True
-
-            return FinRAGResponse(
-                query=raw_query,
-                status=app_status,
-                error_category=err_cat,
-                error_message=err_msg,
-                ticker=res.ticker,
-                fiscal_year=res.year,
-                years=res.years,
-                statement_scope=res.statement_scope,
-                calculation=calc_dto,
-                verification=ver_dto,
-                evidence=evidence_dtos,
-                resolution=resolution_dto,
-                trace=trace_dto,
-                latency_ms=round(elapsed_ms, 2),
-                is_trusted=is_trusted,
-            )
+            return self._to_response(res, ver_res, raw_query, resolution_dto, t0)
         except Exception as e:
             elapsed_ms = (time.time() - t0) * 1000
             return FinRAGResponse(
                 query=raw_query,
                 status=ResponseStatus.ERROR,
                 error_category=ErrorCategory.SYSTEM_ERROR,
-                error_message=f"Lỗi hệ thống trong quá trình kiểm chứng hoặc định dạng kết quả: {str(e)}",
-                ticker=res.ticker,
-                fiscal_year=res.year,
-                years=res.years,
-                statement_scope=res.statement_scope,
+                error_message=f"Lỗi hệ thống khi kiểm định kết quả: {str(e)}",
                 resolution=resolution_dto,
                 latency_ms=round(elapsed_ms, 2),
                 is_trusted=False,
             )
+
+    def _answer_with_program(
+        self,
+        program: Program,
+        raw_query: str,
+        clean_query: str,
+        resolution_dto: ResolutionDTO,
+        t0: float,
+    ) -> FinRAGResponse:
+        """Run a planned program and verify it. A failure is a typed refusal."""
+        resolved_dto = resolution_dto.model_copy(
+            update={
+                "status": ResolutionStatus.RESOLVED.value,
+                "metric": program.name,
+                "operation": "program",
+                "reason": None,
+                "actionable_guidance": None,
+                "assumptions": list(program.assumptions),
+            }
+        )
+        try:
+            res = self.program_executor.run(program)
+        except ReasoningError as e:
+            err_cat, user_msg = self._classify_reasoning_error(str(e))
+            return FinRAGResponse(
+                query=raw_query,
+                status=ResponseStatus.ERROR,
+                error_category=err_cat,
+                error_message=user_msg,
+                resolution=resolved_dto,
+                latency_ms=round((time.time() - t0) * 1000, 2),
+                is_trusted=False,
+            )
+        except (ZeroDenominatorError, InvalidNumericValueError) as e:
+            return FinRAGResponse(
+                query=raw_query,
+                status=ResponseStatus.ERROR,
+                error_category=ErrorCategory.DATA_NOT_FOUND,
+                error_message=f"Không thể tính toán từ số liệu trong báo cáo: {str(e)}",
+                resolution=resolved_dto,
+                latency_ms=round((time.time() - t0) * 1000, 2),
+                is_trusted=False,
+            )
+
+        try:
+            ver_res = verify_program(
+                program, res, clean_query, supporting_facts=self._collect_supporting_facts(res)
+            )
+            return self._to_response(res, ver_res, raw_query, resolved_dto, t0)
+        except Exception as e:
+            return FinRAGResponse(
+                query=raw_query,
+                status=ResponseStatus.ERROR,
+                error_category=ErrorCategory.SYSTEM_ERROR,
+                error_message=f"Lỗi hệ thống khi kiểm định kết quả: {str(e)}",
+                resolution=resolved_dto,
+                latency_ms=round((time.time() - t0) * 1000, 2),
+                is_trusted=False,
+            )
+
+    def _to_response(
+        self,
+        res: FinancialResult,
+        ver_res: VerificationResult,
+        raw_query: str,
+        resolution_dto: ResolutionDTO,
+        t0: float,
+    ) -> FinRAGResponse:
+        """Map a verified result into typed DTOs."""
+        elapsed_ms = (time.time() - t0) * 1000
+
+        # 4. Map into typed DTOs
+        metric_def = self.registry.get(res.metric) if self.registry.is_registered(res.metric) else None
+        display_name = metric_def.vietnamese_name if metric_def else res.metric
+
+        compact_val, raw_val = format_metric_value(res.value, unit=res.unit, operation=res.operation)
+
+        calc_dto = CalculationDTO(
+            metric=res.metric,
+            display_name=display_name,
+            operation=res.operation,
+            formula=res.formula,
+            value=res.value,
+            formatted_value=compact_val,
+            raw_value_display=raw_val,
+            unit=res.unit,
+            methodology=res.methodology,
+            answer_label=res.answer_label,
+        )
+
+        ver_dto = VerificationDTO(
+            status=ver_res.status.value,
+            overall_pass=ver_res.overall_pass,
+            summary=ver_res.summary(),
+            checks=[
+                VerificationCheckDTO(
+                    name=c.check_name,
+                    status=c.status,
+                    severity=c.severity.value,
+                    message=c.message,
+                )
+                for c in ver_res.checks
+            ],
+            errors=ver_res.errors,
+            warnings=ver_res.warnings,
+        )
+
+        evidence_dtos = []
+        for ev in res.evidence:
+            ev_val = float(ev.get("value", 0.0))
+            ev_unit = ev.get("unit") or "VND"
+            ev_compact, _ = format_metric_value(ev_val, unit=ev_unit)
+            evidence_dtos.append(
+                EvidenceDTO(
+                    fact_id=ev["fact_id"],
+                    ticker=ev["ticker"],
+                    fiscal_year=ev.get("fiscal_year") or ev["year"],
+                    report_year=ev.get("report_year"),
+                    is_comparative=bool(ev.get("is_comparative", False)),
+                    line_code=ev.get("line_code"),
+                    original_label=ev["original_label"],
+                    value=ev_val,
+                    formatted_value=ev_compact,
+                    unit=ev_unit,
+                    page=ev["page"],
+                    table_id=ev["table_id"],
+                    row_id=ev.get("row_id"),
+                    source_path=ev["source_path"],
+                    statement_scope=ev.get("statement_scope", "consolidated"),
+                    statement_type=ev.get("statement_type"),
+                    unit_scale=float(ev.get("unit_scale", 1.0)),
+                    unit_status=str(ev.get("unit_status", "unknown")),
+                )
+            )
+
+        # Build TraceDTO if trace exists on FinancialResult (M3)
+        trace_dto: Optional[TraceDTO] = None
+        if res.trace is not None:
+            trace_steps = []
+            for s in res.trace.steps:
+                op_for_format = (
+                    res.operation
+                    if s.step_id == res.trace.final_step_id
+                    else s.operation
+                )
+                s_compact, _ = format_metric_value(
+                    s.output_value, unit=s.unit, operation=op_for_format
+                )
+                trace_steps.append(
+                    TraceStepDTO(
+                        step_id=s.step_id,
+                        operation=s.operation,
+                        operand_ids=list(s.operand_ids),
+                        input_values=list(s.input_values),
+                        output_value=s.output_value,
+                        formatted_output=s_compact,
+                        unit=s.unit,
+                        unit_scale=s.unit_scale,
+                        description=s.description,
+                    )
+                )
+            trace_dto = TraceDTO(
+                steps=trace_steps,
+                final_step_id=res.trace.final_step_id,
+            )
+
+        # 5. Determine overall application status
+        if ver_res.status == VerificationStatus.REJECTED:
+            app_status = ResponseStatus.REJECTED
+            err_cat = ErrorCategory.VERIFICATION_REJECTED
+            err_msg = (
+                f"Kết quả tính toán bị từ chối kiểm định: "
+                f"{'; '.join(ver_res.errors)}"
+            )
+            is_trusted = False
+        elif ver_res.status == VerificationStatus.WARNING:
+            app_status = ResponseStatus.WARNING
+            err_cat = None
+            err_msg = None
+            is_trusted = True
+        else:
+            app_status = ResponseStatus.SUCCESS
+            err_cat = None
+            err_msg = None
+            is_trusted = True
+
+        return FinRAGResponse(
+            query=raw_query,
+            status=app_status,
+            error_category=err_cat,
+            error_message=err_msg,
+            ticker=res.ticker,
+            fiscal_year=res.year,
+            years=res.years,
+            statement_scope=res.statement_scope,
+            calculation=calc_dto,
+            verification=ver_dto,
+            evidence=evidence_dtos,
+            resolution=resolution_dto,
+            trace=trace_dto,
+            latency_ms=round(elapsed_ms, 2),
+            is_trusted=is_trusted,
+        )
 
     def _classify_reasoning_error(self, raw_err: str) -> tuple[ErrorCategory, str]:
         """Translate raw backend reasoning errors into user-facing diagnostic guidance."""

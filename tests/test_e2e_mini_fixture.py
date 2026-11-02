@@ -91,7 +91,7 @@ class TestWarningPath:
 
 class TestRefusalPaths:
     def test_unsupported_metric(self, app):
-        resp = app.ask("Lợi nhuận gộp ZQX năm 2024")
+        resp = app.ask("Doanh thu từ cho thuê khô tàu bay của ZQX năm 2024")
         assert resp.status == ResponseStatus.ERROR
         assert resp.error_category == ErrorCategory.USER_INPUT_ERROR
         assert resp.resolution.status == "unsupported"

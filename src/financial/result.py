@@ -140,6 +140,9 @@ class FinancialResult(BaseModel):
     error_message: Optional[str] = Field(
         default=None, description="Detailed failure reason when status == 'ERROR'"
     )
+    answer_label: Optional[str] = Field(
+        default=None, description="Selected year or company when the answer is a choice"
+    )
 
     @property
     def is_success(self) -> bool:

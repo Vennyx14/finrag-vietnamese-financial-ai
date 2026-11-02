@@ -140,6 +140,7 @@ class CalculationDTO(BaseModel):
     raw_value_display: str
     unit: str
     methodology: Optional[str] = None
+    answer_label: Optional[str] = None
 
 
 class ResolutionDTO(BaseModel):
