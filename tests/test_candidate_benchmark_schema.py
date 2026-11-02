@@ -11,6 +11,8 @@ from typing import Any, Dict, List
 import pandas as pd
 import pytest
 
+pytestmark = pytest.mark.requires_full_data
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CANDIDATES_PATH = REPO_ROOT / "data" / "benchmark" / "candidates" / "candidates_v0.jsonl"
 PARQUET_PATH = REPO_ROOT / "data" / "processed" / "financial_facts.parquet"

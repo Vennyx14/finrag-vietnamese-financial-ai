@@ -6,6 +6,8 @@ from collections import Counter
 import pandas as pd
 import pytest
 
+pytestmark = pytest.mark.requires_full_data
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 BENCHMARK_PATH = REPO_ROOT / "data" / "benchmark" / "retrieval_quality.jsonl"
 PARQUET_PATH = REPO_ROOT / "data" / "processed" / "financial_facts.parquet"

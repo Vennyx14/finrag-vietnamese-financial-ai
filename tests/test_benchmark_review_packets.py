@@ -10,6 +10,8 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
+pytestmark = pytest.mark.requires_full_data
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 PACKET_DIR = REPO_ROOT / "data" / "benchmark" / "review_packets"
 PARQUET_PATH = REPO_ROOT / "data" / "processed" / "financial_facts.parquet"

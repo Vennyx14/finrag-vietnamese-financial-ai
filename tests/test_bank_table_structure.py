@@ -232,6 +232,7 @@ def _get_table_from_jsonl(doc_id: str, page: int, table_index: int = 0) -> Optio
     return None
 
 
+@pytest.mark.requires_full_data
 def test_vcb_2023_balance_sheet_structure():
     """Verify VCB 2023 Page 9 Balance Sheet with STT and Roman/Arabic codes."""
     t = _get_table_from_jsonl("VCB_financial_statements_2023_consolidated", 9, 0)
@@ -269,6 +270,7 @@ def test_vcb_2023_balance_sheet_structure():
     assert ta_2023["line_code"] is None  # Total row code is empty in source
 
 
+@pytest.mark.requires_full_data
 def test_acb_2023_multi_row_header_structure():
     """Verify ACB 2023 Page 7 Balance Sheet with multi-row headers and rowspan/colspan."""
     t = _get_table_from_jsonl("ACB_financial_statements_2023_consolidated", 7, 0)
@@ -305,6 +307,7 @@ def test_acb_2023_multi_row_header_structure():
     assert ta_2023["line_code"] is None
 
 
+@pytest.mark.requires_full_data
 def test_mbb_2023_label_first_structure():
     """Verify MBB 2023 Page 10 Balance Sheet without a code column (label-first)."""
     t = _get_table_from_jsonl("MBB_financial_statements_2023_consolidated", 10, 0)

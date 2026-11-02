@@ -55,30 +55,35 @@ class TestFormatters:
 class TestApplicationDiagnostics:
     """Tests for user input and diagnostic error classification."""
 
+    @pytest.mark.requires_full_data
     def test_empty_query_returns_user_input_error(self, app):
         resp = app.ask("   ")
         assert resp.status == ResponseStatus.ERROR
         assert resp.error_category == ErrorCategory.USER_INPUT_ERROR
         assert not resp.is_trusted
 
+    @pytest.mark.requires_full_data
     def test_missing_ticker_returns_actionable_message(self, app):
         resp = app.ask("Doanh thu thuần năm 2024")
         assert resp.status == ResponseStatus.ERROR
         assert resp.error_category == ErrorCategory.USER_INPUT_ERROR
         assert "mã chứng khoán" in resp.error_message.lower()
 
+    @pytest.mark.requires_full_data
     def test_missing_year_returns_actionable_message(self, app):
         resp = app.ask("Doanh thu thuần FPT")
         assert resp.status == ResponseStatus.ERROR
         assert resp.error_category == ErrorCategory.USER_INPUT_ERROR
         assert "năm tài chính" in resp.error_message.lower()
 
+    @pytest.mark.requires_full_data
     def test_unsupported_metric_returns_actionable_message(self, app):
         resp = app.ask("Tỷ lệ an toàn vốn FPT năm 2024")
         assert resp.status == ResponseStatus.ERROR
         assert resp.error_category == ErrorCategory.USER_INPUT_ERROR
         assert "chưa được hỗ trợ" in resp.error_message.lower()
 
+    @pytest.mark.requires_full_data
     def test_nonexistent_ticker_returns_data_not_found(self, app):
         resp = app.ask("Doanh thu thuần XYZ năm 2024")
         assert resp.status == ResponseStatus.ERROR
@@ -88,6 +93,7 @@ class TestApplicationDiagnostics:
 class TestApplicationExecution:
     """Integration tests executing queries end-to-end through FinRAGApplication."""
 
+    @pytest.mark.requires_full_data
     def test_application_service_real_query_success(self, app):
         resp = app.ask("Doanh thu thuần FPT năm 2024")
         # M2b: May be WARNING if unit_status='unknown' for fact quality
@@ -103,6 +109,7 @@ class TestApplicationExecution:
         assert resp.evidence[0].fiscal_year == 2024
         assert resp.evidence[0].line_code == "10"
 
+    @pytest.mark.requires_full_data
     def test_application_service_real_comparative_query_warning(self, app):
         resp = app.ask("ROE VNM năm 2023")
         assert resp.status == ResponseStatus.WARNING  # Methodology warning
@@ -121,6 +128,7 @@ class TestApplicationExecution:
         assert comp_ev.is_comparative is True
         assert "BCTC 2024" in comp_ev.comparative_label
 
+    @pytest.mark.requires_full_data
     def test_application_service_growth_query(self, app):
         resp = app.ask("Tăng trưởng doanh thu FPT năm 2024")
         # M2b: May be WARNING if unit_status='unknown' for fact quality

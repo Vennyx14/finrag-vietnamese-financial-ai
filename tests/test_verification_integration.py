@@ -21,6 +21,8 @@ from src.financial.verification import (
 )
 from src.retrieval.engine import FinancialFactRetriever
 
+pytestmark = pytest.mark.requires_full_data
+
 PARQUET_PATH = Path("data/processed/financial_facts.parquet")
 
 

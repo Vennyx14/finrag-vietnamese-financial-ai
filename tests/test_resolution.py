@@ -238,6 +238,7 @@ class TestApplicationResolutionIntegration:
         assert resp.resolution is not None
         assert resp.resolution.status == "unsupported"
 
+    @pytest.mark.requires_full_data
     def test_app_ask_returns_resolution_dto_on_valid_query(self, app):
         resp = app.ask("Doanh thu thuần FPT năm 2024")
         # M2b: May be WARNING if unit_status='unknown' for fact quality

@@ -655,6 +655,7 @@ class TestIndependentMetricParseAndRobustness:
         assert res.status == ResolutionStatus.NEEDS_CLARIFICATION
         assert "identical years" in res.reason
 
+    @pytest.mark.requires_full_data
     def test_verification_exception_safety(self):
         """Finding 3 fix: When verifier raises an exception, ask() returns SYSTEM_ERROR without throwing."""
         from unittest.mock import patch

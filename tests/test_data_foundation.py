@@ -11,12 +11,14 @@ STATEMENTS_DIR = DATASET_DIR / "financial_statements"
 MANIFEST_PATH = REPO_ROOT / "data" / "manifests" / "vifinqa_profile.json"
 
 
+@pytest.mark.requires_full_data
 def test_questions_file_exists():
     """Verify that questions.jsonl exists in the expected path."""
     assert QUESTIONS_PATH.exists(), f"Missing questions file at {QUESTIONS_PATH}"
     assert QUESTIONS_PATH.is_file(), f"{QUESTIONS_PATH} is not a file"
 
 
+@pytest.mark.requires_full_data
 def test_financial_statements_exist():
     """Verify that the financial statements directory exists and contains reports."""
     assert STATEMENTS_DIR.exists(), f"Missing directory: {STATEMENTS_DIR}"
@@ -26,6 +28,7 @@ def test_financial_statements_exist():
     assert len(statement_files) > 0, "No financial statement .txt files found"
 
 
+@pytest.mark.requires_full_data
 def test_questions_can_be_parsed_as_jsonl():
     """Verify that questions.jsonl can be parsed line-by-line as valid JSON."""
     assert QUESTIONS_PATH.exists()
@@ -45,6 +48,7 @@ def test_questions_can_be_parsed_as_jsonl():
     assert len(questions) > 0, "questions.jsonl contains 0 questions"
 
 
+@pytest.mark.requires_full_data
 def test_financial_statement_readable_as_utf8():
     """Verify that financial statement files can be read as valid UTF-8 text."""
     assert STATEMENTS_DIR.exists()
