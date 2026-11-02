@@ -33,7 +33,7 @@ General-purpose LLMs are unreliable with financial figures: they pick the wrong 
 
 **Corpus:** ViFinQA / TiniX annual financial statements (OCR text with inline tables): 1,973 report files from 100 tickers, report years 2015–2025. Structured facts (338,714) exist for **78 tickers**; the 22 commercial banks and financial institutions in the corpus have no extracted facts because their statements do not follow the Circular 200/133 line-code layout, so questions about them cannot be answered. Coverage varies by ticker and year; a missing company-year returns "data not found". The regression benchmarks currently cover six tickers (FPT, HPG, VNM, MWG, PNJ, GAS), so behavior on other tickers is less tested.
 
-**Measured coverage (M0 audit, 2026-10-13):** of the 1,012 natural-language questions shipped with ViFinQA, 142 (14.0%) currently receive an answer and 870 are refused or fail. This is answer coverage, not accuracy: some answered questions are known to be answered with the wrong metric, and the true error rate is not yet measured. Fixing this was the purpose of milestone M1. **Re-measured on 2026-11-02:** 37 (3.7%) receive an answer and 975 are refused or fail; the true error rate and over-refusal rate are still unmeasured.
+**Measured coverage (M0 audit, 2026-10-13):** of the 1,012 natural-language questions shipped with ViFinQA, 142 (14.0%) currently receive an answer and 870 are refused or fail. This is answer coverage, not accuracy: some answered questions are known to be answered with the wrong metric, and the true error rate is not yet measured. Fixing this was the purpose of milestone M1. **Re-measured on 2026-11-02:** 35 (3.5%) receive an answer and 977 are refused or fail; see `docs/m1_status_transition_report.md`. The true error rate and over-refusal rate are still unmeasured.
 
 **Metrics (8):**
 
@@ -96,9 +96,9 @@ Quality is measured on three layers, reported separately. Figures below are the 
 
 | Layer | Current measurement | Planned measurement |
 |---|---|---|
-| Retrieval | 100-query self-generated benchmark: Recall@1 90.0%, Recall@5 98.0% (reported) | Concept-resolution accuracy, fact-selection accuracy |
-| Reasoning | 30-case self-authored benchmark: 25/25 valid, 5/5 rejections (reported) | Execution accuracy and program accuracy on a human-labelled set, split by company |
-| Verification | 60-case benchmark: 30/30 valid accepted, 30/30 injected mutations rejected (reported). Mutations are applied after reasoning | Verified-wrong rate under faults injected at fact-selection and extraction level; abstention precision and recall; citation correctness |
+| Retrieval | 100-query self-generated benchmark: Recall@1 90.0%, Recall@5 98.0% | Concept-resolution accuracy, fact-selection accuracy |
+| Reasoning | 30-case self-authored benchmark: 25/25 valid, 5/5 rejections | Execution accuracy and program accuracy on a human-labelled set, split by company |
+| Verification | 60-case benchmark: 30/30 valid accepted, 30/30 injected mutations rejected. Mutations are applied after reasoning | Verified-wrong rate under faults injected at fact-selection and extraction level; abstention precision and recall; citation correctness |
 
 Latency is a secondary metric; local end-to-end queries are reported in the tens to low hundreds of milliseconds.
 

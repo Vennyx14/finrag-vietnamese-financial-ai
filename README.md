@@ -74,7 +74,7 @@ The `VerificationEngine` independently re-calculates and validates the `Financia
 A check that did not run is reported as `NOT_RUN` and never counts as a pass.
 
 ## 9. UI
-The user interface is a professional Streamlit application. Designed to eschew "AI-gimmicks," it focuses on high contrast (WCAG AAA/AA), tabular-monospace typography for figures, clear diagnostic guidance on query failure, and prominent verified/warning/rejected auditing badges.
+The user interface is a professional Streamlit application. Designed to eschew "AI-gimmicks," it aims for high contrast (WCAG AA/AAA targets, not independently audited), tabular-monospace typography for figures, clear diagnostic guidance on query failure, and prominent verified/warning/rejected auditing badges.
 
 ## 10. Evaluation
 All figures below are self-authored regression benchmarks, not accuracy on unseen data. They were written from the same parquet and label rules the system uses, and they run against the local 338,714-fact corpus.
@@ -86,7 +86,9 @@ All figures below are self-authored regression benchmarks, not accuracy on unsee
 | **Verification Engine** | Valid Acceptance Rate | **100.0%** (30/30) | 60-case self-authored regression benchmark, not accuracy on unseen data |
 | | Mutation Detection Rate | **100.0%** (30/30) | 60-case self-authored regression benchmark, not accuracy on unseen data (mutations injected after reasoning) |
 | | False Acceptance Rate | **0.00%** | 60-case self-authored regression benchmark, not accuracy on unseen data |
-| **Engineering** | Test Suite Pass Rate | **100.0%** (346/346, 0 skipped) | Full `pytest` suite with local data present; see [Reproducibility](#15-reproducibility) for a fresh clone |
+| **Engineering** | Test Suite Pass Rate | **100.0%** (373/373, 0 skipped) | Full `pytest` suite with local data present; see [Reproducibility](#15-reproducibility) for a fresh clone |
+
+| **Silver benchmark** | Correct behavior | **29/30** (Wilson 95% CI 83.3%–99.4%) | 30 LLM-prefilled, owner-accepted labels, not human-verified gold; run locally with `scripts/evaluate_silver.py` |
 
 > *Note: These results show that the curated cases still pass. They test for regressions and tamper detection, and do not estimate accuracy on new questions. A human-labelled gold benchmark is planned (M5).*
 
@@ -176,7 +178,7 @@ The datasets are not in this repository, so what runs depends on what you have l
 | **Fresh clone** | Unit tests and the end-to-end tests in `tests/test_e2e_mini_fixture.py`, which use a small synthetic corpus built by [`scripts/make_mini_fixture.py`](scripts/make_mini_fixture.py). Its tickers and values are fictional. Tests marked `requires_full_data` skip with one uniform reason. |
 | **Full local data** | Everything above, plus the integration tests, both benchmarks, and the Streamlit app with real figures. This needs `data/processed/`, `data/benchmark/`, and `data/external/ViFinQA/`. Rebuild the processed facts with `python scripts/prepare_data.py`. |
 
-CI installs `requirements-ci.txt`, which holds only the packages the code imports, and runs the fresh-clone configuration.
+CI installs `requirements.txt` and runs the fresh-clone configuration.
 
 ## 16. Repository Structure
 ```text
@@ -199,8 +201,8 @@ finrag-vietnamese-financial-ai/
 
 ## 17. Limitations
 FinRAG is an early MVP and operates under strict, deliberate constraints:
-- **Low Question Coverage:** Of the 1,012 ViFinQA questions, 37 (3.7%) receive an answer (measured 2026-11-02 with `scripts/run_question_coverage.py`, down from 142 at the M0 audit on 2026-10-13). This is answer coverage, not accuracy, and over-refusal is unmeasured until a gold set exists.
-- **Accounting Identities Not Run in `ask()`:** The verifier supports balance-sheet identity checks, but the application does not supply the facts they need, so they report `NOT_RUN` on answered questions.
+- **Low Question Coverage:** Of the 1,012 ViFinQA questions, 35 (3.5%) receive an answer (measured 2026-11-02 with `scripts/run_question_coverage.py`, down from 142 at the M0 audit on 2026-10-13, see the [transition report](docs/m1_status_transition_report.md)). This is answer coverage, not accuracy.
+- **Unit Scale From Page Headers:** A scale stated only in a page header, such as `Ngàn VND`, is not captured yet, so such a value can be 1,000 times too small. The answer is flagged with a `WARNING` for its unknown unit, but the figure is wrong.
 - **Limited Metric Support:** Currently calculates only 8 core metrics (`net_revenue`, `net_income`, `total_assets`, `equity`, `net_margin`, `roa`, `roe`, `revenue_growth`).
 - **Deterministic Keyword Parsing:** Natural language understanding relies on deterministic matching rather than a highly generalizable LLM semantic parser.
 - **BM25 Constraints:** Relies strictly on BM25 and exact metadata filters; cannot resolve conceptually distant synonyms.

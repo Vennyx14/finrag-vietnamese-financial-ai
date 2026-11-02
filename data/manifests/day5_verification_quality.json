@@ -1,6 +1,6 @@
 {
   "manifest_version": "day5_v1",
-  "evaluation_timestamp": "2026-10-22T09:11:43.819916+00:00",
+  "evaluation_timestamp": "2026-11-02T03:32:23.235883+00:00",
   "total_cases": 60,
   "valid_cases": 30,
   "accepted_valid_cases": 30,
@@ -12,7 +12,7 @@
   "false_acceptances": 0,
   "mutation_detection_rate_percent": 100.0,
   "overall_verification_accuracy_percent": 100.0,
-  "average_verification_latency_ms": 0.1,
+  "average_verification_latency_ms": 0.15,
   "overall_status": "PASS",
   "accuracy_claim": "100.0% mutation detection and valid case acceptance on the 60-case Day 5 verification benchmark (not a claim of universal verification accuracy across all Vietnamese financial reports)",
   "mutation_categories": {
@@ -75,10 +75,10 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 14,
+      "checks_passed": 15,
       "checks_failed": 0,
       "checks_warning": 1,
-      "latency_ms": 0.0,
+      "latency_ms": 1.0,
       "errors": [],
       "warnings": [
         "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
@@ -94,10 +94,10 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 14,
+      "checks_passed": 15,
       "checks_failed": 0,
       "checks_warning": 1,
-      "latency_ms": 1.0,
+      "latency_ms": 0.0,
       "errors": [],
       "warnings": [
         "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r20_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
@@ -113,7 +113,7 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 14,
+      "checks_passed": 15,
       "checks_failed": 0,
       "checks_warning": 1,
       "latency_ms": 0.0,
@@ -132,10 +132,10 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 14,
+      "checks_passed": 15,
       "checks_failed": 0,
       "checks_warning": 1,
-      "latency_ms": 0.0,
+      "latency_ms": 1.0,
       "errors": [],
       "warnings": [
         "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p12_t0_r3_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
@@ -151,7 +151,7 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 14,
+      "checks_passed": 15,
       "checks_failed": 0,
       "checks_warning": 1,
       "latency_ms": 0.0,
@@ -170,7 +170,7 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 14,
+      "checks_passed": 15,
       "checks_failed": 0,
       "checks_warning": 1,
       "latency_ms": 0.0,
@@ -189,7 +189,7 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 14,
+      "checks_passed": 15,
       "checks_failed": 0,
       "checks_warning": 1,
       "latency_ms": 0.0,
@@ -208,7 +208,7 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 14,
+      "checks_passed": 15,
       "checks_failed": 0,
       "checks_warning": 1,
       "latency_ms": 0.0,
@@ -227,7 +227,7 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 14,
+      "checks_passed": 15,
       "checks_failed": 0,
       "checks_warning": 1,
       "latency_ms": 0.0,
@@ -246,10 +246,10 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 14,
+      "checks_passed": 15,
       "checks_failed": 0,
       "checks_warning": 1,
-      "latency_ms": 0.0,
+      "latency_ms": 1.02,
       "errors": [],
       "warnings": [
         "Fact quality warning: fact 'VNM_financial_statements_2024_consolidated_p10_t0_r19_c4' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
@@ -265,7 +265,7 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 14,
+      "checks_passed": 15,
       "checks_failed": 0,
       "checks_warning": 1,
       "latency_ms": 0.0,
@@ -284,7 +284,7 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 14,
+      "checks_passed": 15,
       "checks_failed": 0,
       "checks_warning": 1,
       "latency_ms": 0.0,
@@ -303,7 +303,7 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 14,
+      "checks_passed": 15,
       "checks_failed": 0,
       "checks_warning": 1,
       "latency_ms": 0.0,
@@ -322,10 +322,10 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 14,
+      "checks_passed": 15,
       "checks_failed": 0,
       "checks_warning": 1,
-      "latency_ms": 1.0,
+      "latency_ms": 0.0,
       "errors": [],
       "warnings": [
         "Fact quality warning: fact 'MWG_financial_statements_2024_consolidated_p9_t0_r19_c4' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
@@ -341,7 +341,7 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 14,
+      "checks_passed": 15,
       "checks_failed": 0,
       "checks_warning": 1,
       "latency_ms": 0.0,
@@ -360,10 +360,10 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 14,
+      "checks_passed": 15,
       "checks_failed": 0,
       "checks_warning": 1,
-      "latency_ms": 0.99,
+      "latency_ms": 0.0,
       "errors": [],
       "warnings": [
         "Fact quality warning: fact 'PNJ_financial_statements_2023_consolidated_p11_t0_r1_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
@@ -379,10 +379,10 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 14,
+      "checks_passed": 15,
       "checks_failed": 0,
       "checks_warning": 1,
-      "latency_ms": 1.0,
+      "latency_ms": 0.0,
       "errors": [],
       "warnings": [
         "Fact quality warning: fact 'GAS_financial_statements_2023_consolidated_p12_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
@@ -398,7 +398,7 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 14,
+      "checks_passed": 15,
       "checks_failed": 0,
       "checks_warning": 1,
       "latency_ms": 0.0,
@@ -417,7 +417,7 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 20,
+      "checks_passed": 21,
       "checks_failed": 0,
       "checks_warning": 2,
       "latency_ms": 0.0,
@@ -437,7 +437,7 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 20,
+      "checks_passed": 21,
       "checks_failed": 0,
       "checks_warning": 3,
       "latency_ms": 0.0,
@@ -458,7 +458,7 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 20,
+      "checks_passed": 21,
       "checks_failed": 0,
       "checks_warning": 3,
       "latency_ms": 0.0,
@@ -479,7 +479,7 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 20,
+      "checks_passed": 21,
       "checks_failed": 0,
       "checks_warning": 3,
       "latency_ms": 0.0,
@@ -500,10 +500,10 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 20,
+      "checks_passed": 21,
       "checks_failed": 0,
       "checks_warning": 3,
-      "latency_ms": 0.0,
+      "latency_ms": 1.0,
       "errors": [],
       "warnings": [
         "Methodology notice: 'roe' uses closing balance for denominator per MVP specification ('ROE (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Vốn chủ sở hữu (Số cuối kỳ, Mã số 400/410)'). Standard financial analysis may alternatively use 2-year average balance.",
@@ -521,10 +521,10 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 20,
+      "checks_passed": 21,
       "checks_failed": 0,
       "checks_warning": 3,
-      "latency_ms": 0.0,
+      "latency_ms": 0.99,
       "errors": [],
       "warnings": [
         "Methodology notice: 'roa' uses closing balance for denominator per MVP specification ('ROA (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Tổng tài sản (Số cuối kỳ, Mã số 270)'). Standard financial analysis may alternatively use 2-year average balance.",
@@ -542,7 +542,7 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 20,
+      "checks_passed": 21,
       "checks_failed": 0,
       "checks_warning": 3,
       "latency_ms": 0.0,
@@ -563,7 +563,7 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 20,
+      "checks_passed": 21,
       "checks_failed": 0,
       "checks_warning": 2,
       "latency_ms": 0.0,
@@ -583,10 +583,10 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 20,
+      "checks_passed": 21,
       "checks_failed": 0,
       "checks_warning": 2,
-      "latency_ms": 0.0,
+      "latency_ms": 1.0,
       "errors": [],
       "warnings": [
         "Fact quality warning: fact 'FPT_financial_statements_2023_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
@@ -603,7 +603,7 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 20,
+      "checks_passed": 21,
       "checks_failed": 0,
       "checks_warning": 2,
       "latency_ms": 0.0,
@@ -623,10 +623,10 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 20,
+      "checks_passed": 21,
       "checks_failed": 0,
       "checks_warning": 2,
-      "latency_ms": 0.0,
+      "latency_ms": 1.02,
       "errors": [],
       "warnings": [
         "Fact quality warning: fact 'VNM_financial_statements_2023_consolidated_p10_t0_r3_c4' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
@@ -643,10 +643,10 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 14,
+      "checks_passed": 15,
       "checks_failed": 0,
       "checks_warning": 1,
-      "latency_ms": 0.0,
+      "latency_ms": 1.11,
       "errors": [],
       "warnings": [
         "Fact quality warning: fact 'FPT_financial_statements_2024_separate_p11_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
@@ -664,7 +664,8 @@
       "is_correct_outcome": true,
       "latency_ms": 0.0,
       "errors": [
-        "Numerical discrepancy: result value 0.15150166131295625 differs from reference 0.1500016448643131 (rel_diff=0.010000 > tol 0.0001)"
+        "Numerical discrepancy: result value 0.15150166131295625 differs from reference 0.1500016448643131 (rel_diff=0.010000 > tol 0.0001)",
+        "Trace final step output 0.1500016448643131 does not match result value 0.15150166131295625"
       ],
       "warnings": [
         "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r20_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
@@ -681,7 +682,8 @@
       "is_correct_outcome": true,
       "latency_ms": 0.0,
       "errors": [
-        "Numerical discrepancy: result value 0.19054875804327379 differs from reference 0.19443750820742223 (rel_diff=0.020000 > tol 0.0001)"
+        "Numerical discrepancy: result value 0.19054875804327379 differs from reference 0.19443750820742223 (rel_diff=0.020000 > tol 0.0001)",
+        "Trace final step output 0.19443750820742223 does not match result value 0.19054875804327379"
       ],
       "warnings": [
         "Fact quality warning: fact 'FPT_financial_statements_2023_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
@@ -698,7 +700,8 @@
       "is_correct_outcome": true,
       "latency_ms": 0.0,
       "errors": [
-        "Numerical discrepancy: result value 628487943513670.0 differs from reference 62848794351367.0 (rel_diff=9.000000 > tol 0.0001)"
+        "Numerical discrepancy: result value 628487943513670.0 differs from reference 62848794351367.0 (rel_diff=9.000000 > tol 0.0001)",
+        "Trace final step output 62848794351367.0 does not match result value 628487943513670.0"
       ],
       "warnings": [
         "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
@@ -714,7 +717,8 @@
       "is_correct_outcome": true,
       "latency_ms": 0.0,
       "errors": [
-        "Numerical discrepancy: result value -0.036214158296144786 differs from reference 0.036214158296144786 (rel_diff=2.000000 > tol 0.0001)"
+        "Numerical discrepancy: result value -0.036214158296144786 differs from reference 0.036214158296144786 (rel_diff=2.000000 > tol 0.0001)",
+        "Trace final step output 0.036214158296144786 does not match result value -0.036214158296144786"
       ],
       "warnings": [
         "Methodology notice: 'roa' uses closing balance for denominator per MVP specification ('ROA (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Tổng tài sản (Số cuối kỳ, Mã số 270)'). Standard financial analysis may alternatively use 2-year average balance.",
@@ -798,7 +802,7 @@
       "verification_status": "REJECTED",
       "overall_pass": false,
       "is_correct_outcome": true,
-      "latency_ms": 1.0,
+      "latency_ms": 0.0,
       "errors": [
         "Evidence at index 1 has ticker 'VIC', expected 'FPT'",
         "Evidence at index 1 does not correspond to input: ticker: FPT vs VIC"
@@ -853,7 +857,7 @@
       "verification_status": "REJECTED",
       "overall_pass": false,
       "is_correct_outcome": true,
-      "latency_ms": 0.0,
+      "latency_ms": 1.0,
       "errors": [
         "Evidence at index 0 has fiscal_year 2023, expected 2024",
         "Evidence at index 0 has report_year (2024) != fiscal_year (2023) but is_comparative is False or missing"
@@ -1104,10 +1108,12 @@
       "verification_status": "REJECTED",
       "overall_pass": false,
       "is_correct_outcome": true,
-      "latency_ms": 1.0,
+      "latency_ms": 0.0,
       "errors": [
         "Input count mismatch for metric 'revenue_growth': expected 2 (['net_revenue']), got 1",
-        "Independent reference calculation failed: Growth operation requires 2 inputs [prev, curr]"
+        "Independent reference calculation failed: Growth operation requires 2 inputs [prev, curr]",
+        "Operand 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' in step '#0' cannot be resolved to any authentic input fact_id or prior executed step_id (lineage broken)",
+        "Operand '#0' in step '#1' cannot be resolved to any authentic input fact_id or prior executed step_id (lineage broken)"
       ],
       "warnings": [
         "Fact quality warning: fact 'FPT_financial_statements_2023_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."

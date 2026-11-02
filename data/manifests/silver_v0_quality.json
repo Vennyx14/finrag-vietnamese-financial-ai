@@ -1,0 +1,308 @@
+{
+  "benchmark": "silver_v0",
+  "label_note": "LLM-prefilled labels accepted by the owner; not human-verified gold.",
+  "overall": {
+    "cases": 30,
+    "correct": 29,
+    "correct_wilson_95": [
+      0.8333,
+      0.9941
+    ],
+    "answerable_by_system": 14,
+    "execution_correct": 13,
+    "over_refusals": 0,
+    "wrong_answers": 1,
+    "over_answers": 0,
+    "wrong_refusals": 0,
+    "verified_wrong": 1
+  },
+  "verbatim_vifinqa": {
+    "cases": 15,
+    "correct": 14,
+    "correct_wilson_95": [
+      0.7018,
+      0.9881
+    ],
+    "answerable_by_system": 4,
+    "execution_correct": 3,
+    "over_refusals": 0,
+    "wrong_answers": 1,
+    "over_answers": 0,
+    "wrong_refusals": 0,
+    "verified_wrong": 1
+  },
+  "authored": {
+    "cases": 15,
+    "correct": 15,
+    "correct_wilson_95": [
+      0.7961,
+      1.0
+    ],
+    "answerable_by_system": 10,
+    "execution_correct": 10,
+    "over_refusals": 0,
+    "wrong_answers": 0,
+    "over_answers": 0,
+    "wrong_refusals": 0,
+    "verified_wrong": 0
+  },
+  "per_expected_behavior": {
+    "REFUSE_INSUFFICIENT_EVIDENCE": {
+      "cases": 4,
+      "correct": 4,
+      "correct_wilson_95": [
+        0.5101,
+        1.0
+      ],
+      "answerable_by_system": 0,
+      "execution_correct": 0,
+      "over_refusals": 0,
+      "wrong_answers": 0,
+      "over_answers": 0,
+      "wrong_refusals": 0,
+      "verified_wrong": 0
+    },
+    "REFUSE_UNSUPPORTED": {
+      "cases": 12,
+      "correct": 12,
+      "correct_wilson_95": [
+        0.7575,
+        1.0
+      ],
+      "answerable_by_system": 0,
+      "execution_correct": 0,
+      "over_refusals": 0,
+      "wrong_answers": 0,
+      "over_answers": 0,
+      "wrong_refusals": 0,
+      "verified_wrong": 0
+    },
+    "RESOLVE_AND_CALCULATE": {
+      "cases": 14,
+      "correct": 13,
+      "correct_wilson_95": [
+        0.6853,
+        0.9873
+      ],
+      "answerable_by_system": 14,
+      "execution_correct": 13,
+      "over_refusals": 0,
+      "wrong_answers": 1,
+      "over_answers": 0,
+      "wrong_refusals": 0,
+      "verified_wrong": 1
+    }
+  },
+  "cases": [
+    {
+      "case_id": "CAND_001",
+      "question_origin": "verbatim",
+      "expected": "RESOLVE_AND_CALCULATE",
+      "status": "WARNING",
+      "outcome": "CORRECT"
+    },
+    {
+      "case_id": "CAND_002",
+      "question_origin": "verbatim",
+      "expected": "RESOLVE_AND_CALCULATE",
+      "status": "WARNING",
+      "outcome": "WRONG_ANSWER"
+    },
+    {
+      "case_id": "CAND_003",
+      "question_origin": "verbatim",
+      "expected": "RESOLVE_AND_CALCULATE",
+      "status": "WARNING",
+      "outcome": "CORRECT"
+    },
+    {
+      "case_id": "CAND_004",
+      "question_origin": "verbatim",
+      "expected": "RESOLVE_AND_CALCULATE",
+      "status": "WARNING",
+      "outcome": "CORRECT"
+    },
+    {
+      "case_id": "CAND_005",
+      "question_origin": "verbatim",
+      "expected": "REFUSE_UNSUPPORTED",
+      "status": "ERROR",
+      "outcome": "CORRECT"
+    },
+    {
+      "case_id": "CAND_006",
+      "question_origin": "authored",
+      "expected": "REFUSE_UNSUPPORTED",
+      "status": "ERROR",
+      "outcome": "CORRECT"
+    },
+    {
+      "case_id": "CAND_007",
+      "question_origin": "verbatim",
+      "expected": "REFUSE_UNSUPPORTED",
+      "status": "ERROR",
+      "outcome": "CORRECT"
+    },
+    {
+      "case_id": "CAND_008",
+      "question_origin": "authored",
+      "expected": "REFUSE_UNSUPPORTED",
+      "status": "ERROR",
+      "outcome": "CORRECT"
+    },
+    {
+      "case_id": "CAND_009",
+      "question_origin": "authored",
+      "expected": "RESOLVE_AND_CALCULATE",
+      "status": "WARNING",
+      "outcome": "CORRECT"
+    },
+    {
+      "case_id": "CAND_010",
+      "question_origin": "authored",
+      "expected": "RESOLVE_AND_CALCULATE",
+      "status": "WARNING",
+      "outcome": "CORRECT"
+    },
+    {
+      "case_id": "CAND_011",
+      "question_origin": "authored",
+      "expected": "RESOLVE_AND_CALCULATE",
+      "status": "WARNING",
+      "outcome": "CORRECT"
+    },
+    {
+      "case_id": "CAND_012",
+      "question_origin": "authored",
+      "expected": "RESOLVE_AND_CALCULATE",
+      "status": "WARNING",
+      "outcome": "CORRECT"
+    },
+    {
+      "case_id": "CAND_013",
+      "question_origin": "authored",
+      "expected": "RESOLVE_AND_CALCULATE",
+      "status": "SUCCESS",
+      "outcome": "CORRECT"
+    },
+    {
+      "case_id": "CAND_014",
+      "question_origin": "authored",
+      "expected": "RESOLVE_AND_CALCULATE",
+      "status": "WARNING",
+      "outcome": "CORRECT"
+    },
+    {
+      "case_id": "CAND_015",
+      "question_origin": "verbatim",
+      "expected": "REFUSE_UNSUPPORTED",
+      "status": "ERROR",
+      "outcome": "CORRECT"
+    },
+    {
+      "case_id": "CAND_016",
+      "question_origin": "verbatim",
+      "expected": "REFUSE_UNSUPPORTED",
+      "status": "ERROR",
+      "outcome": "CORRECT"
+    },
+    {
+      "case_id": "CAND_017",
+      "question_origin": "authored",
+      "expected": "REFUSE_UNSUPPORTED",
+      "status": "ERROR",
+      "outcome": "CORRECT"
+    },
+    {
+      "case_id": "CAND_018",
+      "question_origin": "authored",
+      "expected": "REFUSE_UNSUPPORTED",
+      "status": "ERROR",
+      "outcome": "CORRECT"
+    },
+    {
+      "case_id": "CAND_019",
+      "question_origin": "verbatim",
+      "expected": "REFUSE_UNSUPPORTED",
+      "status": "ERROR",
+      "outcome": "CORRECT"
+    },
+    {
+      "case_id": "CAND_020",
+      "question_origin": "verbatim",
+      "expected": "REFUSE_UNSUPPORTED",
+      "status": "ERROR",
+      "outcome": "CORRECT"
+    },
+    {
+      "case_id": "CAND_021",
+      "question_origin": "authored",
+      "expected": "RESOLVE_AND_CALCULATE",
+      "status": "WARNING",
+      "outcome": "CORRECT"
+    },
+    {
+      "case_id": "CAND_022",
+      "question_origin": "authored",
+      "expected": "RESOLVE_AND_CALCULATE",
+      "status": "WARNING",
+      "outcome": "CORRECT"
+    },
+    {
+      "case_id": "CAND_023",
+      "question_origin": "authored",
+      "expected": "RESOLVE_AND_CALCULATE",
+      "status": "WARNING",
+      "outcome": "CORRECT"
+    },
+    {
+      "case_id": "CAND_024",
+      "question_origin": "verbatim",
+      "expected": "REFUSE_UNSUPPORTED",
+      "status": "ERROR",
+      "outcome": "CORRECT"
+    },
+    {
+      "case_id": "CAND_025",
+      "question_origin": "verbatim",
+      "expected": "REFUSE_UNSUPPORTED",
+      "status": "ERROR",
+      "outcome": "CORRECT"
+    },
+    {
+      "case_id": "CAND_026",
+      "question_origin": "verbatim",
+      "expected": "REFUSE_INSUFFICIENT_EVIDENCE",
+      "status": "ERROR",
+      "outcome": "CORRECT"
+    },
+    {
+      "case_id": "CAND_027",
+      "question_origin": "verbatim",
+      "expected": "REFUSE_INSUFFICIENT_EVIDENCE",
+      "status": "ERROR",
+      "outcome": "CORRECT"
+    },
+    {
+      "case_id": "CAND_028",
+      "question_origin": "verbatim",
+      "expected": "REFUSE_INSUFFICIENT_EVIDENCE",
+      "status": "ERROR",
+      "outcome": "CORRECT"
+    },
+    {
+      "case_id": "CAND_029",
+      "question_origin": "authored",
+      "expected": "RESOLVE_AND_CALCULATE",
+      "status": "SUCCESS",
+      "outcome": "CORRECT"
+    },
+    {
+      "case_id": "CAND_030",
+      "question_origin": "authored",
+      "expected": "REFUSE_INSUFFICIENT_EVIDENCE",
+      "status": "ERROR",
+      "outcome": "CORRECT"
+    }
+  ]
+}

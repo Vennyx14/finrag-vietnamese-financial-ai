@@ -34,7 +34,7 @@ Status labels: **REPORTED** = stated in repo docs, not re-verified by the agent;
 Note on tooling: **Antigravity** refers to the autonomous AI pair programming system acting under user instruction and verification.
 
 ### Stage
-MVP v0.1 (data foundation → retrieval → deterministic reasoning → verification → application service → Streamlit UI) is implemented. The hardening phase has progressed through **M0, M1, M1b, M2a, and M2b (completed)**, preparing for **M3 (Shared evidence and trace contracts)**.
+MVP v0.1 (data foundation → retrieval → deterministic reasoning → verification → application service → Streamlit UI) is implemented. The hardening phase has progressed through **M0, M1, M1b, M2a, M2b, and M3 (completed)**. **M4 (Program layer)** is planned and needs owner approval to start.
 
 ### Implemented (VERIFIED)
 - Data: 1,973 report files from 100 tickers, report years 2015–2025. The processed parquet holds 338,714 financial facts from **78 tickers** (VERIFIED in M0). The 22 missing tickers are commercial banks and financial institutions whose statements do not use the Circular 200/133 line-code layout, so no facts were extracted for them (gap analysis documented in `docs/bank_ingestion_gap_analysis.md`).
@@ -44,9 +44,12 @@ MVP v0.1 (data foundation → retrieval → deterministic reasoning → verifica
 - Canonical Query Parser (M1b): Unified parser in `src/pipeline/query.py` eliminating redundant parsing code between retrieval and reasoning (K8).
 - Data Semantics (M2a): `src/financial/semantics.py` provides `parse_unit_scale`, `infer_statement_type`, and `is_opening_period_label`. Disambiguates Line code 60 between Income Statement and Cash Flow (K5); identifies 20,355 rows with opening balance format `01/01/YYYY` (K4); handles unit scales (VND, nghìn VND, triệu VND, tỷ VND) with explicit `unit_status = "unknown"` state (K3, K16).
 - Independent Verification & Accounting Identities (M2b): `VerificationEngine` upgraded with independent query re-parse (`_verify_independent_query_parse` fixing K2), typed `CheckStatus` (`PASS`, `FAIL`, `WARNING`, `NOT_RUN`), Balance Sheet accounting identities ($270 = 300 + 400$, $270 = 100 + 200$), fact-level quality flags, and cross-report comparative figure reconciliation.
-- Application: `FinRAGApplication.ask()` returning typed `FinRAGResponse` DTOs with latency, confidence status, and actionable guidance for abstentions.
+- Application: `FinRAGApplication.ask()` returning typed `FinRAGResponse` DTOs with latency, confidence status, and actionable guidance for abstentions. It gathers same-report supporting facts so accounting identities and comparative reconciliation run on real answers.
 - UI: Streamlit app (`ui/app.py`, `ui/theme.py`) featuring an institutional 5-tier layout (Resolution $\rightarrow$ Calculation & Substituted Formula Trace $\rightarrow$ Grouped Verification $\rightarrow$ Evidence Provenance $\rightarrow$ Audit Trail) with strict HTML escaping (`_esc()`) for OCR labels (K11).
-- Regression benchmarks (VERIFIED): reasoning 30 cases (25 valid, 5 invalid) at 100% pass; verification 60 cases (30 valid accepted, 30 mutations rejected) at 100% pass; full test suite currently at **346 tests, 346 passed**.
+- Regression benchmarks (VERIFIED): reasoning 30 cases (25 valid, 5 invalid) at 100% pass; verification 60 cases (30 valid accepted, 30 mutations rejected) at 100% pass; full test suite currently at **373 tests, 373 passed**.
+
+- Silver benchmark (VERIFIED by `python scripts/evaluate_silver.py`, 2026-11-02): 29/30 cases correct, Wilson 95% CI 83.3%-99.4%; 13/14 answers correct, 0 over-refusals, 1 wrong answer that still obtained `WARNING` (K19). Labels are LLM-prefilled and owner-accepted, not human-verified gold.
+- Answer coverage (VERIFIED by `python scripts/run_question_coverage.py`, 2026-11-02): 35 of 1,012 (3.5%). See `docs/m1_status_transition_report.md`.
 
 ### Important caveats on those numbers
 - The benchmarks were written by the project authors from the same parquet and the same label rules the system uses. They are **regression tests, not accuracy estimates**. Do not describe them as accuracy on unseen data.
@@ -131,8 +134,8 @@ Work proceeds one milestone at a time. **Do not start the next milestone until t
 | **M1b** | Parser consolidation | **COMPLETED** (commit `29ab7d6`) | Consolidated canonical ticker/year/scope extractor into `src/pipeline/query.py`, shared between query retrieval and resolution. Verified by `tests/test_parser_consolidation.py` (K8). |
 | **M2a** | Data semantics | **COMPLETED** (commit `f08ec07`) | `unit_scale` and `unit_status` stored alongside raw value in `FinancialFact` and `RetrievalResult`; `statement_type` inferred in `src/financial/semantics.py` (disambiguates Line 60); opening period filter `is_opening_period_label()` handles `01/01/YYYY`. Verified by `tests/test_data_semantics.py` (K3, K4, K5, K7, K16). |
 | **M2b** | Independent verification | **COMPLETED** | Expected ticker/year/scope come from an independent re-parse of the question (`_verify_independent_query_parse`, K2); typed `CheckStatus` enum (`PASS`, `FAIL`, `WARNING`, `NOT_RUN`); scoped accounting-identity checks (270 = 300 + 400, 270 = 100 + 200); comparative figure reconciliation; fact quality flags. Verified by `tests/test_verification_m2b.py`. |
-| **M3** | Shared evidence and trace contracts | **NEXT UP** | Trace model with operand lineage; `FinancialResult` and DTOs extended compatibly; no duplicate evidence schema. |
-| **M4** | Program layer | Planned | LLM provider in `src/nlp/llm.py` with a mock provider for tests; constrained DSL with allowlisted operations in `src/financial/program/`; planner emits program + bindings, never numbers; executor reuses tested arithmetic; generic program verifier. |
+| **M3** | Shared evidence and trace contracts | **COMPLETED** (commit `30ab93e`, closed 2026-11-02) | Trace model with operand lineage; `FinancialResult` and DTOs extended compatibly; no duplicate evidence schema. Closed after `ask()` began passing supporting facts to the verifier. Verified by `tests/test_trace_m3.py` and `tests/test_e2e_mini_fixture.py`. |
+| **M4** | Program layer | Planned (next; needs owner approval) | LLM provider in `src/nlp/llm.py` with a mock provider for tests; constrained DSL with allowlisted operations in `src/financial/program/`; planner emits program + bindings, never numbers; executor reuses tested arithmetic; generic program verifier. |
 | **M5** | Gold benchmark and ablations | Planned | ≥150–200 labelled items split by company; oracle-bindings, oracle-facts, and full-pipeline configurations; metrics in Section 7. |
 | **M6** | Unified planner and experiments | Planned | Deterministic-only vs program-based vs combined; error analysis; decision on whether the LLM planner earns its complexity. |
 
@@ -198,6 +201,7 @@ The resolution result carries at least: `status`, `metric` and `operation` (if d
 | **Baseline** | Existing tests and benchmarks run before changing code | Current pass / fail / skip state; regressions | Accuracy on unseen questions; the benchmarks are self-authored |
 | **Coverage report** | All 1,012 ViFinQA questions through `app.ask`, no gold answers needed | Distribution of statuses and error categories; what changes between milestones | Whether any answer is correct |
 | **Gold benchmark** | Human-labelled questions with independently verified operands and answers, split by company | Accuracy, refusal precision / recall, over-refusal, verified-wrong rate | Behavior on question types not represented in the sample; wide confidence intervals at small sizes |
+| **Silver benchmark** | 30 LLM-prefilled labels read from raw OCR and accepted by the owner, kept locally in `data/processed/gold_drafts/silver_v0.jsonl` | Regressions and bugs during development | Publishable accuracy; it is not independent of an LLM planner of the same model family |
 
 Running questions through `app.ask` does not prove answers are right unless there is a gold label to compare against. Run time of the coverage script is measured in M0 and reported; do not assume it is cheap or expensive beforehand.
 
@@ -388,16 +392,19 @@ Status column: **CONFIRMED** (M0 audit evidence), **PARTLY** (pattern seen, impa
 | K6 | Only `year` as temporal key; quarterly or year-to-date reports could be mixed with annual | NOT OBSERVED in ViFinQA (annual only); keep for future ingestion | schema, extractor | M0 audit |
 | K7 | `report_year` derived by regex `_(\d{4})_` from `document_id` instead of stored | FIXED (M2a) | `src/financial/schema.py`, `src/retrieval/ranking.py` | Fixed in M2a (commit `f08ec07`) |
 | K8 | Ticker extraction takes the first 3–6 uppercase token outside a stop-word list (for example "BCTC" could be taken as a ticker); stop-word list duplicated in two files | FIXED (M1b) | `src/pipeline/query.py`, `src/financial/resolution.py` | Fixed in M1b (commit `29ab7d6`) |
-| K9 | Fact selection uses BM25 top-20 then filters by line code; `FinancialQuery.line_code` exists but is not used to hard-filter by `expected_line_codes` | ASSIGNED → M2b | `resolve_fact`, `src/retrieval/engine.py` | M2b |
+| K9 | Fact selection uses BM25 top-20 then filters by line code; `FinancialQuery.line_code` exists but is not used to hard-filter by `expected_line_codes` | CONFIRMED, not fixed in M2b | `resolve_fact`, `src/retrieval/engine.py` | Unassigned |
 | K10 | `parse_vietnamese_number` single-dot rule with three trailing digits (for example `0.123`) is ambiguous | SUSPECTED | `src/ingestion/table_parser.py` | M0 audit |
 | K11 | UI interpolates OCR labels and backend error text into HTML with `unsafe_allow_html=True` without escaping | FIXED (UI) | `ui/theme.py`, `ui/app.py` | Fixed in UI Hardening (commit `b28fb3a`) |
 | K12 | Integration tests skip without the parquet; benchmark files are gitignored | CONFIRMED | `tests/`, `.gitignore` | M0 (exception added for `gold/`) |
-| K13 | Dependency drift: `requirements.txt` lists unused heavy packages (sentence-transformers, faiss-cpu, openai, networkx, …); `pyproject.toml` lacks `streamlit`; `src/finrag.egg-info/SOURCES.txt` omits `application/` and `ui/` | SUSPECTED | repo root | M0 |
+| K13 | Dependency drift: `requirements.txt` listed unused heavy packages; `pyproject.toml` lacked `streamlit`; `src/finrag.egg-info/` was tracked and stale | FIXED (2026-11-02) | repo root | Packages needed by M4 are added in M4 |
 | K14 | Documentation drift: README, `docs/CV_PROJECT.md`, and PRODUCT.md previously contained claims that conflict with Section 9; test-count and benchmark statements are unverified | PARTLY (the 100-ticker fact claim was wrong, now fixed) | docs | M0 |
 | K15 | `_classify_reasoning_error` maps "No candidate fact satisfied validation rules…" to `SYSTEM_ERROR` instead of `DATA_NOT_FOUND` | FIXED (M1) | `src/application/service.py` | Fixed in M1 (commit `3743dae`) |
 | K16 | `unit` is null for 61.8% of facts and unit scale is not applied (`triệu VND` seen); a missing unit must become an explicit "unknown" state, never an assumed VND | FIXED (M2a) | `src/financial/semantics.py`, `src/financial/schema.py` | Fixed in M2a (commit `f08ec07`) |
 | K17 | Facts exist for 78 of 100 tickers; the 22 banks and financial institutions have no facts, which likely accounts for some of the `USER_INPUT_ERROR` / `DATA_NOT_FOUND` outcomes in the coverage run (for example bank-only terms such as deposit interest or loan balances; confirm from the CSV) | CONFIRMED | ingestion | Documented limitation; bank schemas deferred |
 | K18 | `data/manifests/question_coverage.csv` may contain ViFinQA question text; raw dataset content should stay out of Git unless the owner approves | RESOLVED (M0) | `scripts/run_question_coverage.py` | Raw question text omitted from CSV; joins by `question_id` |
+
+| K19 | Scale stated only in the page header (for example `Ngàn VND`) is not captured, so `unit` is null and the value is treated as VND. HAG 2020 net revenue is 1,000 times too small and still obtains `WARNING`. A header scan found 85 of 914 documents with a null unit on line 270 and a thousand or million scale on that page | CONFIRMED | `src/ingestion/`, parquet rebuild | Unassigned; highest priority |
+| K20 | The 270 = 300 + 400 identity ignores a separately presented minority-interest line (FIT 2015 line 429), so a correct figure obtains `WARNING` | CONFIRMED | `src/financial/verification.py` | Unassigned |
 
 ---
 
