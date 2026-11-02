@@ -222,3 +222,27 @@ def test_short_row_without_an_amount_in_the_note_cell_is_read_by_position():
         ["20", "Lưu chuyển tiền thuần", "12", "499.984.886.725"],
     ))
     assert [(f.value, f.period_label) for f in facts] == [(499984886725.0, "Năm nay")]
+
+
+def test_undated_after_adjustment_column_of_a_restatement_table_is_flagged():
+    facts = extract(table(
+        ["Chỉ tiêu", "Mã số", "Sau điều chỉnh VND", "Điều chỉnh VND", "Trước điều chỉnh VND"],
+        ["Doanh thu hoạt động tài chính", "21", "2.504.498.699.978", "23.921.348.322", "2.480.577.351.656"],
+    ))
+    assert {f.quality_flag for f in facts} == {"restatement_column"}
+
+
+def test_undated_restated_column_is_flagged():
+    facts = extract(table(
+        ["Chỉ tiêu", "Mã số", "Đã điều chỉnh lại", "Đã trình bày trên báo cáo năm trước"],
+        ["Doanh thu hoạt động tài chính", "21", "78.631.232.923", "77.556.616.941"],
+    ))
+    assert facts[0].quality_flag == "restatement_column"
+
+
+def test_after_adjustment_prior_year_column_stays_usable():
+    facts = extract(table(
+        ["CHỈ TIÊU", "Mã số", "Số năm trước (Sau điều chỉnh)"],
+        ["TỔNG CỘNG TÀI SẢN", "270", "16.502.521.620.563"],
+    ))
+    assert [(f.quality_flag, f.year) for f in facts] == [(None, 2023)]

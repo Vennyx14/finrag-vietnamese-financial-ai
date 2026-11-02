@@ -41,6 +41,7 @@ SCALE_NAMES = {
 CURRENCY_REGEX = re.compile(r"\b(VND|USD|đồng|dong)\b", re.IGNORECASE)
 YEAR_REGEX = re.compile(r"\b(19\d\d|20\d\d)\b")
 SECTION_MARKER_MAX_LENGTH = 3
+AFTER_RESTATEMENT_REGEX = re.compile(r"(?:sau|đã)\s*điều\s*chỉnh", re.IGNORECASE)
 NOTE_CELL_REGEX = re.compile(r"^\d{1,2}(?:\.\d{1,2})?[a-z]?$", re.IGNORECASE)
 MIN_AMOUNT_DIGITS = 7
 RESTATEMENT_COLUMN_REGEX = re.compile(r"(?<!sau )(?<!đã )điều\s*chỉnh", re.IGNORECASE)
@@ -171,12 +172,15 @@ def _note_cell_offset(row: List[str], first_value_col: int, header_width: int) -
 
 
 def _quality_flag(
-    header_idx: int, index_cols: List[int], period_label: Optional[str]
+    header_idx: int, index_cols: List[int], period_label: Optional[str], is_prior_period: bool
 ) -> Optional[str]:
     """Mark cells that are not the reported amount of their period."""
     if header_idx in index_cols:
         return "section_index"
     if period_label and RESTATEMENT_COLUMN_REGEX.search(period_label):
+        return "restatement_column"
+    # Restatement tables often omit the year, which then defaults to the report year.
+    if period_label and AFTER_RESTATEMENT_REGEX.search(period_label) and not is_prior_period:
         return "restatement_column"
     if period_label and period_label.strip() == "%":
         return "percentage_column"
@@ -312,7 +316,7 @@ def extract_facts_from_table(
                 unit_status=fact_unit_status,
                 report_year=doc_record.year,
                 is_comparative=is_comp,
-                quality_flag=_quality_flag(header_idx, index_cols, period_label),
+                quality_flag=_quality_flag(header_idx, index_cols, period_label, is_comp),
             )
             facts.append(fact)
 
