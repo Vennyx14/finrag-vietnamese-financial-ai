@@ -1,0 +1,8 @@
+pandas
+numpy
+pyarrow
+beautifulsoup4
+pydantic
+rank-bm25
+streamlit
+pytest
