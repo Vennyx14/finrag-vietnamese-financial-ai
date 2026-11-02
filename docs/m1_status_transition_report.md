@@ -8,8 +8,8 @@ Measured 2026-11-02 for M1 exit criterion 4. The M0 side is `data/manifests/ques
 |---|---:|---:|
 | Questions | 1,012 | 1,012 |
 | Answered (`SUCCESS` + `WARNING`) | 142 (14.0%) | 35 (3.5%) |
-| `SUCCESS` | 138 | 9 |
-| `WARNING` | 4 | 26 |
+| `SUCCESS` | 138 | 29 |
+| `WARNING` | 4 | 6 |
 | `USER_INPUT_ERROR` | 786 | 962 |
 | `DATA_NOT_FOUND` | 74 | 15 |
 | `SYSTEM_ERROR` | 10 | 0 |
@@ -18,16 +18,19 @@ Measured 2026-11-02 for M1 exit criterion 4. The M0 side is `data/manifests/ques
 
 | Questions | From | To |
 |---:|---|---|
-| 803 | unchanged | unchanged |
+| 819 | unchanged | unchanged |
 | 112 | `SUCCESS` | `USER_INPUT_ERROR` |
 | 57 | `DATA_NOT_FOUND` | `USER_INPUT_ERROR` |
-| 19 | `SUCCESS` | `WARNING` |
 | 8 | `SYSTEM_ERROR` | `USER_INPUT_ERROR` |
-| 4 | `DATA_NOT_FOUND` | `WARNING` |
+| 3 | `USER_INPUT_ERROR` | `SUCCESS` |
+| 3 | `DATA_NOT_FOUND` | `SUCCESS` |
 | 3 | `WARNING` | `USER_INPUT_ERROR` |
-| 2 | `USER_INPUT_ERROR` | `SUCCESS` |
-| 2 | `USER_INPUT_ERROR` | `WARNING` |
+| 3 | `SUCCESS` | `WARNING` |
 | 2 | `SYSTEM_ERROR` | `DATA_NOT_FOUND` |
+| 1 | `DATA_NOT_FOUND` | `WARNING` |
+| 1 | `USER_INPUT_ERROR` | `WARNING` |
+
+`SUCCESS` rose after K19 because units read from page and table headers no longer trigger the unknown-unit warning.
 
 ## Why 115 answered questions are now refused
 

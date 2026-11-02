@@ -3,33 +3,33 @@
   "label_note": "LLM-prefilled labels accepted by the owner; not human-verified gold.",
   "overall": {
     "cases": 30,
-    "correct": 29,
+    "correct": 30,
     "correct_wilson_95": [
-      0.8333,
-      0.9941
+      0.8865,
+      1.0
     ],
     "answerable_by_system": 14,
-    "execution_correct": 13,
+    "execution_correct": 14,
     "over_refusals": 0,
-    "wrong_answers": 1,
+    "wrong_answers": 0,
     "over_answers": 0,
     "wrong_refusals": 0,
-    "verified_wrong": 1
+    "verified_wrong": 0
   },
   "verbatim_vifinqa": {
     "cases": 15,
-    "correct": 14,
+    "correct": 15,
     "correct_wilson_95": [
-      0.7018,
-      0.9881
+      0.7961,
+      1.0
     ],
     "answerable_by_system": 4,
-    "execution_correct": 3,
+    "execution_correct": 4,
     "over_refusals": 0,
-    "wrong_answers": 1,
+    "wrong_answers": 0,
     "over_answers": 0,
     "wrong_refusals": 0,
-    "verified_wrong": 1
+    "verified_wrong": 0
   },
   "authored": {
     "cases": 15,
@@ -79,18 +79,18 @@
     },
     "RESOLVE_AND_CALCULATE": {
       "cases": 14,
-      "correct": 13,
+      "correct": 14,
       "correct_wilson_95": [
-        0.6853,
-        0.9873
+        0.7847,
+        1.0
       ],
       "answerable_by_system": 14,
-      "execution_correct": 13,
+      "execution_correct": 14,
       "over_refusals": 0,
-      "wrong_answers": 1,
+      "wrong_answers": 0,
       "over_answers": 0,
       "wrong_refusals": 0,
-      "verified_wrong": 1
+      "verified_wrong": 0
     }
   },
   "cases": [
@@ -98,28 +98,28 @@
       "case_id": "CAND_001",
       "question_origin": "verbatim",
       "expected": "RESOLVE_AND_CALCULATE",
-      "status": "WARNING",
+      "status": "SUCCESS",
       "outcome": "CORRECT"
     },
     {
       "case_id": "CAND_002",
       "question_origin": "verbatim",
       "expected": "RESOLVE_AND_CALCULATE",
-      "status": "WARNING",
-      "outcome": "WRONG_ANSWER"
+      "status": "SUCCESS",
+      "outcome": "CORRECT"
     },
     {
       "case_id": "CAND_003",
       "question_origin": "verbatim",
       "expected": "RESOLVE_AND_CALCULATE",
-      "status": "WARNING",
+      "status": "SUCCESS",
       "outcome": "CORRECT"
     },
     {
       "case_id": "CAND_004",
       "question_origin": "verbatim",
       "expected": "RESOLVE_AND_CALCULATE",
-      "status": "WARNING",
+      "status": "SUCCESS",
       "outcome": "CORRECT"
     },
     {
@@ -154,7 +154,7 @@
       "case_id": "CAND_009",
       "question_origin": "authored",
       "expected": "RESOLVE_AND_CALCULATE",
-      "status": "WARNING",
+      "status": "SUCCESS",
       "outcome": "CORRECT"
     },
     {
@@ -175,7 +175,7 @@
       "case_id": "CAND_012",
       "question_origin": "authored",
       "expected": "RESOLVE_AND_CALCULATE",
-      "status": "WARNING",
+      "status": "SUCCESS",
       "outcome": "CORRECT"
     },
     {
@@ -189,7 +189,7 @@
       "case_id": "CAND_014",
       "question_origin": "authored",
       "expected": "RESOLVE_AND_CALCULATE",
-      "status": "WARNING",
+      "status": "SUCCESS",
       "outcome": "CORRECT"
     },
     {
@@ -238,21 +238,21 @@
       "case_id": "CAND_021",
       "question_origin": "authored",
       "expected": "RESOLVE_AND_CALCULATE",
-      "status": "WARNING",
+      "status": "SUCCESS",
       "outcome": "CORRECT"
     },
     {
       "case_id": "CAND_022",
       "question_origin": "authored",
       "expected": "RESOLVE_AND_CALCULATE",
-      "status": "WARNING",
+      "status": "SUCCESS",
       "outcome": "CORRECT"
     },
     {
       "case_id": "CAND_023",
       "question_origin": "authored",
       "expected": "RESOLVE_AND_CALCULATE",
-      "status": "WARNING",
+      "status": "SUCCESS",
       "outcome": "CORRECT"
     },
     {

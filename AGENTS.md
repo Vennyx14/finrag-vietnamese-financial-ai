@@ -37,6 +37,7 @@ Note on tooling: **Antigravity** refers to the autonomous AI pair programming sy
 MVP v0.1 (data foundation → retrieval → deterministic reasoning → verification → application service → Streamlit UI) is implemented. The hardening phase has progressed through **M0, M1, M1b, M2a, M2b, and M3 (completed)**. **M4 (Program layer)** is planned and needs owner approval to start.
 
 ### Implemented (VERIFIED)
+- Units (K19, 2026-11-02): rebuilt parquet has 327,244 facts with a declared unit, 11,277 inferred from their report, and 193 unknown, out of 338,714. Fact IDs and values match the earlier parquet.
 - Data: 1,973 report files from 100 tickers, report years 2015–2025. The processed parquet holds 338,714 financial facts from **78 tickers** (VERIFIED in M0). The 22 missing tickers are commercial banks and financial institutions whose statements do not use the Circular 200/133 line-code layout, so no facts were extracted for them (gap analysis documented in `docs/bank_ingestion_gap_analysis.md`).
 - Retrieval: metadata filter (ticker, year, scope, line_code) + ephemeral BM25 over candidates (`src/retrieval/`).
 - Reasoning: `FinancialReasoningEngine` + `MetricRegistry`, 8 metrics: `net_revenue`, `net_income`, `total_assets`, `equity`, `net_margin`, `roa`, `roe`, `revenue_growth`. Operations: identity, ratio, difference, yoy_growth, percentage_change. Unit scaling applied to convert raw cell values to standard base currency (M2a).
@@ -46,9 +47,9 @@ MVP v0.1 (data foundation → retrieval → deterministic reasoning → verifica
 - Independent Verification & Accounting Identities (M2b): `VerificationEngine` upgraded with independent query re-parse (`_verify_independent_query_parse` fixing K2), typed `CheckStatus` (`PASS`, `FAIL`, `WARNING`, `NOT_RUN`), Balance Sheet accounting identities ($270 = 300 + 400$, $270 = 100 + 200$), fact-level quality flags, and cross-report comparative figure reconciliation.
 - Application: `FinRAGApplication.ask()` returning typed `FinRAGResponse` DTOs with latency, confidence status, and actionable guidance for abstentions. It gathers same-report supporting facts so accounting identities and comparative reconciliation run on real answers.
 - UI: Streamlit app (`ui/app.py`, `ui/theme.py`) featuring an institutional 5-tier layout (Resolution $\rightarrow$ Calculation & Substituted Formula Trace $\rightarrow$ Grouped Verification $\rightarrow$ Evidence Provenance $\rightarrow$ Audit Trail) with strict HTML escaping (`_esc()`) for OCR labels (K11).
-- Regression benchmarks (VERIFIED): reasoning 30 cases (25 valid, 5 invalid) at 100% pass; verification 60 cases (30 valid accepted, 30 mutations rejected) at 100% pass; full test suite currently at **373 tests, 373 passed**.
+- Regression benchmarks (VERIFIED): reasoning 30 cases (25 valid, 5 invalid) at 100% pass; verification 60 cases (30 valid accepted, 30 mutations rejected) at 100% pass; full test suite currently at **413 tests, 413 passed**.
 
-- Silver benchmark (VERIFIED by `python scripts/evaluate_silver.py`, 2026-11-02): 29/30 cases correct, Wilson 95% CI 83.3%-99.4%; 13/14 answers correct, 0 over-refusals, 1 wrong answer that still obtained `WARNING` (K19). Labels are LLM-prefilled and owner-accepted, not human-verified gold.
+- Silver benchmark (VERIFIED by `python scripts/evaluate_silver.py`, 2026-11-02): 30/30 cases correct, Wilson 95% CI 88.7%-100%; 14/14 answers correct, 0 over-refusals. Labels are LLM-prefilled and owner-accepted, not human-verified gold, and K19 was fixed against this set, so it is not held out.
 - Answer coverage (VERIFIED by `python scripts/run_question_coverage.py`, 2026-11-02): 35 of 1,012 (3.5%). See `docs/m1_status_transition_report.md`.
 
 ### Important caveats on those numbers
@@ -403,7 +404,7 @@ Status column: **CONFIRMED** (M0 audit evidence), **PARTLY** (pattern seen, impa
 | K17 | Facts exist for 78 of 100 tickers; the 22 banks and financial institutions have no facts, which likely accounts for some of the `USER_INPUT_ERROR` / `DATA_NOT_FOUND` outcomes in the coverage run (for example bank-only terms such as deposit interest or loan balances; confirm from the CSV) | CONFIRMED | ingestion | Documented limitation; bank schemas deferred |
 | K18 | `data/manifests/question_coverage.csv` may contain ViFinQA question text; raw dataset content should stay out of Git unless the owner approves | RESOLVED (M0) | `scripts/run_question_coverage.py` | Raw question text omitted from CSV; joins by `question_id` |
 
-| K19 | Scale stated only in the page header (for example `Ngàn VND`) is not captured, so `unit` is null and the value is treated as VND. HAG 2020 net revenue is 1,000 times too small and still obtains `WARNING`. A header scan found 85 of 914 documents with a null unit on line 270 and a thousand or million scale on that page | CONFIRMED | `src/ingestion/`, parquet rebuild | Unassigned; highest priority |
+| K19 | Scale stated only in a page line or table header (for example `Ngàn VND`, `2024Nghìn VND`, a `VND` sub-header row) was not captured, so such values were treated as VND | FIXED (2026-11-02) | `src/ingestion/fact_extractor.py`, parquet rebuild; verified by `tests/test_unit_detection.py` | Rebuild local data with `python scripts/prepare_data.py` |
 | K20 | The 270 = 300 + 400 identity ignores a separately presented minority-interest line (FIT 2015 line 429), so a correct figure obtains `WARNING` | CONFIRMED | `src/financial/verification.py` | Unassigned |
 
 ---

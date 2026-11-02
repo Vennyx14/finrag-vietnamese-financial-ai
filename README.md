@@ -86,9 +86,9 @@ All figures below are self-authored regression benchmarks, not accuracy on unsee
 | **Verification Engine** | Valid Acceptance Rate | **100.0%** (30/30) | 60-case self-authored regression benchmark, not accuracy on unseen data |
 | | Mutation Detection Rate | **100.0%** (30/30) | 60-case self-authored regression benchmark, not accuracy on unseen data (mutations injected after reasoning) |
 | | False Acceptance Rate | **0.00%** | 60-case self-authored regression benchmark, not accuracy on unseen data |
-| **Engineering** | Test Suite Pass Rate | **100.0%** (373/373, 0 skipped) | Full `pytest` suite with local data present; see [Reproducibility](#15-reproducibility) for a fresh clone |
+| **Engineering** | Test Suite Pass Rate | **100.0%** (413/413, 0 skipped) | Full `pytest` suite with local data present; see [Reproducibility](#15-reproducibility) for a fresh clone |
 
-| **Silver benchmark** | Correct behavior | **29/30** (Wilson 95% CI 83.3%–99.4%) | 30 LLM-prefilled, owner-accepted labels, not human-verified gold; run locally with `scripts/evaluate_silver.py` |
+| **Silver benchmark** | Correct behavior | **30/30** (Wilson 95% CI 88.7%–100%) | 30 LLM-prefilled, owner-accepted labels, not human-verified gold and not held out; run locally with `scripts/evaluate_silver.py` |
 
 > *Note: These results show that the curated cases still pass. They test for regressions and tamper detection, and do not estimate accuracy on new questions. A human-labelled gold benchmark is planned (M5).*
 
@@ -98,12 +98,12 @@ Below are representative queries supported by the system, showcasing various lay
 
 1. **`Doanh thu thuần FPT năm 2024`**
    - **Type:** Absolute metric (identity operation).
-   - **Verification State:** `WARNING` (the source fact has no stated unit, so `unit_status` is `unknown`)
+   - **Verification State:** `VERIFIED`
    - **Why representative:** Demonstrates baseline retrieval, exact VND value rendering, and source provenance for a fundamental accounting line code.
 
 2. **`Biên lợi nhuận ròng FPT năm 2024`**
    - **Type:** Ratio calculation.
-   - **Verification State:** `WARNING` (the source fact has no stated unit, so `unit_status` is `unknown`)
+   - **Verification State:** `VERIFIED`
    - **Why representative:** Demonstrates multi-fact retrieval (Net Income / Net Revenue), computation to a percentage, and provenance mapping for both distinct input variables.
 
 3. **`ROE VNM năm 2023`**
@@ -113,7 +113,7 @@ Below are representative queries supported by the system, showcasing various lay
 
 4. **`Tăng trưởng doanh thu FPT năm 2024`**
    - **Type:** Year-over-Year (YoY) growth.
-   - **Verification State:** `WARNING` (the source fact has no stated unit, so `unit_status` is `unknown`)
+   - **Verification State:** `VERIFIED`
    - **Why representative:** Multi-period reasoning. Evaluates the capacity to fetch current and prior year metrics simultaneously and calculate delta percentages accurately.
 
 5. **`Doanh thu thuần XYZ năm 2024`**
@@ -202,7 +202,6 @@ finrag-vietnamese-financial-ai/
 ## 17. Limitations
 FinRAG is an early MVP and operates under strict, deliberate constraints:
 - **Low Question Coverage:** Of the 1,012 ViFinQA questions, 35 (3.5%) receive an answer (measured 2026-11-02 with `scripts/run_question_coverage.py`, down from 142 at the M0 audit on 2026-10-13, see the [transition report](docs/m1_status_transition_report.md)). This is answer coverage, not accuracy.
-- **Unit Scale From Page Headers:** A scale stated only in a page header, such as `Ngàn VND`, is not captured yet, so such a value can be 1,000 times too small. The answer is flagged with a `WARNING` for its unknown unit, but the figure is wrong.
 - **Limited Metric Support:** Currently calculates only 8 core metrics (`net_revenue`, `net_income`, `total_assets`, `equity`, `net_margin`, `roa`, `roe`, `revenue_growth`).
 - **Deterministic Keyword Parsing:** Natural language understanding relies on deterministic matching rather than a highly generalizable LLM semantic parser.
 - **BM25 Constraints:** Relies strictly on BM25 and exact metadata filters; cannot resolve conceptually distant synonyms.

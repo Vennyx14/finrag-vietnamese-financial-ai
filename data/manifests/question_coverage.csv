@@ -1,26 +1,26 @@
 question_id,ticker,year_or_period,resolved_metric,application_status,error_category,has_usable_evidence,evidence_count,error_message,latency_ms
 1,VJC,2018,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Lãi tiền gửi' chưa được hỗ trợ.,0.0
-2,ACB,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
+2,ACB,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.0
 3,,2020,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-4,FPT,2023,net_income,WARNING,,True,1,,138.64
+4,FPT,2023,net_income,SUCCESS,,True,1,,145.29
 5,SCR,2017,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 6,VSC,2017,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận từ hoạt động kinh doanh' chưa được hỗ trợ.",0.0
 7,,2019,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 8,FPT,2021,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 9,SAM,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 10,,2021,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Doanh thu tài chính' chưa được hỗ trợ.,0.0
-11,BID,2016,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
+11,BID,2016,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.0
 12,VGT,2024,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 13,SAB,2016,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 14,ASM,2025,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 15,MPC,2021,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 16,CEO,2025,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 17,SHB,2018,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-18,FIT,2015,equity,WARNING,,True,1,,481.31
-19,,2023,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.99
+18,FIT,2015,equity,WARNING,,True,1,,526.02
+19,,2023,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 20,GVR,2019,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 21,VIB,2020,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-22,GEE,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
+22,GEE,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.0
 23,OGC,2020,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 24,HNG,2017,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 25,DIG,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
@@ -38,13 +38,13 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 37,GEX,2018,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Doanh thu cho thuê' chưa được hỗ trợ.,0.0
 38,,2018,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 39,,2020,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-40,VIB,2020,,ERROR,DATA_NOT_FOUND,False,0,Không tìm thấy số liệu trong báo cáo tài chính đã xử lý: No facts retrieved for VIB 2020 'net_income' (scope: consolidated).,60.6
+40,VIB,2020,,ERROR,DATA_NOT_FOUND,False,0,Không tìm thấy số liệu trong báo cáo tài chính đã xử lý: No facts retrieved for VIB 2020 'net_income' (scope: consolidated).,62.83
 41,,2016,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 42,EIB,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.0
 43,CHKQT,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-44,STB,2016,,ERROR,DATA_NOT_FOUND,False,0,Không tìm thấy số liệu trong báo cáo tài chính đã xử lý: No facts retrieved for STB 2016 'total_assets' (scope: consolidated).,59.36
+44,STB,2016,,ERROR,DATA_NOT_FOUND,False,0,Không tìm thấy số liệu trong báo cáo tài chính đã xử lý: No facts retrieved for STB 2016 'total_assets' (scope: consolidated).,63.13
 45,BAB,2020,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-46,BAB,2024,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
+46,BAB,2024,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.0
 47,PLX,2017,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 48,PLX,2015,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 49,,2018,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
@@ -60,17 +60,17 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 59,,2017,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 60,VSF,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 61,,2023,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Doanh thu bán hàng và cung cấp dịch vụ (gộp)' chưa được hỗ trợ.,0.0
-62,MBB,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
+62,MBB,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.0
 63,ASM,2025,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Lãi tiền gửi' chưa được hỗ trợ.,0.0
-64,STB,2021,,ERROR,DATA_NOT_FOUND,False,0,Không tìm thấy số liệu trong báo cáo tài chính đã xử lý: No facts retrieved for STB 2021 'total_assets' (scope: consolidated).,59.47
+64,STB,2021,,ERROR,DATA_NOT_FOUND,False,0,Không tìm thấy số liệu trong báo cáo tài chính đã xử lý: No facts retrieved for STB 2021 'total_assets' (scope: consolidated).,62.47
 65,,2016,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-66,,2021,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
+66,,2021,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",1.03
 67,VPI,2025,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 68,,2023,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận trước thuế' chưa được hỗ trợ.",0.0
 69,,2019,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 70,DCM,2019,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-71,GEG,2025,net_revenue,WARNING,,True,1,,135.59
-72,VPI,2024,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
+71,GEG,2025,net_revenue,SUCCESS,,True,1,,159.26
+72,VPI,2024,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.99
 73,,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 74,KLB,2017,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 75,BVH,2019,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
@@ -83,14 +83,14 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 82,NVB,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 83,,2020,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 84,TKV,2024,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-85,,2016,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
+85,,2016,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",1.0
 86,,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-87,HPX,2024,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.0
+87,HPX,2024,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 88,,2019,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 89,,2018,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 90,VIC,2015,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 91,VRE,2024,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-92,SSH,2025,total_assets,SUCCESS,,True,1,,429.25
+92,SSH,2025,total_assets,SUCCESS,,True,1,,427.86
 93,PLX,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 94,,2021,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 95,,2015,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
@@ -98,8 +98,8 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 97,HPG,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 98,,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 99,NKG,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-100,BVH,2018,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-101,,2017,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",1.0
+100,BVH,2018,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.55
+101,,2017,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 102,MBB,2018,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 103,GELEX,2019,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 104,,2022,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận trước thuế' chưa được hỗ trợ.",0.0
@@ -108,7 +108,7 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 107,,2022,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 108,HAG,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 109,,2016,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-110,VCB,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
+110,VCB,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.55
 111,VGC,2025,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 112,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 113,VIB,2015,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
@@ -117,31 +117,31 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 116,IJC,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 117,FPT,2024,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 118,,2015,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-119,NVL,2021,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
+119,NVL,2021,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.55
 120,KLB,2019,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-121,GELEX,2017,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.0
+121,GELEX,2017,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 122,HHV,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-123,SSI,2016,equity,WARNING,,True,1,,517.63
+123,SSI,2016,equity,SUCCESS,,True,1,,594.9
 124,DIG,2024,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 125,VIF,2024,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Doanh thu cho thuê' chưa được hỗ trợ.,0.0
 126,SAB,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 127,VIB,2024,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-128,IJC,2015,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
+128,IJC,2015,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.0
 129,,2022,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 130,,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 131,HUT,2025,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-132,SNZ,2021,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.99
+132,SNZ,2021,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 133,,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 134,,2025,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 135,,2021,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 136,,2023,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 137,TTF,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-138,GEG,2019,net_revenue,WARNING,,True,1,,137.94
-139,HAG,2020,net_revenue,WARNING,,True,1,,138.51
+138,GEG,2019,net_revenue,SUCCESS,,True,1,,169.94
+139,HAG,2020,net_revenue,SUCCESS,,True,1,,193.23
 140,HPG,2019,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Doanh thu tài chính' chưa được hỗ trợ.,0.0
-141,HAG,2021,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.0
+141,HAG,2021,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 142,,2025,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-143,FIT,2022,total_assets,WARNING,,True,1,,411.62
+143,FIT,2022,total_assets,WARNING,,True,1,,578.19
 144,,2025,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 145,,2018,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Doanh thu bán hàng và cung cấp dịch vụ (gộp)' chưa được hỗ trợ.,0.0
 146,HBC,2018,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
@@ -150,24 +150,24 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 149,VSC,2024,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 150,DXG,2019,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 151,EIB,2015,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-152,SGB,2023,,ERROR,DATA_NOT_FOUND,False,0,Không tìm thấy số liệu trong báo cáo tài chính đã xử lý: No facts retrieved for SGB 2023 'total_assets' (scope: consolidated).,57.78
-153,BAF,2024,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Lãi tiền gửi' chưa được hỗ trợ.,1.0
+152,SGB,2023,,ERROR,DATA_NOT_FOUND,False,0,Không tìm thấy số liệu trong báo cáo tài chính đã xử lý: No facts retrieved for SGB 2023 'total_assets' (scope: consolidated).,109.96
+153,BAF,2024,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Lãi tiền gửi' chưa được hỗ trợ.,0.0
 154,,2022,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 155,QNS,2023,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận trước thuế' chưa được hỗ trợ.",0.0
 156,BVH,2018,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Doanh thu tài chính' chưa được hỗ trợ.,0.0
 157,VGT,2021,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 158,CRE,2021,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 159,GVR,2020,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-160,VPB,2025,,ERROR,DATA_NOT_FOUND,False,0,Không tìm thấy số liệu trong báo cáo tài chính đã xử lý: No facts retrieved for VPB 2025 'net_income' (scope: consolidated).,59.97
+160,VPB,2025,,ERROR,DATA_NOT_FOUND,False,0,Không tìm thấy số liệu trong báo cáo tài chính đã xử lý: No facts retrieved for VPB 2025 'net_income' (scope: consolidated).,78.84
 161,EIB,2020,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 162,MPC,2020,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 163,GVR,2018,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-164,SSH,2023,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Doanh thu cho thuê' chưa được hỗ trợ.,1.0
+164,SSH,2023,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Doanh thu cho thuê' chưa được hỗ trợ.,0.0
 165,,2021,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 166,HBC,2016,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 167,MSR,2025,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 168,CRE,2025,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-169,STB,2017,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
+169,STB,2017,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.0
 170,NLG,2021,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 171,NLG,2021,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận từ hoạt động kinh doanh' chưa được hỗ trợ.",0.0
 172,FPT,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
@@ -179,22 +179,22 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 178,NVL,2021,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 179,VPI,2024,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 180,VJC,2019,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-181,VRE,2020,,ERROR,DATA_NOT_FOUND,False,0,Phát hiện nhiều số liệu mâu thuẫn cho chỉ tiêu này trong các bảng BCTC. Hệ thống từ chối tự ý chọn số để bảo vệ tính chính xác.,66.54
-182,CEO,2022,,ERROR,DATA_NOT_FOUND,False,0,Không tìm thấy số liệu trong báo cáo tài chính đã xử lý: No candidate fact satisfied validation rules for CEO 2022 'net_income'.,65.69
+181,VRE,2020,,ERROR,DATA_NOT_FOUND,False,0,Phát hiện nhiều số liệu mâu thuẫn cho chỉ tiêu này trong các bảng BCTC. Hệ thống từ chối tự ý chọn số để bảo vệ tính chính xác.,109.85
+182,CEO,2022,,ERROR,DATA_NOT_FOUND,False,0,Không tìm thấy số liệu trong báo cáo tài chính đã xử lý: No candidate fact satisfied validation rules for CEO 2022 'net_income'.,105.68
 183,,2016,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 184,DIG,2025,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 185,VIC,2016,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 186,MSR,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-187,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
+187,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",1.0
 188,,2020,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 189,,2022,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 190,,2019,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 191,PVT,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 192,,2017,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận trước thuế' chưa được hỗ trợ.",0.0
-193,MBB,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
+193,MBB,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.01
 194,VRE,2019,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 195,,2025,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-196,AAA,2019,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Lãi tiền gửi' chưa được hỗ trợ.,1.02
+196,AAA,2019,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Lãi tiền gửi' chưa được hỗ trợ.,0.0
 197,,2018,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 198,,2020,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 199,,2016,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
@@ -203,11 +203,11 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 202,CEO,2025,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 203,,2017,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 204,VNM,2020,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-205,VIB,2023,,ERROR,DATA_NOT_FOUND,False,0,Không tìm thấy số liệu trong báo cáo tài chính đã xử lý: No facts retrieved for VIB 2023 'net_income' (scope: consolidated).,62.35
-206,GEX,2021,total_assets,SUCCESS,,True,1,,416.21
+205,VIB,2023,,ERROR,DATA_NOT_FOUND,False,0,Không tìm thấy số liệu trong báo cáo tài chính đã xử lý: No facts retrieved for VIB 2023 'net_income' (scope: consolidated).,101.86
+206,GEX,2021,total_assets,SUCCESS,,True,1,,638.56
 207,MSB,2024,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 208,STB,2019,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-209,,2021,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",1.03
+209,,2021,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 210,VNM,2018,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 211,DLG,2022,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận trước thuế' chưa được hỗ trợ.",0.0
 212,,2015,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
@@ -221,9 +221,9 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 220,BID,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 221,,2017,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Doanh thu tài chính' chưa được hỗ trợ.,0.0
 222,VIC,2025,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-223,MPC,2018,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
+223,MPC,2018,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.0
 224,,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-225,SSI,2017,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.97
+225,SSI,2017,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 226,PDR,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 227,,2015,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 228,VGC,2025,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
@@ -233,15 +233,15 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 232,VPI,2021,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 233,GEX,2017,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 234,VIF,2020,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-235,HDB,2018,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
+235,HDB,2018,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.24
 236,,2025,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-237,GAS,2016,net_revenue,SUCCESS,,True,1,,130.95
+237,GAS,2016,net_revenue,SUCCESS,,True,1,,235.22
 238,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 239,,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 240,VRE,2017,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 241,,2022,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 242,MBB,2021,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-243,IJC,2021,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
+243,IJC,2021,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.02
 244,,2016,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 245,,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận gộp' chưa được hỗ trợ.",0.0
 246,VPB,2020,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Lãi tiền gửi' chưa được hỗ trợ.,0.0
@@ -252,42 +252,42 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 251,PRT,2019,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 252,BSR,2025,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 253,MBB,2016,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-254,VNM,2015,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-255,DCM,2016,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.0
-256,MCH,2019,net_income,WARNING,,True,1,,135.64
+254,VNM,2015,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.99
+255,DCM,2016,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
+256,MCH,2019,net_income,SUCCESS,,True,1,,188.76
 257,VAB,2025,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận từ hoạt động kinh doanh' chưa được hỗ trợ.",0.0
-258,GVR,2017,total_assets,WARNING,,True,1,,417.86
-259,VIC,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.0
+258,GVR,2017,total_assets,SUCCESS,,True,1,,552.01
+259,VIC,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 260,BAF,2025,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 261,BVH,2019,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Doanh thu tài chính' chưa được hỗ trợ.,0.0
 262,SJG,2019,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 263,SSI,2019,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Doanh thu tài chính' chưa được hỗ trợ.,0.0
 264,SSB,2025,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 265,OCB,2021,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-266,VNM,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
+266,VNM,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.0
 267,ACB,2020,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 268,,2021,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 269,BVH,2016,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 270,,2017,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 271,,2025,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 272,,2020,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-273,DCM,2016,net_revenue,SUCCESS,,True,1,,131.56
+273,DCM,2016,net_revenue,SUCCESS,,True,1,,158.9
 274,STB,2019,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận từ hoạt động kinh doanh' chưa được hỗ trợ.",0.0
 275,KLB,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 276,,2020,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-277,VNM,2022,net_income,WARNING,,True,1,,132.54
+277,VNM,2022,net_income,SUCCESS,,True,1,,211.46
 278,,2023,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 279,,2020,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-280,HDB,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.0
+280,HDB,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 281,,2022,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 282,NVL,2016,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 283,,2025,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 284,EIB,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 285,ACV,2025,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 286,TKV,2015,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận sau thuế chưa phân phối' chưa được hỗ trợ.",0.0
-287,VIF,2021,net_income,SUCCESS,,True,1,,130.8
+287,VIF,2021,net_income,SUCCESS,,True,1,,172.04
 288,HHS,2019,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-289,,2016,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
+289,,2016,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",1.0
 290,AAA,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 291,HAG,2023,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận trước thuế' chưa được hỗ trợ.",0.0
 292,CRE,2019,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Doanh thu bán hàng và cung cấp dịch vụ (gộp)' chưa được hỗ trợ.,0.0
@@ -295,7 +295,7 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 294,SCR,2015,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Doanh thu tài chính' chưa được hỗ trợ.,0.0
 295,HSG,2018,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận từ hoạt động kinh doanh' chưa được hỗ trợ.",0.0
 296,VIB,2015,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-297,SJG,2024,total_assets,WARNING,,True,1,,423.16
+297,SJG,2024,total_assets,SUCCESS,,True,1,,559.18
 298,DPM,2021,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 299,VIF,2015,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Lãi tiền gửi' chưa được hỗ trợ.,0.0
 300,SSI,2023,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Doanh thu tài chính' chưa được hỗ trợ.,0.0
@@ -310,15 +310,15 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 309,OCB,2020,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 310,,2022,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 311,HSG,2024,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Doanh thu tài chính' chưa được hỗ trợ.,0.0
-312,VGT,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
+312,VGT,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.0
 313,DLG,2021,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 314,CEO,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 315,,2023,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-316,NKG,2023,equity,WARNING,,True,1,,486.62
-317,,2022,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",1.0
+316,NKG,2023,equity,SUCCESS,,True,1,,620.58
+317,,2022,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 318,HHV,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 319,MSN,2016,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-320,SCR,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
+320,SCR,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.0
 321,,2018,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 322,ABB,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 323,SSI,2016,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
@@ -327,18 +327,18 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 326,NVL,2019,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 327,,2021,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 328,,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-329,ACB,2024,,ERROR,DATA_NOT_FOUND,False,0,Không tìm thấy số liệu trong báo cáo tài chính đã xử lý: No facts retrieved for ACB 2024 'net_income' (scope: separate).,56.53
+329,ACB,2024,,ERROR,DATA_NOT_FOUND,False,0,Không tìm thấy số liệu trong báo cáo tài chính đã xử lý: No facts retrieved for ACB 2024 'net_income' (scope: separate).,77.25
 330,MBB,2015,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 331,BID,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-332,GVR,2024,net_income,WARNING,,True,1,,137.23
+332,GVR,2024,net_income,SUCCESS,,True,1,,173.44
 333,GEG,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 334,FIT,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 335,,2025,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 336,HND,2025,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-337,BAF,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.0
-338,BSR,2018,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-339,NVL,2018,net_income,WARNING,,True,1,,132.59
-340,PVT,2019,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
+337,BAF,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
+338,BSR,2018,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.0
+339,NVL,2018,net_income,SUCCESS,,True,1,,163.53
+340,PVT,2019,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.0
 341,GVR,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận trước thuế' chưa được hỗ trợ.",0.0
 342,KLB,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 343,,2023,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
@@ -353,7 +353,7 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 352,NLG,2019,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 353,,2019,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 354,AAA,2021,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-355,TNHH,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
+355,TNHH,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.0
 356,,2019,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 357,PVT,2017,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 358,,2021,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
@@ -361,7 +361,7 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 360,,2025,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 361,SCR,2020,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận từ hoạt động kinh doanh' chưa được hỗ trợ.",0.0
 362,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
-363,KBC,2016,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.99
+363,KBC,2016,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 364,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 365,CFO,2016,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận gộp' chưa được hỗ trợ.",0.0
 366,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
@@ -403,9 +403,9 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 402,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 403,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 404,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
-405,VIC,2022,roe,WARNING,,True,2,,624.77
-406,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",1.0
-407,CFO,2021,,ERROR,DATA_NOT_FOUND,False,0,Không tìm thấy số liệu trong báo cáo tài chính đã xử lý: No facts retrieved for CFO 2021 'net_income' (scope: consolidated).,57.03
+405,VIC,2022,roe,WARNING,,True,2,,827.88
+406,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.99
+407,CFO,2021,,ERROR,DATA_NOT_FOUND,False,0,Không tìm thấy số liệu trong báo cáo tài chính đã xử lý: No facts retrieved for CFO 2021 'net_income' (scope: consolidated).,76.51
 408,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 409,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 410,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
@@ -415,30 +415,30 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 414,,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận từ hoạt động kinh doanh' chưa được hỗ trợ.",0.0
 415,,2020,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 416,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
-417,CFO,2024,,ERROR,DATA_NOT_FOUND,False,0,Không tìm thấy số liệu trong báo cáo tài chính đã xử lý: No facts retrieved for CFO 2024 'net_income' (scope: consolidated).,60.9
+417,CFO,2024,,ERROR,DATA_NOT_FOUND,False,0,Không tìm thấy số liệu trong báo cáo tài chính đã xử lý: No facts retrieved for CFO 2024 'net_income' (scope: consolidated).,72.8
 418,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 419,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
-420,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
+420,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",1.0
 421,,2023,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 422,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 423,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 424,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
-425,FPT,2021,,ERROR,DATA_NOT_FOUND,False,0,Phát hiện nhiều số liệu mâu thuẫn cho chỉ tiêu này trong các bảng BCTC. Hệ thống từ chối tự ý chọn số để bảo vệ tính chính xác.,129.12
+425,FPT,2021,,ERROR,DATA_NOT_FOUND,False,0,Phát hiện nhiều số liệu mâu thuẫn cho chỉ tiêu này trong các bảng BCTC. Hệ thống từ chối tự ý chọn số để bảo vệ tính chính xác.,166.44
 426,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 427,FPT,2016,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận trước thuế' chưa được hỗ trợ.",0.0
 428,ACB,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận trước thuế (LNTT)' chưa được hỗ trợ.",0.0
 429,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 430,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 431,,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận gộp' chưa được hỗ trợ.",0.0
-432,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
+432,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",1.13
 433,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 434,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 435,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
-436,SAM,2023,net_margin,WARNING,,True,2,,275.09
+436,SAM,2023,net_margin,SUCCESS,,True,2,,363.53
 437,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 438,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 439,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
-440,DIG,2021,net_income,WARNING,,True,1,,134.07
+440,DIG,2021,net_income,WARNING,,True,1,,178.8
 441,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 442,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 443,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
@@ -450,7 +450,7 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 449,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 450,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 451,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
-452,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
+452,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.99
 453,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 454,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 455,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
@@ -472,7 +472,7 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 471,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 472,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 473,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
-474,ASM,2016,net_revenue,WARNING,,True,1,,135.39
+474,ASM,2016,net_revenue,WARNING,,True,1,,160.77
 475,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 476,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 477,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
@@ -498,9 +498,9 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 497,,2017,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 498,ACB,"[2018, 2020, 2022]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 499,FPT,"[2018, 2019, 2022, 2023, 2024]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
-500,,"[2018, 2020, 2021, 2022]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
+500,,"[2018, 2020, 2021, 2022]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",1.0
 501,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
-502,,"[2015, 2016, 2018, 2019, 2020, 2021]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",1.0
+502,,"[2015, 2016, 2018, 2019, 2020, 2021]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 503,TNHH,"[2015, 2017, 2019, 2021, 2022, 2023]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 504,ASM,"[2022, 2024, 2025]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 505,IJC,"[2017, 2018, 2019, 2022, 2024]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
@@ -517,10 +517,10 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 516,,"[2015, 2019, 2022]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 517,,2017,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 518,,2023,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-519,,"[2015, 2018, 2022, 2024]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
+519,,"[2015, 2018, 2022, 2024]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",1.0
 520,,2022,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 521,,"[2021, 2023, 2025]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
-522,,"[2017, 2018, 2023, 2025]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",1.0
+522,,"[2017, 2018, 2023, 2025]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 523,,"[2019, 2022, 2023, 2024, 2025]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 524,,"[2017, 2018, 2021, 2022]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 525,,"[2017, 2019, 2022]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
@@ -540,9 +540,9 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 539,,2019,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận trước thuế' chưa được hỗ trợ.",0.0
 540,,"[2019, 2020, 2020, 2019]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 541,,"[2022, 2023, 2024]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
-542,,"[2021, 2022, 2022, 2021]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
+542,,"[2021, 2022, 2022, 2021]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.99
 543,,"[2024, 2025]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
-544,DCM,2020,net_margin,SUCCESS,,True,2,,262.85
+544,DCM,2020,net_margin,SUCCESS,,True,2,,356.88
 545,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 546,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 547,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
@@ -553,7 +553,7 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 552,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 553,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 554,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
-555,CEO,2022,,ERROR,DATA_NOT_FOUND,False,0,Không tìm thấy số liệu trong báo cáo tài chính đã xử lý: No candidate fact satisfied validation rules for CEO 2022 'net_revenue'.,64.04
+555,CEO,2022,,ERROR,DATA_NOT_FOUND,False,0,Không tìm thấy số liệu trong báo cáo tài chính đã xử lý: No candidate fact satisfied validation rules for CEO 2022 'net_revenue'.,83.48
 556,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 557,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 558,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
@@ -568,7 +568,7 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 567,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 568,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 569,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
-570,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
+570,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",1.0
 571,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 572,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 573,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
@@ -581,8 +581,8 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 580,HBC,2016,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 581,DBC,2019,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 582,MCH,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ tính tăng trưởng liên tiếp theo từng năm (YoY, ví dụ: 'năm 2024 so với 2023' hoặc 'năm 2024'). Tăng trưởng nhiều năm không liên tiếp (2021 - 2023) chưa được hỗ trợ.",0.0
-583,OCB,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.0
-584,AAA,2025,equity,SUCCESS,,True,1,,483.9
+583,OCB,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
+584,AAA,2025,equity,SUCCESS,,True,1,,678.39
 585,STB,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 586,,2021,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 587,STB,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ tính tăng trưởng liên tiếp theo từng năm (YoY, ví dụ: 'năm 2024 so với 2023' hoặc 'năm 2024'). Tăng trưởng nhiều năm không liên tiếp (2016 - 2022) chưa được hỗ trợ.",0.0
@@ -592,7 +592,7 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 591,,2022,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 592,,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 593,VIF,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-594,GEE,2025,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.0
+594,GEE,2025,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.99
 595,,2022,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 596,VNM,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ tính tăng trưởng liên tiếp theo từng năm (YoY, ví dụ: 'năm 2024 so với 2023' hoặc 'năm 2024'). Tăng trưởng nhiều năm không liên tiếp (2017 - 2024) chưa được hỗ trợ.",0.0
 597,,"[2021, 2022]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
@@ -602,19 +602,19 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 601,KBC,2019,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 602,,2021,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 603,VJC,2025,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-604,DLG,2019,total_assets,WARNING,,True,1,,429.37
-605,NLG,"[2023, 2024]",revenue_growth,WARNING,,True,2,,269.01
+604,DLG,2019,total_assets,SUCCESS,,True,1,,623.2
+605,NLG,"[2023, 2024]",revenue_growth,SUCCESS,,True,2,,362.64
 606,MML,"[2019, 2023]",,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Tăng trưởng doanh thu thuần. Tốc độ tăng trưởng cho 'nợ' chưa được hỗ trợ.,0.0
 607,,2023,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 608,,2018,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-609,ACB,2022,,ERROR,DATA_NOT_FOUND,False,0,Không tìm thấy số liệu trong báo cáo tài chính đã xử lý: No facts retrieved for ACB 2022 'total_assets' (scope: consolidated).,60.25
+609,ACB,2022,,ERROR,DATA_NOT_FOUND,False,0,Không tìm thấy số liệu trong báo cáo tài chính đã xử lý: No facts retrieved for ACB 2022 'total_assets' (scope: consolidated).,73.47
 610,GAS,"[2022, 2020]",,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Tăng trưởng doanh thu thuần. Tốc độ tăng trưởng cho 'chi phí' chưa được hỗ trợ.,0.0
 611,EIB,"[2018, 2019]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 612,NKG,2021,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 613,IJC,2022,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận hoạt động tài chính' chưa được hỗ trợ.",0.0
 614,IJC,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ tính tăng trưởng liên tiếp theo từng năm (YoY, ví dụ: 'năm 2024 so với 2023' hoặc 'năm 2024'). Tăng trưởng nhiều năm không liên tiếp (2015 - 2021) chưa được hỗ trợ.",0.0
 615,,2020,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-616,VJC,2018,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
+616,VJC,2018,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.0
 617,GAS,"[2016, 2019]",,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Tăng trưởng doanh thu thuần. Tốc độ tăng trưởng cho 'vốn' chưa được hỗ trợ.,0.0
 618,STB,2019,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 619,SSI,2020,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
@@ -624,7 +624,7 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 623,,2023,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 624,STB,2016,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 625,,2023,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-626,BVH,"[2020, 2018]",,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Tăng trưởng doanh thu thuần. Tốc độ tăng trưởng cho 'khoản phải thu' chưa được hỗ trợ.,1.48
+626,BVH,"[2020, 2018]",,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Tăng trưởng doanh thu thuần. Tốc độ tăng trưởng cho 'khoản phải thu' chưa được hỗ trợ.,0.0
 627,PVT,2018,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 628,DCM,2018,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 629,HBC,2016,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Doanh thu tài chính' chưa được hỗ trợ.,0.0
@@ -634,7 +634,7 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 633,,2015,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 634,,2019,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 635,ABB,2020,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Doanh thu tài chính' chưa được hỗ trợ.,0.0
-636,KBC,2024,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
+636,KBC,2024,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.1
 637,VPI,"[2021, 2022]",,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Tăng trưởng doanh thu thuần. Tốc độ tăng trưởng cho 'vốn' chưa được hỗ trợ.,0.0
 638,GELEX,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ tính tăng trưởng liên tiếp theo từng năm (YoY, ví dụ: 'năm 2024 so với 2023' hoặc 'năm 2024'). Tăng trưởng nhiều năm không liên tiếp (2022 - 2025) chưa được hỗ trợ.",0.0
 639,,2019,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
@@ -642,7 +642,7 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 641,,2020,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 642,,2021,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 643,KLB,2019,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-644,DIG,"[2022, 2023]",revenue_growth,SUCCESS,,True,2,,268.23
+644,DIG,"[2022, 2023]",revenue_growth,SUCCESS,,True,2,,343.56
 645,BVH,2018,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Doanh thu tài chính' chưa được hỗ trợ.,0.0
 646,KHG,2021,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 647,ACB,"[2017, 2019]",,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Tăng trưởng doanh thu thuần. Tốc độ tăng trưởng cho 'rủi ro' chưa được hỗ trợ.,0.0
@@ -653,26 +653,26 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 652,,2018,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 653,,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 654,,2017,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-655,VIC,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ tính tăng trưởng liên tiếp theo từng năm (YoY, ví dụ: 'năm 2024 so với 2023' hoặc 'năm 2024'). Tăng trưởng nhiều năm không liên tiếp (2019 - 2021) chưa được hỗ trợ.",0.0
-656,FPT,2024,total_assets,WARNING,,True,1,,405.88
-657,FPT,2020,,ERROR,DATA_NOT_FOUND,False,0,Không tìm thấy số liệu trong báo cáo tài chính đã xử lý: No facts retrieved for FPT 2020 'net_income' (scope: separate).,56.54
-658,,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",1.51
+655,VIC,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ tính tăng trưởng liên tiếp theo từng năm (YoY, ví dụ: 'năm 2024 so với 2023' hoặc 'năm 2024'). Tăng trưởng nhiều năm không liên tiếp (2019 - 2021) chưa được hỗ trợ.",1.0
+656,FPT,2024,total_assets,SUCCESS,,True,1,,653.42
+657,FPT,2020,,ERROR,DATA_NOT_FOUND,False,0,Không tìm thấy số liệu trong báo cáo tài chính đã xử lý: No facts retrieved for FPT 2020 'net_income' (scope: separate).,94.08
+658,,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",1.0
 659,,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 660,,2022,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 661,,2021,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-662,CEO,2016,net_income,WARNING,,True,1,,131.67
-663,HAG,2022,total_assets,WARNING,,True,1,,409.51
+662,CEO,2016,net_income,WARNING,,True,1,,183.01
+663,HAG,2022,total_assets,SUCCESS,,True,1,,617.95
 664,,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 665,,2016,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 666,KBC,2015,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận hoạt động tài chính' chưa được hỗ trợ.",0.0
 667,,2023,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-668,HHS,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
+668,HHS,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.02
 669,,2019,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 670,BAF,2020,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Doanh thu tài chính' chưa được hỗ trợ.,0.0
 671,,2020,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận trước thuế' chưa được hỗ trợ.",0.0
 672,,2022,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 673,,2025,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-674,HBC,2016,net_margin,WARNING,,True,2,,274.46
+674,HBC,2016,net_margin,SUCCESS,,True,2,,339.98
 675,,2021,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Doanh thu tài chính' chưa được hỗ trợ.,0.0
 676,,2017,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 677,,2017,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận hoạt động tài chính' chưa được hỗ trợ.",0.0
@@ -691,7 +691,7 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 690,HNG,2020,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 691,,2018,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 692,,2018,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-693,,2025,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
+693,,2025,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",1.0
 694,,2015,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 695,,2017,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 696,,2019,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
@@ -702,13 +702,13 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 701,,2020,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 702,CEO,2018,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 703,GEX,2024,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-704,,2015,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận hoạt động tài chính' chưa được hỗ trợ.",0.0
-705,KBC,2022,equity,SUCCESS,,True,1,,417.02
+704,,2015,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận hoạt động tài chính' chưa được hỗ trợ.",1.0
+705,KBC,2022,equity,SUCCESS,,True,1,,524.43
 706,EVF,2025,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 707,VGT,2024,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 708,,2017,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 709,MSR,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-710,,2022,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
+710,,2022,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",1.0
 711,,2017,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 712,,2025,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 713,,2020,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận hoạt động tài chính' chưa được hỗ trợ.",0.0
@@ -719,9 +719,9 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 718,,2017,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 719,,2016,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận trước thuế' chưa được hỗ trợ.",0.0
 720,SGB,"[2017, 2018]",,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Tăng trưởng doanh thu thuần. Tốc độ tăng trưởng cho 'tài sản' chưa được hỗ trợ.,0.0
-721,,2020,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",1.0
+721,,2020,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 722,,2022,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận khác' chưa được hỗ trợ.",0.0
-723,HAG,2018,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
+723,HAG,2018,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",1.0
 724,,2015,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Doanh thu tài chính' chưa được hỗ trợ.,0.0
 725,SAM,2017,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận hoạt động tài chính' chưa được hỗ trợ.",0.0
 726,GELEX,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận hoạt động tài chính' chưa được hỗ trợ.",0.0
@@ -732,7 +732,7 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 731,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 732,FIT,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 733,,2020,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-734,,2025,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận từ hoạt động kinh doanh' chưa được hỗ trợ.",0.0
+734,,2025,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận từ hoạt động kinh doanh' chưa được hỗ trợ.",1.03
 735,,2017,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 736,,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 737,BAF,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
@@ -741,7 +741,7 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 740,,2023,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 741,,2019,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 742,,2019,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-743,SAM,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
+743,SAM,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.99
 744,,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 745,,2016,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 746,,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
@@ -749,15 +749,15 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 748,,2018,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 749,,2025,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 750,,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-751,,2023,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
+751,,2023,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",1.0
 752,,2022,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 753,,2017,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 754,,2021,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 755,,2025,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 756,,2022,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-757,,2020,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",1.0
+757,,2020,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 758,,2025,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-759,,2025,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
+759,,2025,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",1.0
 760,,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 761,,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 762,SAM,2019,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Doanh thu tài chính' chưa được hỗ trợ.,0.0
@@ -768,8 +768,8 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 767,,2015,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 768,,2025,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 769,,2015,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-770,,2023,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-771,,2023,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.99
+770,,2023,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.99
+771,,2023,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 772,,2021,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 773,,2020,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 774,SHB,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
@@ -777,7 +777,7 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 776,,2021,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 777,,2018,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 778,,2018,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
-779,,2018,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
+779,,2018,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",1.0
 780,,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 781,GELEX,2018,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 782,HAGL,2016,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
@@ -787,7 +787,7 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 786,TKV,2023,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận trước thuế' chưa được hỗ trợ.",0.0
 787,,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 788,BAF,2020,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
-789,,2022,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",1.01
+789,,2022,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 790,VIB,2023,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 791,GEG,2017,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 792,,2022,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
@@ -797,19 +797,19 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 796,,2021,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Lãi tiền gửi' chưa được hỗ trợ.,0.0
 797,ACV,2019,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 798,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
-799,SAM,2021,equity,WARNING,,True,1,,462.63
+799,SAM,2021,equity,SUCCESS,,True,1,,960.31
 800,MSB,2022,,ERROR,USER_INPUT_ERROR,False,0,"Chỉ tiêu tài chính chưa được hỗ trợ hoặc không nhận diện được. FinRAG MVP hỗ trợ: Doanh thu thuần, Lợi nhuận sau thuế, Tổng tài sản, Vốn chủ sở hữu, Biên lợi nhuận ròng, ROA, ROE, Tăng trưởng doanh thu.",0.0
 801,,2016,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 802,,2024,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 803,,2015,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 804,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
-805,,2018,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
+805,,2018,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",1.0
 806,,2020,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 807,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 808,,2025,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 809,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 810,,2025,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Lãi tiền gửi' chưa được hỗ trợ.,0.0
-811,BAF,2024,net_income,WARNING,,True,1,,133.54
+811,BAF,2024,net_income,SUCCESS,,True,1,,212.14
 812,,2016,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 813,ACV,"[2015, 2017, 2019, 2023]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 814,GAS,"[2020, 2022, 2024]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
@@ -834,7 +834,7 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 833,VGT,"[2016, 2024, 2025]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 834,,"[2015, 2016, 2017, 2025]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 835,FOX,"[2016, 2017, 2018, 2019, 2020]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
-836,TTF,"[2017, 2019, 2021, 2025]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
+836,TTF,"[2017, 2019, 2021, 2025]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",1.0
 837,VSF,"[2018, 2019, 2021, 2022, 2023]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 838,MSN,"[2017, 2018, 2020, 2021, 2024]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 839,,"[2017, 2019, 2021, 2024, 2025]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
@@ -860,7 +860,7 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 859,,"[2022, 2023, 2024]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 860,,"[2017, 2022, 2023]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 861,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
-862,,2016,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Doanh thu tài chính' chưa được hỗ trợ.,1.0
+862,,2016,,ERROR,USER_INPUT_ERROR,False,0,FinRAG MVP hiện chỉ hỗ trợ Doanh thu thuần (Mã số 10). Chỉ tiêu 'Doanh thu tài chính' chưa được hỗ trợ.,0.0
 863,MTV,"[2015, 2019, 2021]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 864,EIB,"[2017, 2019, 2021, 2025]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 865,VIF,"[2017, 2020, 2021, 2022]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
@@ -871,7 +871,7 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 870,SAB,"[2022, 2023, 2024]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 871,,"[2019, 2022, 2023, 2024]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 872,EVF,"[2021, 2022, 2023, 2025]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
-873,,"[2017, 2018, 2021, 2023, 2025]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
+873,,"[2017, 2018, 2021, 2023, 2025]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",1.0
 874,VNM,"[2015, 2016, 2021, 2023, 2025]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 875,,"[2016, 2017, 2022, 2025]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 876,ACV,"[2017, 2019, 2021, 2022]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
@@ -896,7 +896,7 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 895,VIC,"[2015, 2019, 2022, 2025]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 896,TTF,"[2018, 2021, 2022, 2024]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 897,DXG,"[2016, 2018, 2020]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
-898,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",1.0
+898,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 899,MPC,"[2018, 2020, 2022, 2023]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 900,MSN,"[2016, 2017, 2019, 2021]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 901,KLB,"[2016, 2020]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
@@ -907,7 +907,7 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 906,VGT,"[2015, 2017, 2018, 2020, 2022]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 907,NVB,"[2016, 2019, 2020, 2021]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 908,ACB,"[2016, 2017, 2019, 2023, 2025]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
-909,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
+909,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",1.0
 910,DBC,"[2015, 2016, 2019, 2022, 2025]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 911,VIF,"[2017, 2020, 2021, 2022, 2024]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 912,VIF,"[2022, 2024, 2025]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
@@ -934,7 +934,7 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 933,VNM,"[2015, 2016, 2018, 2021]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 934,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 935,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
-936,CRE,"[2020, 2021, 2022, 2025]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",1.0
+936,CRE,"[2020, 2021, 2022, 2025]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 937,CTG,"[2017, 2018, 2019, 2020]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 938,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 939,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
@@ -969,11 +969,11 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 968,POW,"[2017, 2019, 2022, 2023, 2024]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 969,DNH,"[2017, 2018, 2019]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 970,,"[2015, 2021, 2023, 2025]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
-971,,2019,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",1.0
+971,,2019,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 972,DIG,"[2021, 2023, 2025]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
 973,,2022,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận từ hoạt động kinh doanh' chưa được hỗ trợ.",0.0
 974,,"[2022, 2023, 2024, 2025]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
-975,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
+975,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",1.09
 976,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 977,,2017,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
 978,,"[2020, 2022, 2025]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
@@ -1003,7 +1003,7 @@ question_id,ticker,year_or_period,resolved_metric,application_status,error_categ
 1002,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 1003,,2015,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG MVP hiện chỉ hỗ trợ Lợi nhuận sau thuế (LNST, Mã số 60). Chỉ tiêu 'Lợi nhuận từ hoạt động kinh doanh' chưa được hỗ trợ.",0.0
 1004,IJC,"[2016, 2017, 2018, 2023, 2024]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0
-1005,,2020,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.0
+1005,,2020,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG không tìm thấy mã chứng khoán trong câu hỏi. Vui lòng cung cấp mã niêm yết (ví dụ: FPT, HPG, VNM, MWG, PNJ, GAS).",0.9
 1006,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 1007,,,,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ truy vấn chỉ tiêu tài chính cho từng doanh nghiệp đơn lẻ, chưa hỗ trợ so sánh hoặc xếp hạng giữa nhiều công ty.",0.0
 1008,SSH,"[2020, 2021, 2022, 2023]",,ERROR,USER_INPUT_ERROR,False,0,"FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm.",0.0

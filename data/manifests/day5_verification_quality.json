@@ -1,6 +1,6 @@
 {
   "manifest_version": "day5_v1",
-  "evaluation_timestamp": "2026-11-02T03:32:23.235883+00:00",
+  "evaluation_timestamp": "2026-11-02T03:54:52.794703+00:00",
   "total_cases": 60,
   "valid_cases": 30,
   "accepted_valid_cases": 30,
@@ -12,7 +12,7 @@
   "false_acceptances": 0,
   "mutation_detection_rate_percent": 100.0,
   "overall_verification_accuracy_percent": 100.0,
-  "average_verification_latency_ms": 0.15,
+  "average_verification_latency_ms": 0.13,
   "overall_status": "PASS",
   "accuracy_claim": "100.0% mutation detection and valid case acceptance on the 60-case Day 5 verification benchmark (not a claim of universal verification accuracy across all Vietnamese financial reports)",
   "mutation_categories": {
@@ -72,17 +72,15 @@
       "metric": "net_revenue",
       "ticker": "FPT",
       "year": 2024,
-      "verification_status": "WARNING",
+      "verification_status": "VERIFIED",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 15,
+      "checks_passed": 16,
       "checks_failed": 0,
-      "checks_warning": 1,
-      "latency_ms": 1.0,
+      "checks_warning": 0,
+      "latency_ms": 0.0,
       "errors": [],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "VAL_02",
@@ -91,17 +89,15 @@
       "metric": "net_income",
       "ticker": "FPT",
       "year": 2024,
-      "verification_status": "WARNING",
+      "verification_status": "VERIFIED",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 15,
+      "checks_passed": 16,
       "checks_failed": 0,
-      "checks_warning": 1,
+      "checks_warning": 0,
       "latency_ms": 0.0,
       "errors": [],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r20_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "VAL_03",
@@ -110,17 +106,15 @@
       "metric": "total_assets",
       "ticker": "FPT",
       "year": 2024,
-      "verification_status": "WARNING",
+      "verification_status": "VERIFIED",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 15,
+      "checks_passed": 16,
       "checks_failed": 0,
-      "checks_warning": 1,
+      "checks_warning": 0,
       "latency_ms": 0.0,
       "errors": [],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p10_t0_r28_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "VAL_04",
@@ -129,17 +123,15 @@
       "metric": "equity",
       "ticker": "FPT",
       "year": 2024,
-      "verification_status": "WARNING",
+      "verification_status": "VERIFIED",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 15,
+      "checks_passed": 16,
       "checks_failed": 0,
-      "checks_warning": 1,
+      "checks_warning": 0,
       "latency_ms": 1.0,
       "errors": [],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p12_t0_r3_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "VAL_05",
@@ -148,17 +140,15 @@
       "metric": "net_revenue",
       "ticker": "HPG",
       "year": 2023,
-      "verification_status": "WARNING",
+      "verification_status": "VERIFIED",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 15,
+      "checks_passed": 16,
       "checks_failed": 0,
-      "checks_warning": 1,
-      "latency_ms": 0.0,
+      "checks_warning": 0,
+      "latency_ms": 1.0,
       "errors": [],
-      "warnings": [
-        "Fact quality warning: fact 'HPG_financial_statements_2023_consolidated_p11_t0_r3_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "VAL_06",
@@ -167,17 +157,15 @@
       "metric": "net_income",
       "ticker": "HPG",
       "year": 2023,
-      "verification_status": "WARNING",
+      "verification_status": "VERIFIED",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 15,
+      "checks_passed": 16,
       "checks_failed": 0,
-      "checks_warning": 1,
+      "checks_warning": 0,
       "latency_ms": 0.0,
       "errors": [],
-      "warnings": [
-        "Fact quality warning: fact 'HPG_financial_statements_2023_consolidated_p11_t0_r19_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "VAL_07",
@@ -186,17 +174,15 @@
       "metric": "total_assets",
       "ticker": "HPG",
       "year": 2023,
-      "verification_status": "WARNING",
+      "verification_status": "VERIFIED",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 15,
+      "checks_passed": 16,
       "checks_failed": 0,
-      "checks_warning": 1,
+      "checks_warning": 0,
       "latency_ms": 0.0,
       "errors": [],
-      "warnings": [
-        "Fact quality warning: fact 'HPG_financial_statements_2023_consolidated_p8_t0_r26_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "VAL_08",
@@ -205,17 +191,15 @@
       "metric": "equity",
       "ticker": "HPG",
       "year": 2023,
-      "verification_status": "WARNING",
+      "verification_status": "VERIFIED",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 15,
+      "checks_passed": 16,
       "checks_failed": 0,
-      "checks_warning": 1,
+      "checks_warning": 0,
       "latency_ms": 0.0,
       "errors": [],
-      "warnings": [
-        "Fact quality warning: fact 'HPG_financial_statements_2023_consolidated_p10_t0_r1_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "VAL_09",
@@ -224,17 +208,15 @@
       "metric": "net_revenue",
       "ticker": "VNM",
       "year": 2023,
-      "verification_status": "WARNING",
+      "verification_status": "VERIFIED",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 15,
+      "checks_passed": 16,
       "checks_failed": 0,
-      "checks_warning": 1,
+      "checks_warning": 0,
       "latency_ms": 0.0,
       "errors": [],
-      "warnings": [
-        "Fact quality warning: fact 'VNM_financial_statements_2024_consolidated_p10_t0_r3_c4' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "VAL_10",
@@ -243,17 +225,15 @@
       "metric": "net_income",
       "ticker": "VNM",
       "year": 2023,
-      "verification_status": "WARNING",
+      "verification_status": "VERIFIED",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 15,
+      "checks_passed": 16,
       "checks_failed": 0,
-      "checks_warning": 1,
-      "latency_ms": 1.02,
+      "checks_warning": 0,
+      "latency_ms": 0.0,
       "errors": [],
-      "warnings": [
-        "Fact quality warning: fact 'VNM_financial_statements_2024_consolidated_p10_t0_r19_c4' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "VAL_11",
@@ -262,17 +242,15 @@
       "metric": "total_assets",
       "ticker": "VNM",
       "year": 2023,
-      "verification_status": "WARNING",
+      "verification_status": "VERIFIED",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 15,
+      "checks_passed": 16,
       "checks_failed": 0,
-      "checks_warning": 1,
+      "checks_warning": 0,
       "latency_ms": 0.0,
       "errors": [],
-      "warnings": [
-        "Fact quality warning: fact 'VNM_financial_statements_2023_consolidated_p8_t0_r26_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "VAL_12",
@@ -281,17 +259,15 @@
       "metric": "equity",
       "ticker": "VNM",
       "year": 2023,
-      "verification_status": "WARNING",
+      "verification_status": "VERIFIED",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 15,
+      "checks_passed": 16,
       "checks_failed": 0,
-      "checks_warning": 1,
+      "checks_warning": 0,
       "latency_ms": 0.0,
       "errors": [],
-      "warnings": [
-        "Fact quality warning: fact 'VNM_financial_statements_2023_consolidated_p9_t0_r19_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "VAL_13",
@@ -300,17 +276,15 @@
       "metric": "net_revenue",
       "ticker": "MWG",
       "year": 2023,
-      "verification_status": "WARNING",
+      "verification_status": "VERIFIED",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 15,
+      "checks_passed": 16,
       "checks_failed": 0,
-      "checks_warning": 1,
+      "checks_warning": 0,
       "latency_ms": 0.0,
       "errors": [],
-      "warnings": [
-        "Fact quality warning: fact 'MWG_financial_statements_2024_consolidated_p9_t0_r3_c4' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "VAL_14",
@@ -319,17 +293,15 @@
       "metric": "net_income",
       "ticker": "MWG",
       "year": 2023,
-      "verification_status": "WARNING",
+      "verification_status": "VERIFIED",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 15,
+      "checks_passed": 16,
       "checks_failed": 0,
-      "checks_warning": 1,
+      "checks_warning": 0,
       "latency_ms": 0.0,
       "errors": [],
-      "warnings": [
-        "Fact quality warning: fact 'MWG_financial_statements_2024_consolidated_p9_t0_r19_c4' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "VAL_15",
@@ -338,17 +310,15 @@
       "metric": "net_revenue",
       "ticker": "PNJ",
       "year": 2023,
-      "verification_status": "WARNING",
+      "verification_status": "VERIFIED",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 15,
+      "checks_passed": 16,
       "checks_failed": 0,
-      "checks_warning": 1,
+      "checks_warning": 0,
       "latency_ms": 0.0,
       "errors": [],
-      "warnings": [
-        "Fact quality warning: fact 'PNJ_financial_statements_2023_consolidated_p10_t0_r3_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "VAL_16",
@@ -357,17 +327,15 @@
       "metric": "net_income",
       "ticker": "PNJ",
       "year": 2023,
-      "verification_status": "WARNING",
+      "verification_status": "VERIFIED",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 15,
+      "checks_passed": 16,
       "checks_failed": 0,
-      "checks_warning": 1,
+      "checks_warning": 0,
       "latency_ms": 0.0,
       "errors": [],
-      "warnings": [
-        "Fact quality warning: fact 'PNJ_financial_statements_2023_consolidated_p11_t0_r1_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "VAL_17",
@@ -376,17 +344,15 @@
       "metric": "net_revenue",
       "ticker": "GAS",
       "year": 2023,
-      "verification_status": "WARNING",
+      "verification_status": "VERIFIED",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 15,
+      "checks_passed": 16,
       "checks_failed": 0,
-      "checks_warning": 1,
-      "latency_ms": 0.0,
+      "checks_warning": 0,
+      "latency_ms": 1.77,
       "errors": [],
-      "warnings": [
-        "Fact quality warning: fact 'GAS_financial_statements_2023_consolidated_p12_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "VAL_18",
@@ -395,17 +361,15 @@
       "metric": "net_revenue",
       "ticker": "FPT",
       "year": 2023,
-      "verification_status": "WARNING",
+      "verification_status": "VERIFIED",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 15,
+      "checks_passed": 16,
       "checks_failed": 0,
-      "checks_warning": 1,
+      "checks_warning": 0,
       "latency_ms": 0.0,
       "errors": [],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2023_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "VAL_19",
@@ -414,18 +378,15 @@
       "metric": "net_margin",
       "ticker": "FPT",
       "year": 2024,
-      "verification_status": "WARNING",
+      "verification_status": "VERIFIED",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 21,
+      "checks_passed": 23,
       "checks_failed": 0,
-      "checks_warning": 2,
-      "latency_ms": 0.0,
+      "checks_warning": 0,
+      "latency_ms": 1.0,
       "errors": [],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r20_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "VAL_20",
@@ -437,15 +398,13 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 21,
+      "checks_passed": 23,
       "checks_failed": 0,
-      "checks_warning": 3,
+      "checks_warning": 1,
       "latency_ms": 0.0,
       "errors": [],
       "warnings": [
-        "Methodology notice: 'roa' uses closing balance for denominator per MVP specification ('ROA (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Tổng tài sản (Số cuối kỳ, Mã số 270)'). Standard financial analysis may alternatively use 2-year average balance.",
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r20_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p10_t0_r28_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
+        "Methodology notice: 'roa' uses closing balance for denominator per MVP specification ('ROA (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Tổng tài sản (Số cuối kỳ, Mã số 270)'). Standard financial analysis may alternatively use 2-year average balance."
       ]
     },
     {
@@ -458,15 +417,13 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 21,
+      "checks_passed": 23,
       "checks_failed": 0,
-      "checks_warning": 3,
+      "checks_warning": 1,
       "latency_ms": 0.0,
       "errors": [],
       "warnings": [
-        "Methodology notice: 'roe' uses closing balance for denominator per MVP specification ('ROE (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Vốn chủ sở hữu (Số cuối kỳ, Mã số 400/410)'). Standard financial analysis may alternatively use 2-year average balance.",
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r20_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p12_t0_r3_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
+        "Methodology notice: 'roe' uses closing balance for denominator per MVP specification ('ROE (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Vốn chủ sở hữu (Số cuối kỳ, Mã số 400/410)'). Standard financial analysis may alternatively use 2-year average balance."
       ]
     },
     {
@@ -479,15 +436,13 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 21,
+      "checks_passed": 23,
       "checks_failed": 0,
-      "checks_warning": 3,
+      "checks_warning": 1,
       "latency_ms": 0.0,
       "errors": [],
       "warnings": [
-        "Methodology notice: 'roa' uses closing balance for denominator per MVP specification ('ROA (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Tổng tài sản (Số cuối kỳ, Mã số 270)'). Standard financial analysis may alternatively use 2-year average balance.",
-        "Fact quality warning: fact 'HPG_financial_statements_2023_consolidated_p11_t0_r19_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
-        "Fact quality warning: fact 'HPG_financial_statements_2023_consolidated_p8_t0_r26_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
+        "Methodology notice: 'roa' uses closing balance for denominator per MVP specification ('ROA (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Tổng tài sản (Số cuối kỳ, Mã số 270)'). Standard financial analysis may alternatively use 2-year average balance."
       ]
     },
     {
@@ -500,15 +455,13 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 21,
+      "checks_passed": 23,
       "checks_failed": 0,
-      "checks_warning": 3,
-      "latency_ms": 1.0,
+      "checks_warning": 1,
+      "latency_ms": 0.0,
       "errors": [],
       "warnings": [
-        "Methodology notice: 'roe' uses closing balance for denominator per MVP specification ('ROE (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Vốn chủ sở hữu (Số cuối kỳ, Mã số 400/410)'). Standard financial analysis may alternatively use 2-year average balance.",
-        "Fact quality warning: fact 'HPG_financial_statements_2023_consolidated_p11_t0_r19_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
-        "Fact quality warning: fact 'HPG_financial_statements_2023_consolidated_p10_t0_r1_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
+        "Methodology notice: 'roe' uses closing balance for denominator per MVP specification ('ROE (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Vốn chủ sở hữu (Số cuối kỳ, Mã số 400/410)'). Standard financial analysis may alternatively use 2-year average balance."
       ]
     },
     {
@@ -521,15 +474,13 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 21,
+      "checks_passed": 23,
       "checks_failed": 0,
-      "checks_warning": 3,
-      "latency_ms": 0.99,
+      "checks_warning": 1,
+      "latency_ms": 0.0,
       "errors": [],
       "warnings": [
-        "Methodology notice: 'roa' uses closing balance for denominator per MVP specification ('ROA (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Tổng tài sản (Số cuối kỳ, Mã số 270)'). Standard financial analysis may alternatively use 2-year average balance.",
-        "Fact quality warning: fact 'VNM_financial_statements_2024_consolidated_p10_t0_r19_c4' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
-        "Fact quality warning: fact 'VNM_financial_statements_2023_consolidated_p8_t0_r26_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
+        "Methodology notice: 'roa' uses closing balance for denominator per MVP specification ('ROA (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Tổng tài sản (Số cuối kỳ, Mã số 270)'). Standard financial analysis may alternatively use 2-year average balance."
       ]
     },
     {
@@ -542,15 +493,13 @@
       "verification_status": "WARNING",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 21,
+      "checks_passed": 23,
       "checks_failed": 0,
-      "checks_warning": 3,
+      "checks_warning": 1,
       "latency_ms": 0.0,
       "errors": [],
       "warnings": [
-        "Methodology notice: 'roe' uses closing balance for denominator per MVP specification ('ROE (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Vốn chủ sở hữu (Số cuối kỳ, Mã số 400/410)'). Standard financial analysis may alternatively use 2-year average balance.",
-        "Fact quality warning: fact 'VNM_financial_statements_2024_consolidated_p10_t0_r19_c4' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
-        "Fact quality warning: fact 'VNM_financial_statements_2023_consolidated_p9_t0_r19_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
+        "Methodology notice: 'roe' uses closing balance for denominator per MVP specification ('ROE (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Vốn chủ sở hữu (Số cuối kỳ, Mã số 400/410)'). Standard financial analysis may alternatively use 2-year average balance."
       ]
     },
     {
@@ -560,18 +509,15 @@
       "metric": "net_margin",
       "ticker": "HPG",
       "year": 2023,
-      "verification_status": "WARNING",
+      "verification_status": "VERIFIED",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 21,
+      "checks_passed": 23,
       "checks_failed": 0,
-      "checks_warning": 2,
+      "checks_warning": 0,
       "latency_ms": 0.0,
       "errors": [],
-      "warnings": [
-        "Fact quality warning: fact 'HPG_financial_statements_2023_consolidated_p11_t0_r19_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
-        "Fact quality warning: fact 'HPG_financial_statements_2023_consolidated_p11_t0_r3_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "VAL_27",
@@ -580,18 +526,15 @@
       "metric": "revenue_growth",
       "ticker": "FPT",
       "year": 2024,
-      "verification_status": "WARNING",
+      "verification_status": "VERIFIED",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 21,
+      "checks_passed": 23,
       "checks_failed": 0,
-      "checks_warning": 2,
-      "latency_ms": 1.0,
+      "checks_warning": 0,
+      "latency_ms": 0.0,
       "errors": [],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2023_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "VAL_28",
@@ -600,18 +543,15 @@
       "metric": "revenue_growth",
       "ticker": "HPG",
       "year": 2023,
-      "verification_status": "WARNING",
+      "verification_status": "VERIFIED",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 21,
+      "checks_passed": 23,
       "checks_failed": 0,
-      "checks_warning": 2,
+      "checks_warning": 0,
       "latency_ms": 0.0,
       "errors": [],
-      "warnings": [
-        "Fact quality warning: fact 'HPG_financial_statements_2022_consolidated_p11_t0_r3_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
-        "Fact quality warning: fact 'HPG_financial_statements_2023_consolidated_p11_t0_r3_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "VAL_29",
@@ -620,18 +560,15 @@
       "metric": "revenue_growth",
       "ticker": "VNM",
       "year": 2023,
-      "verification_status": "WARNING",
+      "verification_status": "VERIFIED",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 21,
+      "checks_passed": 23,
       "checks_failed": 0,
-      "checks_warning": 2,
-      "latency_ms": 1.02,
+      "checks_warning": 0,
+      "latency_ms": 0.0,
       "errors": [],
-      "warnings": [
-        "Fact quality warning: fact 'VNM_financial_statements_2023_consolidated_p10_t0_r3_c4' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
-        "Fact quality warning: fact 'VNM_financial_statements_2024_consolidated_p10_t0_r3_c4' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "VAL_30",
@@ -640,17 +577,15 @@
       "metric": "net_revenue",
       "ticker": "FPT",
       "year": 2024,
-      "verification_status": "WARNING",
+      "verification_status": "VERIFIED",
       "overall_pass": true,
       "is_correct_outcome": true,
-      "checks_passed": 15,
+      "checks_passed": 16,
       "checks_failed": 0,
-      "checks_warning": 1,
-      "latency_ms": 1.11,
+      "checks_warning": 0,
+      "latency_ms": 0.0,
       "errors": [],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_separate_p11_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     }
   ],
   "detailed_corrupted_cases": [
@@ -667,10 +602,7 @@
         "Numerical discrepancy: result value 0.15150166131295625 differs from reference 0.1500016448643131 (rel_diff=0.010000 > tol 0.0001)",
         "Trace final step output 0.1500016448643131 does not match result value 0.15150166131295625"
       ],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r20_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "MUT_02",
@@ -685,10 +617,7 @@
         "Numerical discrepancy: result value 0.19054875804327379 differs from reference 0.19443750820742223 (rel_diff=0.020000 > tol 0.0001)",
         "Trace final step output 0.19443750820742223 does not match result value 0.19054875804327379"
       ],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2023_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "MUT_03",
@@ -703,9 +632,7 @@
         "Numerical discrepancy: result value 628487943513670.0 differs from reference 62848794351367.0 (rel_diff=9.000000 > tol 0.0001)",
         "Trace final step output 62848794351367.0 does not match result value 628487943513670.0"
       ],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "MUT_04",
@@ -715,15 +642,13 @@
       "verification_status": "REJECTED",
       "overall_pass": false,
       "is_correct_outcome": true,
-      "latency_ms": 0.0,
+      "latency_ms": 1.0,
       "errors": [
         "Numerical discrepancy: result value -0.036214158296144786 differs from reference 0.036214158296144786 (rel_diff=2.000000 > tol 0.0001)",
         "Trace final step output 0.036214158296144786 does not match result value -0.036214158296144786"
       ],
       "warnings": [
-        "Methodology notice: 'roa' uses closing balance for denominator per MVP specification ('ROA (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Tổng tài sản (Số cuối kỳ, Mã số 270)'). Standard financial analysis may alternatively use 2-year average balance.",
-        "Fact quality warning: fact 'HPG_financial_statements_2023_consolidated_p11_t0_r19_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
-        "Fact quality warning: fact 'HPG_financial_statements_2023_consolidated_p8_t0_r26_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
+        "Methodology notice: 'roa' uses closing balance for denominator per MVP specification ('ROA (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Tổng tài sản (Số cuối kỳ, Mã số 270)'). Standard financial analysis may alternatively use 2-year average balance."
       ]
     },
     {
@@ -738,10 +663,7 @@
       "errors": [
         "Formula mismatch: expected 'net_income / net_revenue', got 'net_revenue / net_income'"
       ],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r20_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "MUT_06",
@@ -755,10 +677,7 @@
       "errors": [
         "Formula mismatch: expected 'net_income / net_revenue', got 'net_income * net_revenue'"
       ],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r20_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "MUT_07",
@@ -772,10 +691,7 @@
       "errors": [
         "Formula mismatch: expected '(net_revenue_current - net_revenue_previous) / net_revenue_previous', got 'current - previous'"
       ],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2023_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "MUT_08",
@@ -790,9 +706,7 @@
         "Evidence at index 0 has ticker 'HPG', expected 'FPT'",
         "Evidence at index 0 does not correspond to input: ticker: FPT vs HPG"
       ],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "MUT_09",
@@ -807,10 +721,7 @@
         "Evidence at index 1 has ticker 'VIC', expected 'FPT'",
         "Evidence at index 1 does not correspond to input: ticker: FPT vs VIC"
       ],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r20_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "MUT_10",
@@ -826,9 +737,7 @@
         "Evidence at index 1 has ticker 'VNM', expected 'XYZ'"
       ],
       "warnings": [
-        "Methodology notice: 'roe' uses closing balance for denominator per MVP specification ('ROE (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Vốn chủ sở hữu (Số cuối kỳ, Mã số 400/410)'). Standard financial analysis may alternatively use 2-year average balance.",
-        "Fact quality warning: fact 'VNM_financial_statements_2024_consolidated_p10_t0_r19_c4' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
-        "Fact quality warning: fact 'VNM_financial_statements_2023_consolidated_p9_t0_r19_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
+        "Methodology notice: 'roe' uses closing balance for denominator per MVP specification ('ROE (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Vốn chủ sở hữu (Số cuối kỳ, Mã số 400/410)'). Standard financial analysis may alternatively use 2-year average balance."
       ]
     },
     {
@@ -845,9 +754,7 @@
         "Evidence at index 0 has report_year (2024) != fiscal_year (2020) but is_comparative is False or missing",
         "Evidence at index 0 does not correspond to input: year: 2024 vs 2020"
       ],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "MUT_12",
@@ -857,15 +764,12 @@
       "verification_status": "REJECTED",
       "overall_pass": false,
       "is_correct_outcome": true,
-      "latency_ms": 1.0,
+      "latency_ms": 0.0,
       "errors": [
         "Evidence at index 0 has fiscal_year 2023, expected 2024",
         "Evidence at index 0 has report_year (2024) != fiscal_year (2023) but is_comparative is False or missing"
       ],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r20_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "MUT_13",
@@ -879,9 +783,7 @@
       "errors": [
         "Evidence at index 0 has fiscal_year 2024, expected 2099"
       ],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "MUT_14",
@@ -896,9 +798,7 @@
         "Evidence at index 0 has report_year (2024) != fiscal_year (2023) but is_comparative is False or missing"
       ],
       "warnings": [
-        "Methodology notice: 'roe' uses closing balance for denominator per MVP specification ('ROE (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Vốn chủ sở hữu (Số cuối kỳ, Mã số 400/410)'). Standard financial analysis may alternatively use 2-year average balance.",
-        "Fact quality warning: fact 'VNM_financial_statements_2024_consolidated_p10_t0_r19_c4' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
-        "Fact quality warning: fact 'VNM_financial_statements_2023_consolidated_p9_t0_r19_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
+        "Methodology notice: 'roe' uses closing balance for denominator per MVP specification ('ROE (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Vốn chủ sở hữu (Số cuối kỳ, Mã số 400/410)'). Standard financial analysis may alternatively use 2-year average balance."
       ]
     },
     {
@@ -913,9 +813,7 @@
       "errors": [
         "Evidence at index 0 has report_year == fiscal_year (2024) but is_comparative is True"
       ],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "MUT_16",
@@ -930,9 +828,7 @@
         "Evidence at index 0 has report_year (2030) != fiscal_year (2023) but is_comparative is False or missing"
       ],
       "warnings": [
-        "Methodology notice: 'roa' uses closing balance for denominator per MVP specification ('ROA (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Tổng tài sản (Số cuối kỳ, Mã số 270)'). Standard financial analysis may alternatively use 2-year average balance.",
-        "Fact quality warning: fact 'HPG_financial_statements_2023_consolidated_p11_t0_r19_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
-        "Fact quality warning: fact 'HPG_financial_statements_2023_consolidated_p8_t0_r26_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
+        "Methodology notice: 'roa' uses closing balance for denominator per MVP specification ('ROA (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Tổng tài sản (Số cuối kỳ, Mã số 270)'). Standard financial analysis may alternatively use 2-year average balance."
       ]
     },
     {
@@ -943,13 +839,11 @@
       "verification_status": "REJECTED",
       "overall_pass": false,
       "is_correct_outcome": true,
-      "latency_ms": 0.0,
+      "latency_ms": 1.0,
       "errors": [
         "Evidence at index 0 has statement_scope 'separate', expected 'consolidated'"
       ],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "MUT_18",
@@ -963,10 +857,7 @@
       "errors": [
         "Evidence at index 1 has statement_scope 'separate', expected 'consolidated'"
       ],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r20_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "MUT_19",
@@ -980,9 +871,7 @@
       "errors": [
         "Evidence at index 0 has statement_scope 'consolidated', expected 'separate'"
       ],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "MUT_20",
@@ -996,9 +885,7 @@
       "errors": [
         "Evidence at index 0 does not correspond to input: fact_id: FPT_financial_statements_2024_consolidated_p13_t0_r4_c3 vs tampered_fact_id_001"
       ],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "MUT_21",
@@ -1012,10 +899,7 @@
       "errors": [
         "Evidence at index 0 does not correspond to input: fact_id: FPT_financial_statements_2024_consolidated_p13_t0_r20_c3 vs corrupted_id_numerator"
       ],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r20_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "MUT_22",
@@ -1029,10 +913,7 @@
       "errors": [
         "Evidence at index 1 does not correspond to input: fact_id: FPT_financial_statements_2024_consolidated_p13_t0_r4_c3 vs "
       ],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r20_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "MUT_23",
@@ -1046,9 +927,7 @@
       "errors": [
         "Evidence at index 0 does not correspond to input: value: 62848794351367.0 vs 65991234068935.35"
       ],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "MUT_24",
@@ -1062,10 +941,7 @@
       "errors": [
         "Evidence at index 0 does not correspond to input: value: 9427422530444.0 vs 18854845060888.0"
       ],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r20_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "MUT_25",
@@ -1079,10 +955,7 @@
       "errors": [
         "Provenance length mismatch: len(inputs)=2 != len(evidence)=1"
       ],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r20_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "MUT_26",
@@ -1092,13 +965,11 @@
       "verification_status": "REJECTED",
       "overall_pass": false,
       "is_correct_outcome": true,
-      "latency_ms": 0.0,
+      "latency_ms": 1.0,
       "errors": [
         "Provenance length mismatch: len(inputs)=1 != len(evidence)=0"
       ],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "MUT_27",
@@ -1115,9 +986,7 @@
         "Operand 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' in step '#0' cannot be resolved to any authentic input fact_id or prior executed step_id (lineage broken)",
         "Operand '#0' in step '#1' cannot be resolved to any authentic input fact_id or prior executed step_id (lineage broken)"
       ],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2023_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "MUT_28",
@@ -1131,9 +1000,7 @@
       "errors": [
         "Incompatible units: expected 'VND', got 'USD'"
       ],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "MUT_29",
@@ -1147,10 +1014,7 @@
       "errors": [
         "Incompatible units: expected 'ratio', got 'VND'"
       ],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r20_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled.",
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     },
     {
       "id": "MUT_30",
@@ -1166,9 +1030,7 @@
         "Evidence 0 has invalid page number: -5 (must be >= 1)",
         "Evidence 0 missing table_id"
       ],
-      "warnings": [
-        "Fact quality warning: fact 'FPT_financial_statements_2024_consolidated_p13_t0_r4_c3' has unit_status='unknown'. Unit 'None' could not be parsed; value may be unscaled."
-      ]
+      "warnings": []
     }
   ]
 }
