@@ -53,7 +53,9 @@ LINE_ITEMS: List[LineItem] = [
     LineItem("current_liabilities", "Nợ ngắn hạn", "310", BALANCE_SHEET, ("ngắn hạn",), ("nợ ngắn hạn",)),
     LineItem("trade_payables", "Phải trả người bán ngắn hạn", "311", BALANCE_SHEET, ("người bán",), ("phải trả người bán ngắn hạn",)),
     LineItem("customer_advances", "Người mua trả tiền trước ngắn hạn", "312", BALANCE_SHEET, ("người mua",), ("người mua trả tiền trước ngắn hạn",)),
+    LineItem("unearned_revenue_short", "Doanh thu chưa thực hiện ngắn hạn", "318", BALANCE_SHEET, ("chưa thực hiện",), ("doanh thu chưa thực hiện ngắn hạn",)),
     LineItem("short_term_borrowings", "Vay và nợ thuê tài chính ngắn hạn", "320", BALANCE_SHEET, ("vay",), ("vay và nợ thuê tài chính ngắn hạn", "vay ngắn hạn")),
+    LineItem("unearned_revenue_long", "Doanh thu chưa thực hiện dài hạn", "336", BALANCE_SHEET, ("chưa thực hiện",), ("doanh thu chưa thực hiện dài hạn",)),
     LineItem("non_current_liabilities", "Nợ dài hạn", "330", BALANCE_SHEET, ("dài hạn",), ("nợ dài hạn",)),
     LineItem("long_term_borrowings", "Vay và nợ thuê tài chính dài hạn", "338", BALANCE_SHEET, ("vay",), ("vay và nợ thuê tài chính dài hạn", "vay dài hạn")),
     LineItem("contributed_capital", "Vốn góp của chủ sở hữu", "411", BALANCE_SHEET, ("vốn",), ("vốn góp của chủ sở hữu",)),
@@ -82,6 +84,15 @@ DERIVED_ITEMS: Dict[str, Tuple[str, str, str]] = {
     "biên lợi nhuận gộp": ("Biên lợi nhuận gộp", "gross_profit", "net_revenue"),
 }
 DERIVED_ASSUMPTION = "ROA và ROE dùng số cuối kỳ của tổng tài sản và vốn chủ sở hữu."
+
+# Items that are the sum of two lines of one balance sheet.
+COMPOSITE_ITEMS: Dict[str, Tuple[str, Tuple[str, str], str]] = {
+    "doanh thu chưa thực hiện": (
+        "Doanh thu chưa thực hiện",
+        ("unearned_revenue_short", "unearned_revenue_long"),
+        "Doanh thu chưa thực hiện gồm cả ngắn hạn và dài hạn.",
+    ),
+}
 
 # Reports show these lines either as positive amounts or in parentheses.
 EXPENSE_ITEMS = {
@@ -121,11 +132,12 @@ def phrase_table() -> List[Tuple[str, str]]:
     pairs = [(phrase, item.name) for item in LINE_ITEMS for phrase in item.phrases]
     pairs += [(phrase, name) for name, phrases in BASE_PHRASES.items() for phrase in phrases]
     pairs += [(phrase, phrase) for phrase in DERIVED_ITEMS]
+    pairs += [(phrase, phrase) for phrase in COMPOSITE_ITEMS]
     return sorted(pairs, key=lambda pair: len(pair[0]), reverse=True)
 
 
 def is_balance_sheet_item(name: str) -> bool:
-    if name in ("total_assets", "equity"):
+    if name in ("total_assets", "equity") or name in COMPOSITE_ITEMS:
         return True
     return any(item.name == name and item.statement == BALANCE_SHEET for item in LINE_ITEMS)
 
@@ -133,4 +145,6 @@ def is_balance_sheet_item(name: str) -> bool:
 def display_name(name: str, registry: Optional[MetricRegistry] = None) -> str:
     if name in DERIVED_ITEMS:
         return DERIVED_ITEMS[name][0]
+    if name in COMPOSITE_ITEMS:
+        return COMPOSITE_ITEMS[name][0]
     return (registry or build_extended_registry()).get(name).vietnamese_name

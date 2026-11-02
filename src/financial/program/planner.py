@@ -9,6 +9,7 @@ from typing import List, NamedTuple, Optional, Tuple
 import re
 
 from src.financial.program.catalog import (
+    COMPOSITE_ITEMS,
     DERIVED_ASSUMPTION,
     DERIVED_ITEMS,
     EXPENSE_ASSUMPTION,
@@ -27,6 +28,9 @@ PERIOD_REGEX = re.compile(
     r"|(?:ngày\s*)?31 tháng 12 năm (?P<close_long>(?:19|20)\d{2})"
     r"|(?P<plain>(?:19|20)\d{2})"
 )
+STUB_PERIOD_REGEX = re.compile(
+    r"(?:trong\s+)?kỳ từ (?:ngày\s*)?\d{1,2}[/.-]\d{1,2}[/.-]((?:19|20)\d{2}) đến (?:ngày\s*)?31[/.-]12[/.-]\1"
+)
 RANGE_REGEX = re.compile(
     r"(?:từ|giai đoạn)\s*(?:năm\s*|cuối năm\s*)?((?:19|20)\d{2})\s*(?:đến|tới|-|–|—)\s*(?:năm\s*|cuối năm\s*)?((?:19|20)\d{2})"
 )
@@ -40,19 +44,19 @@ DIFF_UP_WORDS = re.compile(r"\b(chênh lệch|hiệu số|biến động|thay đ
 DIFF_DOWN_WORDS = re.compile(r"\b(thấp hơn|ít hơn|bé hơn|nhỏ hơn)\b")
 GROWTH_WORDS = re.compile(r"\b(tốc độ tăng trưởng|tỷ lệ tăng trưởng|tăng trưởng)\b")
 AVG_WORDS = re.compile(r"\b(trung bình|bình quân)\b")
-SUM_WORDS = re.compile(r"\b(tổng cộng|tổng)\b")
+SUM_WORDS = re.compile(r"\b(tổng cộng|tổng|tích lũy|lũy kế)\b")
 MAX_WORDS = re.compile(r"\b(cao nhất|lớn nhất)\b")
 MIN_WORDS = re.compile(r"\b(thấp nhất|nhỏ nhất)\b")
 WHICH_WORDS = re.compile(r"\b(năm nào|công ty nào|doanh nghiệp nào|mã nào)\b")
 FILLER_PHRASES = re.compile(
     r"tính đến|cho đến|kết thúc|thời điểm|tại ngày|vào ngày|đến ngày|năm tài chính|báo cáo tài chính|"
-    r"qua các năm|trong các năm|các năm|trong giai đoạn|giai đoạn|các mốc|là bao nhiêu|bao nhiêu|"
+    r"qua các năm|trong các năm tài chính|các năm tài chính|trong các năm|các năm|trong giai đoạn|giai đoạn|các mốc|là bao nhiêu|bao nhiêu|"
     r"số dư cuối kỳ|số dư cuối năm|số dư|giá trị còn lại|giá trị|trong \d+ năm|\d+ năm|"
     r"ctcp|công ty cổ phần|công ty cp|tổng công ty|công ty|tập đoàn|ngân hàng tmcp"
 )
 FILLER_WORDS = {
     "của", "là", "có", "năm", "vào", "tại", "đến", "ngày", "trong", "kỳ", "cuối", "và", "với", "giữa",
-    "đạt", "ghi", "nhận", "mức", "chỉ", "tiêu", "từ", "lên", "mấy", "số", "thì", "bằng", "mốc", "các", "hãy", "tính", "cho", "biết",
+    "xét", "nhóm", "đạt", "ghi", "nhận", "mức", "chỉ", "tiêu", "từ", "lên", "mấy", "số", "thì", "bằng", "mốc", "các", "hãy", "tính", "cho", "biết",
 }
 OPERATION_WORD_LISTS = (
     RATIO_WORDS, CONNECTOR_WORDS, DIFF_UP_WORDS, DIFF_DOWN_WORDS, GROWTH_WORDS, AVG_WORDS,
@@ -65,6 +69,7 @@ _REGISTRY = build_extended_registry()
 class Period(NamedTuple):
     year: int
     is_opening: bool
+    is_stated_period: bool = False
 
 
 class Intent(NamedTuple):
@@ -84,7 +89,16 @@ def _blank_companies(text: str, companies: List[str]) -> str:
     return text
 
 
+def names_stated_period(question: str) -> bool:
+    """Tell whether the question names a period, which binds it to that period's report."""
+    return bool(STUB_PERIOD_REGEX.search(question.lower()))
+
+
 def _read_periods(text: str) -> Tuple[List[Period], str]:
+    # A short first fiscal period, such as 06/4/2018 to 31/12/2018, is that year's report.
+    stub = STUB_PERIOD_REGEX.search(text)
+    if stub:
+        return [Period(int(stub.group(1)), False, True)], PERIOD_REGEX.sub(" ", STUB_PERIOD_REGEX.sub(" ", text))
     span = RANGE_REGEX.search(text)
     if span:
         first, last = int(span.group(1)), int(span.group(2))
@@ -161,9 +175,15 @@ class _Builder:
             top = self.add("lookup", item=numerator, ticker=company, year=year)
             bottom = self.add("lookup", item=denominator, ticker=company, year=year)
             return self.add("ratio", operands=[top, bottom])
+        if item in COMPOSITE_ITEMS:
+            _, lines, assumption = COMPOSITE_ITEMS[item]
+            self.assumptions.append(assumption)
+            parts = [self.add("lookup", item=line, ticker=company, year=year) for line in lines]
+            return self.add("sum", operands=parts)
         if item in EXPENSE_ITEMS and EXPENSE_ASSUMPTION not in self.assumptions:
             self.assumptions.append(EXPENSE_ASSUMPTION)
-        return self.add("lookup", item=item, ticker=company, year=year)
+        report_year = period.year if period.is_stated_period else None
+        return self.add("lookup", item=item, ticker=company, year=year, report_year=report_year)
 
     def program(self, final: str, name: str, unit: str) -> Program:
         return Program(

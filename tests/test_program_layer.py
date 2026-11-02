@@ -50,6 +50,19 @@ class TestPlanner:
             ("Doanh thu thuần cao nhất của ZQX trong các năm 2023, 2024", ["lookup", "lookup", "max"]),
             ("Năm nào ZQX có doanh thu thuần cao nhất trong các năm 2023, 2024", ["lookup", "lookup", "argmax"]),
             ("Tổng doanh thu thuần của ZQX và ZQY năm 2024", ["lookup", "lookup", "sum"]),
+            ("Tổng doanh thu thuần tích lũy của ZQX qua các năm 2023, 2024", ["lookup", "lookup", "sum"]),
+            (
+                "Xét năm 2024, trong nhóm ZQX và ZQY, ROE cao nhất đạt bao nhiêu phần trăm?",
+                ["lookup", "lookup", "ratio", "lookup", "lookup", "ratio", "max"],
+            ),
+            (
+                "Trung bình doanh thu chưa thực hiện cuối kỳ của ZQX trong các năm tài chính 2023, 2024",
+                ["lookup", "lookup", "sum", "lookup", "lookup", "sum", "avg"],
+            ),
+            (
+                "Tổng doanh thu thuần của ZQX năm 2024 và ZQY trong kỳ từ 06/4/2024 đến 31/12/2024",
+                ["lookup", "lookup", "sum"],
+            ),
         ],
     )
     def test_supported_shapes(self, question, expected_ops):
@@ -87,6 +100,13 @@ class TestPlanner:
         step = ProgramStep(step_id="#0", op="sum", operands=["#1"])
         with pytest.raises(ValueError):
             Program(steps=[step], final_step_id="#0", name="x", unit="VND")
+
+
+class TestTickerShapes:
+    def test_ticker_with_a_digit_is_recognized(self):
+        from src.pipeline.query import extract_all_tickers
+
+        assert extract_all_tickers("Doanh thu của VGC và PC1 năm 2018") == ["VGC", "PC1"]
 
 
 class TestExecutionThroughAsk:

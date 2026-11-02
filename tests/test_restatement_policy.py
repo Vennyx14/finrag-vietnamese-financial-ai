@@ -39,6 +39,13 @@ def test_restated_answer_carries_a_warning(app):
     assert any("restatement" in warning for warning in response.verification.warnings)
 
 
+def test_question_naming_a_stated_period_stays_on_that_report(app):
+    # The later comparative may cover a different period, so K22 does not apply.
+    response = app.ask("Doanh thu thuần ZQX trong kỳ từ 06/4/2023 đến 31/12/2023 là bao nhiêu?")
+    assert response.calculation.value == 400_000_000_000.0
+    assert response.evidence[0].report_year == 2023
+
+
 def test_conflict_inside_one_report_is_still_refused():
     frame = build_mini_facts()
     extra = frame[frame["fact_id"].str.endswith("2024_consolidated_p5_t0_r0_c1")].copy()

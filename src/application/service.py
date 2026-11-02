@@ -32,7 +32,7 @@ from src.financial.metrics import MetricRegistry, default_metric_registry
 from src.financial.program.catalog import build_extended_registry
 from src.financial.program.executor import ProgramExecutor
 from src.financial.program.models import Program
-from src.financial.program.planner import plan_question
+from src.financial.program.planner import names_stated_period, plan_question
 from src.financial.program.verifier import verify_program
 from src.financial.reasoning import (
     FinancialReasoningEngine,
@@ -190,7 +190,8 @@ class FinRAGApplication:
         )
 
         program = None
-        if not resolution_res.is_resolved and self.program_executor is not None:
+        needs_program = not resolution_res.is_resolved or names_stated_period(clean_query)
+        if needs_program and self.program_executor is not None:
             program = plan_question(clean_query)
         if program is not None:
             return self._answer_with_program(program, raw_query, clean_query, resolution_dto, t0)

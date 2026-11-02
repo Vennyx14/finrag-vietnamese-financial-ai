@@ -20,6 +20,9 @@ class ProgramStep(BaseModel):
     item: Optional[str] = Field(default=None, description="Registry metric name for a lookup")
     ticker: Optional[str] = None
     year: Optional[int] = Field(default=None, description="Fiscal year of the fact to read")
+    report_year: Optional[int] = Field(
+        default=None, description="Read only this report, for a period named in the question"
+    )
     statement_scope: str = "consolidated"
     operands: List[str] = Field(default_factory=list, description="Earlier step IDs")
     labels: List[str] = Field(default_factory=list, description="Answer label per operand")

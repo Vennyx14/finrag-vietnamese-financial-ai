@@ -25,7 +25,7 @@ VN_STOPWORDS: Set[str] = {
     "YOY", "CAGR", "BCTC", "QUÝ",
 }
 
-_TICKER_REGEX = re.compile(r"\b([A-Z]{3}[A-Z0-9]{0,3})\b")
+_TICKER_REGEX = re.compile(r"\b([A-Z]{2}[0-9]|[A-Z]{3}[A-Z0-9]{0,3})\b")
 _YEAR_REGEX = re.compile(r"\b(20[0-9]{2}|19[0-9]{2})\b")
 _SCOPE_REGEX = re.compile(
     r"\b(hợp nhất|consolidated|riêng|separate|công ty mẹ)\b", re.IGNORECASE

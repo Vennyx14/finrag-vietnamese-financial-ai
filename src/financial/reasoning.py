@@ -211,6 +211,7 @@ class FinancialReasoningEngine:
         year: int,
         metric_name: str,
         statement_scope: str = "consolidated",
+        report_year: Optional[int] = None,
     ) -> RetrievalResult:
         """Retrieve and strictly validate an individual financial fact.
 
@@ -257,6 +258,8 @@ class FinancialReasoningEngine:
             if r.statement_scope and r.statement_scope != statement_scope:
                 continue
             if r.quality_flag:
+                continue
+            if report_year is not None and r.report_year != report_year:
                 continue
 
             lbl_lower = r.original_label.lower()

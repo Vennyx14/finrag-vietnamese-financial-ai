@@ -46,7 +46,9 @@ class ProgramExecutor:
 
         for step in program.steps:
             if step.op == "lookup":
-                fact = self.engine.resolve_fact(step.ticker, step.year, step.item, step.statement_scope)
+                fact = self.engine.resolve_fact(
+                    step.ticker, step.year, step.item, step.statement_scope, step.report_year
+                )
                 inputs.append(fact)
                 values[step.step_id] = lookup_value(step, fact)
                 trace.append(
