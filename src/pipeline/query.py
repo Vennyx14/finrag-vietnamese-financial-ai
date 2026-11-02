@@ -5,8 +5,11 @@ fiscal years, statement scopes, and BM25 search text, serving as the single
 source of truth across retrieval and resolution layers (M1b).
 """
 
+import csv
+from functools import lru_cache
+from pathlib import Path
 import re
-from typing import List, Optional, Set
+from typing import Dict, List, Optional, Set, Tuple
 
 from pydantic import BaseModel, Field
 
@@ -27,6 +30,36 @@ _YEAR_REGEX = re.compile(r"\b(20[0-9]{2}|19[0-9]{2})\b")
 _SCOPE_REGEX = re.compile(
     r"\b(hợp nhất|consolidated|riêng|separate|công ty mẹ)\b", re.IGNORECASE
 )
+
+
+COMPANY_NAMES_PATH = (
+    Path(__file__).resolve().parents[2] / "data" / "external" / "ViFinQA" / "code_stock.csv"
+)
+_LEGAL_FORM = r"(?:ctcp|công\s+ty\s+cổ\s+phần|công\s+ty\s+cp)"
+_MIN_NAME_LENGTH_WITHOUT_LEGAL_FORM = 12
+
+
+def compile_company_names(names: Dict[str, str]) -> List[Tuple["re.Pattern[str]", str]]:
+    """Compile company names to patterns, longest first so specific names win."""
+    patterns = []
+    for name in sorted(names, key=len, reverse=True):
+        body = re.sub(r"^ctcp\s+", "", name.strip(), flags=re.IGNORECASE)
+        escaped = r"\s+".join(re.escape(word) for word in body.split())
+        legal_form = f"{_LEGAL_FORM}\\s+"
+        if len(body) >= _MIN_NAME_LENGTH_WITHOUT_LEGAL_FORM:
+            legal_form = f"(?:{legal_form})?"
+        patterns.append((re.compile(legal_form + escaped, re.IGNORECASE), names[name]))
+    return patterns
+
+
+@lru_cache(maxsize=1)
+def _company_name_patterns() -> List[Tuple["re.Pattern[str]", str]]:
+    """Load the corpus company table. It is optional: fresh clones do not have it."""
+    if not COMPANY_NAMES_PATH.exists():
+        return []
+    with COMPANY_NAMES_PATH.open(encoding="utf-8", newline="") as f:
+        rows = list(csv.reader(f))[1:]
+    return compile_company_names({row[1]: row[0] for row in rows if len(row) >= 2 and row[1]})
 
 
 class FinancialQuery(BaseModel):
@@ -57,6 +90,16 @@ def extract_all_tickers(text: str) -> List[str]:
     """Deterministically extract all candidate Vietnamese corporate ticker symbols."""
     seen = set()
     tickers = []
+    # Company names go first and are blanked out, so "CTCP Chứng khoán FPT" is FTS, not FPT.
+    found_names = []
+    for pattern, ticker in _company_name_patterns():
+        for match in pattern.finditer(text):
+            found_names.append((match.start(), ticker))
+        text = pattern.sub(" ", text)
+    for _, ticker in sorted(found_names):
+        if ticker not in seen:
+            seen.add(ticker)
+            tickers.append(ticker)
     for match in _TICKER_REGEX.finditer(text):
         cand = match.group(1)
         if cand not in VN_STOPWORDS and cand not in seen:

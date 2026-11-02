@@ -66,6 +66,14 @@ MULTI_PERIOD_PATTERN = re.compile(
 )
 
 
+TOTAL_ASSETS_PATTERN = re.compile(r"tổng (cộng )?tài sản(?! cố định| ngắn hạn| dài hạn| thuần)")
+GROWTH_SUBJECT_WORDS = {"của", "năm", "doanh", "so", "từ", "giữa", "trong", "bình", "kép"}
+DERIVED_QUESTION_PATTERN = re.compile(
+    r"\b(tỷ lệ|tỷ số|tỷ trọng|chênh lệch|hiệu số|biến động|thay đổi|cao hơn|thấp hơn|"
+    r"nhiều hơn|ít hơn|tăng bao nhiêu|giảm bao nhiêu|đầu năm|đầu kỳ)\b|\btrên\s+(tổng|vốn|doanh thu|nợ|tài sản)"
+)
+
+
 def resolve_query(
     raw_question: str,
     registry: Optional[MetricRegistry] = None,
@@ -301,6 +309,25 @@ def resolve_query(
     resolved_op = None
     assumptions = []
 
+    # Bare "tăng trưởng" means revenue growth; growth of a named item does not.
+    if is_growth_query and "doanh thu" not in text_lower:
+        subject = re.search(r"tăng trưởng\s+(\S+)", text_lower)
+        if (
+            subject
+            and subject.group(1) not in GROWTH_SUBJECT_WORDS
+            and subject.group(1).upper() not in tickers
+        ):
+            return ResolutionResult(
+                status=ResolutionStatus.UNSUPPORTED,
+                ticker=primary_ticker,
+                entities=tickers,
+                fiscal_year=year_matches[0] if year_matches else None,
+                statement_scope=scope,
+                reason="Tăng trưởng của chỉ tiêu khác doanh thu chưa được hỗ trợ.",
+                actionable_guidance="FinRAG MVP hiện chỉ hỗ trợ Tăng trưởng doanh thu thuần.",
+                raw_query=text,
+            )
+
     # Priority 1: Growth
     if is_growth_query:
         resolved_metric = reg.canonicalize_name("revenue_growth")
@@ -309,15 +336,15 @@ def resolve_query(
             assumptions.append("Hiểu 'tăng trưởng' là tăng trưởng doanh thu theo quy ước hệ thống.")
 
     # Priority 2: Ratios
-    elif "biên lợi nhuận" in text_lower or "net margin" in text_lower or "tỷ suất lợi nhuận ròng" in text_lower:
+    elif "biên lợi nhuận" in text_lower or "net margin" in text_lower or "tỷ suất lợi nhuận ròng" in text_lower or "sau thuế trên doanh thu" in text_lower:
         resolved_metric = reg.canonicalize_name("net_margin")
         resolved_op = "ratio"
 
-    elif re.search(r"\broa\b", text_lower) or ("tổng tài sản" in text_lower and ("sinh lời" in text_lower or "tỷ suất" in text_lower)):
+    elif re.search(r"\broa\b", text_lower) or "sau thuế trên tổng tài sản" in text_lower or ("tổng tài sản" in text_lower and ("sinh lời" in text_lower or "tỷ suất" in text_lower)):
         resolved_metric = reg.canonicalize_name("roa")
         resolved_op = "ratio"
 
-    elif re.search(r"\broe\b", text_lower) or ("vốn chủ sở hữu" in text_lower and ("sinh lời" in text_lower or "tỷ suất" in text_lower)):
+    elif re.search(r"\broe\b", text_lower) or "sau thuế trên vốn chủ sở hữu" in text_lower or ("vốn chủ sở hữu" in text_lower and ("sinh lời" in text_lower or "tỷ suất" in text_lower)):
         resolved_metric = reg.canonicalize_name("roe")
         resolved_op = "ratio"
 
@@ -345,13 +372,29 @@ def resolve_query(
         resolved_op = "identity"
         assumptions.append("Hiểu 'lợi nhuận' là lợi nhuận sau thuế theo quy ước hệ thống.")
 
-    elif "tổng tài sản" in text_lower or "tổng cộng tài sản" in text_lower:
+    elif TOTAL_ASSETS_PATTERN.search(text_lower):
         resolved_metric = reg.canonicalize_name("total_assets")
         resolved_op = "identity"
 
     elif "vốn chủ sở hữu" in text_lower or "vcsh" in text_lower:
         resolved_metric = reg.canonicalize_name("equity")
         resolved_op = "identity"
+
+    # 6a. A base metric that is only one operand of the question must not be the answer.
+    if resolved_op == "identity" and DERIVED_QUESTION_PATTERN.search(text_lower):
+        return ResolutionResult(
+            status=ResolutionStatus.UNSUPPORTED,
+            ticker=primary_ticker,
+            entities=tickers,
+            fiscal_year=year_matches[0] if year_matches else None,
+            statement_scope=scope,
+            reason="Câu hỏi yêu cầu phép tính dẫn xuất hoặc số đầu kỳ của chỉ tiêu.",
+            actionable_guidance=(
+                "FinRAG hiện tại chỉ trả lời số cuối kỳ của từng chỉ tiêu, chưa hỗ trợ tỷ lệ, "
+                "chênh lệch hoặc số đầu kỳ ngoài ROA, ROE và biên lợi nhuận ròng."
+            ),
+            raw_query=text,
+        )
 
     if resolved_metric is None:
         return ResolutionResult(

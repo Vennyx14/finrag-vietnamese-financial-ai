@@ -121,6 +121,7 @@ def evaluate(cases: List[Dict[str, Any]], app: FinRAGApplication) -> Dict[str, A
         results.append(
             {
                 "case_id": case["case_id"],
+                "split": case.get("split", "dev_v0"),
                 "question_origin": case["question_origin"],
                 "expected": case["expected_system_behavior"],
                 "status": response.status.value,
@@ -131,11 +132,15 @@ def evaluate(cases: List[Dict[str, Any]], app: FinRAGApplication) -> Dict[str, A
     for result in results:
         by_type.setdefault(result["expected"], []).append(result)
     return {
-        "benchmark": "silver_v0",
+        "benchmark": "silver_v1",
         "label_note": "LLM-prefilled labels accepted by the owner; not human-verified gold.",
         "overall": summarize(results),
         "verbatim_vifinqa": summarize([r for r in results if r["question_origin"] == "verbatim"]),
         "authored": summarize([r for r in results if r["question_origin"] == "authored"]),
+        "per_split": {
+            split: summarize([r for r in results if r["split"] == split])
+            for split in sorted({r["split"] for r in results})
+        },
         "per_expected_behavior": {k: summarize(v) for k, v in sorted(by_type.items())},
         "cases": results,
     }
@@ -146,12 +151,12 @@ def main(argv: Optional[List[str]] = None) -> int:
     parser.add_argument(
         "--silver-path",
         type=Path,
-        default=REPO_ROOT / "data" / "processed" / "gold_drafts" / "silver_v0.jsonl",
+        default=REPO_ROOT / "data" / "processed" / "gold_drafts" / "silver_v1.jsonl",
     )
     parser.add_argument(
         "--manifest-path",
         type=Path,
-        default=REPO_ROOT / "data" / "manifests" / "silver_v0_quality.json",
+        default=REPO_ROOT / "data" / "manifests" / "silver_v1_quality.json",
     )
     args = parser.parse_args(argv)
     if not args.silver_path.exists():
@@ -163,10 +168,11 @@ def main(argv: Optional[List[str]] = None) -> int:
     args.manifest_path.parent.mkdir(parents=True, exist_ok=True)
     with open(args.manifest_path, "w", encoding="utf-8") as f:
         json.dump(manifest, f, ensure_ascii=False, indent=2)
-    print(json.dumps(manifest["overall"], indent=2))
+    print(json.dumps(manifest["overall"]))
+    print(json.dumps(manifest["per_split"]))
     for result in manifest["cases"]:
         if result["outcome"] != "CORRECT":
-            print(result["case_id"], result["status"], result["outcome"])
+            print(result["case_id"], result["split"], result["status"], result["outcome"])
     return 0
 
 
