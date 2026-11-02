@@ -40,6 +40,7 @@ def build_mini_facts() -> pd.DataFrame:
         ZQX — main ticker with a complete set of facts (consolidated)
         ZQY — ticker with separate-scope and unit-scale edge cases
         ZQW — ticker whose only fact has an invalid page number
+        ZQT — balance sheet with minority interest outside line 400
     """
     facts = []
 
@@ -216,6 +217,18 @@ def build_mini_facts() -> pd.DataFrame:
               "Doanh thu thuần về bán hàng và cung cấp dịch vụ",
               100_000_000_000, unit="VND", report_year=2024)
     )
+
+    # ── ZQT 2015 — minority interest presented outside line 400 ──
+    for page_row, code, label, value in (
+        (0, "270", "TỔNG CỘNG TÀI SẢN", 1_000_000_000_000),
+        (5, "300", "NỢ PHẢI TRẢ", 500_000_000_000),
+        (10, "400", "VỐN CHỦ SỞ HỮU", 400_000_000_000),
+        (15, "429", "LỢI ÍCH CỔ ĐÔNG KHÔNG KIỂM SOÁT", 100_000_000_000),
+    ):
+        facts.append(
+            _fact("ZQT", 2015, "consolidated", 3, 0, page_row, code, label, value,
+                  unit="VND", report_year=2015)
+        )
 
     df = pd.DataFrame(facts)
     # Enforce types matching the real parquet

@@ -1416,7 +1416,13 @@ class VerificationEngine:
                 v_270 = line_code_map["270"].value * line_code_map["270"].unit_scale
                 v_300 = line_code_map["300"].value * line_code_map["300"].unit_scale
                 v_400 = line_code_map["400"].value * line_code_map["400"].unit_scale
-                expected_270 = v_300 + v_400
+                # Pre-2016 layouts present minority interest outside line 400.
+                v_minority = sum(
+                    line_code_map[code].value * line_code_map[code].unit_scale
+                    for code in ("429", "439")
+                    if code in line_code_map
+                )
+                expected_270 = v_300 + v_400 + v_minority
                 diff = abs(v_270 - expected_270)
                 abs_tolerance = max(abs(v_270) * 1e-4, 1.0)
                 

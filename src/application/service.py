@@ -48,7 +48,7 @@ from src.retrieval.engine import FinancialFactRetriever
 from src.retrieval.ranking import RetrievalResult
 
 DEFAULT_PARQUET_PATH = Path("data/processed/financial_facts.parquet")
-BALANCE_SHEET_IDENTITY_CODES = ("100", "200", "270", "300", "400")
+BALANCE_SHEET_IDENTITY_CODES = ("100", "200", "270", "300", "400", "429", "439")
 
 
 class FinRAGApplication:
@@ -141,12 +141,12 @@ class FinRAGApplication:
 
     def ask(self, raw_query: str) -> FinRAGResponse:
         """Process a natural language financial question end-to-end."""
-        clean_query = raw_query.strip()
+        clean_query = (raw_query or "").strip()
         t0 = time.time()
 
         if not clean_query:
             return FinRAGResponse(
-                query=raw_query,
+                query=raw_query or "",
                 status=ResponseStatus.ERROR,
                 error_category=ErrorCategory.USER_INPUT_ERROR,
                 error_message="Vui lòng nhập câu hỏi tài chính (ví dụ: 'Biên lợi nhuận ròng FPT năm 2024').",

@@ -127,7 +127,7 @@ def resolve_query(
 
     # 3a. Multi-period aggregation (the engine computes one period or one YoY pair)
     distinct_years = set(year_matches)
-    is_multi_period = len(distinct_years) > 2 or MULTI_PERIOD_PATTERN.search(text_lower)
+    is_multi_period = len(distinct_years) > 1 or MULTI_PERIOD_PATTERN.search(text_lower)
     if is_multi_period and "tăng trưởng" not in text_lower:
         return ResolutionResult(
             status=ResolutionStatus.UNSUPPORTED,

@@ -191,6 +191,9 @@ def build_reasoning_request_from_resolution(
 
 
 
+LINE_CODE_CANDIDATES = 50
+
+
 class FinancialReasoningEngine:
     """Orchestrates retrieval and deterministic reasoning for financial questions."""
 
@@ -228,6 +231,16 @@ class FinancialReasoningEngine:
             search_text=metric_def.search_keywords,
         )
         candidates = self.retriever.retrieve(query, top_k=20)
+
+        # K9: a BM25 cut-off must not hide the line the metric is defined on.
+        for line_code in metric_def.expected_line_codes or []:
+            coded_query = query.model_copy(update={"line_code": line_code})
+            known_ids = {c.fact_id for c in candidates}
+            candidates = candidates + [
+                c
+                for c in self.retriever.retrieve(coded_query, top_k=LINE_CODE_CANDIDATES)
+                if c.fact_id not in known_ids
+            ]
 
         if not candidates:
             raise MissingFactError(
