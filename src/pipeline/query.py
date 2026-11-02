@@ -62,7 +62,8 @@ def extract_all_tickers(text: str) -> List[str]:
         if cand not in VN_STOPWORDS and cand not in seen:
             seen.add(cand)
             tickers.append(cand)
-    return tickers
+    # Listed Vietnamese tickers have three characters; longer tokens are names or acronyms.
+    return [t for t in tickers if len(t) == 3] or tickers
 
 
 def extract_ticker(text: str) -> Optional[str]:

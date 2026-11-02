@@ -61,6 +61,11 @@ class ResolutionResult(BaseModel):
 
 
 
+MULTI_PERIOD_PATTERN = re.compile(
+    r"\btrong\s+\d+\s+năm\b|\bqua các năm\b|\btừ\s+(năm\s+)?\d{4}\s+đến\s+(năm\s+)?\d{4}\b"
+)
+
+
 def resolve_query(
     raw_question: str,
     registry: Optional[MetricRegistry] = None,
@@ -111,6 +116,24 @@ def resolve_query(
 
     # 3. Temporal extraction
     year_matches = extract_fiscal_years(text)
+
+    # 3a. Multi-period aggregation (the engine computes one period or one YoY pair)
+    distinct_years = set(year_matches)
+    is_multi_period = len(distinct_years) > 2 or MULTI_PERIOD_PATTERN.search(text_lower)
+    if is_multi_period and "tăng trưởng" not in text_lower:
+        return ResolutionResult(
+            status=ResolutionStatus.UNSUPPORTED,
+            ticker=primary_ticker,
+            entities=tickers,
+            years=year_matches,
+            statement_scope=scope,
+            reason="Phát hiện truy vấn tổng hợp qua nhiều kỳ.",
+            actionable_guidance=(
+                "FinRAG hiện tại chỉ hỗ trợ một năm tài chính hoặc tăng trưởng doanh thu "
+                "giữa hai năm, chưa hỗ trợ tổng hoặc trung bình qua nhiều năm."
+            ),
+            raw_query=text,
+        )
 
     # 4. Negative Qualifier Checks (Sub-item allowlists and disallowlists)
 
@@ -322,7 +345,7 @@ def resolve_query(
         resolved_op = "identity"
         assumptions.append("Hiểu 'lợi nhuận' là lợi nhuận sau thuế theo quy ước hệ thống.")
 
-    elif "tổng tài sản" in text_lower:
+    elif "tổng tài sản" in text_lower or "tổng cộng tài sản" in text_lower:
         resolved_metric = reg.canonicalize_name("total_assets")
         resolved_op = "identity"
 
