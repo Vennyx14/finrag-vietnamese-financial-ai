@@ -107,6 +107,32 @@ class TestRefusalPaths:
         assert resp.error_category == ErrorCategory.DATA_NOT_FOUND
 
 
+class TestSupportingFactsThroughAsk:
+    @staticmethod
+    def _check(resp, name):
+        return [c.status for c in resp.verification.checks if c.name == name]
+
+    def test_identity_passes_on_a_balanced_sheet(self, app):
+        # 1,000bn = 600bn + 400bn
+        resp = app.ask("Tổng tài sản ZQX năm 2024")
+        assert self._check(resp, "accounting_identity_270_300_400") == ["PASS"]
+
+    def test_identity_violation_is_flagged(self, app):
+        # 900bn != 600bn + 200bn
+        resp = app.ask("Tổng tài sản ZQX năm 2022")
+        assert resp.status == ResponseStatus.WARNING
+        assert self._check(resp, "accounting_identity_270_300_400") == ["WARNING"]
+
+    def test_income_metric_runs_no_identity_check(self, app):
+        resp = app.ask("Doanh thu thuần ZQX năm 2024")
+        assert self._check(resp, "accounting_identity_270_300_400") == []
+
+    def test_comparative_figure_is_reconciled_with_original_report(self, app):
+        # The 2023 revenue is 400bn in both the 2023 report and the 2024 comparative.
+        resp = app.ask("Doanh thu thuần ZQX năm 2023")
+        assert self._check(resp, "comparative_reconciliation_10_2023") == ["PASS"]
+
+
 class TestRejectedPath:
     def test_broken_provenance_is_rejected(self, app):
         resp = app.ask("Doanh thu thuần ZQW năm 2024")
@@ -117,8 +143,6 @@ class TestRejectedPath:
 
 class TestAccountingIdentity:
     def test_identity_violation_is_flagged_as_warning(self, facts):
-        # app.ask() does not pass supporting_facts to the verifier today, so the
-        # identity check only runs when they are supplied directly.
         # 900bn != 600bn + 200bn in the ZQX 2022 balance sheet.
         retriever = FinancialFactRetriever(facts_df=facts)
         engine = FinancialReasoningEngine(retriever=retriever)

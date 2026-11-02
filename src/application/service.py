@@ -37,14 +37,18 @@ from src.financial.reasoning import (
 )
 from src.financial.resolution import ResolutionResult, ResolutionStatus, resolve_query
 from src.financial.result import FinancialResult
+from src.financial.semantics import is_opening_period_label
 from src.financial.verification import (
     VerificationEngine,
     VerificationResult,
     VerificationStatus,
 )
+from src.pipeline.query import FinancialQuery
 from src.retrieval.engine import FinancialFactRetriever
+from src.retrieval.ranking import RetrievalResult
 
 DEFAULT_PARQUET_PATH = Path("data/processed/financial_facts.parquet")
+BALANCE_SHEET_IDENTITY_CODES = ("100", "200", "270", "300", "400")
 
 
 class FinRAGApplication:
@@ -79,6 +83,61 @@ class FinRAGApplication:
             self.reasoning_engine = None
 
         self.verification_engine = verification_engine or VerificationEngine(self.registry)
+
+    def _collect_supporting_facts(self, res: FinancialResult) -> List[RetrievalResult]:
+        """Gather facts the verifier can check an answer against.
+
+        These facts never feed the answer. If the same line has conflicting values
+        in one report, it is left out so the identity check reports NOT_RUN.
+        """
+        if self.retriever is None:
+            return []
+
+        input_ids = {inp.fact_id for inp in res.inputs}
+        input_codes = {inp.line_code for inp in res.inputs}
+
+        def same_period_facts(anchor: RetrievalResult, line_code: str) -> List[RetrievalResult]:
+            query = FinancialQuery(
+                ticker=anchor.ticker,
+                year=anchor.year,
+                statement_scope=anchor.statement_scope,
+                line_code=line_code,
+            )
+            return [
+                fact
+                for fact in self.retriever.retrieve(query, top_k=50)
+                if fact.fact_id not in input_ids
+                and fact.statement_type == anchor.statement_type
+                and not is_opening_period_label(fact.period_label)
+            ]
+
+        supporting: List[RetrievalResult] = []
+
+        # The same line in another report, for comparative reconciliation.
+        for inp in res.inputs:
+            if inp.line_code:
+                supporting.extend(
+                    fact
+                    for fact in same_period_facts(inp, inp.line_code)
+                    if fact.document_id != inp.document_id
+                )
+
+        # The other lines of the same balance sheet, for accounting identities.
+        anchor = next((inp for inp in res.inputs if inp.statement_type == "balance_sheet"), None)
+        if anchor is not None:
+            for line_code in BALANCE_SHEET_IDENTITY_CODES:
+                if line_code in input_codes:
+                    continue
+                facts = [
+                    fact
+                    for fact in same_period_facts(anchor, line_code)
+                    if fact.document_id == anchor.document_id
+                    and fact.is_comparative == anchor.is_comparative
+                ]
+                if len({fact.normalized_value for fact in facts}) == 1:
+                    supporting.append(facts[0])
+
+        return supporting
 
     def ask(self, raw_query: str) -> FinRAGResponse:
         """Process a natural language financial question end-to-end."""
@@ -188,6 +247,7 @@ class FinRAGApplication:
                 expected_year=res.year,
                 expected_scope=res.statement_scope,
                 query_text=clean_query,  # M2b: Enable independent query re-parse check
+                supporting_facts=self._collect_supporting_facts(res),
             )
 
             elapsed_ms = (time.time() - t0) * 1000
