@@ -218,6 +218,7 @@ def app():
 class TestApplicationResolutionIntegration:
     """Tests that FinRAGApplication integrates ResolutionResult and populates resolution DTO."""
 
+    @pytest.mark.requires_full_data
     def test_app_ask_answers_profit_before_tax_with_line_50_query_155(self, app):
         # The original false positive answered line 60 (2,349,673,770,275).
         # Line 50 entered the catalog in M4 layer 1, as the owner approved.

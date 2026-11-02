@@ -34,10 +34,10 @@ Status labels: **REPORTED** = stated in repo docs, not re-verified by the agent;
 Note on tooling: **Antigravity** refers to the autonomous AI pair programming system acting under user instruction and verification.
 
 ### Stage
-MVP v0.1 (data foundation → retrieval → deterministic reasoning → verification → application service → Streamlit UI) is implemented. The hardening phase has progressed through **M0, M1, M1b, M2a, M2b, and M3 (completed)**. **M4 (Program layer)** is planned and needs owner approval to start.
+MVP v0.1 (data foundation → retrieval → deterministic reasoning → verification → application service → Streamlit UI) is implemented. The hardening phase has progressed through **M0, M1, M1b, M2a, M2b, and M3 (completed)**. **M4 (Program layer)** is in progress: layers 1 and 2 are done, and layer 3 (LLM planner) has not started.
 
 ### Implemented (VERIFIED)
-- Facts (rebuilt 2026-11-02, K19 and K21): 365,347 rows, of which 12,616 carry a `quality_flag` and never answer. Units: 346,127 declared, 19,027 inferred, 193 unknown. Fact IDs cited by the benchmarks are preserved.
+- Facts (rebuilt 2026-11-02, K19 and K21): 365,954 rows, of which 12,616 carry a `quality_flag` and never answer. Units: 346,706 declared, 19,045 inferred, 203 unknown. Fact IDs cited by the benchmarks are preserved.
 - Data: 1,973 report files from 100 tickers, report years 2015–2025. The processed parquet holds 338,714 financial facts from **78 tickers** (VERIFIED in M0). The 22 missing tickers are commercial banks and financial institutions whose statements do not use the Circular 200/133 line-code layout, so no facts were extracted for them (gap analysis documented in `docs/bank_ingestion_gap_analysis.md`).
 - Retrieval: metadata filter (ticker, year, scope, line_code) + ephemeral BM25 over candidates (`src/retrieval/`).
 - Reasoning: `FinancialReasoningEngine` + `MetricRegistry`, 8 metrics: `net_revenue`, `net_income`, `total_assets`, `equity`, `net_margin`, `roa`, `roe`, `revenue_growth`. Operations: identity, ratio, difference, yoy_growth, percentage_change. Unit scaling applied to convert raw cell values to standard base currency (M2a).
@@ -47,10 +47,11 @@ MVP v0.1 (data foundation → retrieval → deterministic reasoning → verifica
 - Independent Verification & Accounting Identities (M2b): `VerificationEngine` upgraded with independent query re-parse (`_verify_independent_query_parse` fixing K2), typed `CheckStatus` (`PASS`, `FAIL`, `WARNING`, `NOT_RUN`), Balance Sheet accounting identities ($270 = 300 + 400$, $270 = 100 + 200$), fact-level quality flags, and cross-report comparative figure reconciliation.
 - Application: `FinRAGApplication.ask()` returning typed `FinRAGResponse` DTOs with latency, confidence status, and actionable guidance for abstentions. It gathers same-report supporting facts so accounting identities and comparative reconciliation run on real answers.
 - UI: Streamlit app (`ui/app.py`, `ui/theme.py`) featuring an institutional 5-tier layout (Resolution $\rightarrow$ Calculation & Substituted Formula Trace $\rightarrow$ Grouped Verification $\rightarrow$ Evidence Provenance $\rightarrow$ Audit Trail) with strict HTML escaping (`_esc()`) for OCR labels (K11).
-- Regression benchmarks (VERIFIED): reasoning 30 cases (25 valid, 5 invalid) at 100% pass; verification 60 cases (30 valid accepted, 30 mutations rejected) at 100% pass; full test suite currently at **467 tests, 467 passed**.
+- Regression benchmarks (VERIFIED): reasoning 30 cases (25 valid, 5 invalid) at 100% pass; verification 60 cases (30 valid accepted, 30 mutations rejected) at 100% pass; full test suite currently at **514 tests, 514 passed**.
 
-- Silver benchmark (VERIFIED by `python scripts/evaluate_silver.py`, 2026-11-02): 147/148 cases correct, Wilson 95% CI 96.3%-99.9%, 0 verified-wrong; 1 over-refusal among 27 answerable cases. The company-split test part scored 45/50 with 4 verified-wrong on its first run, which is its only held-out figure, because fixes came afterwards. Labels are LLM-prefilled, not human-verified gold. Full audit: `docs/pre_m4_audit.md`.
-- Answer coverage (VERIFIED by `python scripts/run_question_coverage.py`, 2026-11-02): 35 of 1,012 (3.5%). See `docs/m1_status_transition_report.md`.
+- Silver benchmark (VERIFIED by `python scripts/evaluate_silver.py`, 2026-11-02): silver v2 scores 148/148, but 24 of its labels were reviewed from system output, so it is a regression check only. Of the 42 numeric labels frozen before M4 code, 32 are correct, 0 wrong, 10 refused. Silver v1's company-split test part scored 45/50 with 4 verified-wrong on its first run, before later fixes. No person verified these labels. See `docs/m4_layers_1_2_report.md`.
+- Answer coverage (VERIFIED by `python scripts/run_question_coverage.py`, 2026-11-02): 105 of the 766 development questions (13.7%), up from 31 before M4. The 246 sealed questions in `docs/holdout_v1_seal.md` are excluded from every development report.
+- Program layer: `src/financial/program/` holds a 39-line catalog, a template planner, an allowlisted program model, an executor, and a verifier. It runs only after `resolve_query` refuses, and it uses no LLM.
 
 ### Important caveats on those numbers
 - The benchmarks were written by the project authors from the same parquet and the same label rules the system uses. They are **regression tests, not accuracy estimates**. Do not describe them as accuracy on unseen data.
@@ -77,7 +78,7 @@ Environment: Windows, Python 3.11.9, pytest 9.1.1. Full details belong in `docs/
 | Path | Responsibility |
 |---|---|
 | `src/ingestion/` | Loader, HTML table parser, number parser, fact extractor, validator |
-| `src/financial/` | Schemas, metric registry, calculator, reasoning engine, result model, verification |
+| `src/financial/` | Schemas, metric registry, calculator, reasoning engine, result model, verification; `program/` holds the constrained program layer |
 | `src/retrieval/` | Metadata filter, BM25, ranking/`RetrievalResult`, retrieval engine |
 | `src/pipeline/` | `prepare_data` pipeline, `query.py` (regex query parser) |
 | `src/application/` | `FinRAGApplication` service and typed DTOs |
@@ -136,7 +137,7 @@ Work proceeds one milestone at a time. **Do not start the next milestone until t
 | **M2a** | Data semantics | **COMPLETED** (commit `f08ec07`) | `unit_scale` and `unit_status` stored alongside raw value in `FinancialFact` and `RetrievalResult`; `statement_type` inferred in `src/financial/semantics.py` (disambiguates Line 60); opening period filter `is_opening_period_label()` handles `01/01/YYYY`. Verified by `tests/test_data_semantics.py` (K3, K4, K5, K7, K16). |
 | **M2b** | Independent verification | **COMPLETED** | Expected ticker/year/scope come from an independent re-parse of the question (`_verify_independent_query_parse`, K2); typed `CheckStatus` enum (`PASS`, `FAIL`, `WARNING`, `NOT_RUN`); scoped accounting-identity checks (270 = 300 + 400, 270 = 100 + 200); comparative figure reconciliation; fact quality flags. Verified by `tests/test_verification_m2b.py`. |
 | **M3** | Shared evidence and trace contracts | **COMPLETED** (commit `30ab93e`, closed 2026-11-02) | Trace model with operand lineage; `FinancialResult` and DTOs extended compatibly; no duplicate evidence schema. Closed after `ask()` began passing supporting facts to the verifier. Verified by `tests/test_trace_m3.py` and `tests/test_e2e_mini_fixture.py`. |
-| **M4** | Program layer | Planned (next; needs owner approval) | LLM provider in `src/nlp/llm.py` with a mock provider for tests; constrained DSL with allowlisted operations in `src/financial/program/`; planner emits program + bindings, never numbers; executor reuses tested arithmetic; generic program verifier. |
+| **M4** | Program layer | IN PROGRESS (owner approved 2026-11-02; layers 1 and 2 done) | LLM provider in `src/nlp/llm.py` with a mock provider for tests; constrained DSL with allowlisted operations in `src/financial/program/`; planner emits program + bindings, never numbers; executor reuses tested arithmetic; generic program verifier. |
 | **M5** | Gold benchmark and ablations | Planned | ≥150–200 labelled items split by company; oracle-bindings, oracle-facts, and full-pipeline configurations; metrics in Section 7. |
 | **M6** | Unified planner and experiments | Planned | Deterministic-only vs program-based vs combined; error analysis; decision on whether the LLM planner earns its complexity. |
 
@@ -194,6 +195,10 @@ The resolution result carries at least: `status`, `metric` and `operation` (if d
 4. Coverage is re-run and a **status-transition report** is produced: every question whose status changed since M0, grouped by transition (for example `resolved → unsupported`). On the gold-labelled subset, every `resolved → non-resolved` transition is reviewed by a human. A previously correct, answerable gold question must not become non-resolved without a recorded justification.
 5. On `gold_v0` report, with counts: resolution accuracy, resolution rate, refusal precision and recall, and over-refusal rate. **The number of refusals going up is neither success nor failure.**
 6. K1 in section 13 is updated with evidence (confirmed, partly confirmed, or disproved), and any user-visible wording change is reflected in PRODUCT.md and DESIGN.md.
+
+### M4 gates (owner approved 2026-11-02)
+
+A layer is enabled only if safe coverage rises, no previously correct question becomes wrong, and the upper Wilson 95% bound of the verified-wrong rate is at most 5%. The bound is measured once on the sealed set. No person verifies labels, so results must say so.
 
 ### 5.2 Three evaluation sources (kept separate)
 
@@ -410,6 +415,8 @@ Status column: **CONFIRMED** (M0 audit evidence), **PARTLY** (pattern seen, impa
 | K22 | A figure restated in a later report conflicted across reports and was refused | FIXED (2026-11-02) | `resolve_fact`; verified by `tests/test_restatement_policy.py` | Owner policy: the latest report wins, with a warning from comparative reconciliation |
 | K23 | 7 of 100 `gold_fact_id` values pointed at section or note numbers | FIXED (2026-11-02, owner approved) | `data/benchmark/retrieval_quality.jsonl` | Recorded in `docs/benchmark_corrections.md` |
 | K24 | Lowercase tickers such as `fpt` are not recognized, so the question is refused with a request for the ticker | CONFIRMED | `src/pipeline/query.py` | Unassigned |
+
+| K25 | Rows that lost their note cell had the prior-year amount read as the current year | FIXED (2026-11-02) | `src/ingestion/fact_extractor.py`; verified by `tests/test_table_layouts.py` | 195 rows in 40 reports corrected |
 
 ---
 

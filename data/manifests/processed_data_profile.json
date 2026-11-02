@@ -3,7 +3,7 @@
   "source_report_count": 1973,
   "processed_document_count": 1973,
   "processed_table_count": 146246,
-  "extracted_fact_count": 365347,
+  "extracted_fact_count": 365954,
   "documents_with_tables": 1965,
   "tables_with_line_codes": 10032,
   "parsing_failures": 0,
@@ -129,7 +129,7 @@
     "aggregated": 7,
     "other": 55
   },
-  "processing_time_seconds": 36.5,
+  "processing_time_seconds": 32.48,
   "failure_details": {
     "parsing_failures_sample": [],
     "fact_failures_sample": []
