@@ -1,6 +1,6 @@
 {
   "manifest_version": "day5_v1",
-  "evaluation_timestamp": "2026-11-02T04:13:23.648724+00:00",
+  "evaluation_timestamp": "2026-11-02T04:21:23.165646+00:00",
   "total_cases": 60,
   "valid_cases": 30,
   "accepted_valid_cases": 30,
@@ -197,7 +197,7 @@
       "checks_passed": 16,
       "checks_failed": 0,
       "checks_warning": 0,
-      "latency_ms": 0.0,
+      "latency_ms": 1.0,
       "errors": [],
       "warnings": []
     },
@@ -401,7 +401,7 @@
       "checks_passed": 23,
       "checks_failed": 0,
       "checks_warning": 1,
-      "latency_ms": 0.0,
+      "latency_ms": 1.0,
       "errors": [],
       "warnings": [
         "Methodology notice: 'roa' uses closing balance for denominator per MVP specification ('ROA (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Tổng tài sản (Số cuối kỳ, Mã số 270)'). Standard financial analysis may alternatively use 2-year average balance."
@@ -439,7 +439,7 @@
       "checks_passed": 23,
       "checks_failed": 0,
       "checks_warning": 1,
-      "latency_ms": 1.03,
+      "latency_ms": 0.0,
       "errors": [],
       "warnings": [
         "Methodology notice: 'roa' uses closing balance for denominator per MVP specification ('ROA (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Tổng tài sản (Số cuối kỳ, Mã số 270)'). Standard financial analysis may alternatively use 2-year average balance."
@@ -477,7 +477,7 @@
       "checks_passed": 23,
       "checks_failed": 0,
       "checks_warning": 1,
-      "latency_ms": 0.0,
+      "latency_ms": 0.99,
       "errors": [],
       "warnings": [
         "Methodology notice: 'roa' uses closing balance for denominator per MVP specification ('ROA (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Tổng tài sản (Số cuối kỳ, Mã số 270)'). Standard financial analysis may alternatively use 2-year average balance."
@@ -515,7 +515,7 @@
       "checks_passed": 23,
       "checks_failed": 0,
       "checks_warning": 0,
-      "latency_ms": 0.0,
+      "latency_ms": 1.0,
       "errors": [],
       "warnings": []
     },
@@ -597,7 +597,7 @@
       "verification_status": "REJECTED",
       "overall_pass": false,
       "is_correct_outcome": true,
-      "latency_ms": 1.0,
+      "latency_ms": 0.0,
       "errors": [
         "Numerical discrepancy: result value 0.15150166131295625 differs from reference 0.1500016448643131 (rel_diff=0.010000 > tol 0.0001)",
         "Trace final step output 0.1500016448643131 does not match result value 0.15150166131295625"
@@ -687,7 +687,7 @@
       "verification_status": "REJECTED",
       "overall_pass": false,
       "is_correct_outcome": true,
-      "latency_ms": 0.0,
+      "latency_ms": 1.0,
       "errors": [
         "Formula mismatch: expected '(net_revenue_current - net_revenue_previous) / net_revenue_previous', got 'current - previous'"
       ],
@@ -779,7 +779,7 @@
       "verification_status": "REJECTED",
       "overall_pass": false,
       "is_correct_outcome": true,
-      "latency_ms": 1.0,
+      "latency_ms": 0.0,
       "errors": [
         "Evidence at index 0 has fiscal_year 2024, expected 2099"
       ],
@@ -996,7 +996,7 @@
       "verification_status": "REJECTED",
       "overall_pass": false,
       "is_correct_outcome": true,
-      "latency_ms": 1.5,
+      "latency_ms": 0.0,
       "errors": [
         "Incompatible units: expected 'VND', got 'USD'"
       ],
