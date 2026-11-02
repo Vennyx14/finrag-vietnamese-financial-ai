@@ -37,7 +37,7 @@ Note on tooling: **Antigravity** refers to the autonomous AI pair programming sy
 MVP v0.1 (data foundation → retrieval → deterministic reasoning → verification → application service → Streamlit UI) is implemented. The hardening phase has progressed through **M0, M1, M1b, M2a, M2b, and M3 (completed)**. **M4 (Program layer)** is planned and needs owner approval to start.
 
 ### Implemented (VERIFIED)
-- Facts (rebuilt 2026-11-02, K19 and K21): 365,555 rows, of which 13,024 carry a `quality_flag` and never answer. Units: 346,014 declared, 19,348 inferred, 193 unknown. Fact IDs cited by the benchmarks are preserved.
+- Facts (rebuilt 2026-11-02, K19 and K21): 365,347 rows, of which 12,616 carry a `quality_flag` and never answer. Units: 346,127 declared, 19,027 inferred, 193 unknown. Fact IDs cited by the benchmarks are preserved.
 - Data: 1,973 report files from 100 tickers, report years 2015–2025. The processed parquet holds 338,714 financial facts from **78 tickers** (VERIFIED in M0). The 22 missing tickers are commercial banks and financial institutions whose statements do not use the Circular 200/133 line-code layout, so no facts were extracted for them (gap analysis documented in `docs/bank_ingestion_gap_analysis.md`).
 - Retrieval: metadata filter (ticker, year, scope, line_code) + ephemeral BM25 over candidates (`src/retrieval/`).
 - Reasoning: `FinancialReasoningEngine` + `MetricRegistry`, 8 metrics: `net_revenue`, `net_income`, `total_assets`, `equity`, `net_margin`, `roa`, `roe`, `revenue_growth`. Operations: identity, ratio, difference, yoy_growth, percentage_change. Unit scaling applied to convert raw cell values to standard base currency (M2a).
@@ -47,10 +47,10 @@ MVP v0.1 (data foundation → retrieval → deterministic reasoning → verifica
 - Independent Verification & Accounting Identities (M2b): `VerificationEngine` upgraded with independent query re-parse (`_verify_independent_query_parse` fixing K2), typed `CheckStatus` (`PASS`, `FAIL`, `WARNING`, `NOT_RUN`), Balance Sheet accounting identities ($270 = 300 + 400$, $270 = 100 + 200$), fact-level quality flags, and cross-report comparative figure reconciliation.
 - Application: `FinRAGApplication.ask()` returning typed `FinRAGResponse` DTOs with latency, confidence status, and actionable guidance for abstentions. It gathers same-report supporting facts so accounting identities and comparative reconciliation run on real answers.
 - UI: Streamlit app (`ui/app.py`, `ui/theme.py`) featuring an institutional 5-tier layout (Resolution $\rightarrow$ Calculation & Substituted Formula Trace $\rightarrow$ Grouped Verification $\rightarrow$ Evidence Provenance $\rightarrow$ Audit Trail) with strict HTML escaping (`_esc()`) for OCR labels (K11).
-- Regression benchmarks (VERIFIED): reasoning 30 cases (25 valid, 5 invalid) at 100% pass; verification 60 cases (30 valid accepted, 30 mutations rejected) at 100% pass; full test suite currently at **457 tests, 457 passed**.
+- Regression benchmarks (VERIFIED): reasoning 30 cases (25 valid, 5 invalid) at 100% pass; verification 60 cases (30 valid accepted, 30 mutations rejected) at 100% pass; full test suite currently at **467 tests, 467 passed**.
 
-- Silver benchmark (VERIFIED by `python scripts/evaluate_silver.py`, 2026-11-02): 146/148 cases correct, Wilson 95% CI 95.2%-99.6%, 0 verified-wrong; 2 over-refusals among 27 answerable cases. The company-split test part scored 45/50 with 4 verified-wrong on its first run, which is its only held-out figure, because fixes came afterwards. Labels are LLM-prefilled, not human-verified gold. Full audit: `docs/pre_m4_audit.md`.
-- Answer coverage (VERIFIED by `python scripts/run_question_coverage.py`, 2026-11-02): 34 of 1,012 (3.4%). See `docs/m1_status_transition_report.md`.
+- Silver benchmark (VERIFIED by `python scripts/evaluate_silver.py`, 2026-11-02): 147/148 cases correct, Wilson 95% CI 96.3%-99.9%, 0 verified-wrong; 1 over-refusal among 27 answerable cases. The company-split test part scored 45/50 with 4 verified-wrong on its first run, which is its only held-out figure, because fixes came afterwards. Labels are LLM-prefilled, not human-verified gold. Full audit: `docs/pre_m4_audit.md`.
+- Answer coverage (VERIFIED by `python scripts/run_question_coverage.py`, 2026-11-02): 35 of 1,012 (3.5%). See `docs/m1_status_transition_report.md`.
 
 ### Important caveats on those numbers
 - The benchmarks were written by the project authors from the same parquet and the same label rules the system uses. They are **regression tests, not accuracy estimates**. Do not describe them as accuracy on unseen data.
@@ -393,7 +393,7 @@ Status column: **CONFIRMED** (M0 audit evidence), **PARTLY** (pattern seen, impa
 | K6 | Only `year` as temporal key; quarterly or year-to-date reports could be mixed with annual | NOT OBSERVED in ViFinQA (annual only); keep for future ingestion | schema, extractor | M0 audit |
 | K7 | `report_year` derived by regex `_(\d{4})_` from `document_id` instead of stored | FIXED (M2a) | `src/financial/schema.py`, `src/retrieval/ranking.py` | Fixed in M2a (commit `f08ec07`) |
 | K8 | Ticker extraction takes the first 3–6 uppercase token outside a stop-word list (for example "BCTC" could be taken as a ticker); stop-word list duplicated in two files | FIXED (M1b) | `src/pipeline/query.py`, `src/financial/resolution.py` | Fixed in M1b (commit `29ab7d6`) |
-| K9 | Fact selection used BM25 top-20 and could lose the defining line | FIXED (2026-11-02) | `resolve_fact`; verified by `tests/test_pre_m4_hardening.py` | Latency on the reasoning benchmark rose from about 80 ms to 188 ms |
+| K9 | Fact selection used BM25 top-20 and could lose the defining line | FIXED (2026-11-02) | `resolve_fact`; verified by `tests/test_pre_m4_hardening.py` | Latency on the reasoning benchmark rose from about 80 ms to about 225 ms |
 | K10 | `parse_vietnamese_number` single-dot rule with three trailing digits reads `0.123` as 123 | CONFIRMED, correct for Vietnamese tables; would be wrong for an English decimal | `src/ingestion/table_parser.py` | M0 audit |
 | K11 | UI interpolates OCR labels and backend error text into HTML with `unsafe_allow_html=True` without escaping | FIXED (UI) | `ui/theme.py`, `ui/app.py` | Fixed in UI Hardening (commit `b28fb3a`) |
 | K12 | Integration tests skip without the parquet; benchmark files are gitignored | CONFIRMED | `tests/`, `.gitignore` | M0 (exception added for `gold/`) |
@@ -407,8 +407,8 @@ Status column: **CONFIRMED** (M0 audit evidence), **PARTLY** (pattern seen, impa
 | K19 | Scale stated only in a page line or table header (for example `Ngàn VND`, `2024Nghìn VND`, a `VND` sub-header row) was not captured, so such values were treated as VND | FIXED (2026-11-02) | `src/ingestion/fact_extractor.py`, parquet rebuild; verified by `tests/test_unit_detection.py` | Rebuild local data with `python scripts/prepare_data.py` |
 | K20 | The 270 = 300 + 400 identity ignored minority interest presented outside line 400 | FIXED (2026-11-02) | `src/financial/verification.py` | Verified by `tests/test_pre_m4_hardening.py` |
 | K21 | Statement tables with glued code titles, English notes columns, rows wider than the header, section numbers, or restatement columns lost lines or produced false facts | FIXED (2026-11-02) | `src/ingestion/`; verified by `tests/test_table_layouts.py` | |
-| K22 | A restated figure conflicts across reports (DCM 2017 net income), so the question is refused instead of following a stated policy | CONFIRMED | `resolve_fact` | Needs a policy decision |
-| K23 | 7 of 100 `gold_fact_id` values in `data/benchmark/retrieval_quality.jsonl` point at section-number cells, so Recall figures are unreliable | CONFIRMED | `data/benchmark/` | Needs a human edit; agents must not change it |
+| K22 | A figure restated in a later report conflicted across reports and was refused | FIXED (2026-11-02) | `resolve_fact`; verified by `tests/test_restatement_policy.py` | Owner policy: the latest report wins, with a warning from comparative reconciliation |
+| K23 | 7 of 100 `gold_fact_id` values pointed at section or note numbers | FIXED (2026-11-02, owner approved) | `data/benchmark/retrieval_quality.jsonl` | Recorded in `docs/benchmark_corrections.md` |
 | K24 | Lowercase tickers such as `fpt` are not recognized, so the question is refused with a request for the ticker | CONFIRMED | `src/pipeline/query.py` | Unassigned |
 
 ---

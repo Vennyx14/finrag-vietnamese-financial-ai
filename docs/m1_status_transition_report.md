@@ -7,11 +7,11 @@ Measured 2026-11-02 for M1 exit criterion 4. The M0 side is `data/manifests/ques
 | | M0 | Now |
 |---|---:|---:|
 | Questions | 1,012 | 1,012 |
-| Answered (`SUCCESS` + `WARNING`) | 142 (14.0%) | 34 (3.4%) |
+| Answered (`SUCCESS` + `WARNING`) | 142 (14.0%) | 35 (3.5%) |
 | `SUCCESS` | 138 | 31 |
-| `WARNING` | 4 | 3 |
+| `WARNING` | 4 | 4 |
 | `USER_INPUT_ERROR` | 786 | 964 |
-| `DATA_NOT_FOUND` | 74 | 14 |
+| `DATA_NOT_FOUND` | 74 | 13 |
 | `SYSTEM_ERROR` | 10 | 0 |
 
 ## Transitions
@@ -23,14 +23,14 @@ Measured 2026-11-02 for M1 exit criterion 4. The M0 side is `data/manifests/ques
 | 61 | `DATA_NOT_FOUND` | `USER_INPUT_ERROR` |
 | 13 | `USER_INPUT_ERROR` | `SUCCESS` |
 | 9 | `SYSTEM_ERROR` | `USER_INPUT_ERROR` |
-| 4 | `USER_INPUT_ERROR` | `DATA_NOT_FOUND` |
 | 4 | `WARNING` | `USER_INPUT_ERROR` |
 | 3 | `DATA_NOT_FOUND` | `SUCCESS` |
+| 3 | `USER_INPUT_ERROR` | `DATA_NOT_FOUND` |
+| 2 | `USER_INPUT_ERROR` | `WARNING` |
 | 1 | `SUCCESS` | `DATA_NOT_FOUND` |
 | 1 | `SYSTEM_ERROR` | `SUCCESS` |
 | 1 | `DATA_NOT_FOUND` | `WARNING` |
 | 1 | `SUCCESS` | `WARNING` |
-| 1 | `USER_INPUT_ERROR` | `WARNING` |
 
 `SUCCESS` rose after K19 because units read from page and table headers no longer trigger the unknown-unit warning.
 
@@ -42,4 +42,4 @@ The multi-company rule was checked directly. Of its 216 refusals before the tick
 
 ## Gold-labelled subset
 
-No human-verified gold set exists yet, so criterion 4's human review is not met in its original form. `python scripts/evaluate_silver.py` on the 148-case silver set (LLM-prefilled, not human-verified gold) reports 2 over-refusals among the 27 cases the system should answer. See `docs/pre_m4_audit.md`.
+No human-verified gold set exists yet, so criterion 4's human review is not met in its original form. `python scripts/evaluate_silver.py` on the 148-case silver set (LLM-prefilled, not human-verified gold) reports 1 over-refusal among the 27 cases the system should answer. See `docs/pre_m4_audit.md`.

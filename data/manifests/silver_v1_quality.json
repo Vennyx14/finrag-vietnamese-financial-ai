@@ -3,14 +3,14 @@
   "label_note": "LLM-prefilled labels accepted by the owner; not human-verified gold.",
   "overall": {
     "cases": 148,
-    "correct": 146,
+    "correct": 147,
     "correct_wilson_95": [
-      0.9521,
-      0.9963
+      0.9627,
+      0.9988
     ],
     "answerable_by_system": 27,
-    "execution_correct": 25,
-    "over_refusals": 2,
+    "execution_correct": 26,
+    "over_refusals": 1,
     "wrong_answers": 0,
     "over_answers": 0,
     "wrong_refusals": 0,
@@ -18,14 +18,14 @@
   },
   "verbatim_vifinqa": {
     "cases": 133,
-    "correct": 131,
+    "correct": 132,
     "correct_wilson_95": [
-      0.9468,
-      0.9959
+      0.9586,
+      0.9987
     ],
     "answerable_by_system": 17,
-    "execution_correct": 15,
-    "over_refusals": 2,
+    "execution_correct": 16,
+    "over_refusals": 1,
     "wrong_answers": 0,
     "over_answers": 0,
     "wrong_refusals": 0,
@@ -49,14 +49,14 @@
   "per_split": {
     "dev": {
       "cases": 68,
-      "correct": 66,
+      "correct": 67,
       "correct_wilson_95": [
-        0.899,
-        0.9919
+        0.9213,
+        0.9974
       ],
       "answerable_by_system": 12,
-      "execution_correct": 10,
-      "over_refusals": 2,
+      "execution_correct": 11,
+      "over_refusals": 1,
       "wrong_answers": 0,
       "over_answers": 0,
       "wrong_refusals": 0,
@@ -126,14 +126,14 @@
     },
     "RESOLVE_AND_CALCULATE": {
       "cases": 27,
-      "correct": 25,
+      "correct": 26,
       "correct_wilson_95": [
-        0.7663,
-        0.9794
+        0.8172,
+        0.9934
       ],
       "answerable_by_system": 27,
-      "execution_correct": 25,
-      "over_refusals": 2,
+      "execution_correct": 26,
+      "over_refusals": 1,
       "wrong_answers": 0,
       "over_answers": 0,
       "wrong_refusals": 0,
@@ -1226,8 +1226,8 @@
       "split": "dev",
       "question_origin": "verbatim",
       "expected": "RESOLVE_AND_CALCULATE",
-      "status": "ERROR",
-      "outcome": "OVER_REFUSAL"
+      "status": "WARNING",
+      "outcome": "CORRECT"
     },
     {
       "case_id": "SV1_0678",

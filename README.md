@@ -52,7 +52,7 @@ graph TD
 The project currently uses a structured subset of the public **ViFinQA** dataset (which builds upon the TiniX Vietnamese financial report corpus).
 
 - **Corpus Source:** ViFinQA
-- **Total Processed Financial Facts:** 365,555 rows, of which 13,024 are flagged and never answer, from 78 of the 100 tickers in the corpus (the other 22 are banks and financial institutions whose statements use a different layout)
+- **Total Processed Financial Facts:** 365,347 rows, of which 12,616 are flagged and never answer, from 78 of the 100 tickers in the corpus (the other 22 are banks and financial institutions whose statements use a different layout)
 - **Storage:** Local `.parquet` file (`data/processed/financial_facts.parquet`), not included in this repository
 - **Note on Coverage:** The current MVP does not encompass every Vietnamese company. The data acts as a testbed for the extraction, reasoning, and verification pipeline rather than a complete market terminal.
 
@@ -86,9 +86,9 @@ All figures below are self-authored regression benchmarks, not accuracy on unsee
 | **Verification Engine** | Valid Acceptance Rate | **100.0%** (30/30) | 60-case self-authored regression benchmark, not accuracy on unseen data |
 | | Mutation Detection Rate | **100.0%** (30/30) | 60-case self-authored regression benchmark, not accuracy on unseen data (mutations injected after reasoning) |
 | | False Acceptance Rate | **0.00%** | 60-case self-authored regression benchmark, not accuracy on unseen data |
-| **Engineering** | Test Suite Pass Rate | **100.0%** (457/457, 0 skipped) | Full `pytest` suite with local data present; see [Reproducibility](#15-reproducibility) for a fresh clone |
+| **Engineering** | Test Suite Pass Rate | **100.0%** (467/467, 0 skipped) | Full `pytest` suite with local data present; see [Reproducibility](#15-reproducibility) for a fresh clone |
 
-| **Silver benchmark** | Correct behavior | **146/148** (Wilson 95% CI 95.2%–99.6%) | 148 LLM-prefilled labels, not human-verified gold; the fixes were made against this set. The test part scored 45/50 on its first run, the only held-out figure. Run locally with `scripts/evaluate_silver.py` |
+| **Silver benchmark** | Correct behavior | **147/148** (Wilson 95% CI 96.3%–99.9%) | 148 LLM-prefilled labels, not human-verified gold; the fixes were made against this set. The test part scored 45/50 on its first run, the only held-out figure. Run locally with `scripts/evaluate_silver.py` |
 
 > *Note: These results show that the curated cases still pass. They test for regressions and tamper detection, and do not estimate accuracy on new questions. A human-labelled gold benchmark is planned (M5).*
 
@@ -201,7 +201,7 @@ finrag-vietnamese-financial-ai/
 
 ## 17. Limitations
 FinRAG is an early MVP and operates under strict, deliberate constraints:
-- **Low Question Coverage:** Of the 1,012 ViFinQA questions, 34 (3.4%) receive an answer (measured 2026-11-02 with `scripts/run_question_coverage.py`, down from 142 at the M0 audit on 2026-10-13, see the [transition report](docs/m1_status_transition_report.md)). This is answer coverage, not accuracy.
+- **Low Question Coverage:** Of the 1,012 ViFinQA questions, 35 (3.5%) receive an answer (measured 2026-11-02 with `scripts/run_question_coverage.py`, down from 142 at the M0 audit on 2026-10-13, see the [transition report](docs/m1_status_transition_report.md)). This is answer coverage, not accuracy.
 - **Limited Metric Support:** Currently calculates only 8 core metrics (`net_revenue`, `net_income`, `total_assets`, `equity`, `net_margin`, `roa`, `roe`, `revenue_growth`).
 - **Deterministic Keyword Parsing:** Natural language understanding relies on deterministic matching rather than a highly generalizable LLM semantic parser.
 - **BM25 Constraints:** Relies strictly on BM25 and exact metadata filters; cannot resolve conceptually distant synonyms.
