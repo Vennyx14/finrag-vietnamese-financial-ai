@@ -8,6 +8,7 @@ import re
 from typing import List, Optional
 
 from src.financial.schema import DocumentRecord, FinancialFact, TableRecord
+from src.financial.semantics import parse_unit_scale
 from src.ingestion.table_parser import (
     LINE_CODE_PATTERN,
     inspect_table_structure,
@@ -15,8 +16,28 @@ from src.ingestion.table_parser import (
 )
 
 UNIT_REGEX = re.compile(
-    r"(?:đơn\s*vị\s*tính|đơn\s*vị|đvt)\s*:\s*([^\n<,;]+)", re.IGNORECASE
+    r"(?:\b[đd][ơo]n\s*v[ịi](?:\s*t[íi]nh)?|\b[đd]vt|\bcurrency\s+unit|\bunit|\bcurrency)"
+    r"\s*:\s*([^\n<,;]+)",
+    re.IGNORECASE,
 )
+SCALED_UNIT_REGEX = re.compile(
+    r"(tỷ|ngàn|nghìn|nghin|triệu|triêu|trieu)\s*(?:vn[dđ]|đồng|dong)", re.IGNORECASE
+)
+THOUSAND_SUFFIX_REGEX = re.compile(r"vn[dđ]\s*(?:['’]|&#x27;|&#39;|&#x2019;)\s*000", re.IGNORECASE)
+BASE_UNIT_REGEX = re.compile(r"(?<![^\W\d_])(?:vn[dđ]|đồng|dong)", re.IGNORECASE)
+STANDALONE_UNIT_REGEX = re.compile(
+    r"^\W*(?:(?:tỷ|ngàn|nghìn|nghin|triệu|triêu|trieu)\s+)?(?:vn[dđ]|đồng việt nam|đồng)\W*$",
+    re.IGNORECASE | re.MULTILINE,
+)
+SCALE_NAMES = {
+    "tỷ": "tỷ VND",
+    "ngàn": "nghìn VND",
+    "nghìn": "nghìn VND",
+    "nghin": "nghìn VND",
+    "triệu": "triệu VND",
+    "triêu": "triệu VND",
+    "trieu": "triệu VND",
+}
 CURRENCY_REGEX = re.compile(r"\b(VND|USD|đồng|dong)\b", re.IGNORECASE)
 YEAR_REGEX = re.compile(r"\b(19\d\d|20\d\d)\b")
 PRIOR_PERIOD_REGEX = re.compile(
@@ -24,23 +45,51 @@ PRIOR_PERIOD_REGEX = re.compile(
 )
 
 
+def _scaled_unit(text: str) -> Optional[str]:
+    """Return the canonical unit when the text states a scale above one dong."""
+    if THOUSAND_SUFFIX_REGEX.search(text):
+        return "nghìn VND"
+    match = SCALED_UNIT_REGEX.search(text)
+    return SCALE_NAMES[match.group(1).lower()] if match else None
+
+
+def _detect_unit(context_text: str, header_text: str) -> Optional[str]:
+    """Read the unit from the table header, a unit label, or a line of its own."""
+    header_scaled = _scaled_unit(header_text)
+    if header_scaled:
+        return header_scaled
+
+    extracted: Optional[str] = None
+    unit_match = UNIT_REGEX.search(f"{header_text}\n{context_text}")
+    if unit_match:
+        # Clean up punctuation/parentheses
+        extracted = unit_match.group(1).strip().strip("()[]:.- ") or None
+    if extracted:
+        if _scaled_unit(extracted):
+            return _scaled_unit(extracted)
+        if BASE_UNIT_REGEX.search(extracted):
+            return "VND"
+
+    prose = "\n".join(line for line in context_text.splitlines() if "<table" not in line)
+    standalone = STANDALONE_UNIT_REGEX.search(prose)
+    if standalone:
+        return _scaled_unit(standalone.group(0)) or "VND"
+    if BASE_UNIT_REGEX.search(header_text):
+        return "VND"
+    return extracted
+
+
 def detect_unit_and_currency(
     context_text: str,
+    header_text: str = "",
 ) -> tuple[Optional[str], Optional[str]]:
     """Detect reporting unit and currency code from surrounding text or header."""
-    unit: Optional[str] = None
     currency: Optional[str] = "VND"
 
-    if not context_text:
-        return unit, currency
+    if not context_text and not header_text:
+        return None, currency
 
-    unit_match = UNIT_REGEX.search(context_text)
-    if unit_match:
-        extracted = unit_match.group(1).strip()
-        # Clean up punctuation/parentheses
-        extracted = extracted.strip("()[]:.- ")
-        if extracted:
-            unit = extracted
+    unit = _detect_unit(context_text, header_text)
 
     curr_match = CURRENCY_REGEX.search(context_text)
     if curr_match:
@@ -51,6 +100,26 @@ def detect_unit_and_currency(
             currency = "USD"
 
     return unit, currency
+
+
+def apply_document_unit_fallback(facts: List[FinancialFact]) -> List[FinancialFact]:
+    """Give unit-less facts the unit of their report when it declares exactly one.
+
+    A statement continued on the next page often omits the unit line. The result
+    is marked 'inferred' so it stays distinguishable from a declared unit.
+    """
+    declared = {fact.unit for fact in facts if fact.unit_status == "declared"}
+    if len(declared) != 1:
+        return facts
+
+    unit = declared.pop()
+    scale, _, _ = parse_unit_scale(unit)
+    return [
+        fact.model_copy(update={"unit": unit, "unit_scale": scale, "unit_status": "inferred"})
+        if fact.unit_status == "unknown"
+        else fact
+        for fact in facts
+    ]
 
 
 def extract_facts_from_table(
@@ -80,8 +149,12 @@ def extract_facts_from_table(
 
     # Detect unit/currency from table header or surrounding page text
     header_str = " ".join(headers)
-    full_context = f"{header_str}\n{page_text or ''}"
-    unit, currency = detect_unit_and_currency(full_context)
+    # Some tables state the unit in a sub-header row under the column titles.
+    next_row = rows[header_row_idx + 1] if header_row_idx + 1 < len(rows) else []
+    has_code = len(next_row) > line_code_col and LINE_CODE_PATTERN.match(next_row[line_code_col].strip())
+    if not has_code:
+        header_str = " ".join([header_str, *next_row])
+    unit, currency = detect_unit_and_currency(page_text or "", header_text=header_str)
 
     facts: List[FinancialFact] = []
 
@@ -131,7 +204,7 @@ def extract_facts_from_table(
 
             fact_id = f"{table_record.table_id}_r{r_idx}_c{c_idx}"
 
-            from src.financial.semantics import infer_statement_type, parse_unit_scale
+            from src.financial.semantics import infer_statement_type
 
             fact_unit_scale, fact_unit_status, clean_unit = parse_unit_scale(unit)
             final_unit = clean_unit if clean_unit else unit

@@ -141,6 +141,19 @@ class TestRejectedPath:
         assert resp.is_trusted is False
 
 
+class TestUnitQuality:
+    def test_inferred_unit_is_flagged_not_treated_as_declared(self, facts):
+        retriever = FinancialFactRetriever(facts_df=facts)
+        engine = FinancialReasoningEngine(retriever=retriever)
+        question = "Doanh thu thuần ZQX năm 2024"
+        result = engine.reason(parse_reasoning_request(question))
+        inferred = [i.model_copy(update={"unit_status": "inferred"}) for i in result.inputs]
+        verdict = VerificationEngine().verify(
+            result.model_copy(update={"inputs": inferred}), query_text=question
+        )
+        assert verdict.status == VerificationStatus.WARNING
+
+
 class TestAccountingIdentity:
     def test_identity_violation_is_flagged_as_warning(self, facts):
         # 900bn != 600bn + 200bn in the ZQX 2022 balance sheet.

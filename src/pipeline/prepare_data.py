@@ -14,7 +14,10 @@ from typing import Any, Dict, List, Optional, Set
 import pandas as pd
 
 from src.financial.schema import DocumentRecord, FinancialFact, TableRecord
-from src.ingestion.fact_extractor import extract_facts_from_table
+from src.ingestion.fact_extractor import (
+    apply_document_unit_fallback,
+    extract_facts_from_table,
+)
 from src.ingestion.loader import (
     discover_report_files,
     extract_table_blocks,
@@ -117,6 +120,7 @@ def run_pipeline(
             docs_file.write(doc_record.model_dump_json() + "\n")
 
             has_table_in_doc = False
+            doc_facts: List[FinancialFact] = []
 
             # 3. Table extraction & parsing
             for page_num, page_text in pages:
@@ -163,8 +167,7 @@ def run_pipeline(
                             validate_fact_collection(
                                 extracted, seen_ids=seen_fact_ids, doc=doc_record
                             )
-                            for fact in extracted:
-                                all_facts.append(fact.model_dump())
+                            doc_facts.extend(extracted)
                             facts_extracted += len(extracted)
                     except Exception as err:
                         fact_extraction_failures.append({
@@ -172,6 +175,10 @@ def run_pipeline(
                             "document_id": doc_record.document_id,
                             "error": str(err),
                         })
+
+            all_facts.extend(
+                fact.model_dump() for fact in apply_document_unit_fallback(doc_facts)
+            )
 
             if has_table_in_doc:
                 docs_with_tables += 1

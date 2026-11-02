@@ -1550,12 +1550,12 @@ class VerificationEngine:
     ) -> None:
         """M2b: Check fact-level quality flags.
         
-        Flags WARNING if any input fact has unit_status='unknown'.
+        Flags WARNING if any input fact has unit_status 'unknown' or 'inferred'.
         """
         for inp in result.inputs:
-            if inp.unit_status == "unknown":
+            if inp.unit_status in ("unknown", "inferred"):
                 msg = (
-                    f"Fact quality warning: fact '{inp.fact_id}' has unit_status='unknown'. "
+                    f"Fact quality warning: fact '{inp.fact_id}' has unit_status='{inp.unit_status}'. "
                     f"Unit '{inp.unit}' could not be parsed; value may be unscaled."
                 )
                 checks.append(
@@ -1564,7 +1564,7 @@ class VerificationEngine:
                         status=CheckStatus.WARNING,
                         severity=CheckSeverity.WARNING,
                         expected="declared",
-                        actual="unknown",
+                        actual=inp.unit_status,
                         message=msg,
                     )
                 )
