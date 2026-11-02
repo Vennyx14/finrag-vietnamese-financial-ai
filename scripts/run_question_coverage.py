@@ -17,6 +17,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
+from scripts.sample_holdout import load_ids
 from src.application.service import FinRAGApplication
 
 
@@ -40,8 +41,12 @@ def run_coverage(
             if line:
                 questions.append(json.loads(line))
 
+    # Sealed questions stay out of every development report.
+    sealed = load_ids()
+    questions = [item for item in questions if int(item["id"]) not in sealed]
+
     total_q = len(questions)
-    print(f"Loaded {total_q} questions. Initializing FinRAGApplication...")
+    print(f"Loaded {total_q} questions ({len(sealed)} sealed). Initializing FinRAGApplication...")
 
     app = FinRAGApplication()
     print("FinRAGApplication initialized successfully.\nProcessing questions...")
