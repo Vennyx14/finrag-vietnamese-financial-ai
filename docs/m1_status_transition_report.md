@@ -7,41 +7,34 @@ Measured 2026-11-02 for M1 exit criterion 4. The M0 side is `data/manifests/ques
 | | M0 | Now |
 |---|---:|---:|
 | Questions | 1,012 | 1,012 |
-| Answered (`SUCCESS` + `WARNING`) | 142 (14.0%) | 35 (3.5%) |
-| `SUCCESS` | 138 | 29 |
-| `WARNING` | 4 | 6 |
-| `USER_INPUT_ERROR` | 786 | 962 |
-| `DATA_NOT_FOUND` | 74 | 15 |
+| Answered (`SUCCESS` + `WARNING`) | 142 (14.0%) | 34 (3.4%) |
+| `SUCCESS` | 138 | 31 |
+| `WARNING` | 4 | 3 |
+| `USER_INPUT_ERROR` | 786 | 964 |
+| `DATA_NOT_FOUND` | 74 | 14 |
 | `SYSTEM_ERROR` | 10 | 0 |
 
 ## Transitions
 
 | Questions | From | To |
 |---:|---|---|
-| 819 | unchanged | unchanged |
-| 112 | `SUCCESS` | `USER_INPUT_ERROR` |
-| 57 | `DATA_NOT_FOUND` | `USER_INPUT_ERROR` |
-| 8 | `SYSTEM_ERROR` | `USER_INPUT_ERROR` |
-| 3 | `USER_INPUT_ERROR` | `SUCCESS` |
+| 791 | unchanged | unchanged |
+| 122 | `SUCCESS` | `USER_INPUT_ERROR` |
+| 61 | `DATA_NOT_FOUND` | `USER_INPUT_ERROR` |
+| 13 | `USER_INPUT_ERROR` | `SUCCESS` |
+| 9 | `SYSTEM_ERROR` | `USER_INPUT_ERROR` |
+| 4 | `USER_INPUT_ERROR` | `DATA_NOT_FOUND` |
+| 4 | `WARNING` | `USER_INPUT_ERROR` |
 | 3 | `DATA_NOT_FOUND` | `SUCCESS` |
-| 3 | `WARNING` | `USER_INPUT_ERROR` |
-| 3 | `SUCCESS` | `WARNING` |
-| 2 | `SYSTEM_ERROR` | `DATA_NOT_FOUND` |
+| 1 | `SUCCESS` | `DATA_NOT_FOUND` |
+| 1 | `SYSTEM_ERROR` | `SUCCESS` |
 | 1 | `DATA_NOT_FOUND` | `WARNING` |
+| 1 | `SUCCESS` | `WARNING` |
 | 1 | `USER_INPUT_ERROR` | `WARNING` |
 
 `SUCCESS` rose after K19 because units read from page and table headers no longer trigger the unknown-unit warning.
 
-## Why 115 answered questions are now refused
-
-| Questions | Refusal reason |
-|---:|---|
-| 86 | Multi-company comparison or ranking |
-| 11 | Unregistered profit sub-item |
-| 10 | Multi-period aggregation |
-| 3 | Non-consecutive growth |
-| 3 | Growth of a metric other than revenue |
-| 2 | Unregistered revenue sub-item |
+## Why answered questions are now refused
 
 The M0 answers to these questions came from parsing one company or one year and ignoring the rest of the question, so the drop is mostly the removal of misattributed answers. Not every refusal was reviewed individually.
 
@@ -49,4 +42,4 @@ The multi-company rule was checked directly. Of its 216 refusals before the tick
 
 ## Gold-labelled subset
 
-No human-verified gold set exists yet, so criterion 4's human review is not met in its original form. On the owner-accepted silver set (30 cases, LLM-prefilled, not human-verified gold), `python scripts/evaluate_silver.py` reports 0 over-refusals among the 14 cases the system should answer. That is a small sample and does not establish a low over-refusal rate.
+No human-verified gold set exists yet, so criterion 4's human review is not met in its original form. `python scripts/evaluate_silver.py` on the 148-case silver set (LLM-prefilled, not human-verified gold) reports 2 over-refusals among the 27 cases the system should answer. See `docs/pre_m4_audit.md`.

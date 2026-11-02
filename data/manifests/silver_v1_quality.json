@@ -3,32 +3,32 @@
   "label_note": "LLM-prefilled labels accepted by the owner; not human-verified gold.",
   "overall": {
     "cases": 148,
-    "correct": 145,
+    "correct": 146,
     "correct_wilson_95": [
-      0.9421,
-      0.9931
+      0.9521,
+      0.9963
     ],
     "answerable_by_system": 27,
     "execution_correct": 25,
     "over_refusals": 2,
     "wrong_answers": 0,
     "over_answers": 0,
-    "wrong_refusals": 1,
+    "wrong_refusals": 0,
     "verified_wrong": 0
   },
   "verbatim_vifinqa": {
     "cases": 133,
-    "correct": 130,
+    "correct": 131,
     "correct_wilson_95": [
-      0.9358,
-      0.9923
+      0.9468,
+      0.9959
     ],
     "answerable_by_system": 17,
     "execution_correct": 15,
     "over_refusals": 2,
     "wrong_answers": 0,
     "over_answers": 0,
-    "wrong_refusals": 1,
+    "wrong_refusals": 0,
     "verified_wrong": 0
   },
   "authored": {
@@ -79,17 +79,17 @@
     },
     "test": {
       "cases": 50,
-      "correct": 49,
+      "correct": 50,
       "correct_wilson_95": [
-        0.895,
-        0.9965
+        0.9286,
+        1.0
       ],
       "answerable_by_system": 1,
       "execution_correct": 1,
       "over_refusals": 0,
       "wrong_answers": 0,
       "over_answers": 0,
-      "wrong_refusals": 1,
+      "wrong_refusals": 0,
       "verified_wrong": 0
     }
   },
@@ -111,17 +111,17 @@
     },
     "REFUSE_UNSUPPORTED": {
       "cases": 111,
-      "correct": 110,
+      "correct": 111,
       "correct_wilson_95": [
-        0.9507,
-        0.9984
+        0.9665,
+        1.0
       ],
       "answerable_by_system": 0,
       "execution_correct": 0,
       "over_refusals": 0,
       "wrong_answers": 0,
       "over_answers": 0,
-      "wrong_refusals": 1,
+      "wrong_refusals": 0,
       "verified_wrong": 0
     },
     "RESOLVE_AND_CALCULATE": {
@@ -322,7 +322,7 @@
       "split": "dev_v0",
       "question_origin": "authored",
       "expected": "RESOLVE_AND_CALCULATE",
-      "status": "SUCCESS",
+      "status": "WARNING",
       "outcome": "CORRECT"
     },
     {
@@ -394,7 +394,7 @@
       "split": "dev",
       "question_origin": "verbatim",
       "expected": "RESOLVE_AND_CALCULATE",
-      "status": "WARNING",
+      "status": "SUCCESS",
       "outcome": "CORRECT"
     },
     {
@@ -410,7 +410,7 @@
       "split": "dev",
       "question_origin": "verbatim",
       "expected": "RESOLVE_AND_CALCULATE",
-      "status": "SUCCESS",
+      "status": "WARNING",
       "outcome": "CORRECT"
     },
     {
@@ -1051,7 +1051,7 @@
       "question_origin": "verbatim",
       "expected": "REFUSE_UNSUPPORTED",
       "status": "ERROR",
-      "outcome": "WRONG_REFUSAL"
+      "outcome": "CORRECT"
     },
     {
       "case_id": "SV1_0814",

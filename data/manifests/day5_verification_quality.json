@@ -1,6 +1,6 @@
 {
   "manifest_version": "day5_v1",
-  "evaluation_timestamp": "2026-11-02T04:21:23.165646+00:00",
+  "evaluation_timestamp": "2026-11-02T04:26:56.856790+00:00",
   "total_cases": 60,
   "valid_cases": 30,
   "accepted_valid_cases": 30,
@@ -12,7 +12,7 @@
   "false_acceptances": 0,
   "mutation_detection_rate_percent": 100.0,
   "overall_verification_accuracy_percent": 100.0,
-  "average_verification_latency_ms": 0.08,
+  "average_verification_latency_ms": 0.09,
   "overall_status": "PASS",
   "accuracy_claim": "100.0% mutation detection and valid case acceptance on the 60-case Day 5 verification benchmark (not a claim of universal verification accuracy across all Vietnamese financial reports)",
   "mutation_categories": {
@@ -95,7 +95,7 @@
       "checks_passed": 16,
       "checks_failed": 0,
       "checks_warning": 0,
-      "latency_ms": 0.0,
+      "latency_ms": 1.0,
       "errors": [],
       "warnings": []
     },
@@ -197,7 +197,7 @@
       "checks_passed": 16,
       "checks_failed": 0,
       "checks_warning": 0,
-      "latency_ms": 1.0,
+      "latency_ms": 0.0,
       "errors": [],
       "warnings": []
     },
@@ -401,7 +401,7 @@
       "checks_passed": 23,
       "checks_failed": 0,
       "checks_warning": 1,
-      "latency_ms": 1.0,
+      "latency_ms": 0.0,
       "errors": [],
       "warnings": [
         "Methodology notice: 'roa' uses closing balance for denominator per MVP specification ('ROA (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Tổng tài sản (Số cuối kỳ, Mã số 270)'). Standard financial analysis may alternatively use 2-year average balance."
@@ -477,7 +477,7 @@
       "checks_passed": 23,
       "checks_failed": 0,
       "checks_warning": 1,
-      "latency_ms": 0.99,
+      "latency_ms": 1.01,
       "errors": [],
       "warnings": [
         "Methodology notice: 'roa' uses closing balance for denominator per MVP specification ('ROA (MVP Policy) = Lợi nhuận sau thuế (Kỳ) / Tổng tài sản (Số cuối kỳ, Mã số 270)'). Standard financial analysis may alternatively use 2-year average balance."
@@ -515,7 +515,7 @@
       "checks_passed": 23,
       "checks_failed": 0,
       "checks_warning": 0,
-      "latency_ms": 1.0,
+      "latency_ms": 0.0,
       "errors": [],
       "warnings": []
     },
@@ -549,7 +549,7 @@
       "checks_passed": 23,
       "checks_failed": 0,
       "checks_warning": 0,
-      "latency_ms": 0.0,
+      "latency_ms": 0.53,
       "errors": [],
       "warnings": []
     },
@@ -566,7 +566,7 @@
       "checks_passed": 23,
       "checks_failed": 0,
       "checks_warning": 0,
-      "latency_ms": 0.0,
+      "latency_ms": 1.0,
       "errors": [],
       "warnings": []
     },
@@ -642,7 +642,7 @@
       "verification_status": "REJECTED",
       "overall_pass": false,
       "is_correct_outcome": true,
-      "latency_ms": 0.0,
+      "latency_ms": 1.0,
       "errors": [
         "Numerical discrepancy: result value -0.036214158296144786 differs from reference 0.036214158296144786 (rel_diff=2.000000 > tol 0.0001)",
         "Trace final step output 0.036214158296144786 does not match result value -0.036214158296144786"
@@ -687,7 +687,7 @@
       "verification_status": "REJECTED",
       "overall_pass": false,
       "is_correct_outcome": true,
-      "latency_ms": 1.0,
+      "latency_ms": 0.0,
       "errors": [
         "Formula mismatch: expected '(net_revenue_current - net_revenue_previous) / net_revenue_previous', got 'current - previous'"
       ],
@@ -881,7 +881,7 @@
       "verification_status": "REJECTED",
       "overall_pass": false,
       "is_correct_outcome": true,
-      "latency_ms": 0.0,
+      "latency_ms": 1.01,
       "errors": [
         "Evidence at index 0 does not correspond to input: fact_id: FPT_financial_statements_2024_consolidated_p13_t0_r4_c3 vs tampered_fact_id_001"
       ],
