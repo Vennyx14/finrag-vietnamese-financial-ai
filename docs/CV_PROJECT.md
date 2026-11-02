@@ -20,7 +20,7 @@ FinRAG is a trustworthy, provenance-aware AI system designed to answer natural-l
 - **338,714** validated financial facts processed, indexed, and available for querying.
 - **30/30** cases pass on the self-authored reasoning regression benchmark (not accuracy on unseen data).
 - **30/30** mutations detected and **30/30** valid results accepted on the 60-case self-authored verification regression benchmark (not accuracy on unseen data).
-- About **76 ms** average query latency on the reasoning benchmark, run locally.
+- About **75–95 ms** average query latency across two local runs of the reasoning benchmark.
 
 ### Key Engineering Contributions
 1. **Deterministic Financial Pipeline:** Designed an extraction-retrieval-reasoning pipeline that replaces non-deterministic LLM math with strict formula application based on official Vietnamese Accounting Standards (VAS).

@@ -110,6 +110,6 @@ Latency is a secondary metric; local end-to-end queries are reported in the tens
 
 ## 11. Claims this product does not make
 
-- It does not guarantee zero errors or "zero hallucination". It removes LLM arithmetic and checks results, but it can still select the wrong fact or mis-parse OCR text; those are the failure modes under active work.
-- It is not audit-grade or production-grade. It has not been tested to that standard.
+- It does not eliminate errors. It removes LLM arithmetic and checks results, but it can still select the wrong fact or mis-parse OCR text; those are the failure modes under active work.
+- It has not been tested to the standard of a formal audit or a production deployment.
 - It does not cover every Vietnamese company, statement format, or period.
