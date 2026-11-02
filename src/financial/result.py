@@ -37,6 +37,64 @@ def fact_to_evidence(result: RetrievalResult) -> Dict[str, Any]:
     }
 
 
+class CalculationStep(BaseModel):
+    """Single deterministic step in a financial calculation trace.
+    
+    Preserves operand-level lineage, referencing either authentic fact_ids from
+    retrieval evidence or earlier step IDs (e.g. '#0', '#1').
+    """
+
+    model_config = ConfigDict(frozen=True)
+
+    step_id: str = Field(..., description="Format '#0', '#1', '#2' (vinumqa/dsl AST convention)")
+    operation: str = Field(..., description="'identity', 'divide', 'subtract', 'percentage_change'")
+    operand_ids: List[str] = Field(
+        ..., description="List of authentic fact_ids or earlier step_ids (e.g. ['#0', '#1'])"
+    )
+    input_values: List[float] = Field(..., description="Numerical operands used in this step")
+    output_value: float = Field(..., description="Recomputed output of this specific step")
+    unit: str = Field(..., description="Unit ('VND', 'ratio', 'percentage')")
+    unit_scale: float = Field(
+        default=1.0,
+        description=(
+            "Effective scale applied to reach normalized base currency (1.0 for normalized intermediate/ratio "
+            "steps, or source fact scale for identity steps)"
+        ),
+    )
+    description: Optional[str] = Field(
+        default=None, description="Human-readable step note (e.g. 'Trừ doanh thu năm trước')"
+    )
+
+
+class ExecutionTrace(BaseModel):
+    """Step-level execution trace with explicit operand lineage."""
+
+    model_config = ConfigDict(frozen=True)
+
+    steps: List[CalculationStep] = Field(default_factory=list, description="Ordered calculation steps")
+    final_step_id: str = Field(..., description="step_id producing the final metric value")
+
+    @property
+    def step_count(self) -> int:
+        """Total number of execution steps."""
+        return len(self.steps)
+
+    @property
+    def final_step(self) -> Optional[CalculationStep]:
+        """Return the calculation step designated as final."""
+        for s in self.steps:
+            if s.step_id == self.final_step_id:
+                return s
+        return None
+
+    def get_step(self, step_id: str) -> Optional[CalculationStep]:
+        """Find a step by its step_id."""
+        for s in self.steps:
+            if s.step_id == step_id:
+                return s
+        return None
+
+
 class FinancialResult(BaseModel):
     """Deterministic financial reasoning result with audit trail and provenance."""
 
@@ -59,6 +117,9 @@ class FinancialResult(BaseModel):
     )
     evidence: List[Dict[str, Any]] = Field(
         default_factory=list, description="Full provenance records linking back to source cells"
+    )
+    trace: Optional[ExecutionTrace] = Field(
+        default=None, description="Step-level calculation trace with operand lineage"
     )
     ticker: str = Field(..., description="Stock ticker symbol")
     year: Optional[int] = Field(

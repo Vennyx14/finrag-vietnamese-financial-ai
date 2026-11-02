@@ -160,6 +160,35 @@ class ResolutionDTO(BaseModel):
     assumptions: List[str] = Field(default_factory=list)
 
 
+class TraceStepDTO(BaseModel):
+    """Presentation model for an individual step in the execution trace."""
+
+    model_config = ConfigDict(frozen=True)
+
+    step_id: str
+    operation: str
+    operand_ids: List[str] = Field(default_factory=list)
+    input_values: List[float] = Field(default_factory=list)
+    output_value: float
+    formatted_output: Optional[str] = None
+    unit: str
+    unit_scale: float = 1.0
+    description: Optional[str] = None
+
+
+class TraceDTO(BaseModel):
+    """Presentation model for the complete calculation execution trace."""
+
+    model_config = ConfigDict(frozen=True)
+
+    steps: List[TraceStepDTO] = Field(default_factory=list)
+    final_step_id: str
+
+    @property
+    def step_count(self) -> int:
+        return len(self.steps)
+
+
 class FinRAGResponse(BaseModel):
     """Top-level unified application response."""
 
@@ -177,6 +206,7 @@ class FinRAGResponse(BaseModel):
     verification: Optional[VerificationDTO] = None
     evidence: List[EvidenceDTO] = Field(default_factory=list)
     resolution: Optional[ResolutionDTO] = None
+    trace: Optional[TraceDTO] = None
     latency_ms: float = 0.0
     is_trusted: bool = False
 

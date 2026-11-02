@@ -20,6 +20,8 @@ from src.application.models import (
     FinRAGResponse,
     ResolutionDTO,
     ResponseStatus,
+    TraceDTO,
+    TraceStepDTO,
     VerificationCheckDTO,
     VerificationDTO,
     format_metric_value,
@@ -253,6 +255,37 @@ class FinRAGApplication:
                     )
                 )
 
+            # Build TraceDTO if trace exists on FinancialResult (M3)
+            trace_dto: Optional[TraceDTO] = None
+            if res.trace is not None:
+                trace_steps = []
+                for s in res.trace.steps:
+                    op_for_format = (
+                        res.operation
+                        if s.step_id == res.trace.final_step_id
+                        else s.operation
+                    )
+                    s_compact, _ = format_metric_value(
+                        s.output_value, unit=s.unit, operation=op_for_format
+                    )
+                    trace_steps.append(
+                        TraceStepDTO(
+                            step_id=s.step_id,
+                            operation=s.operation,
+                            operand_ids=list(s.operand_ids),
+                            input_values=list(s.input_values),
+                            output_value=s.output_value,
+                            formatted_output=s_compact,
+                            unit=s.unit,
+                            unit_scale=s.unit_scale,
+                            description=s.description,
+                        )
+                    )
+                trace_dto = TraceDTO(
+                    steps=trace_steps,
+                    final_step_id=res.trace.final_step_id,
+                )
+
             # 5. Determine overall application status
             if ver_res.status == VerificationStatus.REJECTED:
                 app_status = ResponseStatus.REJECTED
@@ -286,6 +319,7 @@ class FinRAGApplication:
                 verification=ver_dto,
                 evidence=evidence_dtos,
                 resolution=resolution_dto,
+                trace=trace_dto,
                 latency_ms=round(elapsed_ms, 2),
                 is_trusted=is_trusted,
             )

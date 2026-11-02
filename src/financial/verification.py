@@ -12,7 +12,7 @@ from typing import Any, Dict, List, Optional, Union
 from pydantic import BaseModel, ConfigDict, Field
 
 from src.financial.metrics import MetricDefinition, MetricRegistry, default_metric_registry
-from src.financial.result import FinancialResult
+from src.financial.result import CalculationStep, ExecutionTrace, FinancialResult
 from src.financial.schema import CheckStatus
 from src.financial.semantics import infer_statement_type
 from src.pipeline.query import extract_ticker, extract_fiscal_years, extract_statement_scope
@@ -246,6 +246,9 @@ class VerificationEngine:
 
         # M2b: 14. Comparative cross-period consistency check
         self._verify_comparative_consistency(result, checks, warnings, supporting_facts=supporting_facts)
+
+        # M3: 15. Step-level trace lineage verification
+        self._verify_trace_lineage(result, checks, errors, warnings)
 
         return self._aggregate_result(result, checks, errors, warnings, recomputed_val)
 
@@ -1656,6 +1659,442 @@ class VerificationEngine:
                     expected=None,
                     actual=None,
                     message="No cross-report comparative fact pairs available in inputs; check not run.",
+                )
+            )
+
+    def _verify_trace_lineage(
+        self,
+        result: FinancialResult,
+        checks: List[VerificationCheck],
+        errors: List[str],
+        warnings: List[str],
+    ) -> None:
+        """M3: Verify step-level calculation trace and operand provenance lineage.
+        
+        Guarantees:
+        1. If trace is None, records NOT_RUN status.
+        2. Steps must be non-empty and final_step_id must exist.
+        3. Final step output must match result.value within numerical tolerance.
+        4. Every operand_id must resolve to an authentic fact_id or a prior executed step_id.
+        5. Step inputs must match referenced operand values.
+        6. Step outputs must strictly match deterministic math operations.
+        """
+        if result.trace is None:
+            checks.append(
+                VerificationCheck(
+                    check_name="trace_lineage",
+                    status=CheckStatus.NOT_RUN,
+                    severity=CheckSeverity.INFO,
+                    expected="ExecutionTrace present on FinancialResult",
+                    actual="None",
+                    message="No execution trace present on FinancialResult; trace lineage check not run",
+                )
+            )
+            return
+
+        trace = result.trace
+        if not trace.steps:
+            msg = "ExecutionTrace has no calculation steps"
+            checks.append(
+                VerificationCheck(
+                    check_name="trace_lineage",
+                    status=CheckStatus.FAIL,
+                    severity=CheckSeverity.CRITICAL,
+                    expected="Non-empty trace steps",
+                    actual="Empty steps list",
+                    message=msg,
+                )
+            )
+            errors.append(msg)
+            return
+
+        has_lineage_error = False
+
+        step_ids = [s.step_id for s in trace.steps]
+        if trace.final_step_id not in step_ids:
+            msg = f"Final step ID '{trace.final_step_id}' not found in trace step IDs: {step_ids}"
+            checks.append(
+                VerificationCheck(
+                    check_name="trace_final_step",
+                    status=CheckStatus.FAIL,
+                    severity=CheckSeverity.CRITICAL,
+                    expected=f"final_step_id in {step_ids}",
+                    actual=trace.final_step_id,
+                    message=msg,
+                )
+            )
+            errors.append(msg)
+            has_lineage_error = True
+        else:
+            final_step = next(s for s in trace.steps if s.step_id == trace.final_step_id)
+            if result.value is not None:
+                if not math.isclose(final_step.output_value, result.value, rel_tol=self.numerical_tolerance, abs_tol=1e-6):
+                    msg = (
+                        f"Trace final step output {final_step.output_value} does not match "
+                        f"result value {result.value}"
+                    )
+                    checks.append(
+                        VerificationCheck(
+                            check_name="trace_final_value",
+                            status=CheckStatus.FAIL,
+                            severity=CheckSeverity.CRITICAL,
+                            expected=result.value,
+                            actual=final_step.output_value,
+                            message=msg,
+                        )
+                    )
+                    errors.append(msg)
+                    has_lineage_error = True
+
+        # Map known authentic fact IDs and their normalized values
+        known_fact_ids = set()
+        fact_values: Dict[str, float] = {}
+
+        for inp in result.inputs:
+            if inp.fact_id:
+                known_fact_ids.add(inp.fact_id)
+                fact_values[inp.fact_id] = inp.normalized_value
+
+        for ev in result.evidence:
+            fid = ev.get("fact_id")
+            if fid:
+                known_fact_ids.add(fid)
+                if fid not in fact_values:
+                    try:
+                        val = float(ev.get("value", 0.0))
+                        scale = float(ev.get("unit_scale", 1.0))
+                        fact_values[fid] = val * scale
+                    except (ValueError, TypeError):
+                        pass
+
+        executed_step_ids = set()
+        step_outputs: Dict[str, float] = {}
+
+        for step_idx, step in enumerate(trace.steps):
+            step_has_fatal = False
+
+            # Check step_id format
+            if not step.step_id or not step.step_id.startswith("#"):
+                msg = f"Invalid step_id format: '{step.step_id}'. Must start with '#'"
+                checks.append(
+                    VerificationCheck(
+                        check_name=f"trace_step_{step_idx}_format",
+                        status=CheckStatus.FAIL,
+                        severity=CheckSeverity.CRITICAL,
+                        expected="Step ID starting with '#'",
+                        actual=step.step_id,
+                        message=msg,
+                    )
+                )
+                errors.append(msg)
+                has_lineage_error = True
+                step_has_fatal = True
+
+            if step.step_id in executed_step_ids:
+                msg = f"Duplicate step_id '{step.step_id}' at trace index {step_idx}"
+                checks.append(
+                    VerificationCheck(
+                        check_name=f"trace_step_{step_idx}_id_unique",
+                        status=CheckStatus.FAIL,
+                        severity=CheckSeverity.CRITICAL,
+                        expected="Unique step_id",
+                        actual=step.step_id,
+                        message=msg,
+                    )
+                )
+                errors.append(msg)
+                has_lineage_error = True
+                step_has_fatal = True
+
+            # Check operand lineage
+            for op_idx, op_id in enumerate(step.operand_ids):
+                is_fact = op_id in known_fact_ids
+                is_prior_step = op_id in executed_step_ids
+                if not (is_fact or is_prior_step):
+                    msg = (
+                        f"Operand '{op_id}' in step '{step.step_id}' cannot be resolved to "
+                        f"any authentic input fact_id or prior executed step_id (lineage broken)"
+                    )
+                    checks.append(
+                        VerificationCheck(
+                            check_name=f"trace_lineage_{step.step_id}_op_{op_idx}",
+                            status=CheckStatus.FAIL,
+                            severity=CheckSeverity.CRITICAL,
+                            expected=f"Authentic fact_id or prior step in {list(executed_step_ids)}",
+                            actual=op_id,
+                            message=msg,
+                        )
+                    )
+                    errors.append(msg)
+                    has_lineage_error = True
+                    step_has_fatal = True
+
+            # Check input_values length matches operand_ids
+            if len(step.input_values) != len(step.operand_ids):
+                msg = (
+                    f"Step '{step.step_id}' input_values length ({len(step.input_values)}) "
+                    f"does not match operand_ids length ({len(step.operand_ids)})"
+                )
+                checks.append(
+                    VerificationCheck(
+                        check_name=f"trace_step_{step.step_id}_operands_match",
+                        status=CheckStatus.FAIL,
+                        severity=CheckSeverity.CRITICAL,
+                        expected=len(step.operand_ids),
+                        actual=len(step.input_values),
+                        message=msg,
+                    )
+                )
+                errors.append(msg)
+                has_lineage_error = True
+                step_has_fatal = True
+            else:
+                # Check operand values
+                for op_idx, op_id in enumerate(step.operand_ids):
+                    inp_val = step.input_values[op_idx]
+                    if op_id in executed_step_ids:
+                        prior_val = step_outputs[op_id]
+                        if not math.isclose(inp_val, prior_val, rel_tol=self.numerical_tolerance, abs_tol=1e-4):
+                            msg = (
+                                f"Step '{step.step_id}' input value {inp_val} at operand index {op_idx} "
+                                f"does not match prior step '{op_id}' output {prior_val}"
+                            )
+                            checks.append(
+                                VerificationCheck(
+                                    check_name=f"trace_step_{step.step_id}_operand_value_{op_idx}",
+                                    status=CheckStatus.FAIL,
+                                    severity=CheckSeverity.CRITICAL,
+                                    expected=prior_val,
+                                    actual=inp_val,
+                                    message=msg,
+                                )
+                            )
+                            errors.append(msg)
+                            has_lineage_error = True
+                    elif op_id in fact_values:
+                        f_val = fact_values[op_id]
+                        is_exact_match = math.isclose(inp_val, f_val, rel_tol=self.numerical_tolerance, abs_tol=1e-4)
+
+                        # Issue F1: Strictly scoped negative-base divisor allowance for growth/percentage change
+                        is_valid_abs_base = False
+                        if (
+                            not is_exact_match
+                            and f_val < 0
+                            and step.operation == "divide"
+                            and op_idx == 1
+                        ):
+                            # Divisor in a divide step where operand 0 is a prior subtraction step
+                            prior_op_id = step.operand_ids[0]
+                            if prior_op_id in executed_step_ids:
+                                prior_step = next((s for s in trace.steps if s.step_id == prior_op_id), None)
+                                if prior_step and prior_step.operation == "subtract":
+                                    is_valid_abs_base = math.isclose(
+                                        inp_val, abs(f_val), rel_tol=self.numerical_tolerance, abs_tol=1e-4
+                                    )
+
+                        matches_fact = is_exact_match or is_valid_abs_base
+                        if not matches_fact:
+                            msg = (
+                                f"Step '{step.step_id}' input value {inp_val} at operand index {op_idx} "
+                                f"does not match authentic fact '{op_id}' value {f_val}"
+                            )
+                            checks.append(
+                                VerificationCheck(
+                                    check_name=f"trace_step_{step.step_id}_fact_value_{op_idx}",
+                                    status=CheckStatus.FAIL,
+                                    severity=CheckSeverity.CRITICAL,
+                                    expected=f_val,
+                                    actual=inp_val,
+                                    message=msg,
+                                )
+                            )
+                            errors.append(msg)
+                            has_lineage_error = True
+
+            # Check deterministic step arithmetic
+            if step.operation == "identity":
+                if len(step.input_values) != 1:
+                    msg = f"Identity operation requires exactly 1 operand, got {len(step.input_values)}"
+                    checks.append(
+                        VerificationCheck(
+                            check_name=f"trace_step_{step.step_id}_arithmetic",
+                            status=CheckStatus.FAIL,
+                            severity=CheckSeverity.CRITICAL,
+                            expected=1,
+                            actual=len(step.input_values),
+                            message=msg,
+                        )
+                    )
+                    errors.append(msg)
+                    has_lineage_error = True
+                elif not math.isclose(step.output_value, step.input_values[0], rel_tol=self.numerical_tolerance, abs_tol=1e-4):
+                    msg = f"Identity step '{step.step_id}' output {step.output_value} does not match input {step.input_values[0]}"
+                    checks.append(
+                        VerificationCheck(
+                            check_name=f"trace_step_{step.step_id}_arithmetic",
+                            status=CheckStatus.FAIL,
+                            severity=CheckSeverity.CRITICAL,
+                            expected=step.input_values[0],
+                            actual=step.output_value,
+                            message=msg,
+                        )
+                    )
+                    errors.append(msg)
+                    has_lineage_error = True
+
+            elif step.operation == "subtract":
+                if len(step.input_values) != 2:
+                    msg = f"Subtract operation requires exactly 2 operands, got {len(step.input_values)}"
+                    checks.append(
+                        VerificationCheck(
+                            check_name=f"trace_step_{step.step_id}_arithmetic",
+                            status=CheckStatus.FAIL,
+                            severity=CheckSeverity.CRITICAL,
+                            expected=2,
+                            actual=len(step.input_values),
+                            message=msg,
+                        )
+                    )
+                    errors.append(msg)
+                    has_lineage_error = True
+                else:
+                    expected_diff = step.input_values[0] - step.input_values[1]
+                    if not math.isclose(step.output_value, expected_diff, rel_tol=self.numerical_tolerance, abs_tol=1e-4):
+                        msg = f"Subtract step '{step.step_id}' output {step.output_value} does not match expected {expected_diff}"
+                        checks.append(
+                            VerificationCheck(
+                                check_name=f"trace_step_{step.step_id}_arithmetic",
+                                status=CheckStatus.FAIL,
+                                severity=CheckSeverity.CRITICAL,
+                                expected=expected_diff,
+                                actual=step.output_value,
+                                message=msg,
+                            )
+                        )
+                        errors.append(msg)
+                        has_lineage_error = True
+
+            elif step.operation == "divide":
+                if len(step.input_values) != 2:
+                    msg = f"Divide operation requires exactly 2 operands, got {len(step.input_values)}"
+                    checks.append(
+                        VerificationCheck(
+                            check_name=f"trace_step_{step.step_id}_arithmetic",
+                            status=CheckStatus.FAIL,
+                            severity=CheckSeverity.CRITICAL,
+                            expected=2,
+                            actual=len(step.input_values),
+                            message=msg,
+                        )
+                    )
+                    errors.append(msg)
+                    has_lineage_error = True
+                elif math.isclose(step.input_values[1], 0.0, abs_tol=1e-9):
+                    msg = f"Divide step '{step.step_id}' denominator is zero"
+                    checks.append(
+                        VerificationCheck(
+                            check_name=f"trace_step_{step.step_id}_arithmetic",
+                            status=CheckStatus.FAIL,
+                            severity=CheckSeverity.CRITICAL,
+                            expected="Non-zero denominator",
+                            actual=step.input_values[1],
+                            message=msg,
+                        )
+                    )
+                    errors.append(msg)
+                    has_lineage_error = True
+                else:
+                    expected_quot = step.input_values[0] / step.input_values[1]
+                    if not math.isclose(step.output_value, expected_quot, rel_tol=self.numerical_tolerance, abs_tol=1e-4):
+                        msg = f"Divide step '{step.step_id}' output {step.output_value} does not match expected {expected_quot}"
+                        checks.append(
+                            VerificationCheck(
+                                check_name=f"trace_step_{step.step_id}_arithmetic",
+                                status=CheckStatus.FAIL,
+                                severity=CheckSeverity.CRITICAL,
+                                expected=expected_quot,
+                                actual=step.output_value,
+                                message=msg,
+                            )
+                        )
+                        errors.append(msg)
+                        has_lineage_error = True
+
+            elif step.operation == "percentage_change":
+                if len(step.input_values) != 2:
+                    msg = f"Percentage change operation requires exactly 2 operands, got {len(step.input_values)}"
+                    checks.append(
+                        VerificationCheck(
+                            check_name=f"trace_step_{step.step_id}_arithmetic",
+                            status=CheckStatus.FAIL,
+                            severity=CheckSeverity.CRITICAL,
+                            expected=2,
+                            actual=len(step.input_values),
+                            message=msg,
+                        )
+                    )
+                    errors.append(msg)
+                    has_lineage_error = True
+                elif math.isclose(step.input_values[1], 0.0, abs_tol=1e-9):
+                    msg = f"Percentage change step '{step.step_id}' base value is zero"
+                    checks.append(
+                        VerificationCheck(
+                            check_name=f"trace_step_{step.step_id}_arithmetic",
+                            status=CheckStatus.FAIL,
+                            severity=CheckSeverity.CRITICAL,
+                            expected="Non-zero base",
+                            actual=step.input_values[1],
+                            message=msg,
+                        )
+                    )
+                    errors.append(msg)
+                    has_lineage_error = True
+                else:
+                    divisor = abs(step.input_values[1]) if step.input_values[1] < 0 else step.input_values[1]
+                    expected_pct = (step.input_values[0] - step.input_values[1]) / divisor
+                    if not math.isclose(step.output_value, expected_pct, rel_tol=self.numerical_tolerance, abs_tol=1e-4):
+                        msg = f"Percentage change step '{step.step_id}' output {step.output_value} does not match expected {expected_pct}"
+                        checks.append(
+                            VerificationCheck(
+                                check_name=f"trace_step_{step.step_id}_arithmetic",
+                                status=CheckStatus.FAIL,
+                                severity=CheckSeverity.CRITICAL,
+                                expected=expected_pct,
+                                actual=step.output_value,
+                                message=msg,
+                            )
+                        )
+                        errors.append(msg)
+                        has_lineage_error = True
+
+            else:
+                msg = f"Unsupported operation '{step.operation}' in trace step '{step.step_id}'"
+                checks.append(
+                    VerificationCheck(
+                        check_name=f"trace_step_{step.step_id}_operation",
+                        status=CheckStatus.FAIL,
+                        severity=CheckSeverity.CRITICAL,
+                        expected="identity, divide, subtract, or percentage_change",
+                        actual=step.operation,
+                        message=msg,
+                    )
+                )
+                errors.append(msg)
+                has_lineage_error = True
+
+            if not step_has_fatal and step.step_id:
+                executed_step_ids.add(step.step_id)
+                step_outputs[step.step_id] = step.output_value
+
+        if not has_lineage_error:
+            checks.append(
+                VerificationCheck(
+                    check_name="trace_lineage",
+                    status=CheckStatus.PASS,
+                    severity=CheckSeverity.CRITICAL,
+                    expected="All trace operands resolve to authentic facts or prior steps",
+                    actual=f"{len(trace.steps)} steps verified",
+                    message=f"Trace lineage verified: {len(trace.steps)} step(s) with complete operand provenance",
                 )
             )
 

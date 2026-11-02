@@ -24,7 +24,12 @@ from src.financial.metrics import (
     MetricRegistry,
     default_metric_registry,
 )
-from src.financial.result import FinancialResult, fact_to_evidence
+from src.financial.result import (
+    CalculationStep,
+    ExecutionTrace,
+    FinancialResult,
+    fact_to_evidence,
+)
 from src.pipeline.query import FinancialQuery
 from src.retrieval.engine import FinancialFactRetriever
 from src.retrieval.ranking import RetrievalResult
@@ -317,195 +322,23 @@ class FinancialReasoningEngine:
         try:
             # Case 1: Absolute metric (identity)
             if metric_def.operation == "identity":
-                if request.year is None:
-                    raise InvalidRequestError("Single fiscal year required for absolute metric")
-
-                fact = self.resolve_fact(
-                    ticker=request.ticker,
-                    year=request.year,
-                    metric_name=metric_def.name,
-                    statement_scope=request.statement_scope,
-                )
-                value = compute_absolute(fact.normalized_value)
-
-                return FinancialResult(
-                    metric=metric_def.name,
-                    operation="identity",
-                    methodology=metric_def.methodology,
-                    value=value,
-                    unit=metric_def.output_unit,
-                    formula=metric_def.formula_display,
-                    inputs=[fact],
-                    evidence=[fact_to_evidence(fact)],
-                    ticker=request.ticker,
-                    year=request.year,
-                    statement_scope=request.statement_scope,
-                    status="SUCCESS",
-                )
+                return self._reason_identity(request, metric_def)
 
             # Case 2: Ratio metric (e.g. net_margin, roa, roe)
             elif metric_def.operation == "ratio":
-                if request.year is None:
-                    raise InvalidRequestError("Fiscal year required for ratio metric")
-
-                num_metric = metric_def.required_inputs[0]
-                den_metric = metric_def.required_inputs[1]
-
-                num_fact = self.resolve_fact(
-                    ticker=request.ticker,
-                    year=request.year,
-                    metric_name=num_metric,
-                    statement_scope=request.statement_scope,
-                )
-                den_fact = self.resolve_fact(
-                    ticker=request.ticker,
-                    year=request.year,
-                    metric_name=den_metric,
-                    statement_scope=request.statement_scope,
-                )
-
-                ratio_value = compute_ratio(num_fact.normalized_value, den_fact.normalized_value)
-
-                return FinancialResult(
-                    metric=metric_def.name,
-                    operation="ratio",
-                    methodology=metric_def.methodology,
-                    value=ratio_value,
-                    unit=metric_def.output_unit,
-                    formula=metric_def.formula_display,
-                    inputs=[num_fact, den_fact],
-                    evidence=[fact_to_evidence(num_fact), fact_to_evidence(den_fact)],
-                    ticker=request.ticker,
-                    year=request.year,
-                    statement_scope=request.statement_scope,
-                    status="SUCCESS",
-                )
+                return self._reason_ratio(request, metric_def)
 
             # Case 3: YoY Growth metric (e.g. revenue_growth)
             elif metric_def.operation == "yoy_growth":
-                if request.years and len(request.years) >= 2:
-                    prev_year, curr_year = request.years[0], request.years[1]
-                elif request.year:
-                    curr_year = request.year
-                    prev_year = curr_year - 1
-                else:
-                    raise InvalidRequestError("Year or years required for growth calculation")
-
-                base_metric = metric_def.required_inputs[0]
-
-                prev_fact = self.resolve_fact(
-                    ticker=request.ticker,
-                    year=prev_year,
-                    metric_name=base_metric,
-                    statement_scope=request.statement_scope,
-                )
-                curr_fact = self.resolve_fact(
-                    ticker=request.ticker,
-                    year=curr_year,
-                    metric_name=base_metric,
-                    statement_scope=request.statement_scope,
-                )
-
-                growth_val, warnings = compute_yoy_growth(curr_fact.normalized_value, prev_fact.normalized_value)
-
-                return FinancialResult(
-                    metric=metric_def.name,
-                    operation="yoy_growth",
-                    methodology=metric_def.methodology,
-                    value=growth_val,
-                    unit=metric_def.output_unit,
-                    formula=metric_def.formula_display,
-                    inputs=[prev_fact, curr_fact],
-                    evidence=[fact_to_evidence(prev_fact), fact_to_evidence(curr_fact)],
-                    ticker=request.ticker,
-                    year=curr_year,
-                    years=[prev_year, curr_year],
-                    statement_scope=request.statement_scope,
-                    status="SUCCESS",
-                    warnings=warnings,
-                )
+                return self._reason_growth(request, metric_def)
 
             # Case 4: Difference metric (e.g. gross_profit, working_capital)
             elif metric_def.operation == "difference":
-                if request.year is None:
-                    raise InvalidRequestError("Fiscal year required for difference metric")
-
-                m_metric = metric_def.required_inputs[0]
-                s_metric = metric_def.required_inputs[1]
-
-                m_fact = self.resolve_fact(
-                    ticker=request.ticker,
-                    year=request.year,
-                    metric_name=m_metric,
-                    statement_scope=request.statement_scope,
-                )
-                s_fact = self.resolve_fact(
-                    ticker=request.ticker,
-                    year=request.year,
-                    metric_name=s_metric,
-                    statement_scope=request.statement_scope,
-                )
-
-                diff_value = compute_difference(m_fact.normalized_value, s_fact.normalized_value)
-
-                return FinancialResult(
-                    metric=metric_def.name,
-                    operation="difference",
-                    methodology=metric_def.methodology,
-                    value=diff_value,
-                    unit=metric_def.output_unit,
-                    formula=metric_def.formula_display,
-                    inputs=[m_fact, s_fact],
-                    evidence=[fact_to_evidence(m_fact), fact_to_evidence(s_fact)],
-                    ticker=request.ticker,
-                    year=request.year,
-                    statement_scope=request.statement_scope,
-                    status="SUCCESS",
-                )
+                return self._reason_difference(request, metric_def)
 
             # Case 5: Percentage change metric (generic)
             elif metric_def.operation == "percentage_change":
-                if request.years and len(request.years) >= 2:
-                    prev_year, curr_year = request.years[0], request.years[1]
-                elif request.year:
-                    curr_year = request.year
-                    prev_year = curr_year - 1
-                else:
-                    raise InvalidRequestError("Year or years required for percentage change calculation")
-
-                base_metric = metric_def.required_inputs[0]
-
-                prev_fact = self.resolve_fact(
-                    ticker=request.ticker,
-                    year=prev_year,
-                    metric_name=base_metric,
-                    statement_scope=request.statement_scope,
-                )
-                curr_fact = self.resolve_fact(
-                    ticker=request.ticker,
-                    year=curr_year,
-                    metric_name=base_metric,
-                    statement_scope=request.statement_scope,
-                )
-
-                change_val, warnings = compute_percentage_change(curr_fact.normalized_value, prev_fact.normalized_value)
-
-                return FinancialResult(
-                    metric=metric_def.name,
-                    operation="percentage_change",
-                    methodology=metric_def.methodology,
-                    value=change_val,
-                    unit=metric_def.output_unit,
-                    formula=metric_def.formula_display,
-                    inputs=[prev_fact, curr_fact],
-                    evidence=[fact_to_evidence(prev_fact), fact_to_evidence(curr_fact)],
-                    ticker=request.ticker,
-                    year=curr_year,
-                    years=[prev_year, curr_year],
-                    statement_scope=request.statement_scope,
-                    status="SUCCESS",
-                    warnings=warnings,
-                )
+                return self._reason_percentage_change(request, metric_def)
 
             else:
                 raise UnsupportedOperationError(
@@ -524,6 +357,329 @@ class FinancialReasoningEngine:
                 status="ERROR",
                 error_message=str(e),
             )
+
+    def _reason_identity(
+        self,
+        request: FinancialReasoningRequest,
+        metric_def: MetricDefinition,
+    ) -> FinancialResult:
+        """Execute deterministic identity reasoning with single-step execution trace."""
+        if request.year is None:
+            raise InvalidRequestError("Single fiscal year required for absolute metric")
+
+        fact = self.resolve_fact(
+            ticker=request.ticker,
+            year=request.year,
+            metric_name=metric_def.name,
+            statement_scope=request.statement_scope,
+        )
+        value = compute_absolute(fact.normalized_value)
+
+        step_0 = CalculationStep(
+            step_id="#0",
+            operation="identity",
+            operand_ids=[fact.fact_id],
+            input_values=[fact.normalized_value],
+            output_value=value,
+            unit=metric_def.output_unit,
+            unit_scale=fact.unit_scale,
+            description=f"Lấy chỉ tiêu {metric_def.vietnamese_name or metric_def.name} kỳ {request.year}",
+        )
+        trace = ExecutionTrace(
+            steps=[step_0],
+            final_step_id="#0",
+        )
+
+        return FinancialResult(
+            metric=metric_def.name,
+            operation="identity",
+            methodology=metric_def.methodology,
+            value=value,
+            unit=metric_def.output_unit,
+            formula=metric_def.formula_display,
+            inputs=[fact],
+            evidence=[fact_to_evidence(fact)],
+            trace=trace,
+            ticker=request.ticker,
+            year=request.year,
+            statement_scope=request.statement_scope,
+            status="SUCCESS",
+        )
+
+    def _reason_ratio(
+        self,
+        request: FinancialReasoningRequest,
+        metric_def: MetricDefinition,
+    ) -> FinancialResult:
+        """Execute deterministic ratio reasoning with single-step division execution trace."""
+        if request.year is None:
+            raise InvalidRequestError("Fiscal year required for ratio metric")
+
+        num_metric = metric_def.required_inputs[0]
+        den_metric = metric_def.required_inputs[1]
+
+        num_fact = self.resolve_fact(
+            ticker=request.ticker,
+            year=request.year,
+            metric_name=num_metric,
+            statement_scope=request.statement_scope,
+        )
+        den_fact = self.resolve_fact(
+            ticker=request.ticker,
+            year=request.year,
+            metric_name=den_metric,
+            statement_scope=request.statement_scope,
+        )
+
+        ratio_value = compute_ratio(num_fact.normalized_value, den_fact.normalized_value)
+
+        step_0 = CalculationStep(
+            step_id="#0",
+            operation="divide",
+            operand_ids=[num_fact.fact_id, den_fact.fact_id],
+            input_values=[num_fact.normalized_value, den_fact.normalized_value],
+            output_value=ratio_value,
+            unit=metric_def.output_unit,
+            unit_scale=1.0,
+            description=f"Chia {num_metric} cho {den_metric}",
+        )
+        trace = ExecutionTrace(
+            steps=[step_0],
+            final_step_id="#0",
+        )
+
+        return FinancialResult(
+            metric=metric_def.name,
+            operation="ratio",
+            methodology=metric_def.methodology,
+            value=ratio_value,
+            unit=metric_def.output_unit,
+            formula=metric_def.formula_display,
+            inputs=[num_fact, den_fact],
+            evidence=[fact_to_evidence(num_fact), fact_to_evidence(den_fact)],
+            trace=trace,
+            ticker=request.ticker,
+            year=request.year,
+            statement_scope=request.statement_scope,
+            status="SUCCESS",
+        )
+
+    def _reason_growth(
+        self,
+        request: FinancialReasoningRequest,
+        metric_def: MetricDefinition,
+    ) -> FinancialResult:
+        """Execute deterministic YoY growth reasoning with two-step execution trace (#0 subtract, #1 divide)."""
+        if request.years and len(request.years) >= 2:
+            prev_year, curr_year = request.years[0], request.years[1]
+        elif request.year:
+            curr_year = request.year
+            prev_year = curr_year - 1
+        else:
+            raise InvalidRequestError("Year or years required for growth calculation")
+
+        base_metric = metric_def.required_inputs[0]
+
+        prev_fact = self.resolve_fact(
+            ticker=request.ticker,
+            year=prev_year,
+            metric_name=base_metric,
+            statement_scope=request.statement_scope,
+        )
+        curr_fact = self.resolve_fact(
+            ticker=request.ticker,
+            year=curr_year,
+            metric_name=base_metric,
+            statement_scope=request.statement_scope,
+        )
+
+        growth_val, warnings = compute_yoy_growth(curr_fact.normalized_value, prev_fact.normalized_value)
+
+        # Multi-step execution trace with operand lineage
+        # Step #0: Subtract previous period value from current period value
+        diff_val = curr_fact.normalized_value - prev_fact.normalized_value
+        step_0 = CalculationStep(
+            step_id="#0",
+            operation="subtract",
+            operand_ids=[curr_fact.fact_id, prev_fact.fact_id],
+            input_values=[curr_fact.normalized_value, prev_fact.normalized_value],
+            output_value=diff_val,
+            unit=curr_fact.unit or "VND",
+            unit_scale=1.0,
+            description=f"Trừ {metric_def.vietnamese_name or base_metric} năm trước ({prev_year})",
+        )
+
+        # Step #1: Divide difference by previous period base value (using |base| if base < 0)
+        base_divisor = abs(prev_fact.normalized_value) if prev_fact.normalized_value < 0 else prev_fact.normalized_value
+        step_1 = CalculationStep(
+            step_id="#1",
+            operation="divide",
+            operand_ids=["#0", prev_fact.fact_id],
+            input_values=[diff_val, base_divisor],
+            output_value=growth_val,
+            unit=metric_def.output_unit,
+            unit_scale=1.0,
+            description="Chia chênh lệch cho giá trị cơ sở năm trước",
+        )
+
+        trace = ExecutionTrace(
+            steps=[step_0, step_1],
+            final_step_id="#1",
+        )
+
+        return FinancialResult(
+            metric=metric_def.name,
+            operation="yoy_growth",
+            methodology=metric_def.methodology,
+            value=growth_val,
+            unit=metric_def.output_unit,
+            formula=metric_def.formula_display,
+            inputs=[prev_fact, curr_fact],
+            evidence=[fact_to_evidence(prev_fact), fact_to_evidence(curr_fact)],
+            trace=trace,
+            ticker=request.ticker,
+            year=curr_year,
+            years=[prev_year, curr_year],
+            statement_scope=request.statement_scope,
+            status="SUCCESS",
+            warnings=warnings,
+        )
+
+    def _reason_difference(
+        self,
+        request: FinancialReasoningRequest,
+        metric_def: MetricDefinition,
+    ) -> FinancialResult:
+        """Execute deterministic difference reasoning with single-step subtraction execution trace."""
+        if request.year is None:
+            raise InvalidRequestError("Fiscal year required for difference metric")
+
+        m_metric = metric_def.required_inputs[0]
+        s_metric = metric_def.required_inputs[1]
+
+        m_fact = self.resolve_fact(
+            ticker=request.ticker,
+            year=request.year,
+            metric_name=m_metric,
+            statement_scope=request.statement_scope,
+        )
+        s_fact = self.resolve_fact(
+            ticker=request.ticker,
+            year=request.year,
+            metric_name=s_metric,
+            statement_scope=request.statement_scope,
+        )
+
+        diff_value = compute_difference(m_fact.normalized_value, s_fact.normalized_value)
+
+        step_0 = CalculationStep(
+            step_id="#0",
+            operation="subtract",
+            operand_ids=[m_fact.fact_id, s_fact.fact_id],
+            input_values=[m_fact.normalized_value, s_fact.normalized_value],
+            output_value=diff_value,
+            unit=metric_def.output_unit,
+            unit_scale=1.0,
+            description=f"Trừ {s_metric} khỏi {m_metric}",
+        )
+        trace = ExecutionTrace(
+            steps=[step_0],
+            final_step_id="#0",
+        )
+
+        return FinancialResult(
+            metric=metric_def.name,
+            operation="difference",
+            methodology=metric_def.methodology,
+            value=diff_value,
+            unit=metric_def.output_unit,
+            formula=metric_def.formula_display,
+            inputs=[m_fact, s_fact],
+            evidence=[fact_to_evidence(m_fact), fact_to_evidence(s_fact)],
+            trace=trace,
+            ticker=request.ticker,
+            year=request.year,
+            statement_scope=request.statement_scope,
+            status="SUCCESS",
+        )
+
+    def _reason_percentage_change(
+        self,
+        request: FinancialReasoningRequest,
+        metric_def: MetricDefinition,
+    ) -> FinancialResult:
+        """Execute deterministic percentage change reasoning with two-step execution trace."""
+        if request.years and len(request.years) >= 2:
+            prev_year, curr_year = request.years[0], request.years[1]
+        elif request.year:
+            curr_year = request.year
+            prev_year = curr_year - 1
+        else:
+            raise InvalidRequestError("Year or years required for percentage change calculation")
+
+        base_metric = metric_def.required_inputs[0]
+
+        prev_fact = self.resolve_fact(
+            ticker=request.ticker,
+            year=prev_year,
+            metric_name=base_metric,
+            statement_scope=request.statement_scope,
+        )
+        curr_fact = self.resolve_fact(
+            ticker=request.ticker,
+            year=curr_year,
+            metric_name=base_metric,
+            statement_scope=request.statement_scope,
+        )
+
+        change_val, warnings = compute_percentage_change(curr_fact.normalized_value, prev_fact.normalized_value)
+
+        diff_val = curr_fact.normalized_value - prev_fact.normalized_value
+        step_0 = CalculationStep(
+            step_id="#0",
+            operation="subtract",
+            operand_ids=[curr_fact.fact_id, prev_fact.fact_id],
+            input_values=[curr_fact.normalized_value, prev_fact.normalized_value],
+            output_value=diff_val,
+            unit=curr_fact.unit or "VND",
+            unit_scale=1.0,
+            description=f"Trừ {base_metric} kỳ trước",
+        )
+
+        base_divisor = abs(prev_fact.normalized_value) if prev_fact.normalized_value < 0 else prev_fact.normalized_value
+        step_1 = CalculationStep(
+            step_id="#1",
+            operation="divide",
+            operand_ids=["#0", prev_fact.fact_id],
+            input_values=[diff_val, base_divisor],
+            output_value=change_val,
+            unit=metric_def.output_unit,
+            unit_scale=1.0,
+            description="Chia chênh lệch cho giá trị cơ sở kỳ trước",
+        )
+
+        trace = ExecutionTrace(
+            steps=[step_0, step_1],
+            final_step_id="#1",
+        )
+
+        return FinancialResult(
+            metric=metric_def.name,
+            operation="percentage_change",
+            methodology=metric_def.methodology,
+            value=change_val,
+            unit=metric_def.output_unit,
+            formula=metric_def.formula_display,
+            inputs=[prev_fact, curr_fact],
+            evidence=[fact_to_evidence(prev_fact), fact_to_evidence(curr_fact)],
+            trace=trace,
+            ticker=request.ticker,
+            year=curr_year,
+            years=[prev_year, curr_year],
+            statement_scope=request.statement_scope,
+            status="SUCCESS",
+            warnings=warnings,
+        )
 
     def reason_from_resolution(self, res: ResolutionResult, raw_question: str = "") -> FinancialResult:
         """Execute reasoning directly from a pre-computed ResolutionResult without duplicate parsing."""
