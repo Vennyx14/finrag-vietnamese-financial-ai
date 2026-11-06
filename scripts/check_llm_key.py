@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Check the LLM API key in .env with one request. The key itself is never printed.
 
-Supports OPENROUTER_API_KEY and GROQ_API_KEY. Groq rejects connections from
-some networks before it reads the key, so OpenRouter is checked first.
+Supports CEREBRAS_API_KEY, OPENROUTER_API_KEY, and GROQ_API_KEY. Groq rejects
+connections from some networks before it reads the key.
 
 Usage:
     python scripts/check_llm_key.py
@@ -17,6 +17,7 @@ import urllib.request
 
 ENV_PATH = Path(__file__).resolve().parent.parent / ".env"
 CHECK_URLS = {
+    "CEREBRAS_API_KEY": "https://api.cerebras.ai/v1/models",
     "OPENROUTER_API_KEY": "https://openrouter.ai/api/v1/key",
     "GROQ_API_KEY": "https://api.groq.com/openai/v1/models",
 }
@@ -61,7 +62,7 @@ def main() -> int:
     values = read_env(ENV_PATH)
     names = [name for name in CHECK_URLS if values.get(name)]
     if not names:
-        print(f"Không thấy OPENROUTER_API_KEY hoặc GROQ_API_KEY trong {ENV_PATH}")
+        print(f"Không thấy khóa nào ({', '.join(CHECK_URLS)}) trong {ENV_PATH}")
         return 1
     results = [check(name, values[name]) for name in names]
     return 0 if any(results) else 1
