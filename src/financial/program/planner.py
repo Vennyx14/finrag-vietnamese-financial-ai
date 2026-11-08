@@ -85,7 +85,8 @@ def _blank_companies(text: str, companies: List[str]) -> str:
     for pattern, _ in _company_name_patterns():
         text = pattern.sub(" ", text)
     for ticker in companies:
-        text = re.sub(rf"\(?(?:mã\s+)?\b{ticker}\b\)?", " ", text)
+        # The ticker may be written in lower case (K24); "mã" keeps its old, case-sensitive match.
+        text = re.sub(rf"\(?(?:mã\s+)?\b(?i:{ticker})\b\)?", " ", text)
     return text
 
 

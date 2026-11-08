@@ -9,7 +9,7 @@ import csv
 from functools import lru_cache
 from pathlib import Path
 import re
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Dict, FrozenSet, List, Optional, Set, Tuple
 
 from pydantic import BaseModel, Field
 
@@ -25,7 +25,8 @@ VN_STOPWORDS: Set[str] = {
     "YOY", "CAGR", "BCTC", "QUÝ",
 }
 
-_TICKER_REGEX = re.compile(r"\b([A-Z]{2}[0-9]|[A-Z]{3}[A-Z0-9]{0,3})\b")
+# Any case; a token not written in capitals must be a corpus ticker (K24).
+_TICKER_REGEX = re.compile(r"\b([A-Za-z]{2}[0-9]|[A-Za-z]{3}[A-Za-z0-9]{0,3})\b")
 _YEAR_REGEX = re.compile(r"\b(20[0-9]{2}|19[0-9]{2})\b")
 _SCOPE_REGEX = re.compile(
     r"\b(hợp nhất|consolidated|riêng|separate|công ty mẹ)\b", re.IGNORECASE
@@ -60,6 +61,16 @@ def _company_name_patterns() -> List[Tuple["re.Pattern[str]", str]]:
     with COMPANY_NAMES_PATH.open(encoding="utf-8", newline="") as f:
         rows = list(csv.reader(f))[1:]
     return compile_company_names({row[1]: row[0] for row in rows if len(row) >= 2 and row[1]})
+
+
+@lru_cache(maxsize=1)
+def _known_tickers() -> FrozenSet[str]:
+    """Tickers of the corpus company table; empty on fresh clones, which lack it."""
+    if not COMPANY_NAMES_PATH.exists():
+        return frozenset()
+    with COMPANY_NAMES_PATH.open(encoding="utf-8", newline="") as f:
+        rows = list(csv.reader(f))[1:]
+    return frozenset(row[0].strip().upper() for row in rows if row and row[0].strip())
 
 
 class FinancialQuery(BaseModel):
@@ -100,8 +111,13 @@ def extract_all_tickers(text: str) -> List[str]:
         if ticker not in seen:
             seen.add(ticker)
             tickers.append(ticker)
+    known = _known_tickers()
     for match in _TICKER_REGEX.finditer(text):
-        cand = match.group(1)
+        token = match.group(1)
+        cand = token.upper()
+        # "fpt" or "Hpg" is read only when the corpus lists it, so plain words are not tickers.
+        if token != cand and cand not in known:
+            continue
         if cand not in VN_STOPWORDS and cand not in seen:
             seen.add(cand)
             tickers.append(cand)
