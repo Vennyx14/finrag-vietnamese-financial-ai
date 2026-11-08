@@ -18,6 +18,10 @@ env/
 .vscode/
 .idea/
 
+# Claude Code: worktrees of parallel sessions, personal settings
+.claude/worktrees/
+.claude/settings.local.json
+
 # OS
 .DS_Store
 Thumbs.db

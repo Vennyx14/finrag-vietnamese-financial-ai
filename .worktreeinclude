@@ -1,0 +1,15 @@
+# Gitignored files that Claude Code copies into every worktree it creates
+# (agent view, `claude --worktree`, subagents with `isolation: worktree`).
+# Syntax is .gitignore syntax. A file is copied only if it matches a pattern
+# here AND is gitignored, so tracked files are never duplicated.
+# The datasets add about 700 MB per worktree. See docs/agent_view_guide.md.
+
+# Secrets and personal Claude Code settings (permission approvals)
+.env
+.claude/settings.local.json
+
+# Local datasets that tests and scripts read (see FULL_DATA_PATHS in
+# tests/conftest.py). Without them, integration tests skip.
+data/processed/**
+data/external/**
+data/benchmark/**
