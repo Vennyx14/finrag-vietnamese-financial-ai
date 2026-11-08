@@ -46,13 +46,14 @@ def default_targets(root: Path) -> list[Path]:
     return files
 
 
-def agents_section9_lines(path: Path, lines: list[str]) -> set[int]:
+def agents_quoted_lines(path: Path, lines: list[str]) -> set[int]:
+    """AGENTS.md quotes banned wording on purpose in Section 9 (the policy) and 13 (known issues)."""
     if path.name != "AGENTS.md":
         return set()
     skip, inside = set(), False
     for number, line in enumerate(lines, 1):
         if line.startswith("## "):
-            inside = line.startswith("## 9.")
+            inside = line.startswith(("## 9.", "## 13."))
         if inside:
             skip.add(number)
     return skip
@@ -68,7 +69,7 @@ def main() -> int:
             lines = path.read_text(encoding="utf-8").splitlines()
         except (UnicodeDecodeError, OSError):
             continue
-        skip = agents_section9_lines(path, lines)
+        skip = agents_quoted_lines(path, lines)
         for number, line in enumerate(lines, 1):
             if number in skip:
                 continue

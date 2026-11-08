@@ -183,13 +183,15 @@ def check_status(df: pd.DataFrame) -> dict:
 
 
 def check_mixed_documents(df: pd.DataFrame) -> dict:
-    main = df[df["line_code"].fillna("").str.fullmatch(r"\d{2,3}") & (df["unit_status"] == "declared")]
+    # Per-share rows carry their own unit (đồng) since K26, as does the fallback, so they are left out.
+    per_share = df["original_label"].fillna("").str.contains(PER_SHARE)
+    main = df[df["line_code"].fillna("").str.fullmatch(r"\d{2,3}") & (df["unit_status"] == "declared") & ~per_share]
     scales = main.groupby("document_id")["unit_scale"].nunique()
     mixed = scales[scales > 1].index
     rows = main[main["document_id"].isin(mixed)].groupby(["document_id", "unit"]).size().reset_index(name="facts")
     return finding("U9", "INFO", "MIXED_SCALE_DOCUMENT", rows,
-                   "These reports declare more than one scale. The single-unit fallback does not run for them, so "
-                   "their unit-less tables stay 'unknown'. Check which statement uses which scale.",
+                   "These reports declare more than one scale (per-share rows aside). The single-unit fallback does not "
+                   "run for them, so their unit-less tables stay 'unknown'. Check which statement uses which scale.",
                    {"documents": int(len(mixed))})
 
 

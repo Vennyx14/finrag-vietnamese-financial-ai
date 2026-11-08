@@ -5,7 +5,7 @@ description: Unit, scale and dimension rules for every FinRAG number - đồng /
 
 # FinRAG units
 
-A unit error is the most dangerous error FinRAG can make, because nothing downstream notices it. Every check that re-reads the chosen facts (numerical recompute, program recompute, provenance, even cross-report reconciliation when both reports share the mistake) agrees with a number that is 1,000x wrong. Confirmed on 2026-11-08: "Lãi cơ bản trên cổ phiếu của HAG năm 2024" was answered **997,000 VND with status VERIFIED (8/8 checks PASS)**; the report prints 997 VND per share in a table whose header says "Ngàn VND".
+A unit error is the most dangerous error FinRAG can make, because nothing downstream notices it. Every check that re-reads the chosen facts (numerical recompute, program recompute, provenance, even cross-report reconciliation when both reports share the mistake) agrees with a number that is 1,000x wrong. Confirmed on 2026-11-08: "Lãi cơ bản trên cổ phiếu của HAG năm 2024" was answered **997,000 VND with status VERIFIED (8/8 checks PASS)**; the report prints 997 VND per share in a table whose header says "Ngàn VND". That bug is fixed (K26), but the lesson stands: no check that re-reads the chosen fact can catch its unit.
 
 So unit correctness has to come from the rules below and from independent evidence (another report, an identity, a magnitude anchor), never from the pipeline's own agreement with itself.
 
@@ -47,23 +47,25 @@ An amount above about 1e16 VND, an EPS above 1e6, total assets below 1e10, or a 
 
 ## Known unit findings (review of 2026-11-08)
 
-Status words follow AGENTS.md §2. None of these is in AGENTS.md §13 yet; adding them (K26 onward) is the owner's call via `finrag-docs-sync`.
+These are recorded in AGENTS.md §13 as K26–K41; cite the K number from now on. Status words follow AGENTS.md §2.
 
-| ID | Finding | Status | Evidence |
-|---|---|---|---|
-| U1 | Per-share rows take the table scale; `basic_eps` answers are inflated 1e3/1e6 | CONFIRMED end-to-end | 152 rows, 104 answer-exposed (HAG, HNG, MSN, MSR, VIC, VRE); HAG 2024 → 997,000 VND VERIFIED |
-| U2 | EPS rows holding another row's amount (3.03e10 "EPS") | CONFIRMED in data | 7 rows (DPM 2019/2020, HSG 2016, MBS) |
-| U3 | Glued OCR cells parsed into absurd amounts (up to 9.6e35 VND) | CONFIRMED in data | 49 rows, 5 exposed (AAA 110/132, ACV 22) |
-| U4 | Same line/year differs by 10^3 or 10^6 between two reports | CONFIRMED (candidates) | 48 pairs; includes restatement-note columns ("Thay đổi") read as current-year facts (ACV 2019 p62) |
-| U6 | Share counts stored with unit VND | CONFIRMED in data | 175 rows, securities firms' off-balance lines; not answer-exposed today |
-| D1 | Difference of two ratios shown as "%" | CONFIRMED | "Chênh lệch ROE FPT 2023–2024" → "0.37%" (should be 0,37 điểm phần trăm) |
-| D2 | Trace steps label normalized VND values with the table unit ("nghìn VND") | CONFIRMED | `reasoning.py` growth step #0, `program/executor.py` lookup steps |
-| D3 | Numbers shown in English format ("997,000 VND") to Vietnamese readers, who read the comma as a decimal mark | CONFIRMED | `application/models.py` `format_vnd`, `format_metric_value` |
-| D4 | The question's requested unit ("bao nhiêu tỷ đồng", "%", "lần") is stripped and ignored | CONFIRMED | `program/planner.py` `UNIT_REGEX` |
-| V1 | `input_unit_scales_normalized` reports PASS without checking anything | CONFIRMED by reading | `verification.py` `_verify_units` |
-| V2 | Comparative reconciliation tolerance is 1 VND, below the rounding of triệu-VND statements (±500,000 VND) | SUSPECTED | `verification.py` `_verify_comparative_consistency` |
-| P1 | A single comma with three digits ("414,721") is read as thousands, though Vietnamese uses comma for decimals (mirror of K10) | SUSPECTED, not measured | `table_parser.py` `parse_vietnamese_number` |
-| P2 | `parse_unit_scale` matches "ty" in "Công ty" (→ tỷ, 1e9) and "ngân" in "ngân hàng" (→ nghìn) | SUSPECTED latent; NOT OBSERVED in current data | `semantics.py` regexes |
+| ID | K | Finding | Status | Evidence |
+|---|---|---|---|---|
+| U1 | K26 | Per-share rows took the table scale; `basic_eps` answers were inflated 1e3/1e6 and VERIFIED | FIXED 2026-11-08: ingestion keeps per-share rows in đồng (`semantics.is_per_share_label`, `fact_extractor._per_share_unit`). U1 must stay 0 | Was 152 rows, 104 answer-exposed (HAG, HNG, MSN, MSR, VIC, VRE); HAG 2024 → 997,000 VND VERIFIED. `tests/test_per_share_units.py` |
+| U2 | K27, K41 | EPS rows holding another row's amount or a misread cell (3.03e10 "EPS") | CONFIRMED in data | 7 rows: DPM 2019/2020, HSG 2016 (glued label), and MBS line 500, an amount row this audit's broad pattern also matches |
+| U3 | K27 | Glued OCR cells parsed into absurd amounts (up to 9.6e35 VND) | CONFIRMED in data | 49 rows, 5 exposed (AAA 110/132, ACV 22) |
+| U4 | K28 | Same line/year differs by 10^3 or 10^6 between two reports | CONFIRMED (candidates) | 45 pairs after K26 (48 before); includes restatement-note columns ("Thay đổi") read as current-year facts (ACV 2019 p62) |
+| U6 | K38 | Share counts stored with unit VND | CONFIRMED in data | 175 rows, securities firms' off-balance lines; not answer-exposed today |
+| D1 | K30 | Difference of two ratios shown as "%" | CONFIRMED | "Chênh lệch ROE FPT 2023–2024" → "0.37%" (should be 0,37 điểm phần trăm) |
+| D2 | K31 | Trace steps carry the normalized value next to the source unit or scale | CONFIRMED | VRE revenue 2024: 8,939,117,000,000 with `unit_scale` 1e6 |
+| D3 | K31 | Numbers shown in English format ("997,000 VND", "₫8.94T") to Vietnamese readers, who read the comma as a decimal mark | CONFIRMED | `application/models.py` `format_vnd`, `format_metric_value` |
+| D4 | K32 | The question's requested unit ("bao nhiêu tỷ đồng", "%", "lần") is stripped and ignored | CONFIRMED | `program/planner.py` `UNIT_REGEX`; resolver path too |
+| V1 | K34 | `input_unit_scales_normalized` reports PASS without checking anything | SUSPECTED (code reading) | `verification.py` `_verify_units` |
+| V2 | K35 | Comparative reconciliation tolerance is 1 VND, below the rounding of triệu-VND statements (±500,000 VND) | SUSPECTED | `verification.py` `_verify_comparative_consistency` |
+| P1 | K37 | A single comma with three digits ("414,721") is read as thousands, though Vietnamese uses comma for decimals (mirror of K10) | SUSPECTED, not measured | `table_parser.py` `parse_vietnamese_number` |
+| P2 | K36 | `parse_unit_scale` matches "ty" in "Công ty" (→ tỷ, 1e9) and "ngân" in "ngân hàng" (→ nghìn) | CONFIRMED for the function; NOT OBSERVED in current data | `semantics.py` regexes |
+
+Per-share rows whose label does not state đồng and whose table states another scale are now `inferred`, so their answers carry a WARNING (MSR, VRE). MSR prints "VND" in a sub-header row the extractor does not read; reading such rows would turn them back into `declared`.
 
 Re-run the audit before quoting any count above; they change whenever the parquet is rebuilt.
 
@@ -77,7 +79,8 @@ python .claude/skills/finrag-units/scripts/audit_units.py --json <scratchpad>/un
 
 It reads only the processed parquet (never questions, labels or the holdout). "Answer-exposed" means the row matches a catalog or base-metric line a question can reach. How to act on each code:
 
-- **U1/U2** per-share: real defects. Fix at ingestion (row-level unit override) or at lookup (per-share items never scaled), with a test on the HAG 2015 p10 row.
+- **U1** per-share scaled: fixed at ingestion by K26. A non-zero count is a regression: find the label variant `is_per_share_label` misses, add it to `tests/test_per_share_units.py`, and rebuild the parquet.
+- **U2** per-share implausible: a misread cell, not a scale. Open it with `show_source.py` (K27, K41).
 - **U3** absurd magnitude: parse error from glued cells. Open the row with `show_source.py`; the fix belongs in `table_parser`/`fact_extractor`, or flag the cell (`quality_flag`) so it never answers.
 - **U4** cross-report gap: a candidate list, not a verdict. Open both fact IDs. Typical causes: a wrong declared unit (true K19), a note or restatement table read as the face statement, or a row misalignment. `same_digits=True` is the strongest unit signal.
 - **U5** intra-report ratio: low revenue against assets is normal for holding companies' separate statements; assets/equity outside [0.9, 1000] is not.
