@@ -8,7 +8,7 @@ import re
 from typing import List, Optional
 
 from src.financial.schema import DocumentRecord, FinancialFact, TableRecord
-from src.financial.semantics import parse_unit_scale
+from src.financial.semantics import is_per_share_label, parse_unit_scale
 from src.ingestion.table_parser import (
     LINE_CODE_PATTERN,
     inspect_table_structure,
@@ -48,6 +48,7 @@ RESTATEMENT_COLUMN_REGEX = re.compile(r"(?<!sau )(?<!đã )điều\s*chỉnh", r
 PRIOR_PERIOD_REGEX = re.compile(
     r"\b(năm\s*trước|số\s*đầu\s*năm|đầu\s*kỳ|trước)\b", re.IGNORECASE
 )
+LABEL_DONG_REGEX = re.compile(r"\(\s*(?:vn[dđ]|đồng)", re.IGNORECASE)
 
 
 def _scaled_unit(text: str) -> Optional[str]:
@@ -107,13 +108,36 @@ def detect_unit_and_currency(
     return unit, currency
 
 
+def _per_share_unit(label: str, table_unit: Optional[str]) -> tuple[float, str, str]:
+    """Return (scale, status, unit) for a row stating an amount per share (K26).
+
+    Per-share amounts are printed in đồng even in tables stated in thousands or
+    millions of đồng, so the table's scale does not apply. A scale stated in the
+    label itself is kept. Đồng is 'declared' when the label or the table states
+    it, and 'inferred' when it is assumed.
+    """
+    stated = _scaled_unit(label)
+    if stated:
+        scale, _, name = parse_unit_scale(stated)
+        return scale, "declared", name
+    table_scale, table_status, _ = parse_unit_scale(table_unit)
+    declared = bool(LABEL_DONG_REGEX.search(label)) or (table_status == "declared" and table_scale == 1.0)
+    return 1.0, "declared" if declared else "inferred", "VND"
+
+
 def apply_document_unit_fallback(facts: List[FinancialFact]) -> List[FinancialFact]:
     """Give unit-less facts the unit of their report when it declares exactly one.
 
     A statement continued on the next page often omits the unit line. The result
     is marked 'inferred' so it stays distinguishable from a declared unit.
+    Per-share rows carry their own unit, so they neither count as a document unit
+    nor receive one.
     """
-    declared = {fact.unit for fact in facts if fact.unit_status == "declared"}
+    declared = {
+        fact.unit
+        for fact in facts
+        if fact.unit_status == "declared" and not is_per_share_label(fact.original_label)
+    }
     if len(declared) != 1:
         return facts
 
@@ -121,7 +145,7 @@ def apply_document_unit_fallback(facts: List[FinancialFact]) -> List[FinancialFa
     scale, _, _ = parse_unit_scale(unit)
     return [
         fact.model_copy(update={"unit": unit, "unit_scale": scale, "unit_status": "inferred"})
-        if fact.unit_status == "unknown"
+        if fact.unit_status == "unknown" and not is_per_share_label(fact.original_label)
         else fact
         for fact in facts
     ]
@@ -285,8 +309,11 @@ def extract_facts_from_table(
 
             from src.financial.semantics import infer_statement_type
 
-            fact_unit_scale, fact_unit_status, clean_unit = parse_unit_scale(unit)
-            final_unit = clean_unit if clean_unit else unit
+            if is_per_share_label(original_label):
+                fact_unit_scale, fact_unit_status, final_unit = _per_share_unit(original_label, unit)
+            else:
+                fact_unit_scale, fact_unit_status, clean_unit = parse_unit_scale(unit)
+                final_unit = clean_unit if clean_unit else unit
             stmt_type = infer_statement_type(
                 line_code=raw_code,
                 original_label=original_label,

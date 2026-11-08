@@ -14,6 +14,19 @@ UNIT_MILLION_REGEX = re.compile(r"\b(triệu|trieu|triêu)\b", re.IGNORECASE)
 UNIT_THOUSAND_REGEX = re.compile(r"\b(nghìn|ngàn|ngân)\b", re.IGNORECASE)
 UNIT_VND_REGEX = re.compile(r"\b(vnd|đồng|dong|đống|đông)\b", re.IGNORECASE)
 
+# Rows that state an amount per share (K26). OCR variants seen in the corpus:
+# "cơ bán", "suv giảm", "cố phiếu", "có phiếu".
+_SHARE = r"c[ổốóoô]\s*phi[ếêe]u"
+PER_SHARE_LABEL_REGEX = re.compile(
+    r"(?:c[ơo]\s*b[ảáàa]n|su[yv]\s*gi[ảáàa]m|pha\s*lo[ãa]ng|l[ãa]i|l[ỗo]\)?|c[ổo]\s*t[ứu]c)\s*"
+    rf"tr[êe]n\s*(?:m[ỗo]i\s*)?(?:m[ộo]t\s*)?{_SHARE}"
+    rf"|(?:vn[dđ]|đồng)\s*/\s*(?:1\s*)?{_SHARE}"
+    r"|\bper\s+share\b",
+    re.IGNORECASE,
+)
+# "Lợi nhuận để tính lãi cơ bản trên cổ phiếu" is an amount used to compute EPS.
+PER_SHARE_EXCLUDE_REGEX = re.compile(r"để\s*tính|used\s+to\s+calculate", re.IGNORECASE)
+
 # Standard Circular 200 / 133 Line Codes
 BALANCE_SHEET_CODES = {
     "100", "110", "111", "112", "120", "121", "122", "123", "130", "131", "132", "136", "137",
@@ -60,6 +73,17 @@ def parse_unit_scale(unit_str: Optional[str]) -> Tuple[float, str, Optional[str]
         return (1.0, "declared", "VND")
 
     return (1.0, "unknown", cleaned)
+
+
+def is_per_share_label(label: Optional[str]) -> bool:
+    """Return True when a row states an amount per share (EPS, dividend per share).
+
+    Reports print these in đồng per share even inside tables stated in thousands
+    or millions of đồng, so the table's scale must not be applied to them (K26).
+    """
+    if not label:
+        return False
+    return bool(PER_SHARE_LABEL_REGEX.search(label)) and not PER_SHARE_EXCLUDE_REGEX.search(label)
 
 
 def is_opening_period_label(period_label: Optional[str]) -> bool:
