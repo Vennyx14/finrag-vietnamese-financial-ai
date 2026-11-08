@@ -11,5 +11,13 @@
 # Local datasets that tests and scripts read (see FULL_DATA_PATHS in
 # tests/conftest.py). Without them, integration tests skip.
 data/processed/**
-data/external/**
 data/benchmark/**
+
+# ViFinQA: only what the code reads. The download cache
+# data/external/ViFinQA/.cache/ is left out on purpose: inside a worktree its
+# paths exceed the 260-character Windows limit, and git then fails to delete
+# the worktree ("Filename too long"). Add new datasets here explicitly.
+data/external/ViFinQA/financial_statements/**
+data/external/ViFinQA/questions/**
+data/external/ViFinQA/code_stock.csv
+data/external/ViFinQA/README.md
