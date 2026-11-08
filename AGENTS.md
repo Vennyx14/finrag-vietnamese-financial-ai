@@ -354,6 +354,11 @@ Follow this loop for every task: **Understand → Plan → Implement → Diff �
    - Risks and anything not done
    - Docs that are now stale
 10. **Commits**: one logical change per commit, imperative subject, milestone prefix (for example `M1: add typed ResolutionResult`).
+11. **Parallel sessions in worktrees** (agent view, `claude --bg`, `claude --worktree`, subagents with `isolation: worktree`). The owner's workflow is in `docs/agent_view_guide.md`.
+    - A background session starts in the main checkout and moves into its own worktree under `.claude/worktrees/` only when it first edits a file. Move into the worktree before running tests, scripts, or skills: the benchmark and coverage scripts rewrite tracked files in `data/manifests/`, and a run from the main checkout overwrites the owner's copy.
+    - The worktree starts from the owner's latest local commit. Changes not committed in the main checkout, including skills still being written, are not in it.
+    - Gitignored data (`data/processed/`, `data/benchmark/`, the ViFinQA files) is a copy made when the worktree was created. If you rebuild it, for example with `python scripts/prepare_data.py`, say so in the report: the owner must rebuild it in the main checkout after merging.
+    - Commit finished work on the worktree's own branch without asking; that is how the owner receives it. Do not push, open pull requests, or merge. The owner reviews the branch and merges it into `main`.
 
 ---
 
