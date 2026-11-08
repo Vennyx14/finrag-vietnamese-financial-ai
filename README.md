@@ -175,7 +175,7 @@ The datasets are not in this repository, so what runs depends on what you have l
 
 | Environment | What runs |
 | :--- | :--- |
-| **Fresh clone** | Unit tests and the end-to-end tests in `tests/test_e2e_mini_fixture.py`, which use a small synthetic corpus built by [`scripts/make_mini_fixture.py`](scripts/make_mini_fixture.py). Its tickers and values are fictional. Tests marked `requires_full_data` skip with one uniform reason. |
+| **Fresh clone** | Unit tests and the end-to-end tests in `tests/test_e2e_mini_fixture.py`, which use a small synthetic corpus built by [`scripts/make_mini_fixture.py`](scripts/make_mini_fixture.py). Its tickers and values are fictional. Tests that need the local data skip with a stated reason, most of them through the `requires_full_data` marker. On 2026-11-08 a clean clone ran 506 of the 571 tests and skipped 65. |
 | **Full local data** | Everything above, plus the integration tests, both benchmarks, and the Streamlit app with real figures. This needs `data/processed/`, `data/benchmark/`, and `data/external/ViFinQA/`. Rebuild the processed facts with `python scripts/prepare_data.py`. |
 
 CI installs `requirements.txt` and runs the fresh-clone configuration.
@@ -201,7 +201,7 @@ finrag-vietnamese-financial-ai/
 
 ## 17. Limitations
 FinRAG is an early MVP and operates under strict, deliberate constraints:
-- **Low Question Coverage:** 111 of the 766 development questions (14.5%) receive an answer (measured 2026-11-02 with `scripts/run_question_coverage.py`). This is answer coverage, not accuracy. Another 246 questions are sealed for a one-time evaluation.
+- **Low Question Coverage:** 111 of the 766 development questions (14.5%) receive an answer (measured 2026-11-02 with `scripts/run_question_coverage.py`, unchanged on 2026-11-08). This is answer coverage, not accuracy. Another 246 questions are sealed for a one-time evaluation.
 - **Limited Metric Support:** Covers 8 core metrics and 41 statement lines. Note-level items are not extracted.
 - **Deterministic Keyword Parsing:** Natural language understanding relies on deterministic matching rather than a highly generalizable LLM semantic parser.
 - **BM25 Constraints:** Relies strictly on BM25 and exact metadata filters; cannot resolve conceptually distant synonyms.
@@ -209,11 +209,12 @@ FinRAG is an early MVP and operates under strict, deliberate constraints:
 - **Narrow Unit Conversion:** Understands basic Vietnamese denomination terminology (e.g. tỷ, triệu) but lacks a comprehensive multi-currency engine.
 - **No Novel Ingestion:** Source consistency verification confirms page/table location but does not actively re-parse raw PDFs per query.
 - **Format Biases:** Tuned against standard commercial reporting schemas; not equipped for non-standard banking/insurance schemas.
+- **Open Defects:** `AGENTS.md` section 13 lists the known open issues, for example the display of ratio differences and growth formulas (K29–K32) and cells misread by OCR (K27, K41).
 
 ## 18. Future Work
 The following capabilities are **not implemented** but represent the logical next steps on the product roadmap:
 - Dense vector retrieval and hybrid RAG search.
-- Integration of a true Financial Domain Specific Language (DSL).
+- An LLM planner (M4 layer 3) that turns questions the templates cannot parse into programs in the existing allowlisted format, never into numbers.
 - Reranking of multi-table contexts.
 - Automated multimodal ingestion directly from raw SEC/UBCK PDFs.
 - Financial Knowledge Graphs connecting subsidiaries and executive boards.

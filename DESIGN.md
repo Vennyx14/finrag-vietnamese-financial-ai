@@ -124,7 +124,7 @@ Each depends on the milestone in `AGENTS.md`. Do not build ahead of the mileston
 | Period-type label | M1 / M2 | Show annual vs quarterly vs year-to-date next to the period once `period_type` exists |
 | "Not run" check state | M2 | Supported: checks with status `NOT_RUN` display neutral `– NOT RUN` badge |
 | Evidence quality flag | M2 | A small flag on an evidence item whose fact failed a data-quality check, with the reason |
-| Reasoning trace view | M3 / M4 | Ordered steps: operation, operands, output, unit. For MVP single/ratio/growth metrics, substituted formula trace is now live |
+| Reasoning trace view | M3 / M4 | Ordered steps: operation, operands, output, unit. For MVP single/ratio/growth metrics, substituted formula trace is now live (known defect K29: the growth formula shows the years in the wrong order) |
 
 ## 6. Interaction and content rules
 

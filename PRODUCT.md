@@ -1,13 +1,13 @@
 # PRODUCT.md — FinRAG Product Specification
 
-Last reviewed: 2026-10-13
+Last reviewed: 2026-11-08
 
 ## 1. Product identity
 
 **Product name:** FinRAG — Vietnamese Corporate Financial Research Assistant
 **Repository:** `finrag-vietnamese-financial-ai`
 **Type:** research prototype (not a certified audit or investment tool)
-**Stage:** MVP v0.1 complete (retrieval, deterministic reasoning, verification, application layer, Streamlit UI). Hardening in progress: typed question resolution and refusal, independent verification, data-quality flags. See `AGENTS.md` section 5 for the milestone plan.
+**Stage:** MVP v0.1 complete (retrieval, deterministic reasoning, verification, application layer, Streamlit UI). Hardening milestones M0–M3 are complete: typed question resolution and refusal, data semantics (units, statement types, opening balances), independent verification with data-quality flags, and an evidence trace. M4, a constrained program layer, is in progress: layers 1 and 2 (a catalog of statement lines and a template planner, no LLM) are done; layer 3 (an LLM planner) has not started. See `AGENTS.md` section 5 for the milestone plan.
 
 FinRAG is **one product with one question-answering pipeline**. Finding the right evidence in the report corpus and deriving a number from that evidence are capabilities of the same pipeline. Users never choose between them.
 
@@ -31,11 +31,11 @@ General-purpose LLMs are unreliable with financial figures: they pick the wrong 
 
 ## 5. Supported scope (current)
 
-**Corpus:** ViFinQA / TiniX annual financial statements (OCR text with inline tables): 1,973 report files from 100 tickers, report years 2015–2025. Structured facts (338,714) exist for **78 tickers**; the 22 commercial banks and financial institutions in the corpus have no extracted facts because their statements do not follow the Circular 200/133 line-code layout, so questions about them cannot be answered. Coverage varies by ticker and year; a missing company-year returns "data not found". The regression benchmarks currently cover six tickers (FPT, HPG, VNM, MWG, PNJ, GAS), so behavior on other tickers is less tested.
+**Corpus:** ViFinQA / TiniX annual financial statements (OCR text with inline tables): 1,973 report files from 100 tickers, report years 2015–2025. Structured facts (365,954, of which 16,415 are flagged and never answer) exist for **78 tickers**; the 22 commercial banks and financial institutions in the corpus have no extracted facts because their statements do not follow the Circular 200/133 line-code layout, so questions about them cannot be answered. Coverage varies by ticker and year; a missing company-year returns "data not found". The regression benchmarks currently cover six tickers (FPT, HPG, VNM, MWG, PNJ, GAS), so behavior on other tickers is less tested.
 
-**Measured coverage (M0 audit, 2026-10-13):** of the 1,012 natural-language questions shipped with ViFinQA, 142 (14.0%) currently receive an answer and 870 are refused or fail. This is answer coverage, not accuracy: some answered questions are known to be answered with the wrong metric, and the true error rate is not yet measured. Fixing this was the purpose of milestone M1. **Re-measured on 2026-11-02:** 111 of the 766 development questions (14.5%) receive an answer; 246 others are sealed for evaluation. See `docs/m4_layers_1_2_report.md`. The true error rate is still unmeasured.
+**Measured coverage (M0 audit, 2026-10-13):** of the 1,012 natural-language questions shipped with ViFinQA, 142 (14.0%) currently receive an answer and 870 are refused or fail. This is answer coverage, not accuracy: some answered questions are known to be answered with the wrong metric, and the true error rate is not yet measured. Fixing this was the purpose of milestone M1. **Re-measured on 2026-11-02:** 111 of the 766 development questions (14.5%) receive an answer; 246 others are sealed for evaluation. See `docs/m4_layers_1_2_report.md`. The count was unchanged when re-measured on 2026-11-08. The true error rate is still unmeasured.
 
-**Metrics (8):**
+**Base metrics (8):**
 
 | Metric | Vietnamese name | Notes |
 |---|---|---|
@@ -48,11 +48,13 @@ General-purpose LLMs are unreliable with financial figures: they pick the wrong 
 | `roe` | ROE | Net income / closing equity (WARNING: not average equity) |
 | `revenue_growth` | Tăng trưởng doanh thu thuần | Year over year |
 
-**Question forms:** a metric, a ticker, and a fiscal year (or two years for growth), optionally with statement scope ("riêng" for separate statements; consolidated is the default). Example: `Biên lợi nhuận ròng FPT năm 2024`.
+**Program layer (M4 layers 1 and 2, since 2026-11-02):** when the metric engine refuses a question, a template planner may answer it with a constrained program, without an LLM. It reads 41 catalogued statement lines (for example gross profit, profit before tax, financial income and expenses, operating, investing and financing cash flow, basic earnings per share) and combines allowlisted operations: lookup, ratio, difference, percentage change, sum, average, maximum, minimum, and which company or year is highest or lowest. It answers only when every word of the question is explained by a company, a period, a catalogued line, an operation, or an allowed filler word; otherwise it refuses.
 
-**Not supported (must be refused, not approximated):** other metrics (for example gross profit, operating profit, financial revenue, cash-flow items, capital adequacy, bad-debt ratios), bank, insurance, and securities-specific statements, quarterly or year-to-date figures, cross-company comparison, free-form analysis or forecasts, investment recommendations.
+**Question forms:** a metric, a ticker, and a fiscal year (or two years for growth), optionally with statement scope ("riêng" for separate statements; consolidated is the default). Example: `Biên lợi nhuận ròng FPT năm 2024`. Through the program layer, also a catalogued line over a few named companies or years. Example: `Lợi nhuận gộp của FPT năm 2024`.
 
-**Planned (see AGENTS.md milestones):** typed refusal and clarification states (M1), independent verification and data-quality flags (M2), reasoning trace (M3), constrained program-based reasoning for questions the metric engine cannot answer (M4), and a labelled benchmark with ablations (M5–M6).
+**Not supported (must be refused, not approximated):** items outside the catalog (for example capital adequacy, bad-debt ratios, most note-level items), bank, insurance, and securities-specific statements, quarterly or year-to-date figures, filter questions (for example "the companies whose margin fell by more than 2 points") and other multi-step questions, free-form analysis or forecasts, investment recommendations.
+
+**Planned (see AGENTS.md milestones):** an LLM planner that turns questions the templates cannot parse into programs, never into numbers (M4 layer 3), and a labelled benchmark with ablations (M5–M6).
 
 ## 6. Answer contract
 
@@ -77,7 +79,7 @@ Every non-answer contains a **category** (see below), a plain-language explanati
 | `ERROR: DATA_NOT_FOUND` | No supporting fact in the processed corpus, or conflicting facts that the system refuses to choose between |
 | `ERROR: VERIFICATION_REJECTED` | Result computed but failed verification |
 | `ERROR: SYSTEM_ERROR` | Unexpected internal failure |
-| *Planned:* `UNSUPPORTED`, `NEEDS_CLARIFICATION`, `AMBIGUOUS` | Distinct, non-error outcomes for questions the system understands but will not or cannot answer without more input |
+| Resolution outcome: `resolved`, `ambiguous`, `unsupported`, `needs_clarification` | Reported since M1 in a separate `resolution` field with reasons and guidance; a refused question keeps status `ERROR` and its category |
 
 ## 8. User-experience principles
 
@@ -99,6 +101,7 @@ Quality is measured on three layers, reported separately. Figures below are the 
 | Retrieval | 100-query self-generated benchmark: Recall@1 92.0%, Recall@5 98.0% | Concept-resolution accuracy, fact-selection accuracy |
 | Reasoning | 30-case self-authored benchmark: 25/25 valid, 5/5 rejections | Execution accuracy and program accuracy on a human-labelled set, split by company |
 | Verification | 60-case benchmark: 30/30 valid accepted, 30/30 injected mutations rejected. Mutations are applied after reasoning | Verified-wrong rate under faults injected at fact-selection and extraction level; abstention precision and recall; citation correctness |
+| Question answering | Silver v2: 148/148, a regression check only (24 labels were reviewed from system output). Of 42 numeric labels frozen before M4 code: 37 correct, 0 wrong, 5 refused. Labels were prefilled by an LLM and not verified by a person | Verified-wrong rate on the sealed set of 246 questions, measured once (M4 gate) |
 
 Latency is a secondary metric; local end-to-end queries are reported in the tens to low hundreds of milliseconds.
 

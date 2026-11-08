@@ -20,7 +20,7 @@ This hardened specification establishes:
 4. **Table structure inspection logic** handling multi-row headers, `rowspan`/`colspan`, `STT` columns, Roman numerals, label-first layouts, and empty codes on total rows.
 5. **Canonical fact contract evolution** (`statement_type`, `schema_family`, nullable `line_code`) and migration safety for the existing 338,714 facts.
 6. **Strict metric mapping boundaries** preventing false equivalences between bank operations (NII, loans, deposits) and corporate turnover.
-7. **Empirically validated prototype test suite** (`tests/test_bank_table_structure.py`) proving 100% extraction accuracy on real bank source fixtures without modifying production code.
+7. **Prototype test suite** (`tests/test_bank_table_structure.py`, 5 self-authored tests) that passes on real bank table fixtures without modifying production code. It shows that the prototype parses these fixtures, not an extraction accuracy.
 
 ---
 

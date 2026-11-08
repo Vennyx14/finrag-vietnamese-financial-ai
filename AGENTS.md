@@ -1,6 +1,6 @@
 # FinRAG Development Rules (AGENTS.md)
 
-Last reviewed: 2026-10-13
+Last reviewed: 2026-11-08
 
 This file is the operating contract for every human or AI agent (including Antigravity) that changes this repository. Read it fully before making any change.
 
@@ -27,7 +27,7 @@ FinRAG is **one product with one QA pipeline**. Corpus-grounded question answeri
 
 ---
 
-## 2. Current state (as of 2026-10-20)
+## 2. Current state (as of 2026-11-08)
 
 Status labels: **REPORTED** = stated in repo docs, not re-verified by the agent; **VERIFIED** = confirmed by running it (source named); **SUSPECTED** = found by reading code, not yet reproduced; **NOT OBSERVED** = looked for and not found in the current corpus.
 
@@ -69,7 +69,7 @@ Environment: Windows, Python 3.11.9, pytest 9.1.1. Full details belong in `docs/
 - Period labels: 936 distinct; top are "Số cuối năm" (42,372), "Số đầu năm" (36,435), "Năm nay" (29,288). No quarterly or monthly reports were observed.
 
 ### Empty placeholders (no implementation yet)
-`src/nlp/llm.py`, `src/agent/`, `src/pipeline/qa.py`, `src/evaluation/evaluator.py`, `src/financial/concepts.py`, `api/`, `scripts/run_demo.py`, `tests/test_pipeline.py`, `tests/test_retrieval.py`. There is no LLM component, planner, or program/DSL layer in the repository today.
+`src/nlp/llm.py`, `src/agent/`, `src/pipeline/qa.py`, `src/evaluation/evaluator.py`, `src/financial/concepts.py`, `api/`, `scripts/run_demo.py`, `tests/test_pipeline.py`, `tests/test_retrieval.py`. There is no LLM component yet. The constrained program layer (template planner, allowlisted program model, executor, verifier) lives in `src/financial/program/` and uses no LLM.
 
 ---
 
@@ -406,7 +406,7 @@ Status column: **CONFIRMED** (M0 audit evidence), **PARTLY** (pattern seen, impa
 | K9 | Fact selection used BM25 top-20 and could lose the defining line | FIXED (2026-11-02) | `resolve_fact`; verified by `tests/test_pre_m4_hardening.py` | Latency on the reasoning benchmark rose from about 80 ms to about 225 ms |
 | K10 | `parse_vietnamese_number` single-dot rule with three trailing digits reads `0.123` as 123 | CONFIRMED, correct for Vietnamese tables; would be wrong for an English decimal | `src/ingestion/table_parser.py` | M0 audit |
 | K11 | UI interpolates OCR labels and backend error text into HTML with `unsafe_allow_html=True` without escaping | FIXED (UI) | `ui/theme.py`, `ui/app.py` | Fixed in UI Hardening (commit `b28fb3a`) |
-| K12 | Integration tests skip without the parquet; benchmark files are gitignored | CONFIRMED | `tests/`, `.gitignore` | M0 (exception added for `gold/`) |
+| K12 | Integration tests skip without the parquet; benchmark files are gitignored | CONFIRMED, by design: on a clean clone 506 of 571 tests run and 65 skip, each with a stated reason (CI simulation with a fresh venv, 2026-11-08). `.github/workflows/ci.yml` runs this configuration on every push | `tests/`, `.gitignore` | M0 (exception added for `gold/`) |
 | K13 | Dependency drift: `requirements.txt` listed unused heavy packages; `pyproject.toml` lacked `streamlit`; `src/finrag.egg-info/` was tracked and stale | FIXED (2026-11-02) | repo root | Packages needed by M4 are added in M4 |
 | K14 | Documentation drift: README, `docs/CV_PROJECT.md`, and PRODUCT.md previously contained claims that conflict with Section 9; test-count and benchmark statements are unverified | PARTLY (the 100-ticker fact claim was wrong, now fixed) | docs | M0 |
 | K15 | `_classify_reasoning_error` maps "No candidate fact satisfied validation rules…" to `SYSTEM_ERROR` instead of `DATA_NOT_FOUND` | FIXED (M1) | `src/application/service.py` | Fixed in M1 (commit `3743dae`) |
@@ -423,7 +423,7 @@ Status column: **CONFIRMED** (M0 audit evidence), **PARTLY** (pattern seen, impa
 
 | K25 | Rows that lost their note cell had the prior-year amount read as the current year | FIXED (2026-11-02) | `src/ingestion/fact_extractor.py`; verified by `tests/test_table_layouts.py` | 195 rows in 40 reports corrected |
 
-Items K26–K41 come from the unit review of 2026-11-08. "Unit audit Ux" refers to `.claude/skills/finrag-units/scripts/audit_units.py`; "answer-exposed" means a catalog line could select the fact. Counts were measured before the K26 fix.
+Items K26–K41 come from the unit review of 2026-11-08, and K42 from the documentation check the same day. "Unit audit Ux" refers to `.claude/skills/finrag-units/scripts/audit_units.py`; "answer-exposed" means a catalog line could select the fact. Counts were measured before the K26 fix.
 
 | # | Issue | Status | Where | Milestone |
 |---|---|---|---|---|
@@ -443,6 +443,7 @@ Items K26–K41 come from the unit review of 2026-11-08. "Unit audit Ux" refers 
 | K39 | `scripts/evaluate_silver.py` `UNIT_SCALES` has no per-share unit, so a silver label in đồng per share would raise `KeyError` | SUSPECTED (code reading) | `scripts/evaluate_silver.py` | Unassigned; changing the scorer needs owner approval |
 | K40 | UI text claims more than was tested (Section 9): "Giá trị chính xác tuyệt đối" (`ui/theme.py:705`) and "đều thỏa mãn 100%" (`ui/theme.py:760`) | CONFIRMED | `ui/theme.py` | Unassigned |
 | K41 | When a header merges "Mã số" and "Thuyết minh" into one cell, a small amount such as EPS is replaced by its note number: FPT 2018 consolidated p10 line 70 reads 33 (note 33) instead of 3,903. The note shift needs a 7-digit neighbour, which EPS never has | CONFIRMED (one case; answered with WARNING by comparative reconciliation) | `src/ingestion/fact_extractor.py` `_note_cell_offset` | Unassigned |
+| K42 | A question asking which of two companies is higher ("công ty nào cao hơn") is answered with their signed difference instead of the company, because the planner tests difference words before "nào": FPT vs HPG net revenue 2024 → "Chênh lệch Doanh thu thuần: -₫76.01T", SUCCESS | CONFIRMED (generated question, found 2026-11-08 during the P1.3 docs check); no answered development question has this form | `src/financial/program/planner.py` | Unassigned |
 
 ---
 

@@ -89,8 +89,8 @@ Nếu thiếu thời gian, điểm dừng an toàn là sau P7: hệ thống ch�
 |---|---|---|
 | P1.1 | **[DUYỆT]** | Giao K24 (mã viết thường như `fpt` không nhận ra) vào giai đoạn này? Đề xuất: **có**, chỉ nhận mã viết thường khi mã đó có trong danh sách 100 mã đã biết, để tránh nhận nhầm từ tiếng Việt. Bạn đã đồng ý ngày 2026-11-08. |
 | P1.2 | **[AUTO]** | Sửa K24 trong `src/pipeline/query.py`, viết test trước, chạy lại báo cáo độ phủ và báo cáo các câu đổi trạng thái. Xong 2026-11-08. |
-| P1.3 | **[AUTO]** | Đồng bộ tài liệu đã cũ: `AGENTS.md` Mục 2 còn ghi "không có program/DSL layer"; danh sách placeholder rỗng cần cập nhật. Kiểm tra README, PRODUCT.md, DESIGN.md theo Mục 9. |
-| P1.4 | **[AUTO]** | Thêm CI (GitHub Actions) chạy test trên mini fixture, để repo sạch vẫn có test chạy được thay vì bị skip (K12). |
+| P1.3 | **[AUTO]** | Đồng bộ tài liệu đã cũ: `AGENTS.md` Mục 2 còn ghi "không có program/DSL layer"; danh sách placeholder rỗng cần cập nhật. Kiểm tra README, PRODUCT.md, DESIGN.md theo Mục 9. Xong 2026-11-08: AGENTS.md Mục 2, PRODUCT.md (phạm vi lớp program, số dữ kiện, trạng thái mốc), README, DESIGN.md; ghi thêm K42. |
+| P1.4 | **[AUTO]** | Thêm CI (GitHub Actions) chạy test trên mini fixture, để repo sạch vẫn có test chạy được thay vì bị skip (K12). CI đã có từ 2026-11-02 (`.github/workflows/ci.yml`). Kiểm tra lại 2026-11-08 trên bản clone sạch với môi trường mới: 506 test chạy, 65 skip có lý do, 0 fail. |
 | P1.5 | **[AUTO]** | Sửa K26: số liệu trên mỗi cổ phiếu (EPS) bị nhân theo đơn vị của bảng, ví dụ HAG 2024 ra 997.000 đồng thay vì 997 đồng mà vẫn VERIFIED. Bạn duyệt làm trước các bước khác ngày 2026-11-08. Xong cùng ngày: test viết trước, sửa phần trích xuất, dựng lại dữ liệu, so sánh trước và sau. |
 
 **Xong khi:** toàn bộ test pass, số skip được báo, tài liệu không còn mâu thuẫn với code.
