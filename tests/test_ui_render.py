@@ -278,3 +278,43 @@ def test_tier_renderers_smoke(monkeypatch):
     render_tier_5_audit(resp)
     assert len(executed_markdowns) >= 6
 
+
+
+def test_ui_text_claims_no_more_than_the_checks(monkeypatch):
+    """K40: the UI must not call a value exact or the checks fully satisfied (AGENTS.md Section 9)."""
+    rendered = []
+    import streamlit as st
+    monkeypatch.setattr(st, "markdown", lambda text, **kwargs: rendered.append(text))
+    from ui.theme import render_tier_2_calculation, render_tier_3_verification
+
+    calc = CalculationDTO(
+        metric="net_margin",
+        display_name="Biên lợi nhuận ròng",
+        operation="ratio",
+        formula="net_income / net_revenue",
+        formatted_value="15.00%",
+        raw_value_display="0.150000",
+        unit="ratio",
+    )
+    ev = EvidenceDTO(
+        fact_id="f1",
+        ticker="FPT",
+        fiscal_year=2024,
+        original_label="Lợi nhuận sau thuế",
+        value=3_000_000_000,
+        formatted_value="₫3.00B",
+        page=10,
+        table_id="T1",
+        source_path="fpt.txt",
+    )
+    render_tier_2_calculation(calc, "FPT", fiscal_year=2024, evidence=[ev, ev])
+    check = VerificationCheckDTO(name="numerical_oracle", status="PASS", severity="CRITICAL", message="OK")
+    for status in ("VERIFIED", "WARNING"):
+        render_tier_3_verification(VerificationDTO(status=status, overall_pass=True, summary="", checks=[check]))
+    html = "\n".join(rendered)
+
+    for overclaim in ("chính xác tuyệt đối", "thỏa mãn 100%", "phép tính số học chính xác"):
+        assert overclaim not in html
+    assert "Giá trị đầy đủ" in html
+    assert "đều đạt" in html
+    assert "Không có kiểm tra quan trọng nào thất bại" in html

@@ -702,7 +702,7 @@ def render_tier_2_calculation(
             <span class="finrag-status-chip pass" style="font-size: 0.75rem;">{_esc(scope_str)}</span>
         </div>
         <div class="finrag-primary-figure">{_esc(calc.formatted_value)}</div>
-        <div class="finrag-raw-value">Giá trị chính xác tuyệt đối: {_esc(calc.raw_value_display)}</div>
+        <div class="finrag-raw-value">Giá trị đầy đủ: {_esc(calc.raw_value_display)}</div>
         <div class="finrag-trace-box">
             <div class="finrag-trace-heading">Diễn giải công thức & Số liệu thế tính toán</div>
             <div class="finrag-trace-formula">{sub_formula_str}</div>
@@ -757,11 +757,11 @@ def render_tier_3_verification(verif: VerificationDTO):
     if verif.status == "VERIFIED":
         icon = "✓"
         title = "ĐÃ KIỂM ĐỊNH TÍNH TOÀN VẸN & NHẤT QUÁN (VERIFIED)"
-        desc = "Tất cả các kiểm tra về tính toán số học độc lập, công thức kế toán, niên độ tài chính, phạm vi báo cáo và chuỗi xuất xứ đều thỏa mãn 100%."
+        desc = "Các kiểm tra đã chạy về tính toán số học độc lập, công thức kế toán, niên độ tài chính, phạm vi báo cáo và chuỗi xuất xứ đều đạt."
     elif verif.status == "WARNING":
         icon = "⚠"
         title = "ĐÃ KIỂM ĐỊNH CÓ LƯU Ý PHƯƠNG PHÁP LUẬN (WARNING)"
-        desc = "Số liệu và phép tính số học chính xác. Tuy nhiên có lưu ý về quy ước hoặc phương pháp luận kế toán (ví dụ: sử dụng số dư cuối kỳ theo chuẩn MVP thay cho số dư bình quân)."
+        desc = "Không có kiểm tra quan trọng nào thất bại, nhưng có lưu ý về dữ liệu hoặc phương pháp luận kế toán (ví dụ: đơn vị được suy ra, hoặc dùng số dư cuối kỳ theo chuẩn MVP thay cho số dư bình quân)."
     else:
         icon = "✕"
         title = "TỪ CHỐI KIỂM ĐỊNH (REJECTED)"
