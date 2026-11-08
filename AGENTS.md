@@ -423,6 +423,27 @@ Status column: **CONFIRMED** (M0 audit evidence), **PARTLY** (pattern seen, impa
 
 | K25 | Rows that lost their note cell had the prior-year amount read as the current year | FIXED (2026-11-02) | `src/ingestion/fact_extractor.py`; verified by `tests/test_table_layouts.py` | 195 rows in 40 reports corrected |
 
+Items K26–K41 come from the unit review of 2026-11-08. "Unit audit Ux" refers to `.claude/skills/finrag-units/scripts/audit_units.py`; "answer-exposed" means a catalog line could select the fact. Counts were measured before the K26 fix.
+
+| # | Issue | Status | Where | Milestone |
+|---|---|---|---|---|
+| K26 | Per-share rows (EPS) took the scale of their table, so HAG 2024 basic EPS was answered as 997,000 VND instead of 997 VND and still VERIFIED: every check re-read the same scaled fact, and comparative reconciliation passed because both reports carried the same error | CONFIRMED (162 facts in 54 reports of HAG, HNG, MSN, MSR, VIC, VRE; of 106 generated EPS questions, 44 were answered 10^3 or 10^6 too high, 37 of them VERIFIED) | `src/ingestion/fact_extractor.py`, `src/financial/semantics.py` | ASSIGNED → P1 (owner approved 2026-11-08) |
+| K27 | OCR glued several cells into one string, which `parse_vietnamese_number` read as one number (up to 9.6e35 VND, AAA 2020 consolidated p8 line 110) | CONFIRMED (unit audit U3: 49 facts, 5 answer-exposed) | `src/ingestion/table_parser.py` | Unassigned |
+| K28 | The same line and year differ by exactly 10^3 or 10^6 between two reports. Causes seen: a unit read differently in one report, and restatement tables whose adjustment column was extracted as a current-year fact (ACV 2019 consolidated p62; VIC 2019 consolidated p85, where "Trình bày lại" is not caught by the restatement flag) | CONFIRMED (unit audit U4: 48 pairs, 20 answer-exposed) | `src/ingestion/fact_extractor.py` | Unassigned |
+| K29 | The UI's substituted growth formula takes `evidence[0]` as the current year, but reasoning returns [previous, current], so it shows "(₫52.62T [2023] − ₫62.85T [2024]) ÷ ₫62.85T" next to a correct +19.44% (FPT revenue growth 2024) | CONFIRMED | `ui/theme.py` `_build_substituted_formula` | Unassigned |
+| K30 | A difference of two ratios is shown with "%" ("Chênh lệch ROE" FPT 2024 vs 2023 = "0.37%"); it is a change in percentage points (điểm phần trăm) | CONFIRMED | program executor, answer formatting | Unassigned |
+| K31 | Formatting: English separators and abbreviations ("997,000 VND", "₫8.94T") that Vietnamese readers can misread; trace steps carry the normalized value next to the source scale (value 8,939,117,000,000 with `unit_scale` 1e6), so a reader can apply the scale twice | CONFIRMED | `src/application/service.py`, trace DTOs, `ui/` | Unassigned |
+| K32 | A unit asked for in the question is not applied: "Doanh thu thuần của VRE năm 2024 là bao nhiêu tỷ đồng?" is shown as "₫8.94T"; the program planner strips such units with `UNIT_REGEX` | CONFIRMED | `src/financial/program/planner.py`, answer formatting | Unassigned |
+| K33 | `infer_statement_type` types cash-flow rows with codes 20, 30, 40, 50 and 70 as income statement, because both statements use these codes | CONFIRMED (12,492 facts whose label names a cash flow); effect on answers not measured | `src/financial/semantics.py` | Unassigned |
+| K34 | Verification check `input_unit_scales_normalized` is emitted as PASS whenever input scales differ, without an independent comparison (principle 23) | SUSPECTED (code reading) | `src/financial/verification.py` | Unassigned |
+| K35 | Comparative reconciliation allows 1.0 VND, but a figure stated in millions in one report and in thousands in another differs by rounding | SUSPECTED (code reading) | `src/financial/verification.py` `_verify_comparative_consistency` | Unassigned |
+| K36 | `parse_unit_scale` reads "Công ty" as tỷ VND and "ngân hàng" as nghìn VND (word-level regex) | CONFIRMED for the function; NOT OBSERVED in the corpus (no fact carries "tỷ VND") | `src/financial/semantics.py` | Unassigned |
+| K37 | `parse_vietnamese_number` reads "414,721" as 414721; in Vietnamese notation the comma is the decimal mark, so this is right only when the cell uses English grouping | SUSPECTED; needs an owner policy decision, like K10 | `src/ingestion/table_parser.py` | Unassigned |
+| K38 | Share counts (for example off-balance-sheet lines of SSI and FTS) are stored with a VND unit | CONFIRMED (unit audit U6: 175 facts, none answer-exposed) | `src/ingestion/fact_extractor.py` | Unassigned |
+| K39 | `scripts/evaluate_silver.py` `UNIT_SCALES` has no per-share unit, so a silver label in đồng per share would raise `KeyError` | SUSPECTED (code reading) | `scripts/evaluate_silver.py` | Unassigned; changing the scorer needs owner approval |
+| K40 | UI text claims more than was tested (Section 9): "Giá trị chính xác tuyệt đối" (`ui/theme.py:705`) and "đều thỏa mãn 100%" (`ui/theme.py:760`) | CONFIRMED | `ui/theme.py` | Unassigned |
+| K41 | When a header merges "Mã số" and "Thuyết minh" into one cell, a small amount such as EPS is replaced by its note number: FPT 2018 consolidated p10 line 70 reads 33 (note 33) instead of 3,903. The note shift needs a 7-digit neighbour, which EPS never has | CONFIRMED (one case; answered with WARNING by comparative reconciliation) | `src/ingestion/fact_extractor.py` `_note_cell_offset` | Unassigned |
+
 ---
 
 ## 14. Definition of done (per change)
