@@ -112,3 +112,18 @@ Use the AskUserQuestion tool for these when available; put the recommended optio
 - Data, keys (`.env`) or files the step needs are missing.
 - The only way forward seems to be weakening a test, a tolerance or a check.
 - The change would touch the sealed holdout or label files.
+
+## Which skill for which part
+
+| Situation | Skill |
+|---|---|
+| Before and after any behaviour change; "có hỏng gì không" | `finrag-regression` |
+| A wrong answer, odd refusal, or unexplained WARNING | `finrag-diagnose` (then back here to fix) |
+| Anything about đồng/nghìn/triệu/tỷ, EPS, %, ratios, display of numbers | `finrag-units` |
+| Reading a report page, confirming a figure, citing a row | `finrag-source-reading` |
+| Labels, holdout, benchmarks, any reported percentage | `finrag-eval-integrity` |
+| P2/P3, any model call, prompts, keys | `finrag-llm-layer` |
+| Docs, AGENTS.md state, README, CV text | `finrag-docs-sync` |
+| General discipline (installed for all projects) | `test-driven-development`, `systematic-debugging`, `verification-before-completion`, `quantitative-reasoning`, `evidence-ledger`, `long-task-ledger`, `doubt-driven-development`, `karpathy-guidelines`, `property-based-testing` |
+
+Precedence when they disagree: the owner's instruction in this task, then AGENTS.md, then the `finrag-*` skills, then the general ones. Two known frictions: `test-driven-development` says to delete code written before its test, which here means "revert it and redo it test-first within the smallest diff", not deleting unrelated code; `property-based-testing` would add Hypothesis, which is a new dependency and needs the owner's approval with a written reason (§11).

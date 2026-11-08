@@ -37,12 +37,13 @@ Defined in `docs/holdout_v1_seal.md`. It can be used exactly once.
 Labels must not share a blind spot with the system, otherwise agreement proves nothing.
 
 1. Freeze the label file before running the system on those questions; record its SHA-256.
-2. Read the operand from the raw OCR text under `data/external/ViFinQA/financial_statements/<TICKER>/<YEAR>/.../*_extracted.txt`, not from the parquet or from FinRAG output.
+2. Read the operand from the raw OCR text under `data/external/ViFinQA/financial_statements/<TICKER>/<YEAR>/.../*_extracted.txt`, not from the parquet or from FinRAG output. Use `finrag-source-reading` and its `show_source.py`, which imports nothing from `src/`; its seven checks (statement, face vs note, unit including row-level units, column, row, sign, independent cross-check) are the labelling procedure.
 3. For each operand record: ticker, report_year, scope, page, line_code, the full `row_cells`, which column, the raw cell string, unit evidence and multiplier, `source_path` (same fields as existing silver records).
 4. Compute the answer with a small script that does **not** import anything from `src/`. Keep the exact value as a string as well as a float.
 5. Questions that cannot be answered from the corpus get `expected_system_behavior` = `REFUSE_UNSUPPORTED` or `REFUSE_INSUFFICIENT_EVIDENCE`, with the reason.
-6. Record `labeler` (model id). The labeler must be a different model family from any LLM planner under test, or the labels must be hand-checked (AGENTS.md §7).
+6. Record `labeler` (model id). The labeler must be a different model family from any LLM planner under test, or the labels must be hand-checked (AGENTS.md §7). All 148 silver v2 labels have `labeler = claude-opus-5-5`, so a Claude-family planner would not be independent of them.
 7. Split by company, never by question, so the same report never appears on both sides.
+8. Units: record the answer's kind (amount, per-share, count, ratio, percentage points) as well as its unit. `scripts/evaluate_silver.py` `UNIT_SCALES` knows only VND scales plus `ratio`/`percentage`; a per-share label ("đồng/cổ phiếu") would raise `KeyError`, so extending the scorer is a change for the owner to approve before such labels are added. See `finrag-units`.
 
 ## Metrics and how to state them
 

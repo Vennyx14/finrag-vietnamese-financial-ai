@@ -37,6 +37,7 @@ If you forgot the before-snapshot, the honest options are: `git stash` your work
 | Coverage `SUCCESS/WARNING -> ERROR` | An answered question is now refused | Needs a recorded reason per question (often fine: a wrong answer turned into a refusal). |
 | Coverage `ERROR -> SUCCESS/WARNING` | New answers | Coverage went up, but nobody knows yet whether they are right. Read each one against its evidence and say the reading is yours, not independent. |
 | Same status, different `resolved_metric` | Answer changed meaning | Read each one. |
+| Unit audit HIGH count rises (U1–U4) | More facts with a wrong scale, per-share scaling, absurd magnitude or cross-report gap | **Regression**, even when every test passes. See `finrag-units`. The `units` step runs `audit_units.py` automatically (about 8 s); `--skip units` drops it. |
 
 Coverage is not accuracy. Never describe the answered count as a correctness figure, and never call the self-authored benchmarks accuracy on unseen data.
 

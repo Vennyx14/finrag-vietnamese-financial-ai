@@ -152,6 +152,22 @@ def main() -> int:
                 hard.append(f"silver {cid} was CORRECT, now {new}")
         lines.append("")
 
+    # Unit audit counts (finrag-units)
+    ua, ub = load_json(before_dir / "manifests" / "units.json"), load_json(after_dir / "manifests" / "units.json")
+    lines.append("## Unit audit (finrag-units)")
+    if ua is None or ub is None:
+        lines.append("Not compared (unit audit missing in one snapshot).")
+    else:
+        lines.append("| Code | Check | Severity | Before | After | Exposed before | Exposed after |")
+        lines.append("|---|---|---|---:|---:|---:|---:|")
+        for code in sorted(set(ua) | set(ub), key=lambda c: int(c[1:])):
+            a, b = ua.get(code, {}), ub.get(code, {})
+            lines.append(f"| {code} | {b.get('title', a.get('title'))} | {b.get('severity', a.get('severity'))} | "
+                         f"{a.get('count', '-')} | {b.get('count', '-')} | {a.get('exposed', '-')} | {b.get('exposed', '-')} |")
+            if b.get("severity") == "HIGH" and b.get("count", 0) > a.get("count", 0):
+                hard.append(f"unit audit {code} {b.get('title')} rose from {a.get('count', 0)} to {b.get('count')}")
+    lines.append("")
+
     # Coverage transitions
     cov_a, cov_b = load_coverage(before_dir / "manifests" / "question_coverage.csv"), load_coverage(after_dir / "manifests" / "question_coverage.csv")
     lines.append("## Coverage status transitions (development questions only)")

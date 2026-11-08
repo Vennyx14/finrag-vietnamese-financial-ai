@@ -32,7 +32,9 @@ STEPS = {
     "retrieval": [sys.executable, "scripts/check_retrieval_quality.py"],
     "silver": [sys.executable, "scripts/evaluate_silver.py"],
     "coverage": [sys.executable, "scripts/run_question_coverage.py"],
+    "units": None,  # finrag-units audit; command built in main() because it writes into the snapshot
 }
+UNITS_AUDIT = Path(".claude") / "skills" / "finrag-units" / "scripts" / "audit_units.py"
 
 MANIFEST_FILES = [
     "day3_retrieval_quality.json",
@@ -96,6 +98,11 @@ def main() -> int:
         if name in skip:
             summary["steps"][name] = {"status": "SKIPPED_BY_REQUEST"}
             continue
+        if name == "units":
+            if not (root / UNITS_AUDIT).exists():
+                summary["steps"][name] = {"status": "SKIPPED_NOT_AVAILABLE"}
+                continue
+            command = [sys.executable, str(root / UNITS_AUDIT), "--json", str(out / "manifests" / "units.json")]
         print(f"[snapshot] running {name} ...", flush=True)
         started = time.perf_counter()
         result = subprocess.run(command, cwd=root, capture_output=True, text=True, encoding="utf-8", errors="replace", env=env)
