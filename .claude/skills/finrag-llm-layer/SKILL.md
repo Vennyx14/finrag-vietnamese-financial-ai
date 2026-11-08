@@ -5,7 +5,7 @@ description: Rules and design for FinRAG's LLM work - the provider layer in src/
 
 # FinRAG LLM layer
 
-State on 2026-11-08: `src/nlp/llm.py` is empty; M4 layers 1 (catalog) and 2 (template planner) work without an LLM; layer 3 has not started. Keys live only in `.env` (`CEREBRAS_API_KEY`, `OPENROUTER_API_KEY`, `GROQ_API_KEY`); `scripts/check_llm_key.py` checks them with the standard library. The steps are P2.1–P2.6 and P3.1–P3.7 in `docs/development_plan.md`; this skill is how to do them without breaking the project's guarantees.
+State on 2026-11-08: `src/nlp/llm.py` is empty; M4 layers 1 (catalog) and 2 (template planner) work without an LLM; layer 3 has not started. Keys live only in `.env`. Since 2026-11-08 `.env` and `.env.example` also hold the provider choice and, per provider, the base URL and model: `FINRAG_LLM_PROVIDER`, then `<NAME>_API_KEY`, `<NAME>_BASE_URL`, `<NAME>_MODEL` for `CEREBRAS`, `OPENROUTER` and `GROQ` (default model `gpt-oss-120b` on all three). `scripts/check_llm_key.py` checks the keys with the standard library. The steps are P2.1–P2.6 and P3.1–P3.7 in `docs/development_plan.md`; this skill is how to do them without breaking the project's guarantees.
 
 ## Non-negotiables and why
 
@@ -37,8 +37,8 @@ class LLMRateLimitError(LLMError): ...      # 429, quota
 class LLMResponseFormatError(LLMError): ... # body not as expected
 ```
 
-- `OpenAICompatibleProvider(base_url, model, key_name)`: POST `{base_url}/chat/completions` with `urllib.request`, timeout, bounded retries with backoff for 429 and 5xx only. Base URL, model and key name come from `.env` (add the variable names to `.env.example`, never values). Confirm each provider's chat endpoint and model IDs from its documentation at implementation time; `check_llm_key.py` only proves the key.
-- Reading `.env`: reuse the small parser in `scripts/check_llm_key.py` (move it into `src/nlp/` rather than adding python-dotenv).
+- `OpenAICompatibleProvider(base_url, model, key_name)`: POST `{base_url}/chat/completions` with `urllib.request`, timeout, bounded retries with backoff for 429 and 5xx only. Provider, base URL, model and key come from `.env`, using the variable names in `.env.example`; never put a key value in `.env.example`. A missing or empty variable is a typed configuration error, not a default hidden in code. Confirm each provider's chat endpoint and model IDs from its documentation at implementation time (Cerebras retires models often); `check_llm_key.py` only proves the key.
+- Reading `.env`: reuse the small parser in `scripts/check_llm_key.py` (move it into `src/nlp/` rather than adding python-dotenv), and make it skip lines that start with `#`.
 - Cache (P2.4): key = SHA-256 of `json.dumps({model, messages, temperature, max_tokens}, sort_keys=True, ensure_ascii=False)`; one JSON file per key under `data/processed/llm_cache/` (already gitignored by `data/processed/**`). Store request, response, model, timestamp. Never cache errors. A run must be able to say how many calls were cache hits.
 - `MockProvider(scripted_responses)`: deterministic, records the messages it received. Guard: constructing the application with a mock outside pytest raises (for example check `PYTEST_CURRENT_TEST` or require an explicit `allow_mock=True` that only tests pass).
 - Tests: a fixture that makes `urllib.request.urlopen` raise if called; a test that the key string never appears in `str(error)` or logs; tests for 429 → `LLMRateLimitError`, timeout → `LLMUnavailableError`, malformed JSON → `LLMResponseFormatError`; cache hit returns `cached=True` with no network.

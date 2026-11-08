@@ -74,7 +74,7 @@ Nếu thiếu thời gian, điểm dừng an toàn là sau P7: hệ thống ch�
 
 | Bước | Nhãn | Việc |
 |---|---|---|
-| P0.1 | **[BẠN]** | Tạo khóa API miễn phí. Đề xuất Cerebras (`https://cloud.cerebras.ai`), dự phòng OpenRouter. Groq bị chặn trên một số mạng. Tạo file `.env` ở gốc repo với một dòng `CEREBRAS_API_KEY=...`. Không gửi khóa qua chat, không commit. |
+| P0.1 | **[BẠN]** | Tạo khóa API Groq (`https://console.groq.com/keys`, có gói Free) và dán vào dòng `GROQ_API_KEY` trong `.env`. Không gửi khóa qua chat, không commit. Ngày 2026-11-08 agent đã tạo sẵn `.env` theo `.env.example` (nhà cung cấp, địa chỉ API và model đã điền), và bạn đồng ý dùng Groq trước thay cho Cerebras: Cerebras nay đòi thêm thẻ để nhận 5 USD dùng một lần, hết hạn sau 30 ngày; OpenRouter cần nạp credit. Groq bị chặn trên một số mạng, nhưng mạng của máy bạn gọi được (kiểm tra cùng ngày). Có trả phí cho P3 hay không sẽ quyết sau khi đo lượng token thật. |
 | P0.2 | **[AUTO]** | Chạy `python scripts/check_llm_key.py` để xác nhận khóa dùng được. Khóa không bao giờ được in ra. |
 | P0.3 | **[BẠN]** | Sao lưu ra ổ đám mây hoặc USB: `data/processed/holdout/holdout_v1_ids.json` (mất file này là mất tập niêm phong), `data/processed/gold_drafts/`, và `data/external/`. Các thư mục này bị gitignore nên không có trên GitHub. |
 | P0.4 | **[AUTO]** | Ghi mã SHA-256 của file holdout vào báo cáo để kiểm tra lại bản sao lưu về sau. |
@@ -105,7 +105,7 @@ Mục tiêu: một lớp gọi LLM nhỏ, kiểm thử được, không có đư
 | Bước | Nhãn | Việc |
 |---|---|---|
 | P2.1 | **[AUTO]** | Định nghĩa giao diện `LLMProvider` (đầu vào: messages, nhiệt độ, giới hạn token; đầu ra: văn bản và metadata gồm model, số token, độ trễ). |
-| P2.2 | **[AUTO]** | `OpenAICompatibleProvider` dùng chung cho Cerebras, OpenRouter, Groq (cùng chuẩn API). Dùng thư viện chuẩn `urllib` như `scripts/check_llm_key.py`, nên không thêm phụ thuộc. Model và base URL đọc từ `.env`. |
+| P2.2 | **[AUTO]** | `OpenAICompatibleProvider` dùng chung cho Cerebras, OpenRouter, Groq (cùng chuẩn API). Dùng thư viện chuẩn `urllib` như `scripts/check_llm_key.py`, nên không thêm phụ thuộc. Model và base URL đọc từ `.env`. Tên biến đặt ngày 2026-11-08 trong `.env.example`: `FINRAG_LLM_PROVIDER` chọn nhà cung cấp; mỗi nhà cung cấp có `<TÊN>_API_KEY`, `<TÊN>_BASE_URL`, `<TÊN>_MODEL`. Model mặc định là `gpt-oss-120b` ở cả ba nhà cung cấp, khác họ với model Claude đã điền nhãn silver. |
 | P2.3 | **[AUTO]** | `MockProvider` chỉ dùng trong test. Ứng dụng từ chối khởi động với mock ngoài test (nguyên tắc 18). |
 | P2.4 | **[AUTO]** | Bộ đệm đĩa theo hash (model, prompt, tham số) trong `data/processed/llm_cache/` để chạy lại cho kết quả giống hệt và tiết kiệm lượt gọi miễn phí. |
 | P2.5 | **[AUTO]** | Lỗi có kiểu: hết hạn mức, mất mạng, phản hồi sai định dạng. Thử lại có giới hạn. Khi LLM lỗi, câu trả lời nói rõ "LLM không khả dụng", không âm thầm quay về câu trả lời khác. |
