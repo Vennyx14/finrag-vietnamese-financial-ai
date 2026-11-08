@@ -4,7 +4,63 @@ Lập ngày 2026-11-08 với Claude Code 2.1.304, gói Claude Pro, Windows. Agen
 
 Quy tắc cho agent nằm ở `AGENTS.md`, Mục 10, quy tắc 11. Tài liệu này dành cho bạn, người giao việc và gộp kết quả.
 
-## Tóm tắt nhanh
+## Chế độ tự động (khuyến nghị): bạn chỉ ngồi xem
+
+Bạn chỉ trò chuyện với **một phiên Claude trong VS Code, mở ở repo chính**. Đây là phiên điều phối. Nó giao việc cho agent con chạy trong worktree riêng, đọc lại kết quả, và chỉ hỏi bạn ở các cổng. Bạn không cần mở agent view.
+
+### Giao việc
+
+Gõ một câu vào phiên điều phối, ví dụ:
+
+```text
+Làm P2 theo docs/development_plan.md bằng finrag-worker-deep.
+Sửa K29 bằng finrag-worker.
+Tiếp tục kế hoạch, tự chọn agent.
+```
+
+Nêu tên agent trong câu giao việc, để phiên điều phối biết bạn muốn giao cho agent con thay vì tự làm.
+
+### Ba agent và cách chọn model
+
+| Agent | Model | Dùng cho |
+|---|---|---|
+| `finrag-worker` | Sonnet | Việc đã rõ cách làm: đồng bộ tài liệu, chữ trên giao diện, lỗi đã mô tả rõ trong AGENTS.md Mục 13, thêm test, chạy đo hồi quy |
+| `finrag-worker-deep` | Opus, mức suy luận cao nhất (max) | Việc khó: lớp LLM và planner (P2, P3), mọi thứ trong `src/financial/` và `src/ingestion/`, đơn vị, xác minh, nhãn và đánh giá (P5 đến P7), chẩn đoán câu trả lời sai |
+| `finrag-reviewer` | Opus max, chỉ đọc | Đọc lại độc lập mọi nhánh đụng tới logic tài chính, ingestion, LLM hay đánh giá, trước khi hỏi bạn có gộp không |
+
+Nếu bạn nói "tự chọn agent", phiên điều phối chọn theo bảng trong skill `finrag-task`, mục "Delegated mode". Khi phân vân, nó chọn Opus. Khi agent Sonnet bỏ dở, nó giao lại cho Opus làm tiếp trên cùng phần việc. Opus max tiêu hạn mức Pro nhanh hơn Sonnet nhiều lần, nên việc dễ vẫn giao cho Sonnet.
+
+### Một vòng làm việc
+
+1. Phiên điều phối kiểm tra cổng trong AGENTS.md, rồi giao việc. Bạn thấy một dòng: agent nào, vì sao.
+2. Agent con làm trọn quy trình: viết test trước, code, chạy toàn bộ test, đo hồi quy, cập nhật tài liệu, commit trên nhánh riêng.
+3. Nếu gặp câu hỏi kỹ thuật, phiên điều phối tự trả lời. Câu hỏi chính sách thì nó hỏi bạn, kèm đề xuất.
+4. Phiên điều phối đọc thay đổi, chạy `finrag-reviewer` nếu cần, rồi hỏi bạn đúng một câu: gộp vào `main` không?
+5. Bạn trả lời "đồng ý". Phiên điều phối gộp, chạy test trên `main`, xóa worktree và nhánh, rồi đề xuất bước tiếp theo.
+
+### Cần nhớ
+
+- **Giữ cửa sổ VS Code mở** khi agent đang chạy, vì agent con chạy bên trong phiên điều phối.
+- **Đôi khi có yêu cầu cấp quyền** hiện trong VS Code, kèm tên agent đang hỏi. Duyệt nếu hợp lý; nhấn `Esc` để từ chối riêng lệnh đó.
+- **Tối đa 2 agent con cùng lúc**, và chỉ khi chúng sửa các file khác nhau. P2, P3, P4 phải làm nối tiếp, nên thường chỉ có 1.
+- **Mỗi bước kế hoạch nên dùng một cuộc trò chuyện mới.** Hội thoại dài làm mỗi lượt tốn hạn mức hơn.
+- **Agent không push.** Bạn tự chạy `git push` khi muốn cập nhật GitHub.
+
+### Luật chặn cứng (`.claude/settings.json`)
+
+Ở chế độ auto, Claude được push lên mọi nhánh, kể cả `main`, và được đọc `.env` mà không hỏi. Repo chặn ba việc này cho mọi phiên, kể cả phiên của bạn:
+
+| Luật | Tác dụng |
+|---|---|
+| `Bash(git push *)`, `PowerShell(git push *)` | Chặn lệnh push viết theo cách thông thường. Một lệnh viết khác, như `git -C . push`, vẫn lọt qua, nên quy tắc 11 trong AGENTS.md vẫn là lớp bảo vệ chính. |
+| `Read(.env)` | Claude không đọc được khóa API, nên khóa không lọt vào cuộc trò chuyện. Code và script như `scripts/check_llm_key.py` vẫn đọc `.env` bình thường. |
+| `Edit(**/data/benchmark/**)` | Claude không sửa tay được benchmark và nhãn gold (AGENTS.md Mục 7). Script tạo benchmark vẫn chạy được. |
+
+Muốn bỏ một luật, xóa dòng tương ứng trong `.claude/settings.json` rồi commit.
+
+---
+
+## Tóm tắt nhanh (khi tự dùng agent view)
 
 1. Commit mọi thứ bạn muốn agent thấy. Agent chỉ thấy những gì đã commit.
 2. Mở terminal trong VS Code ở gốc repo, thấy chữ `(.venv)` ở đầu dòng lệnh, rồi chạy:
@@ -26,7 +82,9 @@ Quy tắc cho agent nằm ở `AGENTS.md`, Mục 10, quy tắc 11. Tài liệu n
 | `.worktreeinclude` | Chép `.env`, `.claude/settings.local.json`, `data/processed/`, `data/benchmark/`, và các file ViFinQA mà code đọc | Các file này bị gitignore nên worktree mới không có. Thiếu dữ liệu thì test tích hợp bị skip. |
 | `.gitignore` | Thêm `.claude/worktrees/` và `.claude/settings.local.json` | Worktree không hiện thành file lạ trong repo chính; cài đặt cá nhân không bị commit. |
 | `.git/config` (chỉ máy này) | `core.longpaths = true` | Cho Git xử lý đường dẫn dài hơn 260 ký tự trên Windows. Cài đặt này không nằm trong commit; nếu clone lại repo thì chạy lại `git config core.longpaths true`. |
-| `AGENTS.md`, Mục 10, quy tắc 11 | Agent chuyển vào worktree trước khi chạy script; commit trên nhánh riêng; không push, không mở PR, không merge | Agent view mặc định tự push nhánh lên GitHub và có thể mở pull request nháp. Quy tắc này giữ mọi thứ ở máy bạn cho tới khi bạn tự gộp. |
+| `AGENTS.md`, Mục 10, quy tắc 11 | Agent chuyển vào worktree trước khi chạy script; commit trên nhánh riêng; không push, không mở PR, không merge | Agent view mặc định tự push nhánh lên GitHub và có thể mở pull request nháp. Quy tắc này giữ mọi thứ ở máy bạn. Việc gộp do bạn làm, hoặc do phiên điều phối làm sau khi bạn "đồng ý". |
+| `.claude/agents/` | `finrag-worker`, `finrag-worker-deep`, `finrag-reviewer` | Agent con cho chế độ tự động (mục đầu tài liệu) |
+| `.claude/settings.json` | Luật chặn `git push`, đọc `.env`, sửa `data/benchmark/` | Xem "Luật chặn cứng" ở mục đầu tài liệu |
 
 **Không chép `data/external/ViFinQA/.cache/`.** Đây chỉ là cache tải xuống của HuggingFace, không đoạn code nào đọc tới. Trong worktree, đường dẫn của nó vượt giới hạn 260 ký tự của Windows, và Git báo `Filename too long` khi xóa worktree. Khi thêm bộ dữ liệu mới vào `data/external/`, nhớ thêm dòng tương ứng vào `.worktreeinclude`.
 

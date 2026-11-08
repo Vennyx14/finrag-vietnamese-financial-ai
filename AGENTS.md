@@ -358,7 +358,8 @@ Follow this loop for every task: **Understand → Plan → Implement → Diff �
     - A background session starts in the main checkout and moves into its own worktree under `.claude/worktrees/` only when it first edits a file. Move into the worktree before running tests, scripts, or skills: the benchmark and coverage scripts rewrite tracked files in `data/manifests/`, and a run from the main checkout overwrites the owner's copy.
     - The worktree starts from the owner's latest local commit. Changes not committed in the main checkout, including skills still being written, are not in it.
     - Gitignored data (`data/processed/`, `data/benchmark/`, the ViFinQA files) is a copy made when the worktree was created. If you rebuild it, for example with `python scripts/prepare_data.py`, say so in the report: the owner must rebuild it in the main checkout after merging.
-    - Commit finished work on the worktree's own branch without asking; that is how the owner receives it. Do not push, open pull requests, or merge. The owner reviews the branch and merges it into `main`.
+    - Commit finished work on the worktree's own branch without asking; that is how the owner receives it. Do not push, open pull requests, or merge. Claude Code keeps worktree sessions out of the main checkout, git included, so merging happens there: by the owner, or by the owner's coordinator session after the owner answers "đồng ý" (procedure and model routing in the `finrag-task` skill, "Delegated mode").
+    - Worker subagents are defined in `.claude/agents/`: `finrag-worker` (Sonnet, well-specified tasks), `finrag-worker-deep` (Opus at max effort, design, financial logic, ingestion, evaluation), and `finrag-reviewer` (Opus at max effort, read-only review before merge).
 
 ---
 
