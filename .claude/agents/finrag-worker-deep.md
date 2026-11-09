@@ -1,6 +1,6 @@
 ---
 name: finrag-worker-deep
-description: Carries out a hard FinRAG task end to end in its own git worktree with Opus at max effort - design work (LLM provider and planner, P2/P3), anything in src/financial (reasoning, verification, program layer, units), ingestion and number parsing, evaluation and labels, diagnosis of wrong answers, and tasks a finrag-worker gave up on. Commits on its branch and returns a report. Use when the owner says "bằng finrag-worker-deep" or the finrag-task coordinator routing table picks it.
+description: Carries out the hardest FinRAG tasks end to end in its own git worktree with Opus at max effort - only work that needs long multi-step reasoning and must be exactly right - the LLM planner and its prompt-injection defence and independent checks (P3.1-P3.3), changes to how verification stays independent of the reasoner, number parsing or ingestion changes that rebuild all facts, sealed-holdout labelling and the one-time P5 measurement, and tasks finrag-worker-opus gave up on. Commits on its branch and returns a report. Most code work goes to finrag-worker-opus. Use when the owner says "bằng finrag-worker-deep" or the finrag-task coordinator routing table picks it.
 model: opus
 effort: max
 isolation: worktree

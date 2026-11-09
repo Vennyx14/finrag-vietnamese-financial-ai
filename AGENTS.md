@@ -359,7 +359,7 @@ Follow this loop for every task: **Understand → Plan → Implement → Diff �
     - The worktree starts from the owner's latest local commit. Changes not committed in the main checkout, including skills still being written, are not in it.
     - Gitignored data (`data/processed/`, `data/benchmark/`, the ViFinQA files) is a copy made when the worktree was created. If you rebuild it, for example with `python scripts/prepare_data.py`, say so in the report: the owner must rebuild it in the main checkout after merging.
     - Commit finished work on the worktree's own branch without asking; that is how the owner receives it. Do not push, open pull requests, or merge. Claude Code keeps worktree sessions out of the main checkout, git included, so merging happens there: by the owner, or by the owner's coordinator session after the owner answers "đồng ý" (procedure and model routing in the `finrag-task` skill, "Delegated mode").
-    - Worker subagents are defined in `.claude/agents/`: `finrag-worker` (Sonnet, well-specified tasks), `finrag-worker-deep` (Opus at max effort, design, financial logic, ingestion, evaluation), and `finrag-reviewer` (Opus at max effort, read-only review before merge).
+    - Worker subagents are defined in `.claude/agents/`: `finrag-worker` (Sonnet, tasks with no judgement in them), `finrag-worker-opus` (Opus at high effort, the default for code and logic), `finrag-worker-deep` (Opus at max effort, only long multi-step work that must be exactly right: LLM planner, verification independence, fact rebuilds, sealed-holdout work), and `finrag-reviewer` (Opus, read-only review before merge; high by default, max for deep branches).
 
 ---
 

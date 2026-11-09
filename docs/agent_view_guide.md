@@ -13,22 +13,23 @@ Bạn chỉ trò chuyện với **một phiên Claude trong VS Code, mở ở re
 Gõ một câu vào phiên điều phối, ví dụ:
 
 ```text
-Làm P2 theo docs/development_plan.md bằng finrag-worker-deep.
+Làm P2 theo docs/development_plan.md bằng finrag-worker-opus.
 Sửa K29 bằng finrag-worker.
 Tiếp tục kế hoạch, tự chọn agent.
 ```
 
 Nêu tên agent trong câu giao việc, để phiên điều phối biết bạn muốn giao cho agent con thay vì tự làm.
 
-### Ba agent và cách chọn model
+### Bốn agent và cách chọn model
 
 | Agent | Model | Dùng cho |
 |---|---|---|
 | `finrag-worker` | Sonnet | Việc đã rõ cách làm: đồng bộ tài liệu, chữ trên giao diện, lỗi đã mô tả rõ trong AGENTS.md Mục 13, thêm test, chạy đo hồi quy |
-| `finrag-worker-deep` | Opus, mức suy luận cao nhất (max) | Việc khó: lớp LLM và planner (P2, P3), mọi thứ trong `src/financial/` và `src/ingestion/`, đơn vị, xác minh, nhãn và đánh giá (P5 đến P7), chẩn đoán câu trả lời sai |
-| `finrag-reviewer` | Opus max, chỉ đọc | Đọc lại độc lập mọi nhánh đụng tới logic tài chính, ingestion, LLM hay đánh giá, trước khi hỏi bạn có gộp không |
+| `finrag-worker-opus` | Opus, mức suy luận high | **Mặc định cho code và logic**: sửa lỗi trong `src/` và `ui/`, lớp gọi LLM (P2), mở rộng độ phủ (P4), script đánh giá và thí nghiệm (P6, P7), chẩn đoán câu trả lời sai |
+| `finrag-worker-deep` | Opus, mức suy luận cao nhất (max) | Chỉ việc cực khó, cần suy luận nhiều bước và phải chính xác tuyệt đối: LLM planner và chống chèn lệnh (P3.1 đến P3.3), thay đổi cách xác minh độc lập, sửa phần đọc số hoặc ingestion làm dựng lại toàn bộ dữ kiện, gán nhãn và đo tập niêm phong (P5), và việc mà `finrag-worker-opus` không giải quyết được |
+| `finrag-reviewer` | Opus, chỉ đọc; high, hoặc max cho nhánh của `finrag-worker-deep` | Đọc lại độc lập mọi nhánh đụng tới logic tài chính, ingestion, LLM hay đánh giá, trước khi hỏi bạn có gộp không |
 
-Nếu bạn nói "tự chọn agent", phiên điều phối chọn theo bảng trong skill `finrag-task`, mục "Delegated mode". Khi phân vân, nó chọn Opus. Khi agent Sonnet bỏ dở, nó giao lại cho Opus làm tiếp trên cùng phần việc. Opus max tiêu hạn mức Pro nhanh hơn Sonnet nhiều lần, nên việc dễ vẫn giao cho Sonnet.
+Nếu bạn nói "tự chọn agent", phiên điều phối chọn theo bảng trong skill `finrag-task`, mục "Delegated mode". Phần lớn việc code đi Opus high. Một việc chỉ lên max khi vừa cần suy luận dài nhiều bước, vừa có cái giá đắt nếu sai: câu trả lời sai mà vẫn được xác minh, hoặc phí mất tập niêm phong chỉ dùng được một lần. Khi phân vân giữa high và max, nó chọn high, rồi nâng lên max nếu agent dừng lại hoặc bước đọc lại phát hiện lỗi logic. Thứ tự nâng cấp: Sonnet → Opus high → Opus max; agent sau làm tiếp trên nhánh của agent trước. Opus tiêu hạn mức Pro nhanh hơn Sonnet, và max nhanh hơn high.
 
 ### Một vòng làm việc
 
@@ -83,7 +84,7 @@ Muốn bỏ một luật, xóa dòng tương ứng trong `.claude/settings.json`
 | `.gitignore` | Thêm `.claude/worktrees/` và `.claude/settings.local.json` | Worktree không hiện thành file lạ trong repo chính; cài đặt cá nhân không bị commit. |
 | `.git/config` (chỉ máy này) | `core.longpaths = true` | Cho Git xử lý đường dẫn dài hơn 260 ký tự trên Windows. Cài đặt này không nằm trong commit; nếu clone lại repo thì chạy lại `git config core.longpaths true`. |
 | `AGENTS.md`, Mục 10, quy tắc 11 | Agent chuyển vào worktree trước khi chạy script; commit trên nhánh riêng; không push, không mở PR, không merge | Agent view mặc định tự push nhánh lên GitHub và có thể mở pull request nháp. Quy tắc này giữ mọi thứ ở máy bạn. Việc gộp do bạn làm, hoặc do phiên điều phối làm sau khi bạn "đồng ý". |
-| `.claude/agents/` | `finrag-worker`, `finrag-worker-deep`, `finrag-reviewer` | Agent con cho chế độ tự động (mục đầu tài liệu) |
+| `.claude/agents/` | `finrag-worker`, `finrag-worker-opus`, `finrag-worker-deep`, `finrag-reviewer` | Agent con cho chế độ tự động (mục đầu tài liệu) |
 | `.claude/settings.json` | Luật chặn `git push`, đọc `.env`, sửa `data/benchmark/` | Xem "Luật chặn cứng" ở mục đầu tài liệu |
 
 **Không chép `data/external/ViFinQA/.cache/`.** Đây chỉ là cache tải xuống của HuggingFace, không đoạn code nào đọc tới. Trong worktree, đường dẫn của nó vượt giới hạn 260 ký tự của Windows, và Git báo `Filename too long` khi xóa worktree. Khi thêm bộ dữ liệu mới vào `data/external/`, nhớ thêm dòng tương ứng vào `.worktreeinclude`.

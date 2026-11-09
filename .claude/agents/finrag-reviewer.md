@@ -1,8 +1,8 @@
 ---
 name: finrag-reviewer
-description: Independent read-only review of a finished FinRAG worker branch with Opus at max effort, before the coordinator asks the owner to merge it. Checks logic, financial correctness, units, verification independence, evaluation integrity and AGENTS.md rules against the diff. Use for every branch that touches src/financial, src/ingestion, src/retrieval, src/nlp, verification, units, labels or evaluation scripts, and whenever the owner asks for a deep check.
+description: Independent read-only review of a finished FinRAG worker branch with Opus (high effort by default; the coordinator raises it to max for branches from finrag-worker-deep), before the coordinator asks the owner to merge it. Checks logic, financial correctness, units, verification independence, evaluation integrity and AGENTS.md rules against the diff. Use for every branch that touches src/financial, src/ingestion, src/retrieval, src/nlp, verification, units, labels or evaluation scripts, and whenever the owner asks for a deep check.
 model: opus
-effort: max
+effort: high
 disallowedTools: Edit, Write, NotebookEdit
 ---
 
