@@ -11,28 +11,21 @@ Usage:
 import json
 from pathlib import Path
 import sys
-from typing import Dict
 import urllib.error
 import urllib.request
 
-ENV_PATH = Path(__file__).resolve().parent.parent / ".env"
+REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from src.nlp.env_file import read_env_file  # noqa: E402
+
+ENV_PATH = REPO_ROOT / ".env"
 CHECK_URLS = {
     "CEREBRAS_API_KEY": "https://api.cerebras.ai/v1/models",
     "OPENROUTER_API_KEY": "https://openrouter.ai/api/v1/key",
     "GROQ_API_KEY": "https://api.groq.com/openai/v1/models",
 }
-
-
-def read_env(path: Path) -> Dict[str, str]:
-    """Return KEY=value pairs from a .env file."""
-    if not path.exists():
-        return {}
-    values = {}
-    for line in path.read_text(encoding="utf-8-sig").splitlines():
-        name, _, value = line.partition("=")
-        if value.strip():
-            values[name.strip()] = value.strip().strip("\"'")
-    return values
 
 
 def check(name: str, key: str) -> bool:
@@ -59,7 +52,7 @@ def check(name: str, key: str) -> bool:
 
 
 def main() -> int:
-    values = read_env(ENV_PATH)
+    values = read_env_file(ENV_PATH)
     names = [name for name in CHECK_URLS if values.get(name)]
     if not names:
         print(f"Không thấy khóa nào ({', '.join(CHECK_URLS)}) trong {ENV_PATH}")
