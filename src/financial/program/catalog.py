@@ -74,6 +74,12 @@ BASE_PHRASES: Dict[str, Tuple[str, ...]] = {
     "equity": ("tổng cộng vốn chủ sở hữu", "vốn chủ sở hữu", "vcsh"),
 }
 
+# Companies with facts whose statements follow the securities-firm or insurer templates
+# rather than Circular 200, so the line codes above do not mean the same lines (SSI line
+# 21 is "Lỗ từ các tài sản tài chính FVTPL"). AGENTS.md section 1 puts these schemas out
+# of scope. Banks have no facts at all (K17). Layer 3 does not plan for these companies.
+OTHER_TEMPLATE_TICKERS = frozenset({"SSI", "MBS", "FTS", "BVH"})
+
 # Ratios computed from two lines at the end of one period.
 DERIVED_ITEMS: Dict[str, Tuple[str, str, str]] = {
     "roe": ("ROE", "net_income", "equity"),

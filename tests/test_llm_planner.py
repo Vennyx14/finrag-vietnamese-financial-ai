@@ -402,6 +402,13 @@ class TestGate:
     def test_gate_reason(self, question, reason):
         assert gate_reason(question, {"ZQX", "ZQY"}) == reason
 
+    @pytest.mark.parametrize("ticker", ["SSI", "MBS", "FTS", "BVH"])
+    def test_securities_and_insurance_templates_are_out_of_scope(self, ticker):
+        # Their statements do not follow Circular 200, so catalog line codes do not apply
+        # (SSI line 21 is "Lỗ từ các tài sản tài chính FVTPL", not financial income).
+        question = f"Doanh thu hoạt động tài chính của {ticker} năm 2023 là bao nhiêu tỷ đồng?"
+        assert gate_reason(question, {ticker, "ZQX"}) == "company_out_of_scope"
+
     @pytest.mark.parametrize("question", [QR, QD, QH, QL, QA])
     def test_supported_questions_pass_the_gate(self, question):
         assert gate_reason(question, {"ZQX", "ZQY"}) is None

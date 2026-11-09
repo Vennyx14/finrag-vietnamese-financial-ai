@@ -13,7 +13,14 @@ When one fails, no plan could pass ``check_plan``, so the LLM is not called.
 import re
 from typing import AbstractSet, Dict, FrozenSet, List, NamedTuple, Optional, Tuple
 
-from src.financial.program.catalog import DERIVED_ITEMS, PLAN_ITEMS, canonical_item, item_components, phrase_table
+from src.financial.program.catalog import (
+    DERIVED_ITEMS,
+    OTHER_TEMPLATE_TICKERS,
+    PLAN_ITEMS,
+    canonical_item,
+    item_components,
+    phrase_table,
+)
 from src.financial.program.models import LLMPlan
 from src.financial.program.planner import (
     FILLER_PHRASES,
@@ -161,14 +168,16 @@ def parse_question(question: str) -> QuestionParse:
 def gate_reason(question: str, tickers_with_facts: Optional[AbstractSet[str]] = None) -> Optional[str]:
     """Return why no plan could pass the checks for this question, or None if the LLM may be asked.
 
-    The order is fixed so the reason is reproducible: company, data, year, stated
-    period, catalog item, stray number, unexplained word.
+    The order is fixed so the reason is reproducible: company, data, statement
+    template, year, stated period, catalog item, stray number, unexplained word.
     """
     companies = extract_all_tickers(question)
     if not companies:
         return "no_company"
     if tickers_with_facts is not None and any(ticker not in tickers_with_facts for ticker in companies):
         return "company_without_facts"
+    if any(ticker in OTHER_TEMPLATE_TICKERS for ticker in companies):
+        return "company_out_of_scope"
     if not extract_fiscal_years(question):
         return "no_year"
     if names_stated_period(question):
