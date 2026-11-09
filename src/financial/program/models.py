@@ -1,6 +1,6 @@
 """Constrained program model. Programs are data, never executed as code."""
 
-from typing import List, Optional
+from typing import List, Literal, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
@@ -60,3 +60,35 @@ class Program(BaseModel):
 
     def step(self, step_id: str) -> ProgramStep:
         return next(step for step in self.steps if step.step_id == step_id)
+
+
+class PlanPeriod(BaseModel):
+    """A period as the question names it: a fiscal year, at its end or (balance sheet) its start."""
+
+    model_config = ConfigDict(frozen=True, extra="forbid", strict=True)
+
+    year: int
+    point: Literal["end", "start"]
+
+
+class LLMPlan(BaseModel):
+    """What the layer-3 LLM may choose: one operation, catalog items, companies and periods.
+
+    It holds no number other than years, and no free text: the program's name, unit,
+    labels and assumptions are derived from it by deterministic code.
+    """
+
+    model_config = ConfigDict(frozen=True, extra="forbid", strict=True)
+
+    operation: str
+    items: List[str]
+    companies: List[str]
+    periods: List[PlanPeriod]
+
+
+class LLMRefusal(BaseModel):
+    """The LLM's refusal. Its reason is model text: kept in the trace, never shown as an answer."""
+
+    model_config = ConfigDict(frozen=True, extra="forbid", strict=True)
+
+    reason: str

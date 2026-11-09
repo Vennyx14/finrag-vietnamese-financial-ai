@@ -7,7 +7,7 @@ client-agnostic application service.
 import logging
 from pathlib import Path
 import time
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Sequence, Union
 
 _logger = logging.getLogger(__name__)
 
@@ -18,6 +18,7 @@ from src.application.models import (
     ErrorCategory,
     EvidenceDTO,
     FinRAGResponse,
+    PlannerTraceDTO,
     ResolutionDTO,
     ResponseStatus,
     TraceDTO,
@@ -31,6 +32,8 @@ from src.financial.calculator import InvalidNumericValueError, ZeroDenominatorEr
 from src.financial.metrics import MetricRegistry, default_metric_registry
 from src.financial.program.catalog import build_extended_registry
 from src.financial.program.executor import ProgramExecutor
+from src.financial.program.grounding import check_plan, gate_reason
+from src.financial.program.llm_planner import LLMPlanner, LLMPlanOutcome
 from src.financial.program.models import Program
 from src.financial.program.planner import names_stated_period, plan_question
 from src.financial.program.verifier import verify_program
@@ -46,9 +49,17 @@ from src.financial.resolution import ResolutionResult, ResolutionStatus, resolve
 from src.financial.result import FinancialResult
 from src.financial.semantics import is_opening_period_label
 from src.financial.verification import (
+    VerificationCheck,
     VerificationEngine,
     VerificationResult,
     VerificationStatus,
+)
+from src.nlp.env_file import read_env_file
+from src.nlp.llm import (
+    DEFAULT_ENV_PATH,
+    LLM_UNAVAILABLE_MESSAGE,
+    LLMConfigurationError,
+    OpenAICompatibleProvider,
 )
 from src.pipeline.query import FinancialQuery
 from src.retrieval.engine import FinancialFactRetriever
@@ -56,10 +67,17 @@ from src.retrieval.ranking import RetrievalResult
 
 DEFAULT_PARQUET_PATH = Path("data/processed/financial_facts.parquet")
 BALANCE_SHEET_IDENTITY_CODES = ("100", "200", "270", "300", "400", "429", "439")
+LLM_PLANNER_ENV = "FINRAG_LLM_PLANNER"
+TEMPLATE_PLANNER_TRACE = PlannerTraceDTO(layer="template", outcome="program")
 
 
 class FinRAGApplication:
-    """Production application service coordinating reasoning and verification."""
+    """Production application service coordinating reasoning and verification.
+
+    Layers run in a fixed order: ``resolve_query``, then the template planner
+    (layers 1 and 2), then, only when both refuse and ``llm_planner`` is given, the
+    LLM planner (layer 3). Without ``llm_planner`` layer 3 never runs.
+    """
 
     def __init__(
         self,
@@ -68,9 +86,11 @@ class FinRAGApplication:
         reasoning_engine: Optional[FinancialReasoningEngine] = None,
         verification_engine: Optional[VerificationEngine] = None,
         registry: Optional[MetricRegistry] = None,
+        llm_planner: Optional[LLMPlanner] = None,
     ):
         self.parquet_path = parquet_path or DEFAULT_PARQUET_PATH
         self.registry = registry or default_metric_registry
+        self.llm_planner = llm_planner
 
         if retriever is not None:
             self.retriever = retriever
@@ -97,6 +117,8 @@ class FinRAGApplication:
                     retriever=self.retriever, registry=build_extended_registry()
                 )
             )
+        # Companies with facts; layer 3 asks the LLM only about these.
+        self._tickers_with_facts = getattr(self.retriever, "tickers", None)
 
     def _collect_supporting_facts(self, res: FinancialResult) -> List[RetrievalResult]:
         """Gather facts the verifier can check an answer against.
@@ -194,25 +216,15 @@ class FinRAGApplication:
         if needs_program and self.program_executor is not None:
             program = plan_question(clean_query)
         if program is not None:
-            return self._answer_with_program(program, raw_query, clean_query, resolution_dto, t0)
+            return self._answer_with_program(
+                program, raw_query, clean_query, resolution_dto, t0, planner=TEMPLATE_PLANNER_TRACE
+            )
+
+        if not resolution_res.is_resolved and self.llm_planner is not None and self.program_executor is not None:
+            return self._answer_with_llm_planner(raw_query, clean_query, resolution_res, resolution_dto, t0)
 
         if not resolution_res.is_resolved:
-            elapsed_ms = (time.time() - t0) * 1000
-            err_cat = ErrorCategory.USER_INPUT_ERROR
-            err_msg = resolution_res.actionable_guidance or resolution_res.reason or "Yêu cầu không được hỗ trợ."
-            return FinRAGResponse(
-                query=raw_query,
-                status=ResponseStatus.ERROR,
-                error_category=err_cat,
-                error_message=err_msg,
-                ticker=resolution_res.ticker,
-                fiscal_year=resolution_res.fiscal_year,
-                years=resolution_res.years,
-                statement_scope=resolution_res.statement_scope,
-                resolution=resolution_dto,
-                latency_ms=round(elapsed_ms, 2),
-                is_trusted=False,
-            )
+            return self._refusal(raw_query, resolution_res, resolution_dto, t0)
 
         if self.reasoning_engine is None:
             return FinRAGResponse(
@@ -283,6 +295,79 @@ class FinRAGApplication:
                 is_trusted=False,
             )
 
+    def _refusal(
+        self,
+        raw_query: str,
+        resolution_res: ResolutionResult,
+        resolution_dto: ResolutionDTO,
+        t0: float,
+        planner: Optional[PlannerTraceDTO] = None,
+    ) -> FinRAGResponse:
+        """The typed refusal of resolve_query, with layer 3's trace when it was asked."""
+        return FinRAGResponse(
+            query=raw_query,
+            status=ResponseStatus.ERROR,
+            error_category=ErrorCategory.USER_INPUT_ERROR,
+            error_message=resolution_res.actionable_guidance or resolution_res.reason or "Yêu cầu không được hỗ trợ.",
+            ticker=resolution_res.ticker,
+            fiscal_year=resolution_res.fiscal_year,
+            years=resolution_res.years,
+            statement_scope=resolution_res.statement_scope,
+            resolution=resolution_dto,
+            planner=planner,
+            latency_ms=round((time.time() - t0) * 1000, 2),
+            is_trusted=False,
+        )
+
+    def _answer_with_llm_planner(
+        self,
+        raw_query: str,
+        clean_query: str,
+        resolution_res: ResolutionResult,
+        resolution_dto: ResolutionDTO,
+        t0: float,
+    ) -> FinRAGResponse:
+        """Layer 3. The LLM chooses a program; code runs it and checks it against the question.
+
+        No LLM call is made when the question cannot pass the checks. An LLM refusal
+        or an invalid reply keeps resolve_query's refusal; a failed call is reported
+        as "LLM không khả dụng" (principle 18). Nothing falls back to another answer.
+        """
+        reason = gate_reason(clean_query, self._tickers_with_facts)
+        if reason is not None:
+            trace = PlannerTraceDTO(layer="llm", outcome="not_attempted", reason=reason)
+            return self._refusal(raw_query, resolution_res, resolution_dto, t0, planner=trace)
+
+        outcome = self.llm_planner.plan(clean_query)
+        if outcome.status == "unavailable":
+            return FinRAGResponse(
+                query=raw_query,
+                status=ResponseStatus.ERROR,
+                error_category=ErrorCategory.SYSTEM_ERROR,
+                error_message=LLM_UNAVAILABLE_MESSAGE,
+                ticker=resolution_res.ticker,
+                fiscal_year=resolution_res.fiscal_year,
+                years=resolution_res.years,
+                statement_scope=resolution_res.statement_scope,
+                resolution=resolution_dto,
+                planner=_planner_trace(outcome),
+                latency_ms=round((time.time() - t0) * 1000, 2),
+                is_trusted=False,
+            )
+        if outcome.status != "program":
+            return self._refusal(raw_query, resolution_res, resolution_dto, t0, planner=_planner_trace(outcome))
+
+        checks = check_plan(outcome.plan, clean_query)
+        return self._answer_with_program(
+            outcome.program,
+            raw_query,
+            clean_query,
+            resolution_dto,
+            t0,
+            extra_checks=checks,
+            planner=_planner_trace(outcome, checks),
+        )
+
     def _answer_with_program(
         self,
         program: Program,
@@ -290,6 +375,8 @@ class FinRAGApplication:
         clean_query: str,
         resolution_dto: ResolutionDTO,
         t0: float,
+        extra_checks: Optional[Sequence[VerificationCheck]] = None,
+        planner: Optional[PlannerTraceDTO] = None,
     ) -> FinRAGResponse:
         """Run a planned program and verify it. A failure is a typed refusal."""
         resolved_dto = resolution_dto.model_copy(
@@ -312,6 +399,7 @@ class FinRAGApplication:
                 error_category=err_cat,
                 error_message=user_msg,
                 resolution=resolved_dto,
+                planner=planner,
                 latency_ms=round((time.time() - t0) * 1000, 2),
                 is_trusted=False,
             )
@@ -322,15 +410,20 @@ class FinRAGApplication:
                 error_category=ErrorCategory.DATA_NOT_FOUND,
                 error_message=f"Không thể tính toán từ số liệu trong báo cáo: {str(e)}",
                 resolution=resolved_dto,
+                planner=planner,
                 latency_ms=round((time.time() - t0) * 1000, 2),
                 is_trusted=False,
             )
 
         try:
             ver_res = verify_program(
-                program, res, clean_query, supporting_facts=self._collect_supporting_facts(res)
+                program,
+                res,
+                clean_query,
+                supporting_facts=self._collect_supporting_facts(res),
+                extra_checks=extra_checks,
             )
-            return self._to_response(res, ver_res, raw_query, resolved_dto, t0)
+            return self._to_response(res, ver_res, raw_query, resolved_dto, t0, planner=planner)
         except Exception as e:
             return FinRAGResponse(
                 query=raw_query,
@@ -338,6 +431,7 @@ class FinRAGApplication:
                 error_category=ErrorCategory.SYSTEM_ERROR,
                 error_message=f"Lỗi hệ thống khi kiểm định kết quả: {str(e)}",
                 resolution=resolved_dto,
+                planner=planner,
                 latency_ms=round((time.time() - t0) * 1000, 2),
                 is_trusted=False,
             )
@@ -349,6 +443,7 @@ class FinRAGApplication:
         raw_query: str,
         resolution_dto: ResolutionDTO,
         t0: float,
+        planner: Optional[PlannerTraceDTO] = None,
     ) -> FinRAGResponse:
         """Map a verified result into typed DTOs."""
         elapsed_ms = (time.time() - t0) * 1000
@@ -482,6 +577,7 @@ class FinRAGApplication:
             evidence=evidence_dtos,
             resolution=resolution_dto,
             trace=trace_dto,
+            planner=planner,
             latency_ms=round(elapsed_ms, 2),
             is_trusted=is_trusted,
         )
@@ -520,3 +616,54 @@ class FinRAGApplication:
             ErrorCategory.SYSTEM_ERROR,
             "FinRAG gặp lỗi hệ thống nội bộ. Vui lòng thử lại hoặc liên hệ hỗ trợ.",
         )
+
+
+def _planner_trace(outcome: LLMPlanOutcome, checks: Sequence[VerificationCheck] = ()) -> PlannerTraceDTO:
+    """Everything layer 3 saw and produced for one question (P3.4)."""
+    return PlannerTraceDTO(
+        layer="llm",
+        outcome=outcome.status,
+        reason=outcome.reason,
+        model=outcome.model,
+        provider=outcome.provider,
+        prompt_sha256=outcome.prompt_sha256,
+        messages=[dict(message) for message in outcome.messages],
+        raw_response=outcome.raw_response,
+        plan=outcome.plan.model_dump() if outcome.plan is not None else None,
+        program=outcome.program.model_dump() if outcome.program is not None else None,
+        checks=[
+            VerificationCheckDTO(
+                name=check.check_name,
+                status=check.status,
+                severity=check.severity.value,
+                message=check.message,
+            )
+            for check in checks
+        ],
+        cached=outcome.cached,
+        latency_ms=outcome.latency_ms,
+        prompt_tokens=outcome.prompt_tokens,
+        completion_tokens=outcome.completion_tokens,
+        finish_reason=outcome.finish_reason,
+        error_type=outcome.error_type,
+    )
+
+
+def create_application(env_path: Union[str, Path] = DEFAULT_ENV_PATH, **options: Any) -> FinRAGApplication:
+    """Build the application the UI runs. Layer 3 runs only when .env sets FINRAG_LLM_PLANNER=on.
+
+    Off is the default (a missing file or variable means off) until the owner decides
+    on layer 3 (plan step P3.7). When the switch is on, a missing or wrong LLM setting
+    raises LLMConfigurationError at start-up; the app does not quietly run without it.
+    """
+    try:
+        values = read_env_file(env_path)
+    except ValueError as error:
+        raise LLMConfigurationError(str(error)) from None
+    switch = values.get(LLM_PLANNER_ENV, "").strip().lower() or "off"
+    if switch == "off":
+        return FinRAGApplication(**options)
+    if switch != "on":
+        raise LLMConfigurationError(f"{LLM_PLANNER_ENV} in {env_path} must be 'on' or 'off'")
+    provider = OpenAICompatibleProvider.from_env(env_path)
+    return FinRAGApplication(llm_planner=LLMPlanner(provider), **options)

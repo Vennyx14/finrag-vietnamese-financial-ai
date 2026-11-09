@@ -94,6 +94,36 @@ COMPOSITE_ITEMS: Dict[str, Tuple[str, Tuple[str, str], str]] = {
     ),
 }
 
+# IDs the layer-3 LLM planner may use, mapped to the catalog key the template planner
+# builds programs from. Derived and composite items get ASCII IDs; their aliases in
+# DERIVED_ITEMS (for example the long Vietnamese name of ROE) are the same item.
+PLAN_ITEMS: Dict[str, str] = {
+    **{item.name: item.name for item in LINE_ITEMS},
+    **{name: name for name in BASE_PHRASES},
+    "roe": "roe",
+    "roa": "roa",
+    "net_margin": "biên lợi nhuận ròng",
+    "gross_margin": "biên lợi nhuận gộp",
+    "unearned_revenue": "doanh thu chưa thực hiện",
+}
+
+
+def canonical_item(key: str) -> str:
+    """Return one key per item: an alias of a derived ratio maps to the first key with its formula."""
+    if key in DERIVED_ITEMS:
+        return next(name for name, formula in DERIVED_ITEMS.items() if formula == DERIVED_ITEMS[key])
+    return key
+
+
+def item_components(key: str) -> Tuple[str, ...]:
+    """Return the catalog lines a derived or composite item is made of; () for a plain line."""
+    if key in DERIVED_ITEMS:
+        return DERIVED_ITEMS[key][1:]
+    if key in COMPOSITE_ITEMS:
+        return COMPOSITE_ITEMS[key][1]
+    return ()
+
+
 # Reports show these lines either as positive amounts or in parentheses.
 EXPENSE_ITEMS = {
     "revenue_deductions", "cost_of_goods_sold", "financial_expense", "interest_expense",

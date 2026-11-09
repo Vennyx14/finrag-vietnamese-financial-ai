@@ -1,7 +1,7 @@
 """Generic program verifier. It recomputes with its own arithmetic and re-reads the question."""
 
 import math
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Sequence
 
 from src.financial.program.executor import lookup_value
 from src.financial.program.models import Program
@@ -62,8 +62,13 @@ def verify_program(
     result: FinancialResult,
     question: str,
     supporting_facts: Optional[List[RetrievalResult]] = None,
+    extra_checks: Optional[Sequence[VerificationCheck]] = None,
 ) -> VerificationResult:
-    """Check a program result against its facts, its arithmetic, and the question."""
+    """Check a program result against its facts, its arithmetic, and the question.
+
+    ``extra_checks`` are checks made elsewhere, for example of an LLM plan against the
+    question (layer 3). A FAIL among them rejects the answer like any other critical check.
+    """
     checks: List[VerificationCheck] = []
     errors: List[str] = []
     warnings: List[str] = []
@@ -120,6 +125,12 @@ def verify_program(
         f"Question names {sorted(asked_years)}; program reads {sorted(planned_years)}.",
         checks, errors,
     )
+    for check in extra_checks or ():
+        checks.append(check)
+        if check.status == CheckStatus.FAIL:
+            errors.append(check.message)
+        elif check.status == CheckStatus.WARNING:
+            warnings.append(check.message)
 
     engine = VerificationEngine()
     engine._verify_fact_quality(result, checks, warnings)

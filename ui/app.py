@@ -15,10 +15,11 @@ if str(REPO_ROOT) not in sys.path:
 import streamlit as st
 
 from src.application.models import FinRAGResponse, ResponseStatus
-from src.application.service import FinRAGApplication
+from src.application.service import FinRAGApplication, create_application
 from ui.theme import (
     get_finrag_css,
     render_header,
+    render_planner_label,
     render_refusal_card,
     render_showcase_banner,
     render_tier_1_resolution,
@@ -33,8 +34,11 @@ DEFAULT_SHOWCASE_QUERY = "Biên lợi nhuận ròng FPT năm 2024"
 
 @st.cache_resource(show_spinner="Đang nạp chỉ mục BCTC và bộ kiểm định FinRAG...")
 def load_application() -> FinRAGApplication:
-    """Initialize and cache the FinRAG application service."""
-    return FinRAGApplication()
+    """Initialize and cache the FinRAG application service.
+
+    Layer 3 (LLM planner) runs only when .env sets FINRAG_LLM_PLANNER=on; it is off by default.
+    """
+    return create_application()
 
 
 def main():
@@ -51,7 +55,11 @@ def main():
     # 1. Institutional Brand Header
     render_header()
 
-    app = load_application()
+    try:
+        app = load_application()
+    except Exception as error:  # a wrong .env must stop the app, not be skipped silently
+        st.error(f"Không khởi động được FinRAG: {error}")
+        st.stop()
 
     # Session state for query input — defaults to showcase query to eliminate empty void
     if "current_query" not in st.session_state:
@@ -145,6 +153,7 @@ def main():
                 )
             # Render Refusal Card
             render_refusal_card(resp)
+            render_planner_label(resp)
             return
 
         # ======================================================================
@@ -168,6 +177,8 @@ def main():
             years=resp.years,
             statement_scope=resp.statement_scope,
         )
+        # Layer 3 answers carry their own label (plan step P3.4).
+        render_planner_label(resp)
 
         # TẦNG 02: Kết quả tài chính & Công thức thế số
         if resp.calculation:

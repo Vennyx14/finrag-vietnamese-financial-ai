@@ -190,6 +190,41 @@ class TraceDTO(BaseModel):
         return len(self.steps)
 
 
+class PlannerTraceDTO(BaseModel):
+    """Which planner made the program, and for layer 3 everything the LLM saw and said (P3.4).
+
+    ``layer`` is "template" (layers 1 and 2, no LLM) or "llm" (layer 3). For layer 3,
+    ``outcome`` is "program", "refused" (the model refused), "invalid" (its reply was
+    rejected before anything ran), "unavailable" (the call failed) or "not_attempted"
+    (the question cannot pass the checks, so no call was made; ``reason`` says why).
+    ``reason`` and ``raw_response`` may hold model text: they are trace data, never an answer.
+    """
+
+    model_config = ConfigDict(frozen=True)
+
+    layer: str
+    outcome: str
+    reason: Optional[str] = None
+    model: Optional[str] = None
+    provider: Optional[str] = None
+    prompt_sha256: Optional[str] = None
+    messages: List[Dict[str, str]] = Field(default_factory=list)
+    raw_response: Optional[str] = None
+    plan: Optional[Dict[str, Any]] = None
+    program: Optional[Dict[str, Any]] = None
+    checks: List[VerificationCheckDTO] = Field(default_factory=list)
+    cached: Optional[bool] = None
+    latency_ms: Optional[float] = None
+    prompt_tokens: Optional[int] = None
+    completion_tokens: Optional[int] = None
+    finish_reason: Optional[str] = None
+    error_type: Optional[str] = None
+
+    @property
+    def is_llm_answer(self) -> bool:
+        return self.layer == "llm" and self.outcome == "program"
+
+
 class FinRAGResponse(BaseModel):
     """Top-level unified application response."""
 
@@ -208,6 +243,7 @@ class FinRAGResponse(BaseModel):
     evidence: List[EvidenceDTO] = Field(default_factory=list)
     resolution: Optional[ResolutionDTO] = None
     trace: Optional[TraceDTO] = None
+    planner: Optional[PlannerTraceDTO] = None
     latency_ms: float = 0.0
     is_trusted: bool = False
 

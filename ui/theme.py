@@ -667,6 +667,40 @@ def render_tier_1_resolution(
     st.markdown(html_code, unsafe_allow_html=True)
 
 
+def planner_label_html(resp: FinRAGResponse) -> str:
+    """HTML note that tells the user an LLM chose the program (layer 3), or tried to; "" otherwise."""
+    planner = resp.planner
+    if planner is None or planner.layer != "llm":
+        return ""
+    model = f" · mô hình {_esc(planner.model)}" if planner.model else ""
+    if planner.outcome == "program":
+        title = f"Lớp 3 · Chương trình do LLM planner chọn (thử nghiệm){model}"
+        body = (
+            "LLM chỉ chọn chỉ tiêu, công ty, kỳ và phép toán. Mọi con số do mã tất định tính từ dữ kiện "
+            "trong báo cáo; các kiểm tra ở Tầng 03 so chương trình này với câu hỏi."
+        )
+    elif planner.outcome in ("refused", "invalid"):
+        title = f"Lớp 3 · LLM planner đã được hỏi{model}"
+        body = "LLM không đưa ra chương trình hợp lệ, nên hệ thống giữ lời từ chối ở trên."
+    elif planner.outcome == "unavailable":
+        title = "Lớp 3 · LLM planner không trả lời được"
+        body = "Không có câu trả lời nào được tạo thay cho LLM."
+    else:
+        return ""
+    return f"""
+    <div class="finrag-assumption-callout">
+        <div><strong>{title}</strong><br>{body}</div>
+    </div>
+    """
+
+
+def render_planner_label(resp: FinRAGResponse):
+    """Label answers whose program an LLM chose (plan step P3.4)."""
+    html_code = planner_label_html(resp)
+    if html_code:
+        st.markdown(html_code, unsafe_allow_html=True)
+
+
 # ==============================================================================
 # TẦNG 02: KẾT QUẢ TÀI CHÍNH & CÔNG THỨC THẾ SỐ (CALCULATION & FORMULA TRACE)
 # ==============================================================================

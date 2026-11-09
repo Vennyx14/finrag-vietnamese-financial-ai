@@ -5,16 +5,18 @@ from src.application.models import (
     ErrorCategory,
     EvidenceDTO,
     FinRAGResponse,
+    PlannerTraceDTO,
     ResponseStatus,
     VerificationCheckDTO,
     VerificationDTO,
     format_metric_value,
     format_vnd,
 )
-from src.application.service import FinRAGApplication
+from src.application.service import FinRAGApplication, create_application
 
 __all__ = [
     "FinRAGApplication",
+    "create_application",
     "FinRAGResponse",
     "ResponseStatus",
     "ErrorCategory",
@@ -22,6 +24,7 @@ __all__ = [
     "VerificationDTO",
     "VerificationCheckDTO",
     "CalculationDTO",
+    "PlannerTraceDTO",
     "format_vnd",
     "format_metric_value",
 ]

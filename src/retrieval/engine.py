@@ -5,7 +5,7 @@ financial fact evidence from the processed ViFinQA corpus.
 """
 
 from pathlib import Path
-from typing import List, Optional
+from typing import FrozenSet, List, Optional
 
 import pandas as pd
 
@@ -35,6 +35,13 @@ class FinancialFactRetriever:
     @property
     def total_facts(self) -> int:
         return len(self._facts_df) if self._facts_df is not None else 0
+
+    @property
+    def tickers(self) -> FrozenSet[str]:
+        """Tickers that have at least one fact."""
+        if self._facts_df is None or self._facts_df.empty:
+            return frozenset()
+        return frozenset(self._facts_df["ticker"].dropna().astype(str).unique())
 
     def retrieve(
         self,
