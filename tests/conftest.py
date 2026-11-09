@@ -2,10 +2,12 @@
 
 Registers custom markers and provides the ``requires_full_data`` skip logic
 so that integration tests depending on the local (gitignored) datasets
-skip with one uniform reason on a fresh clone instead of failing.
+skip with one uniform reason on a fresh clone instead of failing. The
+``block_network`` fixture stops every test from opening a URL.
 """
 
 from pathlib import Path
+import urllib.request
 
 import pytest
 
@@ -27,6 +29,25 @@ def pytest_configure(config):
         "markers",
         "requires_full_data: marks tests that need the gitignored local datasets",
     )
+
+
+@pytest.fixture(autouse=True)
+def block_network(monkeypatch):
+    """Fail any test that opens a URL (AGENTS.md section 10, rule 6).
+
+    Tests of HTTP code replace ``urllib.request.urlopen`` with a fake. Blocked
+    attempts are also checked after the test, so code that swallows the
+    AssertionError still fails the test. Yields the list of blocked attempts.
+    """
+    blocked = []
+
+    def refuse(url, *args, **kwargs):
+        blocked.append(url)
+        raise AssertionError("Tests must not open network connections (urllib.request.urlopen was called).")
+
+    monkeypatch.setattr(urllib.request, "urlopen", refuse)
+    yield blocked
+    assert not blocked, f"{len(blocked)} network call(s) were attempted during the test"
 
 
 def pytest_collection_modifyitems(config, items):
