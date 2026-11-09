@@ -8,7 +8,7 @@
 FinRAG is an early-stage research and engineering project aimed at the reliability problem of LLMs in financial domains. It focuses on Vietnamese corporate financial statements, extracting raw financial facts and applying deterministic numerical reasoning to answer natural-language queries with traceable provenance.
 
 ### What this is today
-A rule-based query parser, metadata and BM25 retrieval, deterministic reasoning, a template planner over an allowlisted program format, and independent verification. Calculations are performed by deterministic code, not by an LLM. There is no LLM component yet (M4 layer 3 is planned).
+A rule-based query parser, metadata and BM25 retrieval, deterministic reasoning, a template planner over an allowlisted program format, and independent verification. Calculations are performed by deterministic code, not by an LLM. An LLM provider layer exists (`src/nlp/llm.py`), but the app does not call it yet; the LLM planner that will use it (M4 layer 3) is planned.
 
 ### What it is not
 It is not a general financial assistant, an investment advisor, or a full-market data terminal. VERIFIED means the listed checks passed, not that an answer is certain to be correct. The system can still select the wrong fact or mis-parse OCR text.
@@ -86,7 +86,7 @@ All figures below are self-authored regression benchmarks, not accuracy on unsee
 | **Verification Engine** | Valid Acceptance Rate | **100.0%** (30/30) | 60-case self-authored regression benchmark, not accuracy on unseen data |
 | | Mutation Detection Rate | **100.0%** (30/30) | 60-case self-authored regression benchmark, not accuracy on unseen data (mutations injected after reasoning) |
 | | False Acceptance Rate | **0.00%** | 60-case self-authored regression benchmark, not accuracy on unseen data |
-| **Engineering** | Test Suite Pass Rate | **100.0%** (572/572, 0 skipped) | Full `pytest` suite with local data present; see [Reproducibility](#15-reproducibility) for a fresh clone |
+| **Engineering** | Test Suite Pass Rate | **100.0%** (742/742, 0 skipped) | Full `pytest` suite with local data present; see [Reproducibility](#15-reproducibility) for a fresh clone |
 
 | **Silver benchmark** | Numeric labels frozen before M4 code | **37 correct, 0 wrong, 5 refused** of 42 | LLM-prefilled labels, not verified by a person; see [the M4 report](docs/m4_layers_1_2_report.md) |
 
@@ -139,6 +139,13 @@ source .venv/bin/activate
 
 # 3. Install dependencies
 pip install -r requirements.txt
+
+# 4. Optional, only for the LLM layer, which the app does not use yet:
+#    copy .env.example to .env and add the key of the provider it selects.
+#    .env is gitignored; never commit it.
+cp .env.example .env
+python scripts/check_llm_key.py            # checks the key; never prints it
+python scripts/check_llm_key.py --smoke    # one real chat call, then a cache hit
 ```
 
 ## 13. Running the System
@@ -187,6 +194,7 @@ finrag-vietnamese-financial-ai/
 │   ├── ingestion/       # Extractor, parser, and schema validation
 │   ├── retrieval/       # Metadata filtering, indexing, and BM25
 │   ├── financial/       # Deterministic calculations and verification
+│   ├── nlp/             # LLM provider layer (not called by the app yet)
 │   └── application/     # FinRAGApplication service and typed DTOs
 ├── tests/               # Unit, integration, and mini-fixture end-to-end tests
 ├── scripts/             # Profiling, evaluation, and benchmark runners
