@@ -1,0 +1,76 @@
+{
+  "run_at": "2026-11-09T08:17:18+00:00",
+  "commit": "58aedca",
+  "configuration": "layer 3 on",
+  "provider": "groq",
+  "model": "openai/gpt-oss-120b",
+  "temperature": 0.0,
+  "max_tokens": 2048,
+  "system_prompt_sha256": "39cbf8c1b4a9624524b60c02d3cddf5c25607ca1fe7b6a2c86536358394f4fc5",
+  "system_prompt_chars": 5691,
+  "development_questions": 766,
+  "sealed_excluded": 246,
+  "processed": 766,
+  "stopped": null,
+  "elapsed_s": 74.2,
+  "status_counts": {
+    "ERROR": 636,
+    "WARNING": 36,
+    "SUCCESS": 93,
+    "REJECTED": 1
+  },
+  "answered_by_layer": {
+    "refused": 637,
+    "template_lookup": 42,
+    "resolution": 31,
+    "llm": 18,
+    "template_program": 38
+  },
+  "gate_reasons": {
+    "no_catalog_item": 215,
+    "company_without_facts": 139,
+    "company_out_of_scope": 24,
+    "unexplained_words": 129,
+    "numeric_literal": 70,
+    "no_company": 22
+  },
+  "llm_outcomes": {
+    "program": 22,
+    "refused": 9
+  },
+  "llm_status_after_checks": {
+    "REJECTED": 1,
+    "SUCCESS": 11,
+    "ERROR": 12,
+    "WARNING": 7
+  },
+  "llm_error_types": {},
+  "llm_calls": 31,
+  "llm_fresh_calls": 0,
+  "llm_cached_calls": 31,
+  "tokens_fresh": {
+    "prompt": 0,
+    "completion": 0
+  },
+  "tokens_all_calls": {
+    "prompt": 54752,
+    "completion": 11852
+  },
+  "llm_latency_ms_fresh": {
+    "n": 0
+  },
+  "answer_latency_ms_layer3": {
+    "n": 18,
+    "median": 711.2,
+    "p90": 900.5,
+    "max": 1246.1,
+    "total": 11994.4
+  },
+  "pacing": {
+    "tokens_per_minute_budget": 7000,
+    "waited_s": 0.0,
+    "http_requests": 0,
+    "cache_hits": 41
+  },
+  "dry_run_prompt_chars": null
+}
