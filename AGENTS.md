@@ -428,7 +428,7 @@ Status column: **CONFIRMED** (M0 audit evidence), **PARTLY** (pattern seen, impa
 
 | K25 | Rows that lost their note cell had the prior-year amount read as the current year | FIXED (2026-11-02) | `src/ingestion/fact_extractor.py`; verified by `tests/test_table_layouts.py` | 195 rows in 40 reports corrected |
 
-Items K26–K41 come from the unit review of 2026-11-08, and K42 from the documentation check the same day. "Unit audit Ux" refers to `.claude/skills/finrag-units/scripts/audit_units.py`; "answer-exposed" means a catalog line could select the fact. Counts were measured before the K26 fix.
+Items K26–K41 come from the unit review of 2026-11-08, K42 from the documentation check the same day, and K43 from plan step P2 (2026-11-09). "Unit audit Ux" refers to `.claude/skills/finrag-units/scripts/audit_units.py`; "answer-exposed" means a catalog line could select the fact. Counts were measured before the K26 fix.
 
 | # | Issue | Status | Where | Milestone |
 |---|---|---|---|---|
@@ -449,6 +449,7 @@ Items K26–K41 come from the unit review of 2026-11-08, and K42 from the docume
 | K40 | UI text claims more than was tested (Section 9): "Giá trị chính xác tuyệt đối" (`ui/theme.py:705`) and "đều thỏa mãn 100%" (`ui/theme.py:760`) | FIXED (2026-11-08): the raw value is labelled "Giá trị đầy đủ"; the VERIFIED text says the checks that ran all passed; the WARNING text no longer says the figures and arithmetic are correct. Verified by `tests/test_ui_render.py::test_ui_text_claims_no_more_than_the_checks` | `ui/theme.py` | P1 (owner approved 2026-11-08) |
 | K41 | When a header merges "Mã số" and "Thuyết minh" into one cell, a small amount such as EPS is replaced by its note number: FPT 2018 consolidated p10 line 70 reads 33 (note 33) instead of 3,903. The note shift needs a 7-digit neighbour, which EPS never has | CONFIRMED (one case; answered with WARNING by comparative reconciliation) | `src/ingestion/fact_extractor.py` `_note_cell_offset` | Unassigned |
 | K42 | A question asking which of two companies is higher ("công ty nào cao hơn") is answered with their signed difference instead of the company, because the planner tests difference words before "nào": FPT vs HPG net revenue 2024 → "Chênh lệch Doanh thu thuần: -₫76.01T", SUCCESS | CONFIRMED (generated question, found 2026-11-08 during the P1.3 docs check); no answered development question has this form | `src/financial/program/planner.py` | Unassigned |
+| K43 | `scripts/check_llm_key.py` printed the first 120 characters of a provider's error body, so a provider that echoed the API key in an error message would have had the key printed | FIXED (2026-11-09, P2): the body is redacted (the exact key and key-like tokens) before printing; verified by `tests/test_check_llm_key.py::test_key_check_redacts_a_key_echoed_by_the_provider`, which failed before the fix. Found by code reading; no provider was seen echoing a key | `scripts/check_llm_key.py` | P2 |
 
 ---
 
