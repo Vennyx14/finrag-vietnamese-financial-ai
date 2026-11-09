@@ -7,7 +7,7 @@ Last reviewed: 2026-11-08
 **Product name:** FinRAG — Vietnamese Corporate Financial Research Assistant
 **Repository:** `finrag-vietnamese-financial-ai`
 **Type:** research prototype (not a certified audit or investment tool)
-**Stage:** MVP v0.1 complete (retrieval, deterministic reasoning, verification, application layer, Streamlit UI). Hardening milestones M0–M3 are complete: typed question resolution and refusal, data semantics (units, statement types, opening balances), independent verification with data-quality flags, and an evidence trace. M4, a constrained program layer, is in progress: layers 1 and 2 (a catalog of statement lines and a template planner, no LLM) are done; layer 3 (an LLM planner) has not started. See `AGENTS.md` section 5 for the milestone plan.
+**Stage:** MVP v0.1 complete (retrieval, deterministic reasoning, verification, application layer, Streamlit UI). Hardening milestones M0–M3 are complete: typed question resolution and refusal, data semantics (units, statement types, opening balances), independent verification with data-quality flags, and an evidence trace. M4, a constrained program layer, is in progress: layers 1 and 2 (a catalog of statement lines and a template planner, no LLM) are done; layer 3 (an LLM planner) is built and measured but off in the app until the owner decides whether to turn it on. See `AGENTS.md` section 5 for the milestone plan.
 
 FinRAG is **one product with one question-answering pipeline**. Finding the right evidence in the report corpus and deriving a number from that evidence are capabilities of the same pipeline. Users never choose between them.
 
@@ -54,7 +54,9 @@ General-purpose LLMs are unreliable with financial figures: they pick the wrong 
 
 **Not supported (must be refused, not approximated):** items outside the catalog (for example capital adequacy, bad-debt ratios, most note-level items), bank, insurance, and securities-specific statements, quarterly or year-to-date figures, filter questions (for example "the companies whose margin fell by more than 2 points") and other multi-step questions, free-form analysis or forecasts, investment recommendations.
 
-**Planned (see AGENTS.md milestones):** an LLM planner that turns questions the templates cannot parse into programs, never into numbers (M4 layer 3), and a labelled benchmark with ablations (M5–M6).
+**LLM planner (M4 layer 3, built 2026-11-09, off by default):** when both the metric engine and the template planner refuse, a model may choose a program in the same allowlisted shapes: which catalogued line, which company, which period, which operation. It never writes a number: code reads every figure and computes the answer. The question is only sent when every word is either understood or on a short list of harmless words, and no number other than a year appears; securities and insurance companies are never sent. The model's choice is checked against an independent reading of the question (lines named, companies, years, operation words, unit); a mismatch rejects the answer. If the model cannot be reached, the response says "LLM không khả dụng" and gives no number. Answers from this layer carry the label "Lớp 3 · Chương trình do LLM planner chọn (thử nghiệm)". It runs only when `.env` sets `FINRAG_LLM_PLANNER=on`.
+
+**Planned (see AGENTS.md milestones):** a labelled benchmark with ablations (M5–M6).
 
 ## 6. Answer contract
 

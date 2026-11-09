@@ -12,11 +12,11 @@ FinRAG is a trustworthy, provenance-aware AI system designed to answer natural-l
 - **Languages:** Python 3.11
 - **Data Engineering:** Pandas, PyArrow, Parquet
 - **Information Retrieval:** BM25, exact schema-matching, typed metadata filters
-- **Backend/Architecture:** Pydantic (strict typed DTOs), Pytest (742-test suite)
+- **Backend/Architecture:** Pydantic (strict typed DTOs), Pytest (878-test suite)
 - **Frontend:** Streamlit, UI design tokens (WCAG AAA/AA, tabular-nums)
 
 ### Measurable Results
-- **742/742** unit and integration tests passing with local data present (0 failures, 0 skips).
+- **878/878** unit and integration tests passing with local data present (0 failures, 0 skips).
 - **349,539** financial facts processed, indexed, and available for querying.
 - **30/30** cases pass on the self-authored reasoning regression benchmark (not accuracy on unseen data).
 - **30/30** mutations detected and **30/30** valid results accepted on the 60-case self-authored verification regression benchmark (not accuracy on unseen data).

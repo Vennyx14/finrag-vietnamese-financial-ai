@@ -36,6 +36,8 @@ Với mỗi bước, agent đi theo vòng của `AGENTS.md` Mục 10: hiểu →
 
 Cập nhật 2026-11-09, sau P2: 742 test pass, 0 skip (có dữ liệu cục bộ); `src/nlp/llm.py` đã có lớp gọi LLM nhưng ứng dụng chưa gọi nó; `.env` có khóa Groq dùng được. Các dòng còn lại của bảng là số đo ngày 2026-11-07.
 
+Cập nhật 2026-11-09, sau P3.1–P3.6: 878 test pass, 0 skip (có dữ liệu cục bộ). Lớp 3 (LLM planner) đã xây xong và đã đo, nhưng đang **tắt** trong ứng dụng cho tới khi bạn trả lời P3.7. Khi bật, 129 trong 766 câu phát triển được trả lời (16,8%; trước là 111); đây là độ phủ, không phải độ chính xác. Chi tiết trong `docs/m4_layer_3_report.md`.
+
 655 câu phát triển còn bị từ chối. Lý do lớn nhất theo `data/manifests/question_coverage.csv`:
 
 | Lý do từ chối | Số câu (xấp xỉ) |
@@ -127,12 +129,12 @@ Thứ tự chạy giữ nguyên: `resolve_query` → template planner (lớp 2) 
 
 | Bước | Nhãn | Việc |
 |---|---|---|
-| P3.1 | **[AUTO]** | Prompt gồm: câu hỏi (đặt trong JSON như dữ liệu, không phải lệnh), danh sách dòng catalog, danh sách phép toán cho phép, công ty và kỳ đã trích bởi parser chuẩn. Đầu ra là JSON có cấu trúc: `program` hoặc `refuse` kèm lý do. |
-| P3.2 | **[AUTO]** | Kiểm tra đầu ra bằng model chương trình hiện có trong `src/financial/program/models.py`: phép toán ngoài danh sách, dòng không có trong catalog, hằng số tự đặt ra, hoặc JSON hỏng đều bị từ chối. Không `eval`, không `exec`. |
-| P3.3 | **[AUTO]** | Kiểm tra độc lập: mỗi dòng catalog được dùng phải có căn cứ từ ngữ trong câu hỏi; công ty và kỳ trong chương trình phải khớp với lần parse độc lập (nguyên tắc 23). Không khớp thì `REJECTED` hoặc `WARNING`. |
-| P3.4 | **[AUTO]** | Ghi vết đầy đủ: prompt, phản hồi thô, model, chương trình, ràng buộc, kết quả kiểm tra. Trên UI, câu trả lời từ lớp 3 có nhãn riêng để người dùng biết nó đến từ LLM planner. |
-| P3.5 | **[AUTO]** | Test bằng mock: chương trình đúng, chương trình có phép toán lạ, chương trình chứa số, câu hỏi chứa lệnh chèn (prompt injection), LLM lỗi. |
-| P3.6 | **[AUTO]** | Chạy trên 766 câu phát triển (không chạm 246 câu niêm phong). Báo cáo: độ phủ mới theo lớp, câu đổi trạng thái, điểm trên silver v2 và 42 nhãn đóng băng trước M4. Agent đọc lại mọi câu trả lời mới để tìm lỗi, và ghi rõ việc đọc này không độc lập. |
+| P3.1 | **[AUTO]** | Prompt gồm: câu hỏi (đặt trong JSON như dữ liệu, không phải lệnh), danh sách dòng catalog, danh sách phép toán cho phép, công ty và kỳ đã trích bởi parser chuẩn. Đầu ra là JSON có cấu trúc: `program` hoặc `refuse` kèm lý do. Xong 2026-11-09 (`src/financial/program/llm_planner.py`): LLM chỉ chọn phép toán, mã dòng catalog, công ty và kỳ; tên, đơn vị và nhãn của chương trình do code của template planner tạo, nên LLM không viết con số nào ngoài năm và không viết chữ nào hiện cho người dùng. |
+| P3.2 | **[AUTO]** | Kiểm tra đầu ra bằng model chương trình hiện có trong `src/financial/program/models.py`: phép toán ngoài danh sách, dòng không có trong catalog, hằng số tự đặt ra, hoặc JSON hỏng đều bị từ chối. Không `eval`, không `exec`. Xong 2026-11-09: còn từ chối khóa lạ (ví dụ `"value": 42`), khóa lặp, `NaN`, năm không phải số nguyên, và mọi dạng chương trình mà template planner không tạo. |
+| P3.3 | **[AUTO]** | Kiểm tra độc lập: mỗi dòng catalog được dùng phải có căn cứ từ ngữ trong câu hỏi; công ty và kỳ trong chương trình phải khớp với lần parse độc lập (nguyên tắc 23). Không khớp thì `REJECTED` hoặc `WARNING`. Xong 2026-11-09 (`src/financial/program/grounding.py`): 6 kiểm tra bắt buộc (chỉ tiêu được nêu, mọi chỉ tiêu được nêu đều dùng, công ty và thứ tự hiệu số, năm và số đầu năm, từ chỉ phép toán, đơn vị); sai thì `REJECTED`, không chạy được thì `NOT_RUN`. Thêm một cổng: không gọi LLM khi không chương trình nào có thể qua các kiểm tra này (câu có từ lạ như "nguyên giá", "dự phòng", "ngân hàng"; có số không phải năm; công ty chứng khoán, bảo hiểm hoặc không có dữ kiện). |
+| P3.4 | **[AUTO]** | Ghi vết đầy đủ: prompt, phản hồi thô, model, chương trình, ràng buộc, kết quả kiểm tra. Trên UI, câu trả lời từ lớp 3 có nhãn riêng để người dùng biết nó đến từ LLM planner. Xong 2026-11-09: `FinRAGResponse.planner`; nhãn "Lớp 3 · Chương trình do LLM planner chọn (thử nghiệm)". Bật bằng `FINRAG_LLM_PLANNER=on` trong `.env`; mặc định tắt. |
+| P3.5 | **[AUTO]** | Test bằng mock: chương trình đúng, chương trình có phép toán lạ, chương trình chứa số, câu hỏi chứa lệnh chèn (prompt injection), LLM lỗi. Xong 2026-11-09: 136 test mới, không gọi mạng; thử cài 33 lỗi cố ý, 32 lỗi bị test bắt (lỗi còn lại bị một kiểm tra khác chặn). |
+| P3.6 | **[AUTO]** | Chạy trên 766 câu phát triển (không chạm 246 câu niêm phong). Báo cáo: độ phủ mới theo lớp, câu đổi trạng thái, điểm trên silver v2 và 42 nhãn đóng băng trước M4. Agent đọc lại mọi câu trả lời mới để tìm lỗi, và ghi rõ việc đọc này không độc lập. Xong 2026-11-09 với Groq `openai/gpt-oss-120b` (`docs/m4_layer_3_report.md`): 31 câu đến LLM, thêm 18 câu được trả lời (111 → 129), 1 chương trình bị kiểm tra bác; silver v2 144/148 khi bật (4 câu là câu trả lời cho nhãn "từ chối" không có số); 42 nhãn đóng băng không đổi (37 đúng, 0 sai, 5 từ chối); 32 lần gọi, khoảng 69.000 token, 0 USD trên gói miễn phí. |
 | P3.7 | **[DUYỆT]** | Bật lớp 3 trên tập phát triển? Agent trình bày: độ phủ tăng bao nhiêu, có câu nào trước đúng nay sai không, chi phí và độ trễ. Đề xuất mặc định: bật nếu không có câu nào trước đúng nay sai. |
 
 **Xong khi:** các test trên pass, báo cáo `docs/m4_layer_3_report.md` có số đo, và bạn đã trả lời P3.7.

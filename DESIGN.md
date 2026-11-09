@@ -111,6 +111,7 @@ As-built scale:
 5. **Evidence Provenance Inspector.** Clear distinction between "Cột số liệu chính kỳ (BCTC {fiscal_year})" and "Cột số liệu so sánh (BCTC {report_year})", unedited OCR labels, accounting line codes, page/table/row coordinates, and Fact ID citations.
 6. **Refusal & Diagnostic Card.** Distinct styling (neutral slate for unsupported, amber for missing parameter/not found, red for system errors), clear explanation, and actionable next steps.
 7. **Institutional Audit Trail.** Expander providing technical latency, trust status, methodology, and JSON contract.
+8. **Layer-3 label** (M4 layer 3, plan step P3.4; shown only when `FINRAG_LLM_PLANNER=on`). A callout under the resolution strip when the LLM planner chose the program: "Lớp 3 · Chương trình do LLM planner chọn (thử nghiệm)" with the model ID, and a sentence saying the LLM only chose the item, company, period and operation while code computed every number. Under a refusal card, a one-line note when the LLM was asked but gave no valid program, or could not be reached. The model's own text (its refusal reason, its raw reply) is never shown as a message; it is only in the Audit Trail JSON.
 
 ## 5. Planned components
 
