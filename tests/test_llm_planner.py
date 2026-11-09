@@ -289,6 +289,22 @@ class TestIndependentChecks:
         statuses = {c.check_name: c.status for c in check_plan(bad_plan, question)}
         assert {name for name, status in statuses.items() if status == "FAIL"} == failing
 
+    @pytest.mark.parametrize(
+        "question, first",
+        [
+            ("Nợ phải trả của ZQX năm 2024 cao hơn ZQY bao nhiêu tỷ đồng?", "ZQX"),
+            ("Chênh lệch nợ phải trả giữa ZQY và ZQX năm 2024 là bao nhiêu tỷ đồng?", "ZQY"),
+            # "How much lower is ZQX than ZQY" is ZQY minus ZQX.
+            ("Nợ phải trả của ZQX năm 2024 thấp hơn ZQY bao nhiêu tỷ đồng?", "ZQY"),
+        ],
+    )
+    def test_difference_between_companies_follows_the_question(self, question, first):
+        second = "ZQY" if first == "ZQX" else "ZQX"
+        right = plan("diff", ["total_liabilities"], [first, second], [(2024, "end")])
+        wrong = plan("diff", ["total_liabilities"], [second, first], [(2024, "end")])
+        assert {c.check_name: c.status for c in check_plan(right, question)}["llm_plan_ticker_match"] == "PASS"
+        assert {c.check_name: c.status for c in check_plan(wrong, question)}["llm_plan_ticker_match"] == "FAIL"
+
     def test_growth_over_a_range_uses_its_two_ends(self):
         question = "Tỉ lệ tăng trưởng tổng tài sản của ZQX từ cuối năm 2021 đến cuối năm 2024 là bao nhiêu %?"
         good = plan("pct_change", ["total_assets"], ["ZQX"], [(2024, "end"), (2021, "end")])
