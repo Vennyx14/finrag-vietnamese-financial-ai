@@ -22,3 +22,11 @@ def test_guard_also_blocks_request_objects(block_network):
         urllib.request.urlopen(request)
     assert block_network == [request]
     block_network.clear()
+
+
+def test_guard_also_blocks_custom_openers(block_network):
+    opener = urllib.request.build_opener()
+    with pytest.raises(AssertionError, match="must not open network connections"):
+        opener.open("https://openrouter.ai/api/v1/models", timeout=1)
+    assert block_network == ["https://openrouter.ai/api/v1/models"]
+    block_network.clear()

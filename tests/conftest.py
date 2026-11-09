@@ -35,17 +35,19 @@ def pytest_configure(config):
 def block_network(monkeypatch):
     """Fail any test that opens a URL (AGENTS.md section 10, rule 6).
 
-    Tests of HTTP code replace ``urllib.request.urlopen`` with a fake. Blocked
-    attempts are also checked after the test, so code that swallows the
-    AssertionError still fails the test. Yields the list of blocked attempts.
+    Both ``urllib.request.urlopen`` and ``OpenerDirector.open`` (used by custom
+    openers such as the LLM provider's) are blocked; tests of HTTP code install
+    a fake instead. Blocked attempts are also checked after the test, so code
+    that swallows the AssertionError still fails it. Yields the attempts.
     """
     blocked = []
 
     def refuse(url, *args, **kwargs):
         blocked.append(url)
-        raise AssertionError("Tests must not open network connections (urllib.request.urlopen was called).")
+        raise AssertionError("Tests must not open network connections (urllib was asked to open a URL).")
 
     monkeypatch.setattr(urllib.request, "urlopen", refuse)
+    monkeypatch.setattr(urllib.request.OpenerDirector, "open", lambda opener, url, *args, **kwargs: refuse(url))
     yield blocked
     assert not blocked, f"{len(blocked)} network call(s) were attempted during the test"
 
