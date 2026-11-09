@@ -195,7 +195,7 @@ def test_reprs_of_settings_and_provider_hide_the_key(tmp_path):
 
 def test_from_env_builds_the_selected_provider(tmp_path, transport):
     fake = transport(ok())
-    provider = OpenAICompatibleProvider.from_env(env_file(tmp_path))
+    provider = OpenAICompatibleProvider.from_env(env_file(tmp_path), cache_dir=None)
     assert provider.complete(MESSAGES).text == "OK"
     assert fake.requests[0].full_url == CHAT_URL
 
@@ -203,7 +203,7 @@ def test_from_env_builds_the_selected_provider(tmp_path, transport):
 def test_a_failed_call_never_switches_to_another_provider(tmp_path, transport, sleeps):
     path = env_file(tmp_path, CEREBRAS_API_KEY="csk-other-key-123", OPENROUTER_API_KEY="sk-or-other-key-123")
     fake = transport(*[http_error(503) for _ in range(3)])
-    provider = OpenAICompatibleProvider.from_env(path, sleep=sleeps.append)
+    provider = OpenAICompatibleProvider.from_env(path, cache_dir=None, sleep=sleeps.append)
     with pytest.raises(LLMUnavailableError):
         provider.complete(MESSAGES)
     assert {request.full_url for request in fake.requests} == {CHAT_URL}

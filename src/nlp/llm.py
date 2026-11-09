@@ -19,13 +19,18 @@ Contract:
   ``<NAME>_BASE_URL`` and ``<NAME>_MODEL`` must be set. A missing or empty variable
   is an ``LLMConfigurationError``; no default is filled in by code. ``.env`` is never
   loaded into ``os.environ``.
+- Successful completions are cached on disk (``ResponseCache``), one JSON file per
+  request under ``data/processed/llm_cache/`` (gitignored) for ``from_env``. Errors
+  are never cached. A hit returns ``cached=True`` without any network call.
 """
 
 import email.utils
+import hashlib
 import http.client
 import json
 import logging
 import math
+import os
 import re
 import time
 import urllib.error
@@ -42,6 +47,7 @@ logger = logging.getLogger(__name__)
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_ENV_PATH = REPO_ROOT / ".env"
+DEFAULT_CACHE_DIR = REPO_ROOT / "data" / "processed" / "llm_cache"
 
 LLM_UNAVAILABLE_MESSAGE = "LLM không khả dụng"
 PROVIDER_ENV = "FINRAG_LLM_PROVIDER"
@@ -134,7 +140,11 @@ class LLMProvider(Protocol):
 
 
 def build_payload(model: str, messages: Any, temperature: Any, max_tokens: Any) -> Dict[str, Any]:
-    """Validate a request and return its JSON body: exactly model, messages, temperature, max_tokens."""
+    """Validate a request and return its JSON body: exactly model, messages, temperature, max_tokens.
+
+    The same dict is the cache key input, so every parameter that can change the
+    answer is in the key. A new request parameter must be added here, not elsewhere.
+    """
     return {
         "model": model,
         "messages": _checked_messages(messages),
@@ -248,6 +258,60 @@ def _check_settings(base_url: str, model: str, api_key: str, names: Mapping[str,
         )
 
 
+# --- Response cache -----------------------------------------------------------------------
+
+
+def cache_key(payload: Mapping[str, Any]) -> str:
+    """SHA-256 of the request body (model, messages, temperature, max_tokens) as sorted JSON."""
+    text = json.dumps(payload, sort_keys=True, ensure_ascii=False)
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+class ResponseCache:
+    """One JSON file per request, named ``<cache_key>.json``, holding request and response.
+
+    Only successful completions are stored. A file that cannot be read, or whose stored
+    request differs from the current one, is a miss and is replaced on the next success.
+    """
+
+    def __init__(self, directory: Union[str, Path]) -> None:
+        self.directory = Path(directory)
+
+    def path_for(self, payload: Mapping[str, Any]) -> Path:
+        return self.directory / f"{cache_key(payload)}.json"
+
+    def get(self, payload: Mapping[str, Any]) -> Optional[Dict[str, Any]]:
+        path = self.path_for(payload)
+        if not path.is_file():
+            return None
+        try:
+            entry = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            logger.warning("LLM cache entry %s is unreadable; treating it as a miss", path.name)
+            return None
+        if not isinstance(entry, dict) or entry.get("request") != payload:
+            logger.warning("LLM cache entry %s does not match its request; treating it as a miss", path.name)
+            return None
+        return entry
+
+    def put(self, payload: Mapping[str, Any], response: Any, *, provider: str, latency_ms: float) -> Path:
+        path = self.path_for(payload)
+        entry = {
+            "key": path.stem,
+            "request": dict(payload),
+            "response": response,
+            "model": payload["model"],
+            "provider": provider,
+            "timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            "latency_ms": round(latency_ms, 1),
+        }
+        self.directory.mkdir(parents=True, exist_ok=True)
+        temporary = path.with_name(f"{path.name}.{os.getpid()}.tmp")
+        temporary.write_text(json.dumps(entry, ensure_ascii=False, indent=1), encoding="utf-8")
+        os.replace(temporary, path)  # atomic, so a reader never sees half a file
+        return path
+
+
 # --- OpenAI-compatible provider -----------------------------------------------------------
 
 
@@ -272,8 +336,9 @@ class _NoRedirectHandler(urllib.request.HTTPRedirectHandler):
 class OpenAICompatibleProvider:
     """Chat completions over HTTPS for Cerebras, OpenRouter and Groq (one API shape).
 
-    Counters for a run: ``calls`` (complete() calls) and ``http_requests``
-    (HTTP attempts, retries included).
+    ``cache_dir=None`` (the constructor default) disables the cache; ``from_env``
+    uses ``DEFAULT_CACHE_DIR``. Counters for a run: ``calls`` (complete() calls),
+    ``cache_hits`` and ``http_requests`` (HTTP attempts, retries included).
     """
 
     def __init__(
@@ -287,6 +352,7 @@ class OpenAICompatibleProvider:
         max_retries: int = DEFAULT_MAX_RETRIES,
         backoff_s: float = DEFAULT_BACKOFF_S,
         max_wait_s: float = DEFAULT_MAX_WAIT_S,
+        cache_dir: Optional[Union[str, Path]] = None,
         sleep: Callable[[float], None] = time.sleep,
     ) -> None:
         key = api_key.get_secret_value() if isinstance(api_key, SecretStr) else api_key
@@ -305,7 +371,9 @@ class OpenAICompatibleProvider:
         self._api_key = SecretStr(key)
         self._sleep = sleep
         self._opener = urllib.request.build_opener(_NoRedirectHandler())
+        self.cache = ResponseCache(cache_dir) if cache_dir is not None else None
         self.calls = 0
+        self.cache_hits = 0
         self.http_requests = 0
 
     @classmethod
@@ -319,9 +387,15 @@ class OpenAICompatibleProvider:
         )
 
     @classmethod
-    def from_env(cls, env_path: Union[str, Path] = DEFAULT_ENV_PATH, **options: Any) -> "OpenAICompatibleProvider":
-        """Build the provider that FINRAG_LLM_PROVIDER selects in .env."""
-        return cls.from_settings(load_llm_settings(env_path), **options)
+    def from_env(
+        cls,
+        env_path: Union[str, Path] = DEFAULT_ENV_PATH,
+        *,
+        cache_dir: Optional[Union[str, Path]] = DEFAULT_CACHE_DIR,
+        **options: Any,
+    ) -> "OpenAICompatibleProvider":
+        """Build the provider that FINRAG_LLM_PROVIDER selects in .env, caching in data/processed/."""
+        return cls.from_settings(load_llm_settings(env_path), cache_dir=cache_dir, **options)
 
     def __repr__(self) -> str:
         return f"{type(self).__name__}(provider={self.provider!r}, model={self.model!r}, base_url={self.base_url!r})"
@@ -340,9 +414,40 @@ class OpenAICompatibleProvider:
         started = time.perf_counter()
         payload = build_payload(self.model, messages, temperature, max_tokens)
         self.calls += 1
+        if self.cache is not None:
+            hit = self._cached_response(payload, started)
+            if hit is not None:
+                return hit
         body = self._post(payload)
-        fields = self._completion_fields(body)
-        return LLMResponse(**fields, provider=self.provider, cached=False, latency_ms=_elapsed_ms(started))
+        fields = self._completion_fields(body)  # raises before anything is cached
+        latency_ms = _elapsed_ms(started)
+        if self.cache is not None:
+            self._store(payload, body, latency_ms)
+        return LLMResponse(**fields, provider=self.provider, cached=False, latency_ms=latency_ms)
+
+    def _cached_response(self, payload: Dict[str, Any], started: float) -> Optional[LLMResponse]:
+        entry = self.cache.get(payload)
+        if entry is None:
+            return None
+        try:
+            fields = self._completion_fields(entry.get("response"))
+        except LLMResponseFormatError:
+            logger.warning("LLM cache entry %s holds no usable completion; treating it as a miss", cache_key(payload))
+            return None
+        self.cache_hits += 1
+        source = entry.get("provider")
+        return LLMResponse(
+            **fields,
+            provider=source if isinstance(source, str) and source else self.provider,
+            cached=True,
+            latency_ms=_elapsed_ms(started),
+        )
+
+    def _store(self, payload: Dict[str, Any], body: Any, latency_ms: float) -> None:
+        try:
+            self.cache.put(payload, body, provider=self.provider, latency_ms=latency_ms)
+        except OSError as error:
+            logger.warning("could not write the LLM cache entry (%s); the answer is not cached", type(error).__name__)
 
     def _post(self, payload: Dict[str, Any]) -> Any:
         """Send the payload; retry only 429 and 5xx; return the decoded JSON body."""
