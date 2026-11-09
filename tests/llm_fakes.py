@@ -1,9 +1,9 @@
 """Offline fakes for tests of the LLM provider layer (no network, AGENTS.md section 10).
 
 ``install_transport`` puts a ``FakeTransport`` in place of
-``urllib.request.OpenerDirector.open``, which the provider's opener (and
-``urlopen``) call. It replays scripted outcomes in order and records every
-request it receives.
+``urllib.request.OpenerDirector.open`` (used by the provider's opener) and of
+``urllib.request.urlopen`` (used by the key check). It replays scripted
+outcomes in order and records every request it receives.
 """
 
 import email.message
@@ -88,12 +88,15 @@ def http_error(code, body=b"", headers=None, url=CHAT_URL):
 
 
 def install_transport(monkeypatch, *outcomes):
-    """Answer every urllib request in this test with the next scripted outcome."""
+    """Answer every urllib request in this test (opener or urlopen) with the next scripted outcome."""
     fake = FakeTransport(outcomes)
     monkeypatch.setattr(
         urllib.request.OpenerDirector,
         "open",
         lambda opener, request, data=None, timeout=None: fake(request, timeout=timeout),
+    )
+    monkeypatch.setattr(
+        urllib.request, "urlopen", lambda request, data=None, timeout=None, **kwargs: fake(request, timeout=timeout)
     )
     return fake
 
