@@ -37,7 +37,7 @@ import urllib.error
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Mapping, Optional, Protocol, Sequence, Union, runtime_checkable
+from typing import Any, Callable, Dict, Iterable, List, Mapping, Optional, Protocol, Sequence, Union, runtime_checkable
 
 from pydantic import BaseModel, ConfigDict, Field, SecretStr
 
@@ -583,6 +583,49 @@ class OpenAICompatibleProvider:
 
     def _redact(self, text: str) -> str:
         return redact(text, self._api_key.get_secret_value())
+
+
+class MockProvider:
+    """Scripted provider for tests only (principle 18).
+
+    It refuses to be created or to answer outside pytest, so it can never answer a
+    user's question. ``responses`` are used in order: a str becomes an LLMResponse,
+    an LLMResponse is returned as given, an exception is raised (to simulate a
+    provider failure). Requests are validated like the real provider's and recorded
+    in ``calls``. Create it inside a test or fixture, not at import time.
+    """
+
+    def __init__(
+        self, responses: Iterable[Union[str, LLMResponse, BaseException]], *, model: str = "mock-model"
+    ) -> None:
+        _require_pytest()
+        self.model = model
+        self._responses = list(responses)
+        self.calls: List[Dict[str, Any]] = []
+
+    def complete(
+        self,
+        messages: Sequence[Mapping[str, str]],
+        *,
+        temperature: float = DEFAULT_TEMPERATURE,
+        max_tokens: int = DEFAULT_MAX_TOKENS,
+    ) -> LLMResponse:
+        _require_pytest()
+        payload = build_payload(self.model, messages, temperature, max_tokens)
+        self.calls.append(payload)
+        if not self._responses:
+            raise AssertionError("MockProvider has no scripted response left")
+        item = self._responses.pop(0)
+        if isinstance(item, BaseException):
+            raise item
+        if isinstance(item, LLMResponse):
+            return item
+        return LLMResponse(text=item, model=self.model, provider="mock", latency_ms=0.0, cached=False)
+
+
+def _require_pytest() -> None:
+    if "PYTEST_CURRENT_TEST" not in os.environ:
+        raise LLMConfigurationError("MockProvider is for tests only and refuses to run outside pytest (principle 18)")
 
 
 def _token_count(value: Any) -> Optional[int]:
