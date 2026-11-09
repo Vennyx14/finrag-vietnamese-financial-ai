@@ -305,6 +305,24 @@ class TestIndependentChecks:
         assert {c.check_name: c.status for c in check_plan(right, question)}["llm_plan_ticker_match"] == "PASS"
         assert {c.check_name: c.status for c in check_plan(wrong, question)}["llm_plan_ticker_match"] == "FAIL"
 
+    def test_total_written_before_an_item_is_part_of_its_name(self):
+        # "tổng chi phí lãi vay" is the interest expense line, not a request to add (dev question 606 had this form).
+        question = "Tỷ lệ tăng trưởng tổng chi phí lãi vay của ZQX từ năm 2023 đến năm 2024 là bao nhiêu %?"
+        good = plan("pct_change", ["interest_expense"], ["ZQX"], [(2024, "end"), (2023, "end")])
+        assert all(c.status in ("PASS", "NOT_RUN") for c in check_plan(good, question))
+
+    @pytest.mark.parametrize(
+        "question, companies, periods",
+        [
+            ("Tổng doanh thu thuần của ZQX trong 2 năm 2023 và 2024", ["ZQX"], [(2023, "end"), (2024, "end")]),
+            ("Tổng chi phí lãi vay của ZQX và ZQY năm 2024 là bao nhiêu tỷ đồng?", ["ZQX", "ZQY"], [(2024, "end")]),
+        ],
+    )
+    def test_total_before_an_item_still_asks_for_a_sum_over_several_points(self, question, companies, periods):
+        item = "net_revenue" if "doanh thu" in question else "interest_expense"
+        statuses = {c.check_name: c.status for c in check_plan(plan("sum", [item], companies, periods), question)}
+        assert statuses["llm_plan_formula_cue"] == "PASS"
+
     def test_growth_over_a_range_uses_its_two_ends(self):
         question = "Tỉ lệ tăng trưởng tổng tài sản của ZQX từ cuối năm 2021 đến cuối năm 2024 là bao nhiêu %?"
         good = plan("pct_change", ["total_assets"], ["ZQX"], [(2024, "end"), (2021, "end")])

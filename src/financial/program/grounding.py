@@ -13,7 +13,7 @@ When one fails, no plan could pass ``check_plan``, so the LLM is not called.
 import re
 from typing import AbstractSet, Dict, FrozenSet, List, NamedTuple, Optional, Tuple
 
-from src.financial.program.catalog import DERIVED_ITEMS, PLAN_ITEMS, canonical_item, item_components
+from src.financial.program.catalog import DERIVED_ITEMS, PLAN_ITEMS, canonical_item, item_components, phrase_table
 from src.financial.program.models import LLMPlan
 from src.financial.program.planner import (
     FILLER_PHRASES,
@@ -68,6 +68,12 @@ CUES: Dict[str, "re.Pattern[str]"] = {
     "higher": re.compile(r"\b(cao hơn|lớn hơn|nhiều hơn)\b"),
     "lower": re.compile(r"\b(thấp hơn|ít hơn|bé hơn|nhỏ hơn)\b"),
 }
+# "tổng" right before a catalog item is usually part of its name ("tổng nợ ngắn hạn" is
+# current liabilities). It may still ask for a sum over several points, so it is the
+# cue "total": enough for a sum, never a reason to refuse another operation.
+TOTAL_BEFORE_ITEM = re.compile(
+    r"\btổng(?:\s+cộng|\s+số)?\s+(?=(?:" + "|".join(re.escape(phrase) for phrase, _ in phrase_table()) + r"))"
+)
 PERCENT_UNIT = re.compile(r"%|\bphần trăm\b")
 TIMES_UNIT = re.compile(r"\blần\b")
 CURRENCY_UNIT = re.compile(r"\b(đồng|vnd|vnđ)\b")
@@ -79,7 +85,7 @@ OPERATION_CUES: Dict[str, Tuple[Tuple[str, ...], FrozenSet[str]]] = {
     "ratio": (("ratio",), frozenset({"diff", "growth", "avg", "sum", "max", "min", "which"})),
     "diff": (("diff",), frozenset({"growth", "avg", "sum", "max", "min", "which", "ratio"})),
     "pct_change": (("growth", "diff+percent"), frozenset({"avg", "sum", "max", "min", "which"})),
-    "sum": (("sum",), frozenset({"avg", "max", "min", "which", "diff", "growth", "ratio"})),
+    "sum": (("sum", "total"), frozenset({"avg", "max", "min", "which", "diff", "growth", "ratio"})),
     "avg": (("avg",), frozenset({"max", "min", "which", "diff", "growth", "ratio"})),
     "max": (("max",), frozenset({"which", "min", "avg", "diff", "growth", "ratio"})),
     "min": (("min",), frozenset({"which", "max", "avg", "diff", "growth", "ratio"})),
@@ -121,6 +127,8 @@ def parse_question(question: str) -> QuestionParse:
         unit_kinds.add("VND")
     has_range = bool(RANGE_REGEX.search(text)) and not STUB_PERIOD_REGEX.search(text)
     periods, text = _read_periods(text)
+    total_before_item = bool(TOTAL_BEFORE_ITEM.search(text))
+    text = TOTAL_BEFORE_ITEM.sub(" ", text)
     raw_items, text = _read_items(text)
     text = LAYER3_UNIT_REGEX.sub(" ", text)
     text = UNIT_REGEX.sub(" ", text)
@@ -128,6 +136,8 @@ def parse_question(question: str) -> QuestionParse:
     cues = {name for name, pattern in CUES.items() if pattern.search(text)}
     if percent:
         cues.add("percent")
+    if total_before_item:
+        cues.add("total")
     text = LAYER3_OPERATION_WORDS.sub(" ", text)
     for pattern in OPERATION_WORD_LISTS:
         text = pattern.sub(" ", text)
