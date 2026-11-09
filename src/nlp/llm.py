@@ -13,7 +13,8 @@ Contract:
 - ``OpenAICompatibleProvider`` posts to ``{base_url}/chat/completions`` with urllib,
   so no dependency is added. Only HTTP 429 and 5xx are retried, a bounded number of
   times, waiting for Retry-After when the server sends one. Timeouts and connection
-  errors are not retried.
+  errors are not retried. Redirects are refused, so the key is never resent elsewhere.
+- ``MockProvider`` gives scripted answers to tests and refuses to run outside pytest.
 - Settings come only from ``.env`` (names in ``.env.example``): ``FINRAG_LLM_PROVIDER``
   selects cerebras, openrouter or groq, and that provider's ``<NAME>_API_KEY``,
   ``<NAME>_BASE_URL`` and ``<NAME>_MODEL`` must be set. A missing or empty variable

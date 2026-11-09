@@ -5,7 +5,7 @@ description: Rules and design for FinRAG's LLM work - the provider layer in src/
 
 # FinRAG LLM layer
 
-State on 2026-11-08: `src/nlp/llm.py` is empty; M4 layers 1 (catalog) and 2 (template planner) work without an LLM; layer 3 has not started. Keys live only in `.env`. Since 2026-11-08 `.env` and `.env.example` also hold the provider choice and, per provider, the base URL and model: `FINRAG_LLM_PROVIDER`, then `<NAME>_API_KEY`, `<NAME>_BASE_URL`, `<NAME>_MODEL` for `CEREBRAS`, `OPENROUTER` and `GROQ` (default model `gpt-oss-120b` on all three). `scripts/check_llm_key.py` checks the keys with the standard library. The steps are P2.1–P2.6 and P3.1–P3.7 in `docs/development_plan.md`; this skill is how to do them without breaking the project's guarantees.
+State on 2026-11-09: P2 is done. `src/nlp/llm.py` holds the provider layer (see "As built" below) and `src/nlp/env_file.py` reads `.env`; nothing in the app calls them yet. M4 layers 1 (catalog) and 2 (template planner) work without an LLM; layer 3 (P3) has not started. Keys live only in `.env`. Since 2026-11-08 `.env` and `.env.example` also hold the provider choice and, per provider, the base URL and model: `FINRAG_LLM_PROVIDER`, then `<NAME>_API_KEY`, `<NAME>_BASE_URL`, `<NAME>_MODEL` for `CEREBRAS`, `OPENROUTER` and `GROQ` (default model `gpt-oss-120b` on all three). `scripts/check_llm_key.py` checks the keys with the standard library. The steps are P2.1–P2.6 and P3.1–P3.7 in `docs/development_plan.md`; this skill is how to do them without breaking the project's guarantees.
 
 ## Non-negotiables and why
 
@@ -42,6 +42,15 @@ class LLMResponseFormatError(LLMError): ... # body not as expected
 - Cache (P2.4): key = SHA-256 of `json.dumps({model, messages, temperature, max_tokens}, sort_keys=True, ensure_ascii=False)`; one JSON file per key under `data/processed/llm_cache/` (already gitignored by `data/processed/**`). Store request, response, model, timestamp. Never cache errors. A run must be able to say how many calls were cache hits.
 - `MockProvider(scripted_responses)`: deterministic, records the messages it received. Guard: constructing the application with a mock outside pytest raises (for example check `PYTEST_CURRENT_TEST` or require an explicit `allow_mock=True` that only tests pass).
 - Tests: a fixture that makes `urllib.request.urlopen` raise if called; a test that the key string never appears in `str(error)` or logs; tests for 429 → `LLMRateLimitError`, timeout → `LLMUnavailableError`, malformed JSON → `LLMResponseFormatError`; cache hit returns `cached=True` with no network.
+
+**As built (2026-11-09), for P3 to use:**
+- `OpenAICompatibleProvider.from_env()` is the entry point: it reads `.env` (`load_llm_settings`) and caches in `data/processed/llm_cache/`; the constructor's default and `cache_dir=None` disable the cache. Counters `calls`, `cache_hits`, `http_requests` give per-run figures for P3.6 and P7.4.
+- Errors: `LLMConfigurationError`, `LLMUnavailableError` (network, timeout, 5xx after retries, other 4xx, refused redirects), `LLMRateLimitError` (429, 402; `retry_after`), `LLMResponseFormatError` (no JSON, no choices, no final content, for example when `finish_reason=length` cut a reasoning model off). Every `LLMError` has `user_message == "LLM không khả dụng"`; P3 shows that text and answers nothing else.
+- `LLMResponse` adds `provider` and `finish_reason` to the fields above. On a cache hit `latency_ms` is the cache read time and `provider` names where the answer came from. The cache key does not include the provider: Groq and OpenRouter share the model ID `openai/gpt-oss-120b`, so they share entries.
+- `build_payload()` is both the request body and the cache key input. A new request parameter (for example `reasoning_effort`) must go there, or cached answers would be reused for a different request.
+- `MockProvider(responses)` takes strings, `LLMResponse` objects or exceptions, records `calls`, and refuses to be created or used outside pytest. Create it inside a test or fixture.
+- Tests: `tests/conftest.py` blocks `urllib.request.urlopen` and `OpenerDirector.open` in every test; `tests/llm_fakes.py` has `install_transport`, `FakeResponse`, `http_error` and `leaked_fragments` for HTTP fakes and key-leak checks.
+- The cache stores prompts verbatim, question text included. For the sealed holdout run (P5) use a separate `cache_dir` that is deleted after scoring, or `cache_dir=None`, so no file holds sealed question text.
 
 ## P3: planner (layer 3)
 

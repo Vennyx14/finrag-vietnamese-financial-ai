@@ -1,6 +1,6 @@
 # FinRAG Development Rules (AGENTS.md)
 
-Last reviewed: 2026-11-08
+Last reviewed: 2026-11-09
 
 This file is the operating contract for every human or AI agent (including Antigravity) that changes this repository. Read it fully before making any change.
 
@@ -27,14 +27,14 @@ FinRAG is **one product with one QA pipeline**. Corpus-grounded question answeri
 
 ---
 
-## 2. Current state (as of 2026-11-08)
+## 2. Current state (as of 2026-11-09)
 
 Status labels: **REPORTED** = stated in repo docs, not re-verified by the agent; **VERIFIED** = confirmed by running it (source named); **SUSPECTED** = found by reading code, not yet reproduced; **NOT OBSERVED** = looked for and not found in the current corpus.
 
 Note on tooling: **Antigravity** refers to the autonomous AI pair programming system acting under user instruction and verification.
 
 ### Stage
-MVP v0.1 (data foundation → retrieval → deterministic reasoning → verification → application service → Streamlit UI) is implemented. The hardening phase has progressed through **M0, M1, M1b, M2a, M2b, and M3 (completed)**. **M4 (Program layer)** is in progress: layers 1 and 2 are done, and layer 3 (LLM planner) has not started.
+MVP v0.1 (data foundation → retrieval → deterministic reasoning → verification → application service → Streamlit UI) is implemented. The hardening phase has progressed through **M0, M1, M1b, M2a, M2b, and M3 (completed)**. **M4 (Program layer)** is in progress: layers 1 and 2 are done, and layer 3 (LLM planner) has not started. The LLM provider layer that layer 3 will use (plan step P2) is done (2026-11-09); nothing in the app calls it yet.
 
 ### Implemented (VERIFIED)
 - Facts (rebuilt 2026-11-08 for K26; before that 2026-11-02 for K19 and K21): 365,954 rows, of which 16,415 carry a `quality_flag` and never answer. Units: 346,648 declared, 19,103 inferred, 203 unknown. Fact IDs cited by the benchmarks are preserved.
@@ -47,11 +47,12 @@ MVP v0.1 (data foundation → retrieval → deterministic reasoning → verifica
 - Independent Verification & Accounting Identities (M2b): `VerificationEngine` upgraded with independent query re-parse (`_verify_independent_query_parse` fixing K2), typed `CheckStatus` (`PASS`, `FAIL`, `WARNING`, `NOT_RUN`), Balance Sheet accounting identities ($270 = 300 + 400$, $270 = 100 + 200$), fact-level quality flags, and cross-report comparative figure reconciliation.
 - Application: `FinRAGApplication.ask()` returning typed `FinRAGResponse` DTOs with latency, confidence status, and actionable guidance for abstentions. It gathers same-report supporting facts so accounting identities and comparative reconciliation run on real answers.
 - UI: Streamlit app (`ui/app.py`, `ui/theme.py`) featuring an institutional 5-tier layout (Resolution $\rightarrow$ Calculation & Substituted Formula Trace $\rightarrow$ Grouped Verification $\rightarrow$ Evidence Provenance $\rightarrow$ Audit Trail) with strict HTML escaping (`_esc()`) for OCR labels (K11).
-- Regression benchmarks (VERIFIED): reasoning 30 cases (25 valid, 5 invalid) at 100% pass; verification 60 cases (30 valid accepted, 30 mutations rejected) at 100% pass; full test suite currently at **572 tests, 572 passed** (2026-11-08).
+- Regression benchmarks (VERIFIED): reasoning 30 cases (25 valid, 5 invalid) at 100% pass; verification 60 cases (30 valid accepted, 30 mutations rejected) at 100% pass; full test suite currently at **742 tests, 742 passed, 0 skipped** (2026-11-09, with local data).
 
 - Silver benchmark (VERIFIED by `python scripts/evaluate_silver.py`, 2026-11-02): silver v2 scores 148/148, but 24 of its labels were reviewed from system output, so it is a regression check only. Of the 42 numeric labels frozen before M4 code, 37 are correct, 0 wrong, 5 refused. Silver v1's company-split test part scored 45/50 with 4 verified-wrong on its first run, before later fixes. No person verified these labels. See `docs/m4_layers_1_2_report.md`.
 - Answer coverage (VERIFIED by `python scripts/run_question_coverage.py`, 2026-11-02): 111 of the 766 development questions (14.5%), up from 31 before M4. The 246 sealed questions in `docs/holdout_v1_seal.md` are excluded from every development report.
 - Program layer: `src/financial/program/` holds a 41-line catalog, a template planner, an allowlisted program model, an executor, and a verifier. It runs only after `resolve_query` refuses, and it uses no LLM.
+- LLM provider layer (plan step P2, VERIFIED 2026-11-09 by `python -m pytest -rs` and `python scripts/check_llm_key.py --smoke`): `src/nlp/llm.py` defines `LLMProvider` and `LLMResponse` (final message content only, never a separate reasoning field), typed errors (`LLMConfigurationError`, `LLMUnavailableError`, `LLMRateLimitError`, `LLMResponseFormatError`, all shown to users as "LLM không khả dụng"), `OpenAICompatibleProvider` for Groq, Cerebras and OpenRouter over urllib (settings only from `.env`, retries only for 429 and 5xx, redirects refused), a disk cache in `data/processed/llm_cache/`, and a `MockProvider` that refuses to run outside pytest. `src/nlp/env_file.py` reads `.env` without loading it into the environment. Tests never open a network connection (guard in `tests/conftest.py`). **Nothing in the app calls this layer yet.** Smoke on 2026-11-09: one Groq call to `openai/gpt-oss-120b` answered "OK" in 914 ms (79 prompt and 54 completion tokens); the repeated call came from the cache with no HTTP request.
 
 ### Important caveats on those numbers
 - The benchmarks were written by the project authors from the same parquet and the same label rules the system uses. They are **regression tests, not accuracy estimates**. Do not describe them as accuracy on unseen data.
@@ -69,7 +70,7 @@ Environment: Windows, Python 3.11.9, pytest 9.1.1. Full details belong in `docs/
 - Period labels: 936 distinct; top are "Số cuối năm" (42,372), "Số đầu năm" (36,435), "Năm nay" (29,288). No quarterly or monthly reports were observed.
 
 ### Empty placeholders (no implementation yet)
-`src/nlp/llm.py`, `src/agent/`, `src/pipeline/qa.py`, `src/evaluation/evaluator.py`, `src/financial/concepts.py`, `api/`, `scripts/run_demo.py`, `tests/test_pipeline.py`, `tests/test_retrieval.py`. There is no LLM component yet. The constrained program layer (template planner, allowlisted program model, executor, verifier) lives in `src/financial/program/` and uses no LLM.
+`src/agent/`, `src/pipeline/qa.py`, `src/evaluation/evaluator.py`, `src/financial/concepts.py`, `api/`, `scripts/run_demo.py`, `tests/test_pipeline.py`, `tests/test_retrieval.py`. No part of the app calls an LLM yet: the provider layer in `src/nlp/llm.py` (P2) is there for the layer-3 planner (P3). The constrained program layer (template planner, allowlisted program model, executor, verifier) lives in `src/financial/program/` and uses no LLM.
 
 ---
 
@@ -82,7 +83,8 @@ Environment: Windows, Python 3.11.9, pytest 9.1.1. Full details belong in `docs/
 | `src/retrieval/` | Metadata filter, BM25, ranking/`RetrievalResult`, retrieval engine |
 | `src/pipeline/` | `prepare_data` pipeline, `query.py` (regex query parser) |
 | `src/application/` | `FinRAGApplication` service and typed DTOs |
-| `src/nlp/`, `src/agent/`, `src/evaluation/` | Reserved for LLM provider, planner, evaluator (empty today) |
+| `src/nlp/` | LLM provider layer (`llm.py`) and `.env` reader (`env_file.py`); the app does not call it yet |
+| `src/agent/`, `src/evaluation/` | Reserved for planner and evaluator (empty today) |
 | `ui/` | Streamlit app and design tokens (presentation only; no calculation logic) |
 | `scripts/` | Data prep, profiling, benchmark generation, evaluation runners |
 | `tests/` | Unit and integration tests |
@@ -137,7 +139,7 @@ Work proceeds one milestone at a time. **Do not start the next milestone until t
 | **M2a** | Data semantics | **COMPLETED** (commit `f08ec07`) | `unit_scale` and `unit_status` stored alongside raw value in `FinancialFact` and `RetrievalResult`; `statement_type` inferred in `src/financial/semantics.py` (disambiguates Line 60); opening period filter `is_opening_period_label()` handles `01/01/YYYY`. Verified by `tests/test_data_semantics.py` (K3, K4, K5, K7, K16). |
 | **M2b** | Independent verification | **COMPLETED** | Expected ticker/year/scope come from an independent re-parse of the question (`_verify_independent_query_parse`, K2); typed `CheckStatus` enum (`PASS`, `FAIL`, `WARNING`, `NOT_RUN`); scoped accounting-identity checks (270 = 300 + 400, 270 = 100 + 200); comparative figure reconciliation; fact quality flags. Verified by `tests/test_verification_m2b.py`. |
 | **M3** | Shared evidence and trace contracts | **COMPLETED** (commit `30ab93e`, closed 2026-11-02) | Trace model with operand lineage; `FinancialResult` and DTOs extended compatibly; no duplicate evidence schema. Closed after `ask()` began passing supporting facts to the verifier. Verified by `tests/test_trace_m3.py` and `tests/test_e2e_mini_fixture.py`. |
-| **M4** | Program layer | IN PROGRESS (owner approved 2026-11-02; layers 1 and 2 done) | LLM provider in `src/nlp/llm.py` with a mock provider for tests; constrained DSL with allowlisted operations in `src/financial/program/`; planner emits program + bindings, never numbers; executor reuses tested arithmetic; generic program verifier. |
+| **M4** | Program layer | IN PROGRESS (owner approved 2026-11-02; layers 1 and 2 done; LLM provider layer, plan step P2, done 2026-11-09) | LLM provider in `src/nlp/llm.py` with a mock provider for tests; constrained DSL with allowlisted operations in `src/financial/program/`; planner emits program + bindings, never numbers; executor reuses tested arithmetic; generic program verifier. |
 | **M5** | Gold benchmark and ablations | Planned | ≥150–200 labelled items split by company; oracle-bindings, oracle-facts, and full-pipeline configurations; metrics in Section 7. |
 | **M6** | Unified planner and experiments | Planned | Deterministic-only vs program-based vs combined; error analysis; decision on whether the LLM planner earns its complexity. |
 
@@ -385,6 +387,8 @@ python scripts/build_index.py                 # BM25 index smoke build
 python scripts/check_retrieval_quality.py     # retrieval quality manifest
 python scripts/evaluate_reasoning.py          # 30-case reasoning regression benchmark
 python scripts/evaluate_verification.py       # 60-case verification regression benchmark
+python scripts/check_llm_key.py               # check the LLM keys in .env (one request per key)
+python scripts/check_llm_key.py --smoke       # one real chat call, then the same call from the cache
 python -m streamlit run ui/app.py --server.port=8501
 ```
 

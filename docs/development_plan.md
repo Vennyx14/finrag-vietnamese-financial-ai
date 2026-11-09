@@ -34,6 +34,8 @@ Với mỗi bước, agent đi theo vòng của `AGENTS.md` Mục 10: hiểu →
 | Độ phủ trên 766 câu phát triển | 111 câu được trả lời (14,5%); đây là độ phủ, không phải độ chính xác |
 | Tập niêm phong | 246 câu, chưa có nhãn, chưa chạy lần nào |
 
+Cập nhật 2026-11-09, sau P2: 742 test pass, 0 skip (có dữ liệu cục bộ); `src/nlp/llm.py` đã có lớp gọi LLM nhưng ứng dụng chưa gọi nó; `.env` có khóa Groq dùng được. Các dòng còn lại của bảng là số đo ngày 2026-11-07.
+
 655 câu phát triển còn bị từ chối. Lý do lớn nhất theo `data/manifests/question_coverage.csv`:
 
 | Lý do từ chối | Số câu (xấp xỉ) |
@@ -75,9 +77,9 @@ Nếu thiếu thời gian, điểm dừng an toàn là sau P7: hệ thống ch�
 | Bước | Nhãn | Việc |
 |---|---|---|
 | P0.1 | **[BẠN]** | Tạo khóa API Groq (`https://console.groq.com/keys`, có gói Free) và dán vào dòng `GROQ_API_KEY` trong `.env`. Không gửi khóa qua chat, không commit. Ngày 2026-11-08 agent đã tạo sẵn `.env` theo `.env.example` (nhà cung cấp, địa chỉ API và model đã điền), và bạn đồng ý dùng Groq trước thay cho Cerebras: Cerebras nay đòi thêm thẻ để nhận 5 USD dùng một lần, hết hạn sau 30 ngày; OpenRouter cần nạp credit. Groq bị chặn trên một số mạng, nhưng mạng của máy bạn gọi được (kiểm tra cùng ngày). Có trả phí cho P3 hay không sẽ quyết sau khi đo lượng token thật. |
-| P0.2 | **[AUTO]** | Chạy `python scripts/check_llm_key.py` để xác nhận khóa dùng được. Khóa không bao giờ được in ra. |
+| P0.2 | **[AUTO]** | Chạy `python scripts/check_llm_key.py` để xác nhận khóa dùng được. Khóa không bao giờ được in ra. Xong 2026-11-09: khóa Groq dùng được; chạy lại cùng ngày sau khi chuyển bộ đọc `.env` vào `src/nlp/`, lệnh in `GROQ_API_KEY: hợp lệ. Có 11 model.` |
 | P0.3 | **[BẠN]** | Sao lưu ra ổ đám mây hoặc USB: `data/processed/holdout/holdout_v1_ids.json` (mất file này là mất tập niêm phong), `data/processed/gold_drafts/`, và `data/external/`. Các thư mục này bị gitignore nên không có trên GitHub. |
-| P0.4 | **[AUTO]** | Ghi mã SHA-256 của file holdout vào báo cáo để kiểm tra lại bản sao lưu về sau. |
+| P0.4 | **[AUTO]** | Ghi mã SHA-256 của file holdout vào báo cáo để kiểm tra lại bản sao lưu về sau. Xong 2026-11-09: SHA-256 của `data/processed/holdout/holdout_v1_ids.json` là `798d30d01c10a76f43d594141a912f02b9f3ab47bcbaaa9d7ae367f3af2d4c69`. Mã niêm phong (SHA-256 của danh sách ID đã sắp xếp) vẫn khớp `ad52a238…` trong `docs/holdout_v1_seal.md`. Bản sao lưu đúng khi file của nó cho ra cùng mã SHA-256 này. |
 
 **Xong khi:** khóa dùng được và bạn đã sao lưu.
 
@@ -104,14 +106,16 @@ Mục tiêu: một lớp gọi LLM nhỏ, kiểm thử được, không có đư
 
 | Bước | Nhãn | Việc |
 |---|---|---|
-| P2.1 | **[AUTO]** | Định nghĩa giao diện `LLMProvider` (đầu vào: messages, nhiệt độ, giới hạn token; đầu ra: văn bản và metadata gồm model, số token, độ trễ). |
-| P2.2 | **[AUTO]** | `OpenAICompatibleProvider` dùng chung cho Cerebras, OpenRouter, Groq (cùng chuẩn API). Dùng thư viện chuẩn `urllib` như `scripts/check_llm_key.py`, nên không thêm phụ thuộc. Model và base URL đọc từ `.env`. Tên biến đặt ngày 2026-11-08 trong `.env.example`: `FINRAG_LLM_PROVIDER` chọn nhà cung cấp; mỗi nhà cung cấp có `<TÊN>_API_KEY`, `<TÊN>_BASE_URL`, `<TÊN>_MODEL`. Model mặc định là `gpt-oss-120b` ở cả ba nhà cung cấp, khác họ với model Claude đã điền nhãn silver. |
-| P2.3 | **[AUTO]** | `MockProvider` chỉ dùng trong test. Ứng dụng từ chối khởi động với mock ngoài test (nguyên tắc 18). |
-| P2.4 | **[AUTO]** | Bộ đệm đĩa theo hash (model, prompt, tham số) trong `data/processed/llm_cache/` để chạy lại cho kết quả giống hệt và tiết kiệm lượt gọi miễn phí. |
-| P2.5 | **[AUTO]** | Lỗi có kiểu: hết hạn mức, mất mạng, phản hồi sai định dạng. Thử lại có giới hạn. Khi LLM lỗi, câu trả lời nói rõ "LLM không khả dụng", không âm thầm quay về câu trả lời khác. |
-| P2.6 | **[AUTO]** | Test: không gọi mạng trong test (nguyên tắc 6 của Mục 10); một test kiểm tra rằng khóa không xuất hiện trong log hay thông báo lỗi. |
+| P2.1 | **[AUTO]** | Định nghĩa giao diện `LLMProvider` (đầu vào: messages, nhiệt độ, giới hạn token; đầu ra: văn bản và metadata gồm model, số token, độ trễ). Xong 2026-11-09: `complete(messages, temperature=0.0, max_tokens=1024)` trả `LLMResponse` gồm phần trả lời cuối cùng (không bao giờ lấy phần suy luận riêng của model), model, nhà cung cấp, độ trễ, số token và cờ `cached`. |
+| P2.2 | **[AUTO]** | `OpenAICompatibleProvider` dùng chung cho Cerebras, OpenRouter, Groq (cùng chuẩn API). Dùng thư viện chuẩn `urllib` như `scripts/check_llm_key.py`, nên không thêm phụ thuộc. Model và base URL đọc từ `.env`. Tên biến đặt ngày 2026-11-08 trong `.env.example`: `FINRAG_LLM_PROVIDER` chọn nhà cung cấp; mỗi nhà cung cấp có `<TÊN>_API_KEY`, `<TÊN>_BASE_URL`, `<TÊN>_MODEL`. Model mặc định là `gpt-oss-120b` ở cả ba nhà cung cấp, khác họ với model Claude đã điền nhãn silver. Xong 2026-11-09: `OpenAICompatibleProvider.from_env()` đọc `.env` bằng `src/nlp/env_file.py`; thiếu hoặc để trống biến nào của nhà cung cấp đã chọn thì báo lỗi cấu hình nêu tên biến, không tự điền giá trị mặc định. Không đi theo chuyển hướng (redirect), để khóa không bị gửi sang địa chỉ khác. |
+| P2.3 | **[AUTO]** | `MockProvider` chỉ dùng trong test. Ứng dụng từ chối khởi động với mock ngoài test (nguyên tắc 18). Xong 2026-11-09: mock tự từ chối được tạo hoặc trả lời khi không chạy trong pytest, nên ứng dụng không thể chạy với mock. Ứng dụng chưa gọi LLM; việc nối vào ứng dụng thuộc P3. |
+| P2.4 | **[AUTO]** | Bộ đệm đĩa theo hash (model, prompt, tham số) trong `data/processed/llm_cache/` để chạy lại cho kết quả giống hệt và tiết kiệm lượt gọi miễn phí. Xong 2026-11-09: khóa là SHA-256 của {model, messages, temperature, max_tokens}; mỗi yêu cầu một file JSON (yêu cầu, phản hồi, model, thời điểm); lỗi không bao giờ được lưu. Lưu ý cho P5: bộ đệm lưu nguyên văn câu hỏi, nên lần chạy tập niêm phong phải dùng thư mục đệm riêng hoặc tắt bộ đệm. |
+| P2.5 | **[AUTO]** | Lỗi có kiểu: hết hạn mức, mất mạng, phản hồi sai định dạng. Thử lại có giới hạn. Khi LLM lỗi, câu trả lời nói rõ "LLM không khả dụng", không âm thầm quay về câu trả lời khác. Xong 2026-11-09: `LLMUnavailableError` (mất mạng, hết giờ, lỗi 5xx, lỗi 4xx khác), `LLMRateLimitError` (429, 402), `LLMResponseFormatError` (không phải JSON, thiếu `choices` hoặc thiếu nội dung), `LLMConfigurationError` (cài đặt sai). Chỉ thử lại 429 và 5xx, tối đa 2 lần, chờ theo Retry-After nếu không quá 60 giây. Lỗi nào cũng hiện cho người dùng là "LLM không khả dụng". |
+| P2.6 | **[AUTO]** | Test: không gọi mạng trong test (nguyên tắc 6 của Mục 10); một test kiểm tra rằng khóa không xuất hiện trong log hay thông báo lỗi. Xong 2026-11-09: một fixture trong `tests/conftest.py` chặn kết nối mạng ở mọi test. Test kiểm tra khóa không xuất hiện trong thông báo lỗi, traceback, log, repr, file đệm và đầu ra của script. Đã thử cài 57 lỗi cố ý vào code (bỏ hoặc đổi từng dòng xử lý lỗi, che khóa, bộ đệm, mock); với mỗi lỗi, ít nhất một test thất bại. |
 
 **Xong khi:** test pass, một lệnh smoke thật (`python scripts/check_llm_key.py` hoặc tương đương) trả lời được, không thêm phụ thuộc mới.
+
+Đạt ngày 2026-11-09: 742 test pass, 0 skip (có dữ liệu cục bộ); không thêm phụ thuộc. `python scripts/check_llm_key.py --smoke` gọi Groq (`openai/gpt-oss-120b`) một lần: trả lời "OK" sau 914 ms, 79 token vào, 54 token ra; lần gọi lặp lại được trả từ bộ đệm (`cached=True`, không có yêu cầu HTTP nào).
 
 ---
 
