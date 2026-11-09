@@ -50,6 +50,7 @@ class LLMResponseFormatError(LLMError): ... # body not as expected
 - `build_payload()` is both the request body and the cache key input. A new request parameter (for example `reasoning_effort`) must go there, or cached answers would be reused for a different request.
 - `MockProvider(responses)` takes strings, `LLMResponse` objects or exceptions, records `calls`, and refuses to be created or used outside pytest. Create it inside a test or fixture.
 - Tests: `tests/conftest.py` blocks `urllib.request.urlopen` and `OpenerDirector.open` in every test; `tests/llm_fakes.py` has `install_transport`, `FakeResponse`, `http_error` and `leaked_fragments` for HTTP fakes and key-leak checks.
+- `scripts/mutation_check.py` (in this skill) breaks one line at a time (error mappings, key redaction, cache, mock guard, smoke check) and runs the LLM tests; on 2026-11-09 all 57 breaks made at least one test fail. Run it from a worktree after changing `src/nlp/llm.py`; a row "SNIPPET COUNTS" means a mutation must be updated to the new code, and a SURVIVED row means a test is missing.
 - The cache stores prompts verbatim, question text included. For the sealed holdout run (P5) use a separate `cache_dir` that is deleted after scoring, or `cache_dir=None`, so no file holds sealed question text.
 
 ## P3: planner (layer 3)
