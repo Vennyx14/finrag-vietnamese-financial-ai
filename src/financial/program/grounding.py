@@ -305,7 +305,9 @@ def check_plan(plan: LLMPlan, question: str) -> List[VerificationCheck]:
 
     cue_ok = plan.operation in OPERATION_CUES and _operation_has_cue(plan.operation, parse.cues)
     # "tổng" in a balance's name ("tổng nợ phải trả") does not ask to add year-end balances
-    # of several years; only a separate sum word ("tổng cộng", "lũy kế", ...) can.
+    # of several years; only a sum word that is not part of the name can ("lũy kế", "cộng dồn",
+    # or "tổng" not directly before the line name, as in "tổng giá trị hàng tồn kho").
+    # "tổng cộng" and "tổng số" directly before the name are part of it (TOTAL_BEFORE_ITEM).
     balance_over_years = (
         plan.operation == "sum"
         and len(plan.periods) > 1
