@@ -87,7 +87,7 @@ Silver v2 has 148 labels prefilled by `claude-opus-5-5` and accepted by the owne
 | **`verified_wrong`** (the scorer's count of wrong answers plus over-answers that reached SUCCESS or WARNING) | **0** | **4** |
 | 42 numeric labels frozen before M4: correct / wrong / refused | 37 / 0 / 5 | 37 / 0 / 5 |
 
-The 42 frozen labels are the silver v2 cases with a labelled value whose review status is not `llm_reviewed_system_output`. Layer 3 changes none of them: the 5 refused ones need note tables (P4.4).
+The 42 frozen labels are the silver v2 cases with a labelled value whose review status is neither `llm_reviewed_system_output` nor `llm_labelled_post_hoc` (the four post-hoc labels of the addendum below; counting them gives 46). Layer 3 changes none of them: the 5 refused ones need note tables (P4.4).
 
 The 4 over-answers are `SV1_0605`, `SV1_0608`, `SV1_0822` and `SV1_0988` (development questions 605, 608, 822, 988). Each has the label `REFUSE_UNSUPPORTED` with no value and the note "Ngoài 8 chỉ tiêu, hoặc nhiều kỳ, hoặc nhiều công ty": the label records that the system could not answer such questions when it was made, and holds no number to compare with. The scorer counts any answer to such a label as an over-answer and counts over-answers in `verified_wrong`, so **by the scorer these 4 previously correct cases are now wrong, and `verified_wrong` on silver v2 rises from 0 to 4**. In my reading below, the figures in all 4 answers match the source pages (question 988 under the restatement rule). Settling them needs values in the labels, which agents may not add.
 
