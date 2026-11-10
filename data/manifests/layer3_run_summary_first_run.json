@@ -1,5 +1,5 @@
 {
-  "note": "First P3.6 run, the only one that sent requests to Groq. It started 2026-11-09 08:03 UTC with the code of commit dee1ff7 and the run script later committed in b5d779d; its checks were superseded by b6d85fb, 58aedca and the review fixes, so its statuses are not final. 'commit' below is the HEAD when it ended, not the code it ran. Final statuses: layer3_run_summary.json (all replies from the cache of this run). The 3 requests of an earlier --limit 3 measurement are counted in tokens_all_calls (32 calls) but not in pacing.http_requests (29).",
+  "note": "First P3.6 run, the only full run that sent requests to Groq (three earlier requests came from a --limit 3 measurement, see below). It started 2026-11-09 08:03 UTC with the code of commit dee1ff7 and the run script later committed in b5d779d; its checks were superseded by b6d85fb, 58aedca and the review fixes, so its statuses are not final. 'commit' below is the HEAD when it ended, not the code it ran. Final statuses: layer3_run_summary.json (all replies from the cache of this run). The 3 requests of an earlier --limit 3 measurement are counted in tokens_all_calls (32 calls) but not in pacing.http_requests (29).",
   "code_commit": "dee1ff7",
   "run_at": "2026-11-09T08:14:26+00:00",
   "commit": "58aedca",
