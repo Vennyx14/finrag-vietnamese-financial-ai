@@ -68,6 +68,8 @@ MULTI_PERIOD_PATTERN = re.compile(
 
 TOTAL_ASSETS_PATTERN = re.compile(r"tổng (cộng )?tài sản(?! cố định| ngắn hạn| dài hạn| thuần)")
 GROWTH_SUBJECT_WORDS = {"của", "năm", "doanh", "so", "từ", "giữa", "trong", "bình", "kép"}
+# A per-share figure (EPS) is never one of the amount metrics, whatever profit word it names (K45).
+PER_SHARE_PATTERN = re.compile(r"\b(?:trên|mỗi)\s+(?:một\s+)?cổ phiếu|/\s*cổ phiếu|\beps\b")
 DERIVED_QUESTION_PATTERN = re.compile(
     r"\b(tỷ lệ|tỷ số|tỷ trọng|chênh lệch|hiệu số|biến động|thay đổi|cao hơn|thấp hơn|"
     r"nhiều hơn|ít hơn|tăng bao nhiêu|giảm bao nhiêu|đầu năm|đầu kỳ)\b|\btrên\s+(tổng|vốn|doanh thu|nợ|tài sản)"
@@ -144,6 +146,22 @@ def resolve_query(
         )
 
     # 4. Negative Qualifier Checks (Sub-item allowlists and disallowlists)
+
+    # Per-share questions: the base path has no per-share metric (K45).
+    if PER_SHARE_PATTERN.search(text_lower):
+        return ResolutionResult(
+            status=ResolutionStatus.UNSUPPORTED,
+            ticker=primary_ticker,
+            entities=tickers,
+            statement_scope=scope,
+            fiscal_year=year_matches[0] if year_matches else None,
+            reason="Chỉ tiêu tính trên mỗi cổ phiếu (EPS) không phải một trong các chỉ tiêu tổng số của FinRAG MVP.",
+            actionable_guidance=(
+                "FinRAG MVP chưa trả lời chỉ tiêu trên mỗi cổ phiếu theo cách diễn đạt này. "
+                "Có thể hỏi 'Lãi cơ bản trên cổ phiếu' theo đúng tên dòng trên báo cáo kết quả kinh doanh."
+            ),
+            raw_query=text,
+        )
 
     # 4a. Profit qualifiers that must NOT resolve to net_income
     unsupported_profit_qualifiers = [
