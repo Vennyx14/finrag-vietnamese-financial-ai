@@ -1,6 +1,6 @@
 {
-  "run_at": "2026-11-10T07:43:21+00:00",
-  "commit": "5ca8ff5",
+  "run_at": "2026-11-10T08:24:32+00:00",
+  "commit": "fd36f3d",
   "configuration": "layer 3 on",
   "provider": "groq",
   "model": "openai/gpt-oss-120b",
@@ -12,22 +12,22 @@
   "sealed_excluded": 246,
   "processed": 766,
   "stopped": null,
-  "elapsed_s": 75.5,
+  "elapsed_s": 83.2,
   "status_counts": {
-    "ERROR": 636,
+    "ERROR": 637,
     "WARNING": 36,
-    "SUCCESS": 93,
+    "SUCCESS": 92,
     "REJECTED": 1
   },
   "answered_by_layer": {
-    "refused": 637,
+    "refused": 638,
     "template_lookup": 42,
-    "resolution": 31,
+    "resolution": 30,
     "llm": 18,
     "template_program": 38
   },
   "gate_reasons": {
-    "no_catalog_item": 215,
+    "no_catalog_item": 216,
     "company_without_facts": 139,
     "company_out_of_scope": 24,
     "unexplained_words": 129,
@@ -61,10 +61,10 @@
   },
   "answer_latency_ms_layer3": {
     "n": 18,
-    "median": 704.4,
-    "p90": 919.9,
-    "max": 1175.3,
-    "total": 11656.4
+    "median": 780.1,
+    "p90": 1049.1,
+    "max": 1420.0,
+    "total": 13213.8
   },
   "pacing": {
     "tokens_per_minute_budget": 7000,
