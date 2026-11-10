@@ -123,3 +123,38 @@ class TestK47BankQualifierIsNotFiller:
         resp = app.ask(self.QUESTION)
         assert resp.status == ResponseStatus.ERROR
         assert resp.calculation is None
+
+
+class TestK46OtherStatementTemplatesAreOutOfScopeForTheCatalog:
+    """Securities firms and insurers reuse Circular 200 line codes for other lines (SSI line 21)."""
+
+    QUESTION_650 = (
+        "Tỷ suất tăng trưởng doanh thu hoạt động tài chính của SSI từ năm 2020 đến năm 2023 là bao nhiêu %?"
+    )
+
+    @pytest.mark.parametrize(
+        "question",
+        [
+            "Tốc độ tăng trưởng doanh thu hoạt động tài chính của SSI từ năm 2020 đến năm 2023 là bao nhiêu?",
+            "Doanh thu hoạt động tài chính của SSI năm 2023 là bao nhiêu?",
+            "Chi phí tài chính của MBS năm 2022 là bao nhiêu?",
+            "Hàng tồn kho của FTS năm 2021 là bao nhiêu?",
+            "Lợi nhuận trước thuế của BVH năm 2020 là bao nhiêu?",
+            "Chênh lệch doanh thu hoạt động tài chính giữa FPT và SSI năm 2023 là bao nhiêu?",
+        ],
+    )
+    def test_template_planner_does_not_plan_for_other_templates(self, question):
+        from src.financial.program.planner import plan_question
+
+        assert plan_question(question) is None
+
+    def test_circular_200_companies_are_still_planned(self):
+        from src.financial.program.planner import plan_question
+
+        assert plan_question("Doanh thu hoạt động tài chính của FPT năm 2023 là bao nhiêu?") is not None
+
+    @pytest.mark.requires_full_data
+    def test_question_650_is_refused_on_layers_1_and_2(self, app):
+        resp = app.ask(self.QUESTION_650)
+        assert resp.status == ResponseStatus.ERROR
+        assert resp.calculation is None

@@ -14,6 +14,7 @@ from src.financial.program.catalog import (
     DERIVED_ITEMS,
     EXPENSE_ASSUMPTION,
     EXPENSE_ITEMS,
+    OTHER_TEMPLATE_TICKERS,
     build_extended_registry,
     display_name,
     is_balance_sheet_item,
@@ -281,5 +282,8 @@ def plan_question(question: str) -> Optional[Program]:
     """Return a program for the question, or None when any part is unexplained."""
     intent = parse_intent(question)
     if intent is None or intent.residual or not intent.items:
+        return None
+    # Catalog line codes follow Circular 200; securities firms and insurers use them for other lines (K46).
+    if any(company in OTHER_TEMPLATE_TICKERS for company in intent.companies):
         return None
     return _plan(intent)

@@ -77,7 +77,8 @@ BASE_PHRASES: Dict[str, Tuple[str, ...]] = {
 # Companies with facts whose statements follow the securities-firm or insurer templates
 # rather than Circular 200, so the line codes above do not mean the same lines (SSI line
 # 21 is "Lỗ từ các tài sản tài chính FVTPL"). AGENTS.md section 1 puts these schemas out
-# of scope. Banks have no facts at all (K17). Layer 3 does not plan for these companies.
+# of scope. Banks have no facts at all (K17). The program layers (template planner and
+# layer 3) do not plan for these companies (K46); the base path's eight metrics still can.
 OTHER_TEMPLATE_TICKERS = frozenset({"SSI", "MBS", "FTS", "BVH"})
 
 # Ratios computed from two lines at the end of one period.
