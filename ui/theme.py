@@ -673,7 +673,13 @@ def planner_label_html(resp: FinRAGResponse) -> str:
     if planner is None or planner.layer != "llm":
         return ""
     model = f" · mô hình {_esc(planner.model)}" if planner.model else ""
-    if planner.outcome == "program":
+    if planner.outcome == "program" and resp.calculation is None and resp.status == ResponseStatus.REJECTED:
+        title = f"Lớp 3 · Chương trình do LLM planner chọn bị từ chối (thử nghiệm){model}"
+        body = (
+            "Chương trình không khớp với câu hỏi ở ít nhất một kiểm tra (xem Tầng 03), nên hệ thống "
+            "không chạy chương trình và không đưa ra con số."
+        )
+    elif planner.outcome == "program":
         title = f"Lớp 3 · Chương trình do LLM planner chọn (thử nghiệm){model}"
         body = (
             "LLM chỉ chọn chỉ tiêu, công ty, kỳ và phép toán. Mọi con số do mã tất định tính từ dữ kiện "

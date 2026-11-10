@@ -49,6 +49,7 @@ from src.financial.resolution import ResolutionResult, ResolutionStatus, resolve
 from src.financial.result import FinancialResult
 from src.financial.semantics import is_opening_period_label
 from src.financial.verification import (
+    CheckStatus,
     VerificationCheck,
     VerificationEngine,
     VerificationResult,
@@ -358,6 +359,11 @@ class FinRAGApplication:
             return self._refusal(raw_query, resolution_res, resolution_dto, t0, planner=_planner_trace(outcome))
 
         checks = check_plan(outcome.plan, clean_query)
+        failed = [check for check in checks if check.status == CheckStatus.FAIL]
+        if failed:
+            # Owner decision B (2026-11-10): a plan that does not match the question is not
+            # run, so no number for a question that was not asked is ever shown.
+            return self._rejected_plan(raw_query, resolution_res, resolution_dto, t0, outcome, checks, failed)
         return self._answer_with_program(
             outcome.program,
             raw_query,
@@ -366,6 +372,53 @@ class FinRAGApplication:
             t0,
             extra_checks=checks,
             planner=_planner_trace(outcome, checks),
+        )
+
+    def _rejected_plan(
+        self,
+        raw_query: str,
+        resolution_res: ResolutionResult,
+        resolution_dto: ResolutionDTO,
+        t0: float,
+        outcome: LLMPlanOutcome,
+        checks: Sequence[VerificationCheck],
+        failed: Sequence[VerificationCheck],
+    ) -> FinRAGResponse:
+        """REJECTED without running the plan: the trace keeps the plan, every check and which failed."""
+        check_dtos = [
+            VerificationCheckDTO(name=c.check_name, status=c.status, severity=c.severity.value, message=c.message)
+            for c in checks
+        ]
+        counts = {status: sum(1 for c in checks if c.status == status) for status in ("PASS", "FAIL", "NOT_RUN")}
+        verification = VerificationDTO(
+            status=VerificationStatus.REJECTED.value,
+            overall_pass=False,
+            summary=(
+                f"[REJECTED] {outcome.program.name}: {counts['PASS']} passed, {counts['FAIL']} failed, "
+                f"{counts['NOT_RUN']} not run; the program was not executed"
+            ),
+            checks=check_dtos,
+            errors=[c.message for c in failed],
+        )
+        return FinRAGResponse(
+            query=raw_query,
+            status=ResponseStatus.REJECTED,
+            error_category=ErrorCategory.VERIFICATION_REJECTED,
+            error_message=(
+                "Chương trình do LLM planner (thử nghiệm) chọn không khớp với câu hỏi, nên hệ thống không chạy "
+                "chương trình và không đưa ra con số. Kiểm tra không đạt: "
+                + ", ".join(c.check_name for c in failed)
+                + "."
+            ),
+            ticker=resolution_res.ticker,
+            fiscal_year=resolution_res.fiscal_year,
+            years=resolution_res.years,
+            statement_scope=resolution_res.statement_scope,
+            verification=verification,
+            resolution=resolution_dto,
+            planner=_planner_trace(outcome, checks),
+            latency_ms=round((time.time() - t0) * 1000, 2),
+            is_trusted=False,
         )
 
     def _answer_with_program(

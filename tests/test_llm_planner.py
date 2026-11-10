@@ -426,6 +426,61 @@ class TestIndependentChecks:
         assert checks_by_name(response)["llm_plan_ticker_match"] == "FAIL"
 
 
+class TestRejectedPlanIsNotRun:
+    """Owner decision B (2026-11-10): a layer-3 plan that fails a check against the question is
+    refused without being executed, so no number of a question that was not asked is shown."""
+
+    BAD = [
+        (QR, plan_json("ratio", ["equity", "total_liabilities"], ["ZQX"], [(2024, "end")]), "llm_plan_metric_grounded"),
+        (QL, plan_json("lookup", ["total_liabilities"], ["ZQX"], [(2022, "end")]), "llm_plan_period_match"),
+        (QD, plan_json("sum", ["net_revenue"], ["ZQX"], [(2024, "end"), (2023, "end")]), "llm_plan_formula_cue"),
+    ]
+
+    @pytest.mark.parametrize("question, bad_plan_json, failing_check", BAD)
+    def test_failed_check_shows_no_number_and_runs_nothing(self, facts_path, monkeypatch, question, bad_plan_json, failing_check):
+        app, _ = make_app(facts_path, bad_plan_json)
+        runs = []
+        original_run = app.program_executor.run
+        monkeypatch.setattr(app.program_executor, "run", lambda program: runs.append(program) or original_run(program))
+        response = app.ask(question)
+        assert runs == []
+        assert response.status == ResponseStatus.REJECTED
+        assert response.error_category == ErrorCategory.VERIFICATION_REJECTED
+        assert response.is_trusted is False
+        assert response.calculation is None
+        assert response.evidence == []
+        assert response.trace is None
+        assert failing_check in response.error_message
+        assert "không đưa ra con số" in response.error_message
+
+    def test_rejected_plan_keeps_its_trace(self, facts_path):
+        question, bad_plan_json, failing_check = self.BAD[0]
+        app, _ = make_app(facts_path, bad_plan_json)
+        response = app.ask(question)
+        assert response.planner.outcome == "program"
+        assert response.planner.plan["items"] == ["equity", "total_liabilities"]
+        assert response.planner.program is not None
+        assert {c.name: c.status for c in response.planner.checks}[failing_check] == "FAIL"
+        assert checks_by_name(response)[failing_check] == "FAIL"
+        assert response.verification.status == "REJECTED"
+        assert response.verification.overall_pass is False
+
+    def test_plan_that_passes_its_checks_is_still_run(self, facts_path):
+        app, _ = make_app(facts_path, RATIO_PLAN)
+        response = app.ask(QR)
+        assert response.status in (ResponseStatus.SUCCESS, ResponseStatus.WARNING)
+        assert response.calculation.value == pytest.approx(1.5)
+
+    def test_ui_label_says_no_number_was_computed(self, facts_path):
+        from ui.theme import planner_label_html
+
+        question, bad_plan_json, _ = self.BAD[0]
+        app, _ = make_app(facts_path, bad_plan_json)
+        html = planner_label_html(app.ask(question))
+        assert "Lớp 3" in html and "thử nghiệm" in html
+        assert "không đưa ra con số" in html
+
+
 class TestGate:
     """Layer 3 calls the LLM only when the question passes every check that needs no plan."""
 

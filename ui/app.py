@@ -161,7 +161,10 @@ def main():
         # ======================================================================
 
         # Handle REJECTED status with prominent audit warning (F-08)
-        if resp.status == ResponseStatus.REJECTED:
+        if resp.status == ResponseStatus.REJECTED and resp.calculation is None:
+            # A layer-3 plan that failed its checks was not run: there is no result to show.
+            render_refusal_card(resp)
+        elif resp.status == ResponseStatus.REJECTED:
             st.error(
                 "🚨 **KẾT QUẢ ĐÃ BỊ TỪ CHỐI (REJECTED BY INDEPENDENT VERIFIER)**\n\n"
                 "Số liệu hoặc phương pháp tính toán vi phạm kiểm định nghiêm ngặt độc lập "
