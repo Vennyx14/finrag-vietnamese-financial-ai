@@ -49,3 +49,47 @@ class TestK45PerShareIsNeverAnAmount:
         else:
             assert resp.calculation is not None
             assert [e.line_code for e in resp.evidence] == ["70"]
+
+
+class TestK44ShareOfTotalIsNotOneOfItsItems:
+    """"X chiếm bao nhiêu phần trăm Y" asks for a ratio; neither X nor Y alone is the answer."""
+
+    @pytest.mark.parametrize(
+        "question",
+        [
+            "Nợ phải trả chiếm bao nhiêu phần trăm tổng tài sản của HPG năm 2023?",
+            "Vốn chủ sở hữu chiếm bao nhiêu phần trăm tổng tài sản của FPT năm 2024?",
+            "Lợi nhuận sau thuế chiếm bao nhiêu % doanh thu thuần của FPT năm 2024?",
+            "Doanh thu thuần của FPT năm 2024 bằng bao nhiêu phần trăm tổng tài sản?",
+        ],
+    )
+    def test_share_of_total_is_not_resolved_to_an_amount(self, question):
+        res = resolve_query(question)
+        assert res.status == ResolutionStatus.UNSUPPORTED
+        assert res.operation != "identity"
+
+    @pytest.mark.parametrize(
+        "question, metric",
+        [
+            ("Lợi nhuận sau thuế trên tổng tài sản cuối năm 2016 của CEO là bao nhiêu phần trăm?", "roa"),
+            ("ROE của FPT năm 2024 là bao nhiêu phần trăm?", "roe"),
+            ("Tổng tài sản của FPT năm 2024 là bao nhiêu tỷ đồng?", "total_assets"),
+        ],
+    )
+    def test_ratios_and_plain_amounts_still_resolve(self, question, metric):
+        res = resolve_query(question)
+        assert res.status == ResolutionStatus.RESOLVED
+        assert res.metric == metric
+
+    @pytest.mark.requires_full_data
+    @pytest.mark.parametrize(
+        "question",
+        [
+            "Nợ phải trả chiếm bao nhiêu phần trăm tổng tài sản của HPG năm 2023?",
+            "Vốn chủ sở hữu chiếm bao nhiêu phần trăm tổng tài sản của FPT năm 2024?",
+        ],
+    )
+    def test_app_does_not_answer_an_item_for_a_share_of_total(self, app, question):
+        resp = app.ask(question)
+        assert resp.status == ResponseStatus.ERROR
+        assert resp.calculation is None

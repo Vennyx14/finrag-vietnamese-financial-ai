@@ -72,7 +72,7 @@ GROWTH_SUBJECT_WORDS = {"của", "năm", "doanh", "so", "từ", "giữa", "trong
 PER_SHARE_PATTERN = re.compile(r"\b(?:trên|mỗi)\s+(?:một\s+)?cổ phiếu|/\s*cổ phiếu|\beps\b")
 DERIVED_QUESTION_PATTERN = re.compile(
     r"\b(tỷ lệ|tỷ số|tỷ trọng|chênh lệch|hiệu số|biến động|thay đổi|cao hơn|thấp hơn|"
-    r"nhiều hơn|ít hơn|tăng bao nhiêu|giảm bao nhiêu|đầu năm|đầu kỳ)\b|\btrên\s+(tổng|vốn|doanh thu|nợ|tài sản)"
+    r"nhiều hơn|ít hơn|tăng bao nhiêu|giảm bao nhiêu|đầu năm|đầu kỳ|chiếm|phần trăm)\b|\btrên\s+(tổng|vốn|doanh thu|nợ|tài sản)"
 )
 
 
