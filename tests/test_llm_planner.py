@@ -359,6 +359,18 @@ class TestIndependentChecks:
         }
         assert statuses["llm_plan_formula_cue"] == "FAIL"
 
+    @pytest.mark.parametrize(
+        "question",
+        [
+            "Tổng giá trị hàng tồn kho của ZQX năm 2022 và 2023",
+            "Lũy kế hàng tồn kho của ZQX năm 2022 và 2023 là bao nhiêu tỷ đồng?",
+        ],
+    )
+    def test_a_separate_sum_word_may_add_a_balance_over_years(self, question):
+        # "tổng" before "giá trị", not before the line name, is a request to add.
+        good = plan("sum", ["inventories"], ["ZQX"], [(2022, "end"), (2023, "end")])
+        assert all(c.status in ("PASS", "NOT_RUN") for c in check_plan(good, question))
+
     def test_total_before_a_balance_may_add_companies_at_one_date(self):
         question = "Tổng nợ phải trả của ZQX và ZQY năm 2024 là bao nhiêu tỷ đồng?"
         statuses = {
