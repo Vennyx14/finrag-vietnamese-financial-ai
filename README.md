@@ -8,7 +8,7 @@
 FinRAG is an early-stage research and engineering project aimed at the reliability problem of LLMs in financial domains. It focuses on Vietnamese corporate financial statements, extracting raw financial facts and applying deterministic numerical reasoning to answer natural-language queries with traceable provenance.
 
 ### What this is today
-A rule-based query parser, metadata and BM25 retrieval, deterministic reasoning, a template planner over an allowlisted program format, and independent verification. Calculations are performed by deterministic code, not by an LLM. An LLM planner (M4 layer 3) is built but **off by default**: when switched on (`FINRAG_LLM_PLANNER=on` in `.env`), it lets a model choose the catalog line, company, period and allowlisted operation for questions the templates cannot parse, and code computes every number and checks the choice against the question. See `docs/m4_layer_3_report.md`.
+A rule-based query parser, metadata and BM25 retrieval, deterministic reasoning, a template planner over an allowlisted program format, and independent verification. Calculations are performed by deterministic code, not by an LLM. An LLM planner (M4 layer 3) is **off by default** in the code and in `.env.example`; the owner runs it on the development set as an experiment ("thử nghiệm" in the UI) by setting `FINRAG_LLM_PLANNER=on` in `.env`. When on, it lets a model choose the catalog line, company, period and allowlisted operation for questions the templates cannot parse, and code computes every number and checks the choice against the question; a choice that fails a check is refused without being run. See `docs/m4_layer_3_report.md`.
 
 ### What it is not
 It is not a general financial assistant, an investment advisor, or a full-market data terminal. VERIFIED means the listed checks passed, not that an answer is certain to be correct. The system can still select the wrong fact or mis-parse OCR text.
@@ -86,7 +86,7 @@ All figures below are self-authored regression benchmarks, not accuracy on unsee
 | **Verification Engine** | Valid Acceptance Rate | **100.0%** (30/30) | 60-case self-authored regression benchmark, not accuracy on unseen data |
 | | Mutation Detection Rate | **100.0%** (30/30) | 60-case self-authored regression benchmark, not accuracy on unseen data (mutations injected after reasoning) |
 | | False Acceptance Rate | **0.00%** | 60-case self-authored regression benchmark, not accuracy on unseen data |
-| **Engineering** | Test Suite Pass Rate | **100.0%** (884/884, 0 skipped) | Full `pytest` suite with local data present; see [Reproducibility](#15-reproducibility) for a fresh clone |
+| **Engineering** | Test Suite Pass Rate | **100.0%** (921/921, 0 skipped) | Full `pytest` suite with local data present; see [Reproducibility](#15-reproducibility) for a fresh clone |
 
 | **Silver benchmark** | Numeric labels frozen before M4 code | **37 correct, 0 wrong, 5 refused** of 42 | LLM-prefilled labels, not verified by a person; see [the M4 report](docs/m4_layers_1_2_report.md) |
 
@@ -211,7 +211,7 @@ finrag-vietnamese-financial-ai/
 
 ## 17. Limitations
 FinRAG is an early MVP and operates under strict, deliberate constraints:
-- **Low Question Coverage:** 111 of the 766 development questions (14.5%) receive an answer (measured 2026-11-02 with `scripts/run_question_coverage.py`, unchanged on 2026-11-09). With the LLM planner switched on, 129 (16.8%; `scripts/run_layer3_coverage.py`, 2026-11-09). This is answer coverage, not accuracy. Another 246 questions are sealed for a one-time evaluation.
+- **Low Question Coverage:** with the LLM planner on, 128 of the 766 development questions (16.7%) receive an answer; with it off, 110 (14.4%) (`scripts/run_layer3_coverage.py` and `scripts/run_question_coverage.py`, 2026-11-10, after a question about earnings per share stopped being answered with net income). This is answer coverage, not accuracy. Another 246 questions are sealed for a one-time evaluation.
 - **Limited Metric Support:** Covers 8 core metrics and 41 statement lines. Note-level items are not extracted.
 - **Deterministic Keyword Parsing:** Natural language understanding relies on deterministic matching rather than a highly generalizable LLM semantic parser.
 - **BM25 Constraints:** Relies strictly on BM25 and exact metadata filters; cannot resolve conceptually distant synonyms.
@@ -224,7 +224,7 @@ FinRAG is an early MVP and operates under strict, deliberate constraints:
 ## 18. Future Work
 The following capabilities are **not implemented** but represent the logical next steps on the product roadmap:
 - Dense vector retrieval and hybrid RAG search.
-- Turning on the LLM planner (M4 layer 3) in the app, once the owner decides (plan step P3.7); it is built and measured but off by default.
+- Measuring the LLM planner (M4 layer 3) on the sealed set (P5); it is on only in the owner's local `.env`, as an experiment on the development set, and off by default.
 - Reranking of multi-table contexts.
 - Automated multimodal ingestion directly from raw SEC/UBCK PDFs.
 - Financial Knowledge Graphs connecting subsidiaries and executive boards.

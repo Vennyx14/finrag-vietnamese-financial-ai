@@ -1,6 +1,6 @@
 # M4 layer 3: the LLM planner (plan steps P3.1–P3.6)
 
-Built and measured 2026-11-09; review fixes and a rerun from the cache on 2026-11-10. Layer 3 is **off** in the app until the owner answers P3.7 (`FINRAG_LLM_PLANNER=off` in `.env`, the default). Every number below comes from a command named next to it. Answer coverage is not accuracy, and no person has verified any label used here.
+Built and measured 2026-11-09; review fixes and a rerun from the cache on 2026-11-10. Since 2026-11-10 layer 3 is **on for the development set** in the owner's app (owner's answer to P3.7; `FINRAG_LLM_PLANNER=on` in the owner's `.env` only, while the code default and `.env.example` stay off); see the last addendum, which also reports the fix step before P4. The sections before it record the state when they were written. Every number below comes from a command named next to it. Answer coverage is not accuracy, and no person has verified any label used here.
 
 ## What was built
 
@@ -202,3 +202,49 @@ Layer 3 off is `python scripts/evaluate_silver.py`; its manifest `data/manifests
 ### Open decision (P3.7), restated
 
 With layer 3 on, no silver case is scored wrong (`verified_wrong` 0 off and 0 on), the 42 frozen labels are unchanged, and coverage of the development questions rises from 111 to 129 of 766 (14.5% → 16.8%, coverage not accuracy). The remaining points against are unchanged: 5 of the 18 layer-3 answers rest on a convention (the sign of a difference between two companies, restated earnings per share), four silver labels were made after the answers were seen, and K44–K47 are open. Layer 3 stays off until the owner answers again.
+
+## Addendum 2026-11-10: P3.7 answered, and the fix step before P4
+
+### Decisions (owner, 2026-11-10)
+
+- **P3.7 (C):** layer 3 is turned on for the development set and labelled "thử nghiệm" in the UI. The switch is only in the owner's gitignored `.env` (`FINRAG_LLM_PLANNER=on`); the code default and `.env.example` stay `off`, so a clean clone sends no LLM request. From now on the reference coverage and silver figures are those with layer 3 on, always reported next to layer 3 off.
+- **A:** fix K44, K45, K46 and K47 before P4 (AGENTS.md §13 names each fix and its test).
+- **B:** a layer-3 plan that fails one of its checks against the question is refused **without being run**. Before, the plan was executed and its number shown under REJECTED (question 24 showed HNG's long-term borrowings for a question about loans from HAG). Now the response is REJECTED (`VERIFICATION_REJECTED`) with no value, no evidence and no trace steps; it keeps the plan, the program it would have run, every check and the failed ones, and the UI shows a refusal card that says no number was computed. Layers 1 and 2 show their REJECTED results as before.
+- **D:** silver label `SV1_0988` accepts both the restated 3,349 and the first-reported 3,375 đồng per share (`docs/benchmark_corrections.md`).
+
+### Rerun
+
+Layer 3 on: `scripts/run_layer3_coverage.py --silver` at commit `fd36f3d`, through a wrapper that never reads `.env`, builds the provider with a dummy key, and aborts before any uncached call (it replaces `PacedProvider._wait_for_budget` and the provider's HTTP send). Result: `pacing.http_requests` = 0, 41 cache hits, `llm_fresh_calls` = 0. Layer 3 off: the `finrag-regression` snapshot (`scripts/run_question_coverage.py`, `scripts/evaluate_silver.py`, the benchmarks and the unit audit).
+
+| 766 development questions | Layer 3 off | Layer 3 on (reference) |
+|---|---:|---:|
+| Answered before the fix step | 111 | 129 |
+| **Answered after** | **110** (14.4%) | **128** (16.7%, Wilson 95% 14.2–19.5%) |
+| of which by layer 3 | — | 18 |
+| REJECTED | 0 | 1 (question 24, now without a number) |
+
+Every status change, layer 3 off and on:
+
+| Question | Before | After | Reason |
+|---:|---|---|---|
+| 657 | SUCCESS, net income of FOX 2020 (₫1.50T) | ERROR / `USER_INPUT_ERROR` | K45: the question asks for earnings per share, so net income was a wrong answer. Layers 2 and 3 do not answer it either ("lợi nhuận trên mỗi cổ phiếu" is not a catalog phrase; the gate gives `no_catalog_item`). Whether this wording should be read as basic EPS is an open owner decision |
+| 24 (layer 3 on) | REJECTED, value shown | REJECTED, no value, no evidence | Decision B; failed check `llm_plan_ticker_match` |
+
+No other question changed status, answer or metric in either mode. The reasoning (30 cases), verification (60) and retrieval benchmarks and the unit audit are unchanged.
+
+| Silver v2 (148 labels; LLM-prefilled, no person verified them) | Layer 3 off | Layer 3 on (reference) |
+|---|---:|---:|
+| Correct | 148/148 (Wilson 95% 97.5–100%) | 148/148 (Wilson 95% 97.5–100%) |
+| Wrong answers / over-answers | 0 / 0 | 0 / 0 |
+| `verified_wrong` | 0 (Wilson 95% upper bound 5.9% on 61 answered cases) | 0 (upper bound 5.6% on 65 answered cases) |
+| 42 labels frozen before M4: correct / wrong / refused | 37 / 0 / 5 | 37 / 0 / 5 |
+
+`SV1_0988` was already scored correct with layer 3 on (its answer is 3,349); the alternative changes no outcome today. Four labels used with layer 3 on are post-hoc, so the layer-3-on score is weaker evidence than it looks. The M4 gate is still measured once on the sealed set (P5).
+
+`python -m pytest -rs`: 921 passed, 0 failed, 0 skipped.
+
+### Not fixed here
+
+- **K48** (recorded): layer 2 adds year-end balances over several years when "tổng cộng" stands before a line name ("Tổng cộng nợ phải trả … 2022 và 2023"); layer 3's check refuses such a plan, so layer 3 is stricter than layer 2 here. No answered development question has this form.
+- **K49** (recorded): bare "lợi nhuận" fires inside "Dự thu cổ tức, lợi nhuận được chia" (question 144, BVH), which is answered with net income, VERIFIED.
+- The base path still answers its eight base metrics for SSI, MBS, FTS and BVH (questions 123 and 144); K46 was fixed for layers 1 and 2 only.
