@@ -3,33 +3,33 @@
   "label_note": "LLM-prefilled labels accepted by the owner; not human-verified gold.",
   "overall": {
     "cases": 148,
-    "correct": 144,
+    "correct": 148,
     "correct_wilson_95": [
-      0.9326,
-      0.9894
+      0.9747,
+      1.0
     ],
     "answerable_by_system": 51,
     "execution_correct": 51,
     "over_refusals": 0,
     "wrong_answers": 0,
-    "over_answers": 4,
+    "over_answers": 0,
     "wrong_refusals": 0,
-    "verified_wrong": 4
+    "verified_wrong": 0
   },
   "verbatim_vifinqa": {
     "cases": 133,
-    "correct": 129,
+    "correct": 133,
     "correct_wilson_95": [
-      0.9252,
-      0.9882
+      0.9719,
+      1.0
     ],
     "answerable_by_system": 41,
     "execution_correct": 41,
     "over_refusals": 0,
     "wrong_answers": 0,
-    "over_answers": 4,
+    "over_answers": 0,
     "wrong_refusals": 0,
-    "verified_wrong": 4
+    "verified_wrong": 0
   },
   "authored": {
     "cases": 15,
@@ -49,18 +49,18 @@
   "per_split": {
     "dev": {
       "cases": 68,
-      "correct": 66,
+      "correct": 68,
       "correct_wilson_95": [
-        0.899,
-        0.9919
+        0.9465,
+        1.0
       ],
       "answerable_by_system": 28,
       "execution_correct": 28,
       "over_refusals": 0,
       "wrong_answers": 0,
-      "over_answers": 2,
+      "over_answers": 0,
       "wrong_refusals": 0,
-      "verified_wrong": 2
+      "verified_wrong": 0
     },
     "dev_v0": {
       "cases": 30,
@@ -79,18 +79,18 @@
     },
     "test": {
       "cases": 50,
-      "correct": 48,
+      "correct": 50,
       "correct_wilson_95": [
-        0.8654,
-        0.989
+        0.9286,
+        1.0
       ],
       "answerable_by_system": 9,
       "execution_correct": 9,
       "over_refusals": 0,
       "wrong_answers": 0,
-      "over_answers": 2,
+      "over_answers": 0,
       "wrong_refusals": 0,
-      "verified_wrong": 2
+      "verified_wrong": 0
     }
   },
   "per_expected_behavior": {
@@ -111,18 +111,18 @@
     },
     "REFUSE_UNSUPPORTED": {
       "cases": 82,
-      "correct": 78,
+      "correct": 82,
       "correct_wilson_95": [
-        0.8812,
-        0.9809
+        0.9552,
+        1.0
       ],
       "answerable_by_system": 0,
       "execution_correct": 0,
       "over_refusals": 0,
       "wrong_answers": 0,
-      "over_answers": 4,
+      "over_answers": 0,
       "wrong_refusals": 0,
-      "verified_wrong": 4
+      "verified_wrong": 0
     },
     "RESOLVE_AND_CALCULATE": {
       "cases": 51,
@@ -771,7 +771,7 @@
       "question_origin": "verbatim",
       "expected": "REFUSE_UNSUPPORTED",
       "status": "WARNING",
-      "outcome": "OVER_ANSWER"
+      "outcome": "CORRECT"
     },
     {
       "case_id": "SV1_0253",
@@ -851,7 +851,7 @@
       "question_origin": "verbatim",
       "expected": "REFUSE_UNSUPPORTED",
       "status": "SUCCESS",
-      "outcome": "OVER_ANSWER"
+      "outcome": "CORRECT"
     },
     {
       "case_id": "SV1_0172",
@@ -915,7 +915,7 @@
       "question_origin": "verbatim",
       "expected": "REFUSE_UNSUPPORTED",
       "status": "SUCCESS",
-      "outcome": "OVER_ANSWER"
+      "outcome": "CORRECT"
     },
     {
       "case_id": "SV1_0643",
@@ -1219,7 +1219,7 @@
       "question_origin": "verbatim",
       "expected": "REFUSE_UNSUPPORTED",
       "status": "SUCCESS",
-      "outcome": "OVER_ANSWER"
+      "outcome": "CORRECT"
     },
     {
       "case_id": "SV1_0695",

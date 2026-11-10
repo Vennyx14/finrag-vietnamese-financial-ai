@@ -1,6 +1,6 @@
 {
-  "run_at": "2026-11-09T08:17:18+00:00",
-  "commit": "58aedca",
+  "run_at": "2026-11-10T07:43:21+00:00",
+  "commit": "5ca8ff5",
   "configuration": "layer 3 on",
   "provider": "groq",
   "model": "openai/gpt-oss-120b",
@@ -12,7 +12,7 @@
   "sealed_excluded": 246,
   "processed": 766,
   "stopped": null,
-  "elapsed_s": 74.2,
+  "elapsed_s": 75.5,
   "status_counts": {
     "ERROR": 636,
     "WARNING": 36,
@@ -61,10 +61,10 @@
   },
   "answer_latency_ms_layer3": {
     "n": 18,
-    "median": 711.2,
-    "p90": 900.5,
-    "max": 1246.1,
-    "total": 11994.4
+    "median": 704.4,
+    "p90": 919.9,
+    "max": 1175.3,
+    "total": 11656.4
   },
   "pacing": {
     "tokens_per_minute_budget": 7000,

@@ -165,3 +165,40 @@ None of these was fixed here: they belong to resolution, the catalog and the tem
 ## Open decision (P3.7)
 
 Whether to turn layer 3 on is the owner's decision. The plan's default is to turn it on only if no previously correct question became wrong. By the silver scorer, 4 previously correct refusals became over-answers (their labels hold no value), so `verified_wrong` on silver v2 is 0 with layer 3 off and 4 with it on, while no numerically labelled question changed. The layer stays off (`FINRAG_LLM_PLANNER=off`) until the owner decides.
+
+## Addendum 2026-11-10: values for the four over-answered labels, rerun from the cache
+
+The owner answered P3.7 on 2026-11-10: **layer 3 stays off for now**, and is asked again once the four labels above hold numbers and a cached rerun matches them. The owner also approved adding a numeric answer to exactly those four silver labels. The numbers in the sections above are kept as they were measured.
+
+### The four labels
+
+Each value was read from the raw OCR page and computed by a script that imports nothing from `src/` (record and cross-checks in `docs/benchmark_corrections.md`, entry of 2026-11-10). **The labeller is the agent that had already read the layer-3 answers in this report, so the labels are post-hoc (`label_origin` = `post_hoc_after_system_answer_2026-11-10`), serve regression only, and are not independent verification; no person checked them.**
+
+| Label | Source rows | Label value | Layer-3 answer | Match |
+|---|---|---|---|---|
+| `SV1_0605` | NLG 2024 consolidated p10, line 312, both columns | −20.734 % | −0.207340 (ratio; −20.734 %) | yes |
+| `SV1_0608` | MML 2023 consolidated p8 and 2018 consolidated p7, line 221 | +2,049,352.935301 million VND | 2,049,352,935,301 VND | yes |
+| `SV1_0822` | ASM separate, line 31: 2016 p11, 2021 p12, 2022 p13, 2024 p14 | 2021 (180,044,077,757 VND) | 2021 (180,044,077,757 VND) | yes |
+| `SV1_0988` | SJG consolidated, line 70, each year from the next report (2020 p14, 2022 p14, 2023 p15, 2024 p14) | 3,349 đồng per share (2022) | 3,349 (2022) | yes, under the latest-report rule (K22); the first-reported 3,375 would not match |
+
+Conventions chosen, as in the existing labels: consolidated statements unless the question says "công ty mẹ"; a change is later minus earlier; growth in percent; restated figures from the latest report win (K22); for a which-year question `gold_value` is the winning amount (as in `SV1_0842`), so the scorer cannot see the year itself. `expected_system_behavior` stays `REFUSE_UNSUPPORTED`, so a refusal still scores as correct with layer 3 off, and an answer is judged by the value.
+
+### Rerun
+
+Command: `scripts/run_layer3_coverage.py --silver` at commit `5ca8ff5`, run through a wrapper that makes any uncached LLM call abort before a request is built (it replaces `PacedProvider._wait_for_budget`, which runs only before a fresh call). Result: `pacing.http_requests` = 0, 41 cache hits, `llm_fresh_calls` = 0, 75.5 s. Status of all 766 development questions is the same as in the run above (`question_coverage_layer3.csv` differs only in latency columns): 129 answered, 18 by layer 3.
+
+| Silver v2 (148 labels; LLM-prefilled, no person verified them) | Layer 3 off | Layer 3 on |
+|---|---:|---:|
+| Correct | 148/148 (Wilson 95% 97.5–100%) | **148/148 (Wilson 95% 97.5–100%)**; was 144/148 |
+| Wrong answers / over-answers | 0 / 0 | 0 / 0; was 0 / 4 |
+| **`verified_wrong`** | **0** | **0**; was 4 |
+| Answered cases, and Wilson 95% upper bound of `verified_wrong` among them | 61; 5.9% | 65; 5.6% |
+| 42 numeric labels frozen before M4: correct / wrong / refused | 37 / 0 / 5 | 37 / 0 / 5 |
+
+Layer 3 off is `python scripts/evaluate_silver.py`; its manifest `data/manifests/silver_v2_quality.json` is byte for byte unchanged. Layer 3 on is `data/manifests/silver_v2_quality_layer3.json`. Four of the 65 answered cases (the four above) have post-hoc labels made after seeing the answers, so the 148/148 with layer 3 on is weaker evidence than the number suggests; it shows that no labelled case is now scored wrong, not that layer 3 is accurate. The M4 gate is still measured once on the sealed set (P5), not here.
+
+`python -m pytest -rs`: 884 passed, 0 failed, 0 skipped.
+
+### Open decision (P3.7), restated
+
+With layer 3 on, no silver case is scored wrong (`verified_wrong` 0 off and 0 on), the 42 frozen labels are unchanged, and coverage of the development questions rises from 111 to 129 of 766 (14.5% → 16.8%, coverage not accuracy). The remaining points against are unchanged: 5 of the 18 layer-3 answers rest on a convention (the sign of a difference between two companies, restated earnings per share), four silver labels were made after the answers were seen, and K44–K47 are open. Layer 3 stays off until the owner answers again.
