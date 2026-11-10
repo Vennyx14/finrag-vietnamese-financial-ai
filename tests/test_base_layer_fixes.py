@@ -93,3 +93,33 @@ class TestK44ShareOfTotalIsNotOneOfItsItems:
         resp = app.ask(question)
         assert resp.status == ResponseStatus.ERROR
         assert resp.calculation is None
+
+
+class TestK47BankQualifierIsNotFiller:
+    """"từ Ngân hàng TMCP" narrows borrowings to bank loans; dropping it answers all borrowings."""
+
+    QUESTION = "Vay ngắn hạn từ Ngân hàng TMCP của HPG năm 2023 là bao nhiêu?"
+
+    def test_template_planner_refuses_a_bank_loan_qualifier(self):
+        from src.financial.program.planner import plan_question
+
+        assert plan_question(self.QUESTION) is None
+        assert plan_question("Vay ngắn hạn từ ngân hàng của HPG năm 2023 là bao nhiêu?") is None
+
+    def test_layer3_gate_does_not_send_a_bank_loan_qualifier(self):
+        from src.financial.program.grounding import gate_reason
+
+        assert gate_reason(self.QUESTION) == "unexplained_words"
+
+    def test_plain_borrowings_question_is_still_planned(self):
+        from src.financial.program.planner import plan_question
+
+        program = plan_question("Vay ngắn hạn của HPG năm 2023 là bao nhiêu?")
+        assert program is not None
+        assert [step.item for step in program.steps if step.op == "lookup"] == ["short_term_borrowings"]
+
+    @pytest.mark.requires_full_data
+    def test_app_refuses_a_bank_loan_qualifier(self, app):
+        resp = app.ask(self.QUESTION)
+        assert resp.status == ResponseStatus.ERROR
+        assert resp.calculation is None

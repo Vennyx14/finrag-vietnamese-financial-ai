@@ -52,8 +52,10 @@ FILLER_PHRASES = re.compile(
     r"tính đến|cho đến|kết thúc|thời điểm|tại ngày|vào ngày|đến ngày|năm tài chính|báo cáo tài chính|"
     r"qua các năm|trong các năm tài chính|các năm tài chính|trong các năm|các năm|trong giai đoạn|giai đoạn|các mốc|là bao nhiêu|bao nhiêu|"
     r"số dư cuối kỳ|số dư cuối năm|số dư|giá trị còn lại|giá trị|trong \d+ năm|\d+ năm|"
-    r"ctcp|công ty cổ phần|công ty cp|tổng công ty|công ty|tập đoàn|ngân hàng tmcp"
+    r"ctcp|công ty cổ phần|công ty cp|tổng công ty|công ty|tập đoàn"
 )
+# "ngân hàng" is never filler: "vay từ ngân hàng" narrows a line to bank loans (K47), and
+# bank names are blanked as company names; banks have no facts anyway (K17).
 FILLER_WORDS = {
     "của", "là", "có", "năm", "vào", "tại", "đến", "ngày", "trong", "kỳ", "cuối", "và", "với", "giữa",
     "xét", "nhóm", "đạt", "ghi", "nhận", "mức", "chỉ", "tiêu", "từ", "lên", "mấy", "số", "thì", "bằng", "mốc", "các", "hãy", "tính", "cho", "biết",
