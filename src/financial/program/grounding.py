@@ -18,6 +18,7 @@ from src.financial.program.catalog import (
     OTHER_TEMPLATE_TICKERS,
     PLAN_ITEMS,
     canonical_item,
+    is_balance_sheet_item,
     item_components,
     phrase_table,
 )
@@ -250,11 +251,15 @@ def check_plan(plan: LLMPlan, question: str) -> List[VerificationCheck]:
     keys = plan_keys(plan)
     mentioned = set(parse.items)
     ungrounded = [key for key in keys if key not in mentioned]
+    # A ratio divides the item the question names first by the one it names second,
+    # the template planner's rule; with both items named, only the order can be wrong.
+    ratio_order_ok = plan.operation != "ratio" or [key for key in parse.items if key in keys] == keys
     checks.append(_check(
         "llm_plan_metric_grounded",
-        not ungrounded and len(keys) == len(plan.items),
-        f"Plan items {keys}; the question names {sorted(mentioned)}."
-        + (f" Not named in the question: {ungrounded}." if ungrounded else ""),
+        not ungrounded and len(keys) == len(plan.items) and ratio_order_ok,
+        f"Plan items {keys}; the question names {list(parse.items)}."
+        + (f" Not named in the question: {ungrounded}." if ungrounded else "")
+        + ("" if ratio_order_ok else " The ratio must divide the item named first by the item named second."),
     ))
     covered = set(keys) | {part for key in keys for part in item_components(key)}
     unused = sorted(mentioned - covered)
@@ -298,10 +303,21 @@ def check_plan(plan: LLMPlan, question: str) -> List[VerificationCheck]:
         + ("" if direction_ok else " A change must be the later period minus the earlier one."),
     ))
 
+    cue_ok = plan.operation in OPERATION_CUES and _operation_has_cue(plan.operation, parse.cues)
+    # "tổng" in a balance's name ("tổng nợ phải trả") does not ask to add year-end balances
+    # of several years; only a separate sum word ("tổng cộng", "lũy kế", ...) can.
+    balance_over_years = (
+        plan.operation == "sum"
+        and len(plan.periods) > 1
+        and "sum" not in parse.cues
+        and any(is_balance_sheet_item(key) for key in keys)
+    )
     checks.append(_check(
         "llm_plan_formula_cue",
-        plan.operation in OPERATION_CUES and _operation_has_cue(plan.operation, parse.cues),
-        f"Operation {plan.operation}; the question's words point to {sorted(parse.cues) or ['one value']}.",
+        cue_ok and not balance_over_years,
+        f"Operation {plan.operation}; the question's words point to {sorted(parse.cues) or ['one value']}."
+        + (" Year-end balances of several years are not added up unless the question asks for it."
+           if balance_over_years else ""),
     ))
 
     unit = plan_unit(plan)

@@ -290,6 +290,27 @@ class TestIndependentChecks:
         assert {name for name, status in statuses.items() if status == "FAIL"} == failing
 
     @pytest.mark.parametrize(
+        "question, named_order",
+        [
+            (QR, ["total_liabilities", "equity"]),
+            ("Nợ phải trả chiếm bao nhiêu phần trăm tổng tài sản của ZQX năm 2024?", ["total_liabilities", "total_assets"]),
+        ],
+    )
+    def test_ratio_divides_the_item_named_first_by_the_item_named_second(self, question, named_order):
+        # Both items are named, so only their order tells numerator from denominator (review of P3, dev Q712).
+        right = plan("ratio", named_order, ["ZQX"], [(2024, "end")])
+        swapped = plan("ratio", named_order[::-1], ["ZQX"], [(2024, "end")])
+        assert {c.check_name: c.status for c in check_plan(right, question)}["llm_plan_metric_grounded"] == "PASS"
+        statuses = {c.check_name: c.status for c in check_plan(swapped, question)}
+        assert {name for name, status in statuses.items() if status == "FAIL"} == {"llm_plan_metric_grounded"}
+
+    def test_swapped_ratio_is_rejected_through_ask(self, facts_path):
+        app, _ = make_app(facts_path, plan_json("ratio", ["equity", "total_liabilities"], ["ZQX"], [(2024, "end")]))
+        response = app.ask(QR)
+        assert response.status == ResponseStatus.REJECTED
+        assert checks_by_name(response)["llm_plan_metric_grounded"] == "FAIL"
+
+    @pytest.mark.parametrize(
         "question, first",
         [
             ("Nợ phải trả của ZQX năm 2024 cao hơn ZQY bao nhiêu tỷ đồng?", "ZQX"),
@@ -321,6 +342,29 @@ class TestIndependentChecks:
     def test_total_before_an_item_still_asks_for_a_sum_over_several_points(self, question, companies, periods):
         item = "net_revenue" if "doanh thu" in question else "interest_expense"
         statuses = {c.check_name: c.status for c in check_plan(plan("sum", [item], companies, periods), question)}
+        assert statuses["llm_plan_formula_cue"] == "PASS"
+
+    @pytest.mark.parametrize(
+        "question, item",
+        [
+            ("Tổng nợ phải trả của ZQX năm 2022 và 2023 là bao nhiêu tỷ đồng?", "total_liabilities"),
+            ("Tổng tài sản ngắn hạn của ZQX năm 2022 và 2023 là bao nhiêu tỷ đồng?", "current_assets"),
+        ],
+    )
+    def test_total_before_a_balance_is_not_a_sum_over_years(self, question, item):
+        # A year-end balance is a stock: "tổng" in its name does not ask to add two year ends.
+        statuses = {
+            c.check_name: c.status
+            for c in check_plan(plan("sum", [item], ["ZQX"], [(2022, "end"), (2023, "end")]), question)
+        }
+        assert statuses["llm_plan_formula_cue"] == "FAIL"
+
+    def test_total_before_a_balance_may_add_companies_at_one_date(self):
+        question = "Tổng nợ phải trả của ZQX và ZQY năm 2024 là bao nhiêu tỷ đồng?"
+        statuses = {
+            c.check_name: c.status
+            for c in check_plan(plan("sum", ["total_liabilities"], ["ZQX", "ZQY"], [(2024, "end")]), question)
+        }
         assert statuses["llm_plan_formula_cue"] == "PASS"
 
     def test_growth_over_a_range_uses_its_two_ends(self):
