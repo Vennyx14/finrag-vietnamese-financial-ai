@@ -39,3 +39,13 @@ What changed in each of the four records: `gold_value`, `gold_value_exact`, `gol
 | `SV1_0988` (988) | SJG highest basic EPS among 2019, 2021, 2022, 2023, in đồng per share | SJG consolidated income statements, line 70 "Lãi cơ bản trên cổ phiếu", each year from the latest report that shows it: 2019 = 350 (2020 report p14); 2021 = 796 (2022 report p14); 2022 = 3.349 (2023 report p15); 2023 = 944 (2024 report p14). First reported: 350, 804, 3.375, 960. The 2022–2024 notes say the prior-year EPS was recalculated after deducting the bonus and welfare fund | 3,349 (2022), per share | Consolidated; latest report wins (owner policy K22). The highest year is 2022 under both readings; the first-reported 3,375 is not accepted by this label. `gold_unit` is "VND" because the scorer has no per-share unit (K39); `answer_kind` says per share |
 
 Backup of the file before the change: the agent's scratchpad copy `silver_v2.backup_before_2026-11-10.jsonl` (path in the P3.7 follow-up report). Silver v1 (`silver_v1.jsonl`) was not changed.
+
+## 2026-11-10: `data/processed/gold_drafts/silver_v2.jsonl`, `SV1_0988` accepts both readings (owner decision D)
+
+Approved by the project owner on 2026-11-10 for this one label, before plan step P4. SHA-256 of the file before: `709440e38b5c9abba6fb12cd78e6b700a5eb3ebc7cadd18d51ea86857e763d90`; after: `15b7629ce100f09d04e2a545066ea7c1761effe1d50487c84bc3e1efa5d2460c`. The other 147 lines are byte for byte unchanged.
+
+Why: question 988 asks which value SJG "ghi nhận" (recorded) as its highest basic EPS among 2019, 2021, 2022 and 2023. The highest year is 2022 under both readings, but 2022's EPS was restated in the 2023 report: 3,349 đồng per share as restated (the latest-report rule, K22, and the current label value) and 3,375 as first reported in the 2022 report (p14). "Ghi nhận" can mean either, so the owner accepted both.
+
+What changed: `ground_truth_status` ANSWERABLE → AMBIGUOUS; `alternatives` {} → `{"FIRST_REPORTED_2022": "3375"}`; in the note, the clause "which this label does not accept" now says both are accepted since this decision. `gold_value` (3349), `gold_value_exact`, `gold_unit`, operands, tolerances (rel 1e-4, abs 1e-6), `review_status` (`llm_labelled_post_hoc`) and `expected_system_behavior` are unchanged. This uses the scorer's existing mechanism (`accepted_values` in `scripts/evaluate_silver.py` adds the alternatives of an AMBIGUOUS label); the scorer was not changed. The label is still post-hoc and not among the 42 frozen labels. No person verified it.
+
+Backup of the file before the change: the agent's scratchpad copy `silver_v2.before_2026-11-10.jsonl` (path in the fix-step report before P4).
