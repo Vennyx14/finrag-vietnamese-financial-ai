@@ -210,7 +210,7 @@ A layer is enabled only if safe coverage rises, no previously correct question b
 | **Baseline** | Existing tests and benchmarks run before changing code | Current pass / fail / skip state; regressions | Accuracy on unseen questions; the benchmarks are self-authored |
 | **Coverage report** | All 1,012 ViFinQA questions through `app.ask`, no gold answers needed | Distribution of statuses and error categories; what changes between milestones | Whether any answer is correct |
 | **Gold benchmark** | Human-labelled questions with independently verified operands and answers, split by company | Accuracy, refusal precision / recall, over-refusal, verified-wrong rate | Behavior on question types not represented in the sample; wide confidence intervals at small sizes |
-| **Silver benchmark** | 148 LLM-prefilled labels read from raw OCR, kept locally in `data/processed/gold_drafts/silver_v1.jsonl`, split by company | Regressions and bugs during development | Publishable accuracy; it is not independent of an LLM planner of the same model family |
+| **Silver benchmark** | 148 LLM-prefilled labels read from raw OCR, kept locally in `data/processed/gold_drafts/silver_v2.jsonl` (scored by `scripts/evaluate_silver.py`; the older `silver_v1.jsonl` is kept because `scripts/sample_holdout.py` uses its IDs to exclude them from the sealed set), split by company | Regressions and bugs during development | Publishable accuracy; it is not independent of an LLM planner of the same model family |
 
 Running questions through `app.ask` does not prove answers are right unless there is a gold label to compare against. Run time of the coverage script is measured in M0 and reported; do not assume it is cheap or expensive beforehand.
 
