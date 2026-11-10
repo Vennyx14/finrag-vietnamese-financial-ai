@@ -1,6 +1,6 @@
 # M4 layer 3: the LLM planner (plan steps P3.1–P3.6)
 
-Built and measured 2026-11-09. Layer 3 is **off** in the app until the owner answers P3.7 (`FINRAG_LLM_PLANNER=off` in `.env`, the default). Every number below comes from a command named next to it. Answer coverage is not accuracy, and no person has verified any label used here.
+Built and measured 2026-11-09; review fixes and a rerun from the cache on 2026-11-10. Layer 3 is **off** in the app until the owner answers P3.7 (`FINRAG_LLM_PLANNER=off` in `.env`, the default). Every number below comes from a command named next to it. Answer coverage is not accuracy, and no person has verified any label used here.
 
 ## What was built
 
@@ -10,7 +10,7 @@ Layers run in a fixed order: `resolve_query` (base path) → template planner (l
 |---|---|---|
 | P3.1 prompt | A fixed system prompt lists the 50 catalog items by ID and Vietnamese name, the allowlisted operations and their shapes, the refusal rules and three examples with made-up tickers. The question goes into the user message as a JSON string field, next to the companies, years and scope that `src/pipeline/query.py` found; the prompt says that field is data, not instructions. | `src/financial/program/llm_planner.py` |
 | P3.2 validation | The reply must be exactly one JSON object: `{"decision": "program", "operation", "items", "companies", "periods"}` or `{"decision": "refuse", "reason"}`. Rejected before anything runs: broken JSON, a code fence, two objects, a repeated key, an unknown key (so a smuggled `"value": 42` is caught), `NaN`, a year that is not a plain integer, an operation outside the allowlist, an item outside the catalog, a ticker of the wrong shape, and any shape the template planner does not make. The plan is then turned into a `Program` by the template planner's own builder, so the program's name, unit, labels and assumptions come from code; the model writes no number other than a year and no text the user sees. Nothing is evaluated or executed. | `parse_plan_output`, `build_program` |
-| P3.3 independent checks | Six critical checks compare the plan with a reading of the question that never sees the reply: every planned item is named in the question (longest phrase first, so "lợi nhuận sau thuế chưa phân phối" is not net income); every named item is used (a derived ratio covers its two lines); the companies equal those `extract_all_tickers` finds, and a difference between two companies follows the question's order; the years equal those `extract_fiscal_years` finds (every year of a range for sum, average, max, min and which-is-highest; its two ends for a difference or growth), opening balances match "đầu năm", and a change is later minus earlier; the question has a word for the operation; the unit asked for matches (NOT_RUN when the question names none). A FAIL makes the answer REJECTED. | `src/financial/program/grounding.py` `check_plan`, `verify_program(extra_checks=...)` |
+| P3.3 independent checks | Six critical checks compare the plan with a reading of the question that never sees the reply: every planned item is named in the question (longest phrase first, so "lợi nhuận sau thuế chưa phân phối" is not net income), and a ratio divides the item named first by the item named second; every named item is used (a derived ratio covers its two lines); the companies equal those `extract_all_tickers` finds, and a difference between two companies follows the question's order; the years equal those `extract_fiscal_years` finds (every year of a range for sum, average, max, min and which-is-highest; its two ends for a difference or growth), opening balances match "đầu năm", and a change is later minus earlier; the question has a word for the operation (and "tổng" inside a balance's name does not ask to add year-end balances of several years); the unit asked for matches (NOT_RUN when the question names none). A FAIL makes the answer REJECTED. | `src/financial/program/grounding.py` `check_plan`, `verify_program(extra_checks=...)` |
 | Gate | The LLM is not called when no plan could pass those checks: no company, a company without facts, a securities or insurance company (their statements do not follow Circular 200), no year, a stated short period, no catalog item, a number that is not a year, or a word the vocabulary cannot explain (for example "nguyên giá", "dự phòng", "ngân hàng", "dương", "trung vị"). | `gate_reason` |
 | P3.4 trace and label | `FinRAGResponse.planner` keeps the prompt, its SHA-256, the raw reply, model, provider, plan, program, check results, cache hit, latency and token counts. The UI shows "Lớp 3 · Chương trình do LLM planner chọn (thử nghiệm)" with the model ID under the resolution strip, and a one-line note under a refusal when the LLM was asked. The model's own text is never shown as a message. | `src/application/models.py` `PlannerTraceDTO`, `ui/theme.py` `planner_label_html` |
 | Failure | A provider error (`LLMError`) answers "LLM không khả dụng" with `SYSTEM_ERROR` and no number. An LLM refusal or an invalid reply keeps the base path's refusal. Any other exception is not caught. | `FinRAGApplication._answer_with_llm_planner` |
@@ -20,13 +20,14 @@ Decisions made in this step, and why:
 - **Same program space as layer 2.** Layer 3 makes only the shapes the template planner makes (one lookup; a ratio of two lines; a difference, growth, sum, average, max, min or which-is-highest of one item over companies or years). New shapes belong to P4. Layer 3 also refuses a difference or growth of a ratio (a change in percentage points, K30), a sum of ratios or of earnings per share, and a ratio that mixes earnings per share with an amount.
 - **A word the vocabulary cannot explain stops layer 3 before the LLM is called.** Reading development questions showed qualifiers that turn a catalog line into a different figure, such as "phải thu về cho vay dài hạn" (a receivable) containing "vay dài hạn" (a liability), "nguyên giá tài sản cố định thuê tài chính", "dự phòng các khoản cho vay ngắn hạn" and "vay ngắn hạn từ ngân hàng". A program built from the catalog line would pass every other check and be wrong. Layer 3 accepts a short list of harmless extra words and units (for example "số tiền", "khoản mục", "TNDN", "ngàn đồng", "VNĐ/cp", "trừ đi", "chiếm", "tỉ lệ").
 - **Securities and insurance companies are out of scope for layer 3** (SSI, MBS, FTS, BVH, in `catalog.OTHER_TEMPLATE_TICKERS`). The first run answered development question 650 about SSI from line 21, which in a securities firm's statement is "Lỗ từ các tài sản tài chính FVTPL", not financial income. Layers 1 and 2 have the same hole (K46).
-- **"tổng" written before a line name is part of the name.** The first run rejected correct plans for questions 606 and 608 because "tổng" ("tổng nợ ngắn hạn", "Tổng Tài sản cố định hữu hình") was read as a request to add. It now counts as a sum cue only, never as a reason to refuse another operation.
+- **"tổng" written before a line name is part of the name.** The first run rejected correct plans for questions 606 and 608 because "tổng" ("tổng nợ ngắn hạn", "Tổng Tài sản cố định hữu hình") was read as a request to add. It now counts as a sum cue only, never as a reason to refuse another operation, and it is not enough to add year-end balances of several years (a balance is a stock; a separate word such as "tổng cộng" or "lũy kế" is needed, while adding companies at one date is allowed).
+- **A ratio's order is checked** (review fix, 2026-11-10). The first version compared only the sets of items, so a plan with numerator and denominator swapped passed every check: for question 712 it would have answered 438.91% instead of 22.78%. A ratio must now divide the item the question names first by the one it names second, the template planner's rule. Every value-changing reordering of the 22 development plans (13: ratios, differences and growth) now fails a check.
 
 ## The run (P3.6)
 
 Command: `python scripts/run_layer3_coverage.py --silver`, 2026-11-09, commit `58aedca`. Provider Groq, model `openai/gpt-oss-120b` (a different model family from the `claude-opus-5-5` labeller of silver v2), temperature 0, `max_tokens` 2048, system prompt SHA-256 `39cbf8c1b4a9624524b60c02d3cddf5c25607ca1fe7b6a2c86536358394f4fc5` (5,691 characters). The 766 development questions were run; the 246 sealed questions were excluded with `scripts.sample_holdout.load_ids`, as `run_question_coverage.py` does, and none was asked or printed.
 
-The replies were collected in a first run (with the earlier checks: 29 requests, paced under 7,000 tokens a minute, 607 s for all 766 questions, 476 s of it waiting for the token budget) and the final run reused every reply from the disk cache (0 requests). Outputs: `data/manifests/question_coverage_layer3.csv`, `data/manifests/layer3_run_summary.json`, `data/manifests/silver_v2_quality_layer3.json`; replies, plans and checks for reading are in `data/processed/layer3_run/details.jsonl` (gitignored).
+The replies were collected in a first run, the only one that sent requests (code of commit `dee1ff7`, with the earlier checks: 29 requests, paced under 7,000 tokens a minute, 607 s for all 766 questions, 476 s of it waiting for the token budget; source `data/manifests/layer3_run_summary_first_run.json`). The final run (commit `58aedca`) reused every reply from the disk cache (0 requests). After the review fixes (commit `b9814da`) the same command, again 0 requests, gave the same status for all 766 questions and the same silver v2 outcomes; only timings changed. Outputs: `data/manifests/question_coverage_layer3.csv`, `data/manifests/layer3_run_summary.json`, `data/manifests/silver_v2_quality_layer3.json`; replies, plans and checks for reading are in `data/processed/layer3_run/details.jsonl` (gitignored).
 
 ### Coverage by layer
 
@@ -83,16 +84,17 @@ Silver v2 has 148 labels prefilled by `claude-opus-5-5` and accepted by the owne
 | Silver v2 correct | 148/148 | 144/148 (Wilson 95% 93.3–98.9%) |
 | Wrong answers | 0 | 0 |
 | Over-answers | 0 | 4 |
+| **`verified_wrong`** (the scorer's count of wrong answers plus over-answers that reached SUCCESS or WARNING) | **0** | **4** |
 | 42 numeric labels frozen before M4: correct / wrong / refused | 37 / 0 / 5 | 37 / 0 / 5 |
 
 The 42 frozen labels are the silver v2 cases with a labelled value whose review status is not `llm_reviewed_system_output`. Layer 3 changes none of them: the 5 refused ones need note tables (P4.4).
 
-The 4 over-answers are `SV1_0605`, `SV1_0608`, `SV1_0822` and `SV1_0988` (development questions 605, 608, 822, 988). Each has the label `REFUSE_UNSUPPORTED` with no value and the note "Ngoài 8 chỉ tiêu, hoặc nhiều kỳ, hoặc nhiều công ty": the label records that the system could not answer such questions when it was made, and holds no number to compare with. The scorer counts any answer to such a label as an over-answer, so **by the scorer these 4 previously correct cases are now wrong**. In my reading below, the figures in all 4 answers match the source pages (question 988 under the restatement rule). Settling them needs values in the labels, which agents may not add.
+The 4 over-answers are `SV1_0605`, `SV1_0608`, `SV1_0822` and `SV1_0988` (development questions 605, 608, 822, 988). Each has the label `REFUSE_UNSUPPORTED` with no value and the note "Ngoài 8 chỉ tiêu, hoặc nhiều kỳ, hoặc nhiều công ty": the label records that the system could not answer such questions when it was made, and holds no number to compare with. The scorer counts any answer to such a label as an over-answer and counts over-answers in `verified_wrong`, so **by the scorer these 4 previously correct cases are now wrong, and `verified_wrong` on silver v2 rises from 0 to 4**. In my reading below, the figures in all 4 answers match the source pages (question 988 under the restatement rule). Settling them needs values in the labels, which agents may not add.
 
 ### Previously correct, now wrong
 
 - No question with a numeric label (silver) changed from correct to wrong.
-- The 4 silver over-answers above are previously correct refusals that are now answered.
+- The 4 silver over-answers above are previously correct refusals that are now answered; the scorer's `verified_wrong` is 0 with layer 3 off and 4 with it on, all 4 being these over-answers.
 - With layer 3 off nothing changed (`compare.py`: no status transition, benchmarks and silver unchanged).
 
 ### Reading every new answer (not independent)
@@ -127,18 +129,18 @@ Summary of the reading: 0 of 18 answers cite a wrong cell (Wilson 95% upper boun
 | Measure | Value |
 |---|---|
 | LLM calls, final configuration | 31 (all served from the cache in the final run) |
-| Successful requests sent during P3 | 32 (3 in a first measurement, 29 in the first full run, which made exactly 29 HTTP requests, so no retry); no call failed |
+| Successful requests sent during P3 | 32 (3 in a first `--limit 3` measurement, 29 in the first full run, which made exactly 29 HTTP requests, so no retry: `pacing.http_requests` in `layer3_run_summary_first_run.json`); no call failed. The 3 earlier requests have no committed manifest: that run's summary was overwritten by the next run; their tokens are included in the first run's `tokens_all_calls` (32 calls, 56,492 prompt + 12,131 completion) |
 | Prompt tokens per call | 1,733–1,801 (mean 1,766) |
 | Completion tokens per call (gpt-oss reasoning included) | median 346, mean 382, max 1,125 |
 | Tokens, 31 calls | 54,752 prompt + 11,852 completion = 66,604 |
 | Cost | 0 USD on Groq's free plan. At Groq's listed price for `openai/gpt-oss-120b` ($0.15 per million input tokens, $0.60 per million output tokens, console.groq.com/docs/models, read 2026-11-09): about 0.015 USD for the 31 calls, about 0.0005 USD per call |
-| LLM call latency (29 fresh calls) | median 1.57 s, p90 2.68 s, max 3.47 s |
+| LLM call latency (29 fresh calls of the first run, `layer3_run_summary_first_run.json`) | median 1.57 s, p90 2.68 s, max 3.47 s |
 | Rest of a layer-3 answer (plan check, facts, verification; cached reply) | median 0.71 s, max 1.25 s |
 | Free-plan limits | 32 of 1,000 requests a day; the 8,000 tokens-a-minute limit sets the pace (about 3 calls a minute) |
 
 ### Tests
 
-`python -m pytest -rs`: 878 passed, 0 failed, 0 skipped (742 before P3). New: `tests/test_llm_planner.py` (130, all with the mock provider and no network: a correct program of each shape, unknown operation, unknown item, numbers in the reply, broken JSON and other malformed replies, shapes outside the template space, every independent check, the gate, prompt injection in the question and in the reply, an LLM refusal, provider failures, the trace, the switch, the UI label) and `tests/test_run_layer3_coverage.py` (6). `.claude/skills/finrag-llm-layer/scripts/mutation_check_layer3.py` broke 33 guards one at a time; 32 made a test fail, and the survivor is redundant (a boolean year is also refused by the year range and the strict model).
+`python -m pytest -rs`: 884 passed, 0 failed, 0 skipped (742 before P3). New: `tests/test_llm_planner.py` (136, all with the mock provider and no network: a correct program of each shape, unknown operation, unknown item, numbers in the reply, broken JSON and other malformed replies, shapes outside the template space, every independent check including a swapped ratio and a sum of balances over years, the gate, prompt injection in the question and in the reply, an LLM refusal, provider failures, the trace, the switch, the UI label) and `tests/test_run_layer3_coverage.py` (6). `.claude/skills/finrag-llm-layer/scripts/mutation_check_layer3.py` broke 35 guards one at a time; 34 made a test fail, and the survivor is redundant (a boolean year is also refused by the year range and the strict model).
 
 With layer 3 off, the regression snapshot before and after this change differs only in the test count: reasoning, verification and retrieval benchmarks, silver v2, the coverage report and the unit audit are unchanged.
 
@@ -149,8 +151,9 @@ With layer 3 off, the regression snapshot before and after this change differs o
 | K44 | The base path answers a share-of-total question with one of its items: "Nợ phải trả chiếm bao nhiêu phần trăm tổng tài sản của HPG năm 2023?" gives total assets, WARNING | CONFIRMED on authored questions; no answered development question has this form |
 | K45 | Development question 657 asks for earnings per share ("lợi nhuận trên mỗi cổ phiếu") and the base path answers net income, SUCCESS | CONFIRMED |
 | K46 | Catalog label checks accept rows of other statement templates: SSI line 21 "Lỗ từ các tài sản tài chính FVTPL" passes as financial income | CONFIRMED; layer 3 avoids it, layers 1 and 2 do not |
+| K47 | The template planner's filler list contains "ngân hàng tmcp", so "Vay ngắn hạn từ Ngân hàng TMCP của HPG năm 2023" is answered with all short-term borrowings (₫54.98T, SUCCESS) while the same question without "TMCP" is refused. Layer 3's gate reuses that list | CONFIRMED (found by the reviewer, reproduced 2026-11-10) |
 
-None of these was fixed here: they belong to resolution and the catalog, not to layer 3.
+None of these was fixed here: they belong to resolution, the catalog and the template planner, not to layer 3.
 
 ## Limits
 
@@ -161,4 +164,4 @@ None of these was fixed here: they belong to resolution and the catalog, not to 
 
 ## Open decision (P3.7)
 
-Whether to turn layer 3 on is the owner's decision. The plan's default is to turn it on only if no previously correct question became wrong. By the silver scorer, 4 previously correct refusals became over-answers (their labels hold no value), while no numerically labelled question changed. The layer stays off (`FINRAG_LLM_PLANNER=off`) until the owner decides.
+Whether to turn layer 3 on is the owner's decision. The plan's default is to turn it on only if no previously correct question became wrong. By the silver scorer, 4 previously correct refusals became over-answers (their labels hold no value), so `verified_wrong` on silver v2 is 0 with layer 3 off and 4 with it on, while no numerically labelled question changed. The layer stays off (`FINRAG_LLM_PLANNER=off`) until the owner decides.

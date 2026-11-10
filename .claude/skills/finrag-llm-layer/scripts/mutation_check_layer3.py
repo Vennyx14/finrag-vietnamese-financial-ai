@@ -10,7 +10,7 @@ mutation needs updating.
 Run from the root of a worktree under .claude/worktrees/, never the main checkout:
     python .claude/skills/finrag-llm-layer/scripts/mutation_check_layer3.py
 
-On 2026-11-09, 32 of 33 mutations were killed. M13 (a boolean year accepted by the
+On 2026-11-10, 34 of 35 mutations were killed. M13 (a boolean year accepted by the
 type check) survives because the year range check and the strict PlanPeriod model
 reject it anyway.
 """
@@ -29,7 +29,8 @@ TESTS = ["tests/test_llm_planner.py", "tests/test_program_layer.py"]
 MUTATIONS = [
     ("M01", "gate disabled", SERVICE, "reason = gate_reason(clean_query, self._tickers_with_facts)", "reason = None"),
     ("M02", "plan checks not passed to the verifier", SERVICE, "extra_checks=extra_checks,", "extra_checks=None,"),
-    ("M03", "item grounding always passes", GROUND, "not ungrounded and len(keys) == len(plan.items),", "True,"),
+    ("M03", "item grounding always passes", GROUND,
+     "not ungrounded and len(keys) == len(plan.items) and ratio_order_ok,", "True,"),
     ("M04", "item completeness always passes", GROUND, "        not unused,\n", "        True,\n"),
     ("M05", "company order ignored", GROUND, "order_ok = list(plan.companies) == expected", "order_ok = True"),
     ("M06", "period direction ignored", GROUND,
@@ -37,7 +38,7 @@ MUTATIONS = [
     ("M07", "range rule ignored", GROUND, "expected_years = set(parse.range_years)", "expected_years = set(parse.named_years)"),
     ("M08", "opening flag ignored", GROUND, "opening_planned == opening_asked and ", ""),
     ("M09", "operation cue always passes", GROUND,
-     "plan.operation in OPERATION_CUES and _operation_has_cue(plan.operation, parse.cues),", "True,"),
+     "cue_ok = plan.operation in OPERATION_CUES and _operation_has_cue(plan.operation, parse.cues)", "cue_ok = True"),
     ("M10", "unit cue always passes", GROUND, "parse.unit_kinds == {unit},", "True,"),
     ("M11", "unit check that cannot run counted as PASS", GROUND,
      'checks.append(_check("llm_plan_unit_cue", None,', 'checks.append(_check("llm_plan_unit_cue", True,'),
@@ -79,6 +80,11 @@ MUTATIONS = [
      "    text = TOTAL_BEFORE_ITEM.sub(\" \", text)\n", ""),
     ("M38", "tổng before an item no longer allows a sum", GROUND,
      '"sum": (("sum", "total"),', '"sum": (("sum",),'),
+    ("M39", "ratio numerator and denominator order not checked", GROUND,
+     'ratio_order_ok = plan.operation != "ratio" or [key for key in parse.items if key in keys] == keys',
+     "ratio_order_ok = True"),
+    ("M40", "year-end balances added over years on tổng alone", GROUND,
+     "        cue_ok and not balance_over_years,\n", "        cue_ok,\n"),
 ]
 
 

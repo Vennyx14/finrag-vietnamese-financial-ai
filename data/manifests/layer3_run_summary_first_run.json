@@ -1,0 +1,81 @@
+{
+  "note": "First P3.6 run, the only one that sent requests to Groq. It started 2026-11-09 08:03 UTC with the code of commit dee1ff7 and the run script later committed in b5d779d; its checks were superseded by b6d85fb, 58aedca and the review fixes, so its statuses are not final. 'commit' below is the HEAD when it ended, not the code it ran. Final statuses: layer3_run_summary.json (all replies from the cache of this run). The 3 requests of an earlier --limit 3 measurement are counted in tokens_all_calls (32 calls) but not in pacing.http_requests (29).",
+  "code_commit": "dee1ff7",
+  "run_at": "2026-11-09T08:14:26+00:00",
+  "commit": "58aedca",
+  "configuration": "layer 3 on",
+  "provider": "groq",
+  "model": "openai/gpt-oss-120b",
+  "temperature": 0.0,
+  "max_tokens": 2048,
+  "system_prompt_sha256": "39cbf8c1b4a9624524b60c02d3cddf5c25607ca1fe7b6a2c86536358394f4fc5",
+  "system_prompt_chars": 5691,
+  "development_questions": 766,
+  "sealed_excluded": 246,
+  "processed": 766,
+  "stopped": null,
+  "elapsed_s": 606.7,
+  "status_counts": {
+    "ERROR": 635,
+    "WARNING": 36,
+    "SUCCESS": 92,
+    "REJECTED": 3
+  },
+  "answered_by_layer": {
+    "refused": 638,
+    "template_lookup": 42,
+    "resolution": 31,
+    "llm": 17,
+    "template_program": 38
+  },
+  "gate_reasons": {
+    "no_catalog_item": 235,
+    "company_without_facts": 139,
+    "unexplained_words": 131,
+    "numeric_literal": 71,
+    "no_company": 22
+  },
+  "llm_outcomes": {
+    "program": 23,
+    "refused": 9
+  },
+  "llm_status_after_checks": {
+    "REJECTED": 3,
+    "SUCCESS": 10,
+    "ERROR": 12,
+    "WARNING": 7
+  },
+  "llm_error_types": {},
+  "llm_calls": 32,
+  "llm_fresh_calls": 29,
+  "llm_cached_calls": 3,
+  "tokens_fresh": {
+    "prompt": 51251,
+    "completion": 10651
+  },
+  "tokens_all_calls": {
+    "prompt": 56492,
+    "completion": 12131
+  },
+  "llm_latency_ms_fresh": {
+    "n": 29,
+    "median": 1570.7,
+    "p90": 2680.6,
+    "max": 3473.9,
+    "total": 51210.7
+  },
+  "answer_latency_ms_layer3": {
+    "n": 17,
+    "median": 7929.8,
+    "p90": 58098.3,
+    "max": 58223.8,
+    "total": 305371.8
+  },
+  "pacing": {
+    "tokens_per_minute_budget": 7000,
+    "waited_s": 475.9,
+    "http_requests": 29,
+    "cache_hits": 15
+  },
+  "dry_run_prompt_chars": null
+}
