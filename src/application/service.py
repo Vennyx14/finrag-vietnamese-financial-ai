@@ -716,9 +716,11 @@ def _planner_trace(outcome: LLMPlanOutcome, checks: Sequence[VerificationCheck] 
 def create_application(env_path: Union[str, Path] = DEFAULT_ENV_PATH, **options: Any) -> FinRAGApplication:
     """Build the application the UI runs. Layer 3 runs only when .env sets FINRAG_LLM_PLANNER=on.
 
-    Off is the default (a missing file or variable means off) until the owner decides
-    on layer 3 (plan step P3.7). When the switch is on, a missing or wrong LLM setting
-    raises LLMConfigurationError at start-up; the app does not quietly run without it.
+    Off is the default (a missing file or variable means off), so a clean clone calls no
+    LLM. On 2026-11-10 the owner turned layer 3 on for the development set (plan step
+    P3.7) through their own .env; the code default and .env.example stay off. When the
+    switch is on, a missing or wrong LLM setting raises LLMConfigurationError at start-up;
+    the app does not quietly run without it.
     """
     try:
         values = read_env_file(env_path)
