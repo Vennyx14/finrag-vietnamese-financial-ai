@@ -172,3 +172,23 @@ class TestK46OtherStatementTemplatesAreOutOfScopeForTheCatalog:
         resp = app.ask(self.QUESTION_650)
         assert resp.status == ResponseStatus.ERROR
         assert resp.calculation is None
+
+
+class TestRatioAbbreviations:
+    """"LNST trên VCSH" is ROE written with the registry's own abbreviations; it was answered with
+    net income before the fix step and refused after the K44 fix (review probe, 2026-11-11)."""
+
+    @pytest.mark.parametrize(
+        "question, metric",
+        [
+            ("LNST trên VCSH của FPT năm 2024 là bao nhiêu phần trăm?", "roe"),
+            ("Lợi nhuận sau thuế trên VCSH của FPT năm 2024 là bao nhiêu %?", "roe"),
+            ("LNST trên vốn chủ sở hữu của FPT năm 2024 là bao nhiêu?", "roe"),
+            ("LNST trên tổng tài sản của HPG năm 2023 là bao nhiêu %?", "roa"),
+        ],
+    )
+    def test_abbreviated_ratio_resolves_to_the_ratio(self, question, metric):
+        res = resolve_query(question)
+        assert res.status == ResolutionStatus.RESOLVED
+        assert res.metric == metric
+        assert res.operation == "ratio"

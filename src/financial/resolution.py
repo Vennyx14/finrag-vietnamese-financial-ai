@@ -68,6 +68,9 @@ MULTI_PERIOD_PATTERN = re.compile(
 
 TOTAL_ASSETS_PATTERN = re.compile(r"tổng (cộng )?tài sản(?! cố định| ngắn hạn| dài hạn| thuần)")
 GROWTH_SUBJECT_WORDS = {"của", "năm", "doanh", "so", "từ", "giữa", "trong", "bình", "kép"}
+# ROA and ROE written with the abbreviations the registry already accepts ("LNST", "VCSH").
+ROA_ABBREVIATION = re.compile(r"\b(?:lnst|lợi nhuận sau thuế) trên tổng tài sản\b")
+ROE_ABBREVIATION = re.compile(r"\b(?:lnst|lợi nhuận sau thuế) trên (?:vcsh|vốn chủ sở hữu)\b")
 # A per-share figure (EPS) is never one of the amount metrics, whatever profit word it names (K45).
 PER_SHARE_PATTERN = re.compile(r"\b(?:trên|mỗi)\s+(?:một\s+)?cổ phiếu|/\s*cổ phiếu|\beps\b")
 DERIVED_QUESTION_PATTERN = re.compile(
@@ -361,11 +364,11 @@ def resolve_query(
         resolved_metric = reg.canonicalize_name("net_margin")
         resolved_op = "ratio"
 
-    elif re.search(r"\broa\b", text_lower) or "sau thuế trên tổng tài sản" in text_lower or ("tổng tài sản" in text_lower and ("sinh lời" in text_lower or "tỷ suất" in text_lower)):
+    elif re.search(r"\broa\b", text_lower) or "sau thuế trên tổng tài sản" in text_lower or ROA_ABBREVIATION.search(text_lower) or ("tổng tài sản" in text_lower and ("sinh lời" in text_lower or "tỷ suất" in text_lower)):
         resolved_metric = reg.canonicalize_name("roa")
         resolved_op = "ratio"
 
-    elif re.search(r"\broe\b", text_lower) or "sau thuế trên vốn chủ sở hữu" in text_lower or ("vốn chủ sở hữu" in text_lower and ("sinh lời" in text_lower or "tỷ suất" in text_lower)):
+    elif re.search(r"\broe\b", text_lower) or "sau thuế trên vốn chủ sở hữu" in text_lower or ROE_ABBREVIATION.search(text_lower) or ("vốn chủ sở hữu" in text_lower and ("sinh lời" in text_lower or "tỷ suất" in text_lower)):
         resolved_metric = reg.canonicalize_name("roe")
         resolved_op = "ratio"
 
