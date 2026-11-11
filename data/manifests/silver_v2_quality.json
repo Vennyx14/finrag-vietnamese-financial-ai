@@ -770,7 +770,7 @@
       "split": "dev",
       "question_origin": "verbatim",
       "expected": "REFUSE_UNSUPPORTED",
-      "status": "ERROR",
+      "status": "WARNING",
       "outcome": "CORRECT"
     },
     {

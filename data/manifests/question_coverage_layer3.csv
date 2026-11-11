@@ -1,767 +1,767 @@
 question_id,ticker,year_or_period,resolved_metric,application_status,error_category,answer_layer,planner_layer,planner_outcome,gate_reason,llm_error_type,llm_called,llm_cached,prompt_tokens,completion_tokens,llm_latency_ms,has_usable_evidence,evidence_count,latency_ms
-1,VJC,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,14.75
-2,ACB,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.01
-4,FTS,2023,,ERROR,DATA_NOT_FOUND,,,,,,False,,,,,False,0,91.15
-6,VSC,2017,Lưu chuyển tiền thuần từ hoạt động kinh doanh,WARNING,,template_lookup,template,program,,,False,,,,,True,1,145.29
-8,FTS,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,2.03
-9,SAM,2023,Chi phí khác,WARNING,,template_lookup,template,program,,,False,,,,,True,1,134.22
-10,SSH,2021,Chi phí tài chính,WARNING,,template_lookup,template,program,,,False,,,,,True,1,128.38
-11,BID,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,1.0
-12,VGT,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
-15,MPC,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.0
-16,CEO,2025,Vay và nợ thuê tài chính ngắn hạn,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,505.11
-18,FIT,2015,equity,SUCCESS,,resolution,,,,,False,,,,,True,1,564.83
-19,HHV,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.0
-20,GVR,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.99
-21,VIB,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.01
-23,OGC,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,1.99
-24,,,,REJECTED,VERIFICATION_REJECTED,,llm,program,,,True,True,1759,1125,0.3,False,0,6.0
+1,VJC,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,19.16
+2,ACB,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
+4,FTS,2023,,ERROR,DATA_NOT_FOUND,,,,,,False,,,,,False,0,102.02
+6,VSC,2017,Lưu chuyển tiền thuần từ hoạt động kinh doanh,WARNING,,template_lookup,template,program,,,False,,,,,True,1,168.65
+8,FTS,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,3.0
+9,SAM,2023,Chi phí khác,WARNING,,template_lookup,template,program,,,False,,,,,True,1,164.1
+10,SSH,2021,Chi phí tài chính,WARNING,,template_lookup,template,program,,,False,,,,,True,1,161.97
+11,BID,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.0
+12,VGT,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.11
+15,MPC,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.99
+16,CEO,2025,Vay và nợ thuê tài chính ngắn hạn,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,535.39
+18,FIT,2015,equity,SUCCESS,,resolution,,,,,False,,,,,True,1,564.87
+19,HHV,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.71
+20,GVR,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.11
+21,VIB,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.0
+23,OGC,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
+24,,,,REJECTED,VERIFICATION_REJECTED,,llm,program,,,True,True,1759,1125,0.3,False,0,6.23
 25,DIG,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,2.1
-29,OGC,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.01
-30,BVH,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,1.98
+29,OGC,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
+30,BVH,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,3.1
 31,VJC,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
-33,MBB,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.0
-34,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,106.61
-35,BVH,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,1.72
-36,VRE,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.09
-37,GEX,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.52
-39,GVR,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.77
-40,VIB,2020,,ERROR,DATA_NOT_FOUND,,,,,,False,,,,,False,0,87.92
-42,EIB,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,1.13
-43,ACV,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
-44,STB,2016,,ERROR,DATA_NOT_FOUND,,,,,,False,,,,,False,0,89.87
-47,PLX,2017,Chi phí bán hàng,WARNING,,template_lookup,template,program,,,False,,,,,True,1,156.01
-48,PLX,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.91
-49,PC1,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.0
+33,MBB,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.04
+34,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,105.12
+35,BVH,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,3.0
+36,VRE,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
+37,GEX,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.99
+39,GVR,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
+40,VIB,2020,,ERROR,DATA_NOT_FOUND,,,,,,False,,,,,False,0,132.05
+42,EIB,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.0
+43,ACV,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
+44,STB,2016,,ERROR,DATA_NOT_FOUND,,,,,,False,,,,,False,0,95.52
+47,PLX,2017,Chi phí bán hàng,WARNING,,template_lookup,template,program,,,False,,,,,True,1,171.41
+48,PLX,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+49,PC1,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
 50,ABB,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
-51,VCB,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,1.99
-52,NAB,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.0
-53,IJC,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+51,VCB,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
+52,NAB,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
+53,IJC,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
 55,FTS,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,1.0
-57,PC1,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.96
-58,PC1,2023,Trả trước cho người bán ngắn hạn,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,672.95
-59,VCB,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.0
+57,PC1,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+58,PC1,2023,Trả trước cho người bán ngắn hạn,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,515.07
+59,VCB,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.01
 62,MBB,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,1.99
-64,STB,2021,,ERROR,DATA_NOT_FOUND,,,,,,False,,,,,False,0,133.98
-66,NKG,2021,Chi phí lãi vay,WARNING,,template_lookup,template,program,,,False,,,,,True,1,257.31
-70,DCM,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,8.0
-71,GEG,2025,net_revenue,SUCCESS,,resolution,,,,,False,,,,,True,1,242.62
-73,PC1,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.45
-75,BVH,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,2.0
-76,HHV,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
-77,VRE,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.05
-78,VRE,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.22
-81,MBB,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.8
-82,NVB,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.01
-83,VIB,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.98
-85,ACB,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.56
-88,NVB,2019,,ERROR,DATA_NOT_FOUND,,,,,,False,,,,,False,0,110.63
-89,MSN,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,1.99
-91,VRE,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
-92,SSH,2025,total_assets,SUCCESS,,resolution,,,,,False,,,,,True,1,463.97
-94,DBC,2021,net_income,SUCCESS,,resolution,,,,,False,,,,,True,1,152.25
-96,VGT,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.99
-97,HPG,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.01
-98,HUT,2024,Hàng tồn kho,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,602.11
-99,NKG,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.01
-100,BVH,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,3.0
-101,NKG,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
-102,MBB,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.78
-103,GEX,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.97
-104,MBB,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.01
-106,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.01
-107,KBC,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.03
-108,HAG,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
-109,IJC,2016,Trả trước cho người bán ngắn hạn,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,590.82
-111,VGC,2025,Tài sản cố định vô hình,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,562.09
-112,FOX,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,7.13
-113,VIB,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.0
-116,IJC,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.01
-121,GEX,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
-122,HHV,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.0
-123,SSI,2016,equity,SUCCESS,,resolution,,,,,False,,,,,True,1,667.34
-124,DIG,2023,Tiền và các khoản tương đương tiền,WARNING,,template_lookup,template,program,,,False,,,,,True,1,839.57
-125,VIF,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.03
-127,VIB,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,1.98
-128,IJC,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.12
-130,DBC,2024,net_revenue,SUCCESS,,resolution,,,,,False,,,,,True,1,213.94
-132,SNZ,2021,Chi phí lãi vay,WARNING,,template_lookup,template,program,,,False,,,,,True,1,158.93
-133,NLG,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.93
-134,VNM,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.03
-137,TTF,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.99
-138,GEG,2019,net_revenue,SUCCESS,,resolution,,,,,False,,,,,True,1,214.78
-139,HAG,2020,net_revenue,SUCCESS,,resolution,,,,,False,,,,,True,1,196.34
-140,HPG,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
-141,HAG,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.0
-142,VGC,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.03
-143,FIT,2021,Tổng tài sản,WARNING,,template_lookup,template,program,,,False,,,,,True,1,484.49
-144,BVH,2025,net_income,SUCCESS,,resolution,,,,,False,,,,,True,1,169.22
+64,STB,2021,,ERROR,DATA_NOT_FOUND,,,,,,False,,,,,False,0,96.13
+66,NKG,2021,Chi phí lãi vay,WARNING,,template_lookup,template,program,,,False,,,,,True,1,177.54
+70,DCM,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.1
+71,GEG,2025,net_revenue,SUCCESS,,resolution,,,,,False,,,,,True,1,167.8
+73,PC1,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.33
+75,BVH,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,2.95
+76,HHV,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.05
+77,VRE,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
+78,VRE,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.99
+81,MBB,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,1.95
+82,NVB,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.06
+83,VIB,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.0
+85,ACB,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.0
+88,NVB,2019,,ERROR,DATA_NOT_FOUND,,,,,,False,,,,,False,0,95.02
+89,MSN,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.1
+91,VRE,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
+92,SSH,2025,total_assets,SUCCESS,,resolution,,,,,False,,,,,True,1,460.37
+94,DBC,2021,net_income,SUCCESS,,resolution,,,,,False,,,,,True,1,179.81
+96,VGT,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
+97,HPG,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+98,HUT,2024,Hàng tồn kho,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,517.45
+99,NKG,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,1.0
+100,BVH,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,3.01
+101,NKG,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+102,MBB,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
+103,GEX,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.01
+104,MBB,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.0
+106,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.58
+107,KBC,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
+108,HAG,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.0
+109,IJC,2016,Trả trước cho người bán ngắn hạn,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,533.27
+111,VGC,2025,Tài sản cố định vô hình,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,504.16
+112,FOX,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.27
+113,VIB,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.1
+116,IJC,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
+121,GEX,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+122,HHV,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
+123,SSI,2016,equity,SUCCESS,,resolution,,,,,False,,,,,True,1,575.61
+124,DIG,2023,Tiền và các khoản tương đương tiền,WARNING,,template_lookup,template,program,,,False,,,,,True,1,541.76
+125,VIF,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.99
+127,VIB,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
+128,IJC,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
+130,DBC,2024,net_revenue,SUCCESS,,resolution,,,,,False,,,,,True,1,165.98
+132,SNZ,2021,Chi phí lãi vay,WARNING,,template_lookup,template,program,,,False,,,,,True,1,177.3
+133,NLG,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
+134,VNM,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+137,TTF,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.01
+138,GEG,2019,net_revenue,SUCCESS,,resolution,,,,,False,,,,,True,1,166.18
+139,HAG,2020,net_revenue,SUCCESS,,resolution,,,,,False,,,,,True,1,160.16
+140,HPG,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
+141,HAG,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+142,VGC,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+143,FIT,2021,Tổng tài sản,WARNING,,template_lookup,template,program,,,False,,,,,True,1,523.8
+144,BVH,2025,net_income,SUCCESS,,resolution,,,,,False,,,,,True,1,181.6
 146,HBC,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
-148,VSC,2019,Tiền và các khoản tương đương tiền,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,549.19
+148,VSC,2019,Tiền và các khoản tương đương tiền,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,562.43
 149,VSC,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
-150,DXG,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.0
-152,SGB,2023,,ERROR,DATA_NOT_FOUND,,,,,,False,,,,,False,0,84.25
-155,QNS,2023,Tổng lợi nhuận kế toán trước thuế,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,145.28
-156,BVH,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,3.01
-157,VGT,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.01
-158,CRE,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.99
-159,GVR,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.0
-162,MPC,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.04
-163,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,149.89
-164,SSH,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.97
-166,HBC,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.7
-167,MSR,2025,Chi phí lãi vay,WARNING,,template_lookup,template,program,,,False,,,,,True,1,270.93
-168,CRE,2025,Nợ phải trả,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,516.41
-172,FPT,2022,Tiền và các khoản tương đương tiền,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,585.95
-174,NVB,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.01
-175,VGT,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,1.91
-176,DXG,2024,net_revenue,SUCCESS,,resolution,,,,,False,,,,,True,1,174.72
-177,FIT,2018,Tiền và các khoản tương đương tiền,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,558.01
-178,NVL,2021,Tài sản cố định hữu hình,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,640.75
-180,VJC,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.05
-181,VRE,2020,,ERROR,DATA_NOT_FOUND,,,,,,False,,,,,False,0,153.72
-182,CEO,2022,net_income,SUCCESS,,resolution,,,,,False,,,,,True,1,219.14
-183,NVB,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.02
-184,DIG,2025,Tiền và các khoản tương đương tiền,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,728.57
-186,MSR,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.47
-187,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
-189,DBC,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.71
-191,PVT,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.04
-192,MML,2017,Tổng lợi nhuận kế toán trước thuế,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,210.97
+150,DXG,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.01
+152,SGB,2023,,ERROR,DATA_NOT_FOUND,,,,,,False,,,,,False,0,106.37
+155,QNS,2023,Tổng lợi nhuận kế toán trước thuế,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,165.32
+156,BVH,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,4.0
+157,VGT,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+158,CRE,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.01
+159,GVR,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.01
+162,MPC,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.99
+163,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,136.35
+164,SSH,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.86
+166,HBC,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.52
+167,MSR,2025,Chi phí lãi vay,WARNING,,template_lookup,template,program,,,False,,,,,True,1,165.16
+168,CRE,2025,Nợ phải trả,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,479.09
+172,FPT,2022,Tiền và các khoản tương đương tiền,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,531.8
+174,NVB,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.58
+175,VGT,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+176,DXG,2024,net_revenue,SUCCESS,,resolution,,,,,False,,,,,True,1,159.62
+177,FIT,2018,Tiền và các khoản tương đương tiền,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,535.11
+178,NVL,2021,Tài sản cố định hữu hình,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,535.1
+180,VJC,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.94
+181,VRE,2020,,ERROR,DATA_NOT_FOUND,,,,,,False,,,,,False,0,111.02
+182,CEO,2022,net_income,SUCCESS,,resolution,,,,,False,,,,,True,1,156.73
+183,NVB,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
+184,DIG,2025,Tiền và các khoản tương đương tiền,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,517.91
+186,MSR,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.93
+187,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.09
+189,DBC,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
+191,PVT,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.0
+192,MML,2017,Tổng lợi nhuận kế toán trước thuế,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,157.36
 193,MBB,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.0
-194,VRE,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.04
-196,AAA,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.01
-197,VIB,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
-198,ACB,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.0
-199,DNH,2016,Tiền và các khoản tương đương tiền,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,735.57
-201,HSG,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.01
-202,CEO,2025,Trả trước cho người bán ngắn hạn,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,662.37
-203,SNZ,2017,Tiền và các khoản tương đương tiền,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,506.65
-204,VNM,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.09
-205,VIB,2023,,ERROR,DATA_NOT_FOUND,,,,,,False,,,,,False,0,117.4
-206,GEX,2021,total_assets,SUCCESS,,resolution,,,,,False,,,,,True,1,563.04
-209,HPG,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.0
-210,VNM,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
-211,DLG,2022,Tổng lợi nhuận kế toán trước thuế,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,209.87
-212,HNG,2015,net_income,SUCCESS,,resolution,,,,,False,,,,,True,1,172.88
-214,DTK,2024,net_revenue,SUCCESS,,resolution,,,,,False,,,,,True,1,172.97
-215,BID,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.0
-216,GEG,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
-217,DCM,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
-218,BVH,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,4.0
-220,BID,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
-221,CEO,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,5.0
-223,MPC,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
-224,HUT,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
-225,SSI,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,4.0
-226,PDR,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.11
-227,HBC,2015,net_income,SUCCESS,,resolution,,,,,False,,,,,True,1,186.92
-228,VGC,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
-229,SJG,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
-230,ACB,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.0
-233,GEX,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.99
-234,VIF,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.02
-235,HDB,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,1.88
-237,GAS,2016,net_revenue,SUCCESS,,resolution,,,,,False,,,,,True,1,192.0
-238,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.02
-240,VRE,2017,Phải thu ngắn hạn của khách hàng,SUCCESS,,llm,llm,program,,,True,True,1749,233,0.3,True,1,580.85
-241,VIB,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,1.99
-242,MBB,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.0
-243,IJC,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.99
-245,DPM,2024,Lợi nhuận gộp,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,190.18
-247,SNZ,2020,Trả trước cho người bán ngắn hạn,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,618.52
-248,MPC,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.14
-250,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.89
-251,PRT,2019,Tiền và các khoản tương đương tiền,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,654.76
-252,BSR,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.01
-253,MBB,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
-254,VNM,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,1.96
-255,DCM,2016,Trả trước cho người bán ngắn hạn,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,539.55
-256,MCH,2019,net_income,SUCCESS,,resolution,,,,,False,,,,,True,1,163.98
-257,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,88.47
-258,GVR,2017,total_assets,SUCCESS,,resolution,,,,,False,,,,,True,1,539.94
-261,BVH,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,3.63
-262,SJG,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.98
-263,SSI,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,3.0
-265,OCB,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.0
-266,VNM,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.05
-267,ACB,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
-269,BVH,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,3.46
-270,VSC,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.51
-271,GEG,2025,Hàng tồn kho,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,600.26
-272,MBB,2020,,ERROR,DATA_NOT_FOUND,,,,,,False,,,,,False,0,95.86
-273,DCM,2016,net_revenue,SUCCESS,,resolution,,,,,False,,,,,True,1,158.38
-275,KLB,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.02
-277,VNM,2022,net_income,SUCCESS,,resolution,,,,,False,,,,,True,1,175.99
-278,VIF,2023,Tiền và các khoản tương đương tiền,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,705.69
-279,HSG,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
-281,PVT,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.03
-283,PC1,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.99
-287,VIF,2021,net_income,SUCCESS,,resolution,,,,,False,,,,,True,1,189.57
-289,DPM,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.92
-290,AAA,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.02
-291,HAG,2023,Tổng lợi nhuận kế toán trước thuế,SUCCESS,,llm,llm,program,,,True,True,1733,122,0.6,True,1,235.55
-292,CRE,2019,Doanh thu bán hàng và cung cấp dịch vụ,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,196.41
-295,HSG,2018,Lưu chuyển tiền thuần từ hoạt động kinh doanh,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,192.15
-296,VIB,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.01
-297,SJG,2024,total_assets,WARNING,,resolution,,,,,False,,,,,True,1,482.53
+194,VRE,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.02
+196,AAA,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+197,VIB,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.0
+198,ACB,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
+199,DNH,2016,Tiền và các khoản tương đương tiền,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,540.31
+201,HSG,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.0
+202,CEO,2025,Trả trước cho người bán ngắn hạn,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,554.85
+203,SNZ,2017,Tiền và các khoản tương đương tiền,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,519.55
+204,VNM,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.51
+205,VIB,2023,,ERROR,DATA_NOT_FOUND,,,,,,False,,,,,False,0,95.4
+206,GEX,2021,total_assets,SUCCESS,,resolution,,,,,False,,,,,True,1,501.37
+209,HPG,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,5.0
+210,VNM,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.51
+211,DLG,2022,Tổng lợi nhuận kế toán trước thuế,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,180.36
+212,HNG,2015,net_income,SUCCESS,,resolution,,,,,False,,,,,True,1,228.01
+214,DTK,2024,net_revenue,SUCCESS,,resolution,,,,,False,,,,,True,1,184.56
+215,BID,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,1.53
+216,GEG,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.0
+217,DCM,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.13
+218,BVH,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,3.15
+220,BID,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.09
+221,CEO,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,3.85
+223,MPC,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,1.56
+224,HUT,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.03
+225,SSI,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,3.67
+226,PDR,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.19
+227,HBC,2015,net_income,SUCCESS,,resolution,,,,,False,,,,,True,1,163.3
+228,VGC,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.5
+229,SJG,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+230,ACB,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,1.0
+233,GEX,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
+234,VIF,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.37
+235,HDB,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
+237,GAS,2016,net_revenue,SUCCESS,,resolution,,,,,False,,,,,True,1,162.93
+238,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
+240,VRE,2017,Phải thu ngắn hạn của khách hàng,SUCCESS,,llm,llm,program,,,True,True,1749,233,0.3,True,1,601.54
+241,VIB,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,1.98
+242,MBB,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.73
+243,IJC,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.53
+245,DPM,2024,Lợi nhuận gộp,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,184.78
+247,SNZ,2020,Trả trước cho người bán ngắn hạn,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,508.86
+248,MPC,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.0
+250,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
+251,PRT,2019,Tiền và các khoản tương đương tiền,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,529.07
+252,BSR,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.99
+253,MBB,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.47
+254,VNM,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+255,DCM,2016,Trả trước cho người bán ngắn hạn,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,500.31
+256,MCH,2019,net_income,SUCCESS,,resolution,,,,,False,,,,,True,1,170.01
+257,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,92.59
+258,GVR,2017,total_assets,SUCCESS,,resolution,,,,,False,,,,,True,1,437.76
+261,BVH,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,2.93
+262,SJG,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
+263,SSI,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,2.0
+265,OCB,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
+266,VNM,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+267,ACB,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.0
+269,BVH,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,2.0
+270,VSC,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.51
+271,GEG,2025,Hàng tồn kho,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,523.02
+272,MBB,2020,,ERROR,DATA_NOT_FOUND,,,,,,False,,,,,False,0,94.89
+273,DCM,2016,net_revenue,SUCCESS,,resolution,,,,,False,,,,,True,1,157.0
+275,KLB,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,1.99
+277,VNM,2022,net_income,SUCCESS,,resolution,,,,,False,,,,,True,1,157.01
+278,VIF,2023,Tiền và các khoản tương đương tiền,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,513.82
+279,HSG,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.01
+281,PVT,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.01
+283,PC1,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.0
+287,VIF,2021,net_income,SUCCESS,,resolution,,,,,False,,,,,True,1,157.71
+289,DPM,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.59
+290,AAA,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+291,HAG,2023,Tổng lợi nhuận kế toán trước thuế,SUCCESS,,llm,llm,program,,,True,True,1733,122,0.5,True,1,158.81
+292,CRE,2019,Doanh thu bán hàng và cung cấp dịch vụ,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,154.56
+295,HSG,2018,Lưu chuyển tiền thuần từ hoạt động kinh doanh,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,160.99
+296,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,94.17
+297,SJG,2024,total_assets,WARNING,,resolution,,,,,False,,,,,True,1,484.45
 298,DPM,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
-299,VIF,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.02
-300,SSI,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,1.97
-302,HHV,2023,Vốn góp của chủ sở hữu,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,597.23
-304,VGC,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
-305,EIB,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.01
-307,VRE,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.99
-309,OCB,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,5.11
-311,HSG,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.92
-312,VGT,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.07
-314,CEO,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.12
-316,NKG,2023,equity,SUCCESS,,resolution,,,,,False,,,,,True,1,690.55
-317,NAB,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.99
-318,HHV,2022,Phải trả người bán ngắn hạn,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,729.97
-319,MSN,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.51
-322,ABB,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,1.01
+299,VIF,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.01
+300,SSI,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,2.02
+302,HHV,2023,Vốn góp của chủ sở hữu,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,503.66
+304,VGC,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.51
+305,EIB,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.0
+307,VRE,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+309,OCB,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.5
+311,HSG,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
+312,VGT,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+314,CEO,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+316,NKG,2023,equity,SUCCESS,,resolution,,,,,False,,,,,True,1,553.24
+317,NAB,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,1.0
+318,HHV,2022,Phải trả người bán ngắn hạn,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,490.86
+319,MSN,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.01
+322,ABB,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,1.99
 323,SSI,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,3.0
-324,HBC,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.0
-326,NVL,2019,Phải thu ngắn hạn của khách hàng,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,874.19
-327,PC1,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.97
-328,DXG,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.04
-329,ACB,2024,,ERROR,DATA_NOT_FOUND,,,,,,False,,,,,False,0,135.75
+324,HBC,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.01
+326,NVL,2019,Phải thu ngắn hạn của khách hàng,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,542.2
+327,PC1,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
+328,DXG,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+329,ACB,2024,,ERROR,DATA_NOT_FOUND,,,,,,False,,,,,False,0,99.14
 330,MBB,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
-331,BID,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.0
-332,GVR,2024,net_income,SUCCESS,,resolution,,,,,False,,,,,True,1,224.8
-333,GEG,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.0
-334,FIT,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
-335,VGC,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.06
-336,HND,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.33
-338,BSR,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.64
-340,PVT,2019,Hàng tồn kho,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,626.03
-341,GVR,2024,Tổng lợi nhuận kế toán trước thuế,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,167.72
-343,VIF,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.04
-347,CEO,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.01
-348,HHV,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
-350,HSG,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,3.0
-352,NLG,2019,Chi phí thuế TNDN hiện hành,WARNING,,template_lookup,template,program,,,False,,,,,True,1,198.9
-353,MPC,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,1.99
-354,AAA,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.02
-355,MSN,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.98
-357,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,138.23
-358,VIF,2021,Chi phí thuế TNDN hiện hành,WARNING,,template_lookup,template,program,,,False,,,,,True,1,236.72
-359,VIB,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
-360,IJC,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
-362,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,9.05
-363,KBC,"[2016, 2020]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.04
+331,BID,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
+332,GVR,2024,net_income,SUCCESS,,resolution,,,,,False,,,,,True,1,174.13
+333,GEG,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.51
+334,FIT,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
+335,VGC,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+336,HND,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.51
+338,BSR,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
+340,PVT,2019,Hàng tồn kho,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,536.92
+341,GVR,2024,Tổng lợi nhuận kế toán trước thuế,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,166.89
+343,VIF,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+347,CEO,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+348,HHV,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.04
+350,HSG,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,4.0
+352,NLG,2019,Chi phí thuế TNDN hiện hành,WARNING,,template_lookup,template,program,,,False,,,,,True,1,157.88
+353,MPC,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+354,AAA,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.0
+355,MSN,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.1
+357,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,106.9
+358,VIF,2021,Chi phí thuế TNDN hiện hành,WARNING,,template_lookup,template,program,,,False,,,,,True,1,156.89
+359,VIB,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,1.99
+360,IJC,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+362,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.0
+363,KBC,"[2016, 2020]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
 364,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,6.0
-365,CFO,"[2016, 2021]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,5.56
-366,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,5.82
-367,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,8.96
-368,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.95
-369,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.0
-370,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,7.05
-371,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.0
-372,VRE,"[2021, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.12
-373,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,6.6
-374,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,10.15
-375,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.96
-376,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,9.77
-377,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,7.15
-378,HPG,"[2018, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.29
-379,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,13.5
-380,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,14.42
-381,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.01
-382,,"[2023, 2022, 2023]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,5.0
-384,,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,6.05
-385,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,7.6
-386,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,7.72
-387,,"[2021, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,7.02
-388,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.96
-389,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,13.91
-390,,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,3.98
-391,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,10.57
-392,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,5.0
-393,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,10.6
-394,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,14.67
-395,,"[2022, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,5.09
-396,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,10.04
-397,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,15.01
-398,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.99
-399,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.0
-400,HPG,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.08
-401,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,6.09
-402,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,5.75
-403,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,10.31
-404,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.05
-405,VIC,"[2022, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.02
-406,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,8.97
-408,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,11.06
-409,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,11.2
-410,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,10.97
-411,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,5.08
-412,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,5.96
-413,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,11.04
-414,,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,8.01
-415,,"[2020, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,3.06
-416,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,11.42
-417,CFO,2024,,ERROR,DATA_NOT_FOUND,,,,,,False,,,,,False,0,185.76
-418,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,13.01
-419,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,13.76
-420,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,11.02
-421,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,12.26
-422,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,11.39
-423,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,19.28
-424,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,9.9
-425,FPT,"[2021, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,13.68
-428,ACB,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,10.25
-429,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,18.41
-430,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,14.01
-431,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,8.0
-432,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,12.0
-433,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,24.0
-434,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,14.0
-435,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,15.51
-436,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,17.57
-437,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,13.0
-438,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,11.0
-439,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,9.0
-440,DIG,"[2021, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,8.0
-441,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,14.05
-442,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,15.19
-443,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,13.01
-444,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,13.2
-445,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,16.99
-446,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,16.98
-447,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,17.54
-448,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,16.23
-449,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,18.15
-450,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,18.16
-451,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,15.92
-452,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,11.51
-453,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,13.59
-454,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,19.05
-455,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,13.38
-456,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.18
-457,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.02
-458,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,7.1
-459,KBC,"[2016, 2020]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.04
-460,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,9.96
-461,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.02
-462,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,15.4
-463,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,11.99
-464,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.0
-465,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,8.67
-466,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,15.07
-467,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,11.47
-468,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,12.15
-469,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,9.9
-470,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,9.99
-471,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,6.01
-472,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.02
-473,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.97
-474,ASM,"[2016, 2018]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,5.12
-475,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,10.99
-476,,,,ERROR,USER_INPUT_ERROR,,llm,refused,,,True,True,1777,410,0.8,False,0,9.92
-477,,,,ERROR,USER_INPUT_ERROR,,llm,refused,,,True,True,1785,517,0.3,False,0,12.03
-478,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,9.67
-479,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,11.0
-480,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,5.0
+365,CFO,"[2016, 2021]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
+366,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.0
+367,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,9.0
+368,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.0
+369,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,9.0
+370,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,9.0
+371,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,8.0
+372,VRE,"[2021, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,5.06
+373,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,8.56
+374,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,7.0
+375,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.0
+376,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,10.0
+377,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,6.94
+378,HPG,"[2018, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.0
+379,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,11.0
+380,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,10.03
+381,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.97
+382,,"[2023, 2022, 2023]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,4.0
+384,,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,3.0
+385,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,5.0
+386,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,6.0
+387,,"[2021, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,4.51
+388,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,5.02
+389,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,9.99
+390,,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,1.5
+391,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,8.27
+392,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.01
+393,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.13
+394,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,10.0
+395,,"[2022, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,5.0
+396,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,10.0
+397,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,13.0
+398,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,8.0
+399,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,8.0
+400,HPG,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,9.0
+401,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,8.0
+402,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,8.51
+403,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,9.51
+404,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,8.0
+405,VIC,"[2022, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.0
+406,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,5.5
+408,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,7.63
+409,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,9.0
+410,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,9.0
+411,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,6.0
+412,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,5.0
+413,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,9.0
+414,,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,5.0
+415,,"[2020, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,2.0
+416,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,9.0
+417,CFO,2024,,ERROR,DATA_NOT_FOUND,,,,,,False,,,,,False,0,116.21
+418,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,9.0
+419,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,9.0
+420,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.56
+421,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.98
+422,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,7.02
+423,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,13.0
+424,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,5.0
+425,FPT,"[2021, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,10.99
+428,ACB,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,5.0
+429,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,12.01
+430,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,8.1
+431,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,9.43
+432,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,10.03
+433,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,16.01
+434,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,8.99
+435,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,11.01
+436,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,11.89
+437,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,9.0
+438,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,8.1
+439,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,6.0
+440,DIG,"[2021, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,5.0
+441,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,11.0
+442,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,11.91
+443,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,11.56
+444,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,12.22
+445,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,12.89
+446,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,11.11
+447,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,11.54
+448,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,10.99
+449,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,13.04
+450,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,12.61
+451,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,10.91
+452,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,9.0
+453,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,9.0
+454,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,13.0
+455,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,12.51
+456,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.01
+457,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,5.5
+458,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,10.6
+459,KBC,"[2016, 2020]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.0
+460,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,10.99
+461,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,8.0
+462,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,10.0
+463,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.51
+464,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.01
+465,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,5.16
+466,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,9.01
+467,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,7.0
+468,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,9.0
+469,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,7.0
+470,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,8.08
+471,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,6.12
+472,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,8.0
+473,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.61
+474,ASM,"[2016, 2018]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,6.11
+475,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,9.0
+476,,,,ERROR,USER_INPUT_ERROR,,llm,refused,,,True,True,1777,410,0.3,False,0,7.96
+477,,,,ERROR,USER_INPUT_ERROR,,llm,refused,,,True,True,1785,517,0.3,False,0,9.59
+478,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.41
+479,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,9.0
+480,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.01
 481,CEO,"[2022, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,5.0
-482,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.0
-483,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,5.99
-484,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,6.02
-485,,"[2020, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,3.99
-486,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,6.0
-487,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.99
-488,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,6.01
-489,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.99
-490,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,5.1
-491,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.01
-492,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.7
-493,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.88
-494,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.99
-495,VGT,"[2018, 2020, 2021, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,9.48
-497,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,9.08
-498,ACB,"[2018, 2020, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,7.0
-499,FTS,"[2018, 2019, 2022, 2023, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,12.01
-501,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,5.0
-503,VGT,"[2015, 2017, 2019, 2021, 2022, 2023]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.03
-505,IJC,"[2017, 2018, 2019, 2022, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,5.99
-506,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,8.99
-507,DIG,"[2015, 2016, 2017, 2021, 2024]",,ERROR,USER_INPUT_ERROR,,llm,refused,,,True,True,1801,627,0.5,False,0,10.07
-508,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.09
-510,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,6.38
-511,,,,ERROR,USER_INPUT_ERROR,,llm,refused,,,True,True,1773,335,0.3,False,0,7.74
-512,HSG,"[2015, 2018, 2019, 2021, 2022, 2023]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,5.0
-515,VAB,"[2020, 2024, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
-516,ACB,"[2015, 2019, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,5.02
-517,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,5.99
-518,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
-519,HPG,"[2015, 2018, 2022, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,13.0
-520,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,9.0
-522,BVH,"[2017, 2018, 2023, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,4.0
-523,DCM,"[2019, 2022, 2023, 2024, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
-524,OCB,"[2017, 2018, 2021, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
-525,OCB,"[2017, 2019, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,5.0
-528,ABB,"[2020, 2022, 2023]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,5.04
-530,NAB,"[2021, 2022, 2023, 2024, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.96
-531,MPC,"[2016, 2018, 2020, 2022, 2023]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.01
-532,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.99
-533,HND,"[2016, 2018, 2019, 2020]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,8.14
-534,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,7.0
-536,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,11.18
-537,VGC,"[2019, 2020, 2022, 2023, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,7.16
-538,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,11.01
-540,,"[2019, 2020, 2020, 2019]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,9.14
-541,CEO,"[2022, 2023, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,5.0
-542,,"[2021, 2022, 2022, 2021]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,6.16
-543,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,12.04
-544,DCM,"[2020, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,7.97
-545,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,14.05
-546,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,7.4
-547,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,10.63
-549,,,,ERROR,USER_INPUT_ERROR,,llm,refused,,,True,True,1780,388,0.5,False,0,12.01
-550,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,10.09
-551,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,9.9
-552,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,9.0
-553,,,,ERROR,USER_INPUT_ERROR,,llm,refused,,,True,True,1776,443,0.5,False,0,13.09
-554,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,11.98
-555,CEO,"[2022, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,8.89
-556,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,12.1
-557,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,8.2
-558,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,9.06
-559,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,9.92
-560,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.75
-561,DCM,"[2020, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,7.06
-562,,"[2022, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,4.09
-563,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.0
-564,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,6.01
-565,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.0
-566,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,8.9
-567,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,7.0
-568,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,10.06
-569,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,12.99
-570,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,7.51
-571,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,13.12
-572,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,17.91
-573,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,10.01
-574,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,10.96
-575,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,17.04
-576,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,8.0
-577,CEO,"[2022, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,7.15
-579,IJC,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
-580,HBC,"[2016, 2015]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.01
-581,DBC,"[2015, 2019]",Chênh lệch Tài sản cố định hữu hình,SUCCESS,,template_program,template,program,,,False,,,,,True,2,925.48
-582,MCH,"[2021, 2023]",Tăng trưởng Vay và nợ thuê tài chính ngắn hạn,SUCCESS,,llm,llm,program,,,True,True,1741,243,0.5,True,2,870.0
-583,OCB,"[2022, 2020]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.99
-584,AAA,"[2024, 2025]",Chênh lệch Vốn chủ sở hữu,SUCCESS,,template_program,template,program,,,False,,,,,True,2,992.53
-586,,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,3.05
-590,HHV,"[2025, 2021]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,3.03
-592,BID,"[2024, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.97
-593,VIF,"[2023, 2021]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
-596,VNM,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.06
-597,NVB,"[2021, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.0
-598,HNG,"[2020, 2021]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.09
-599,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,5.49
-600,FPT,"[2025, 2023]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.0
-601,KBC,"[2019, 2016]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,5.7
-603,VJC,"[2025, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
-604,DLG,"[2018, 2019]",Chênh lệch Tổng tài sản,SUCCESS,,template_program,template,program,,,False,,,,,True,2,820.52
-605,NLG,"[2023, 2024]",Tăng trưởng Người mua trả tiền trước ngắn hạn,SUCCESS,,llm,llm,program,,,True,True,1757,272,0.4,True,2,923.43
-606,MML,"[2019, 2023]",Tăng trưởng Nợ ngắn hạn,SUCCESS,,llm,llm,program,,,True,True,1756,343,0.5,True,2,911.83
-607,HAG,"[2017, 2023]",Chênh lệch Chi phí thuế TNDN hiện hành,WARNING,,template_program,template,program,,,False,,,,,True,2,429.91
-608,MML,"[2018, 2023]",Chênh lệch Tài sản cố định hữu hình,SUCCESS,,llm,llm,program,,,True,True,1754,359,0.5,True,2,757.07
-609,ACB,"[2022, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.91
-611,EIB,"[2018, 2019]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.99
-612,NKG,"[2021, 2020]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.87
-613,IJC,"[2018, 2022]",Chênh lệch Lưu chuyển tiền thuần từ hoạt động tài chính,WARNING,,template_program,template,program,,,False,,,,,True,2,372.96
-614,IJC,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
-615,DXG,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
-617,GAS,"[2016, 2019]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+482,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.01
+483,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,7.23
+484,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,6.99
+485,,"[2020, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,6.0
+486,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,7.0
+487,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.9
+488,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,6.46
+489,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.11
+490,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.0
+491,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.82
+492,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,9.89
+493,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.0
+494,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,9.1
+495,VGT,"[2018, 2020, 2021, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,9.01
+497,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,9.0
+498,ACB,"[2018, 2020, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.95
+499,FTS,"[2018, 2019, 2022, 2023, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,6.95
+501,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,6.74
+503,VGT,"[2015, 2017, 2019, 2021, 2022, 2023]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.03
+505,IJC,"[2017, 2018, 2019, 2022, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.49
+506,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,10.51
+507,DIG,"[2015, 2016, 2017, 2021, 2024]",,ERROR,USER_INPUT_ERROR,,llm,refused,,,True,True,1801,627,0.3,False,0,8.85
+508,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,5.52
+510,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,8.14
+511,,,,ERROR,USER_INPUT_ERROR,,llm,refused,,,True,True,1773,335,0.3,False,0,8.49
+512,HSG,"[2015, 2018, 2019, 2021, 2022, 2023]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,5.98
+515,VAB,"[2020, 2024, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.0
+516,ACB,"[2015, 2019, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,6.0
+517,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.0
+518,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.0
+519,HPG,"[2015, 2018, 2022, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,10.0
+520,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.72
+522,BVH,"[2017, 2018, 2023, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,5.91
+523,DCM,"[2019, 2022, 2023, 2024, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.55
+524,OCB,"[2017, 2018, 2021, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.59
+525,OCB,"[2017, 2019, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,5.02
+528,ABB,"[2020, 2022, 2023]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,6.0
+530,NAB,"[2021, 2022, 2023, 2024, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.0
+531,MPC,"[2016, 2018, 2020, 2022, 2023]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.55
+532,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,12.01
+533,HND,"[2016, 2018, 2019, 2020]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,10.39
+534,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,9.0
+536,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,10.1
+537,VGC,"[2019, 2020, 2022, 2023, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,7.0
+538,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,9.0
+540,,"[2019, 2020, 2020, 2019]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,6.0
+541,CEO,"[2022, 2023, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,6.39
+542,,"[2021, 2022, 2022, 2021]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,8.11
+543,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,11.22
+544,DCM,"[2020, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,5.99
+545,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,9.01
+546,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,6.0
+547,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.9
+549,,,,ERROR,USER_INPUT_ERROR,,llm,refused,,,True,True,1780,388,0.3,False,0,7.99
+550,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,6.1
+551,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,8.0
+552,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.0
+553,,,,ERROR,USER_INPUT_ERROR,,llm,refused,,,True,True,1776,443,0.4,False,0,8.9
+554,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,7.0
+555,CEO,"[2022, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,6.1
+556,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,9.9
+557,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,8.0
+558,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,8.5
+559,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,9.11
+560,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,8.01
+561,DCM,"[2020, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,7.99
+562,,"[2022, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,5.0
+563,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,5.01
+564,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,6.99
+565,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,10.0
+566,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,6.0
+567,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,5.1
+568,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.0
+569,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,8.45
+570,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,9.0
+571,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.01
+572,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,11.5
+573,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.01
+574,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.01
+575,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,9.99
+576,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.89
+577,CEO,"[2022, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,5.0
+579,IJC,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
+580,HBC,"[2016, 2015]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.1
+581,DBC,"[2015, 2019]",Chênh lệch Tài sản cố định hữu hình,SUCCESS,,template_program,template,program,,,False,,,,,True,2,682.09
+582,MCH,"[2021, 2023]",Tăng trưởng Vay và nợ thuê tài chính ngắn hạn,SUCCESS,,llm,llm,program,,,True,True,1741,243,0.4,True,2,702.12
+583,OCB,"[2022, 2020]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
+584,AAA,"[2024, 2025]",Chênh lệch Vốn chủ sở hữu,SUCCESS,,template_program,template,program,,,False,,,,,True,2,809.79
+586,,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,4.01
+590,HHV,"[2025, 2021]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,3.0
+592,BID,"[2024, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.23
+593,VIF,"[2023, 2021]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.01
+596,VNM,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.99
+597,NVB,"[2021, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.0
+598,HNG,"[2020, 2021]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.99
+599,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.01
+600,FPT,"[2025, 2023]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.0
+601,KBC,"[2019, 2016]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.0
+603,VJC,"[2025, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.01
+604,DLG,"[2018, 2019]",Chênh lệch Tổng tài sản,SUCCESS,,template_program,template,program,,,False,,,,,True,2,613.09
+605,NLG,"[2023, 2024]",Tăng trưởng Người mua trả tiền trước ngắn hạn,SUCCESS,,llm,llm,program,,,True,True,1757,272,0.3,True,2,686.14
+606,MML,"[2019, 2023]",Tăng trưởng Nợ ngắn hạn,SUCCESS,,llm,llm,program,,,True,True,1756,343,0.3,True,2,686.14
+607,HAG,"[2017, 2023]",Chênh lệch Chi phí thuế TNDN hiện hành,WARNING,,template_program,template,program,,,False,,,,,True,2,329.2
+608,MML,"[2018, 2023]",Chênh lệch Tài sản cố định hữu hình,SUCCESS,,llm,llm,program,,,True,True,1754,359,0.3,True,2,717.97
+609,ACB,"[2022, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.04
+611,EIB,"[2018, 2019]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.52
+612,NKG,"[2021, 2020]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,5.46
+613,IJC,"[2018, 2022]",Chênh lệch Lưu chuyển tiền thuần từ hoạt động tài chính,WARNING,,template_program,template,program,,,False,,,,,True,2,352.95
+614,IJC,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.0
+615,DXG,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.12
+617,GAS,"[2016, 2019]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.24
 619,SSI,"[2020, 2019]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,3.0
-620,MSR,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
-622,DXG,"[2024, 2023]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+620,MSR,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.02
+622,DXG,"[2024, 2023]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
 623,PC1,"[2023, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.0
-625,VGC,"[2023, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.0
-626,BVH,"[2020, 2018]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,2.0
-627,PVT,"[2018, 2016]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
-628,DCM,"[2018, 2017]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.13
-629,HBC,"[2016, 2020]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.93
-631,IJC,"[2015, 2018]",Tăng trưởng Chi phí bán hàng,WARNING,,llm,llm,program,,,True,True,1751,305,0.4,True,2,348.82
-632,,,,ERROR,DATA_NOT_FOUND,,llm,program,,,True,True,1747,240,0.3,False,0,215.36
-635,ABB,"[2020, 2023]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,6.0
-636,KBC,"[2024, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,8.0
-638,GEX,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.12
-639,PC1,"[2019, 2020]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.96
-643,KLB,"[2019, 2023]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.13
-644,DIG,"[2022, 2023]",revenue_growth,SUCCESS,,resolution,,,,,False,,,,,True,2,414.26
-645,BVH,"[2018, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,2.51
-647,ACB,"[2017, 2019]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,1.62
-649,HSG,"[2025, 2021]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.26
-650,SSI,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,2.03
-651,MML,"[2017, 2018]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,1.99
-653,HAG,"[2024, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.76
-654,DNH,"[2017, 2016]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,2.0
-656,FOX,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,2.91
-657,FOX,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.08
-659,MML,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,1.64
-661,DNH,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,3.15
-662,CEO,2016,roa,WARNING,,resolution,,,,,False,,,,,True,2,817.97
-663,HAG,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,3.02
-666,KBC,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,1.97
-669,GVR,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,2.0
-671,MBB,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,1.88
-674,HBC,2016,net_margin,SUCCESS,,resolution,,,,,False,,,,,True,2,369.62
-675,MML,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.0
-677,PRT,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.87
-678,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,327.47
-679,FOX,2016,Lợi nhuận gộp,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,220.37
-682,HSG,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.98
-683,NVB,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.07
-686,VNM,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,2.98
-688,DXG,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
-689,BID,"[2022, 2021]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.99
-690,HNG,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.23
-691,DPM,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.01
-692,BID,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.77
-693,VCB,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.0
-694,SGB,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
-695,DCM,2017,roe,WARNING,,resolution,,,,,False,,,,,True,2,854.91
-696,HSG,2019,equity,WARNING,,resolution,,,,,False,,,,,True,1,615.67
-697,MSN,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.99
-698,TTF,2020,Chi phí quản lý doanh nghiệp / Doanh thu thuần,WARNING,,template_program,template,program,,,False,,,,,True,2,358.9
-699,PVT,2025,Tài sản cố định hữu hình / Tổng tài sản,SUCCESS,,template_program,template,program,,,False,,,,,True,2,719.37
-701,IJC,2020,Chi phí bán hàng / Doanh thu thuần,WARNING,,template_program,template,program,,,False,,,,,True,2,400.58
+625,VGC,"[2023, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,5.09
+626,BVH,"[2020, 2018]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,2.61
+627,PVT,"[2018, 2016]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.11
+628,DCM,"[2018, 2017]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.0
+629,HBC,"[2016, 2020]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
+631,IJC,"[2015, 2018]",Tăng trưởng Chi phí bán hàng,WARNING,,llm,llm,program,,,True,True,1751,305,0.4,True,2,341.08
+632,,,,ERROR,DATA_NOT_FOUND,,llm,program,,,True,True,1747,240,0.3,False,0,255.44
+635,ABB,"[2020, 2023]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.98
+636,KBC,"[2024, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.0
+638,GEX,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.01
+639,PC1,"[2019, 2020]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
+643,KLB,"[2019, 2023]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
+644,DIG,"[2022, 2023]",revenue_growth,SUCCESS,,resolution,,,,,False,,,,,True,2,333.5
+645,BVH,"[2018, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,2.01
+647,ACB,"[2017, 2019]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.21
+649,HSG,"[2025, 2021]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.87
+650,SSI,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,2.0
+651,MML,"[2017, 2018]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,2.0
+653,HAG,"[2024, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,5.99
+654,DNH,"[2017, 2016]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,3.0
+656,FOX,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.0
+657,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,108.8
+659,MML,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+661,DNH,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.0
+662,CEO,2016,roa,WARNING,,resolution,,,,,False,,,,,True,2,663.18
+663,HAG,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,3.0
+666,KBC,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
+669,GVR,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,2.01
+671,MBB,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
+674,HBC,2016,net_margin,SUCCESS,,resolution,,,,,False,,,,,True,2,323.73
+675,MML,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.99
+677,PRT,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.0
+678,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,263.9
+679,FOX,2016,Lợi nhuận gộp,SUCCESS,,template_lookup,template,program,,,False,,,,,True,1,182.28
+682,HSG,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+683,NVB,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.0
+686,VNM,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,3.0
+688,DXG,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
+689,BID,"[2022, 2021]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.0
+690,HNG,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+691,DPM,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.0
+692,BID,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.22
+693,VCB,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.67
+694,SGB,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.01
+695,DCM,2017,roe,WARNING,,resolution,,,,,False,,,,,True,2,715.83
+696,HSG,2019,equity,WARNING,,resolution,,,,,False,,,,,True,1,514.59
+697,MSN,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.5
+698,TTF,2020,Chi phí quản lý doanh nghiệp / Doanh thu thuần,WARNING,,template_program,template,program,,,False,,,,,True,2,322.28
+699,PVT,2025,Tài sản cố định hữu hình / Tổng tài sản,SUCCESS,,template_program,template,program,,,False,,,,,True,2,709.86
+701,IJC,2020,Chi phí bán hàng / Doanh thu thuần,WARNING,,template_program,template,program,,,False,,,,,True,2,373.44
 702,CEO,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,3.0
-703,GEX,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.51
-705,KBC,2022,Vay và nợ thuê tài chính ngắn hạn / Vốn chủ sở hữu,SUCCESS,,template_program,template,program,,,False,,,,,True,2,832.63
-707,VGT,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.74
-708,MML,2017,net_margin,SUCCESS,,resolution,,,,,False,,,,,True,2,309.52
-709,MSR,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,3.84
-710,VNM,2022,Nợ ngắn hạn / Vốn chủ sở hữu,SUCCESS,,template_program,template,program,,,False,,,,,True,2,676.25
-711,DPM,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
-712,GEG,2025,Chi phí tài chính / Doanh thu thuần,WARNING,,llm,llm,program,,,True,True,1737,238,0.3,True,2,339.76
+703,GEX,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
+705,KBC,2022,Vay và nợ thuê tài chính ngắn hạn / Vốn chủ sở hữu,SUCCESS,,template_program,template,program,,,False,,,,,True,2,754.59
+707,VGT,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.02
+708,MML,2017,net_margin,SUCCESS,,resolution,,,,,False,,,,,True,2,349.09
+709,MSR,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,3.51
+710,VNM,2022,Nợ ngắn hạn / Vốn chủ sở hữu,SUCCESS,,template_program,template,program,,,False,,,,,True,2,728.78
+711,DPM,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.51
+712,GEG,2025,Chi phí tài chính / Doanh thu thuần,WARNING,,llm,llm,program,,,True,True,1737,238,0.3,True,2,325.98
 715,,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,2.01
 717,NVB,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.0
-718,DXG,2017,Giá vốn hàng bán / Doanh thu thuần,WARNING,,template_program,template,program,,,False,,,,,True,2,437.18
+718,DXG,2017,Giá vốn hàng bán / Doanh thu thuần,WARNING,,template_program,template,program,,,False,,,,,True,2,332.47
 719,NVB,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.0
-721,VIF,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.54
-722,OGC,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,3.09
-723,HAG,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.59
-724,GVR,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.12
-725,SAM,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.14
-726,GEX,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.99
-727,BVH,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,4.0
-728,DBC,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,5.91
+721,VIF,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+722,OGC,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,3.0
+723,HAG,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.51
+724,GVR,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,3.0
+725,SAM,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+726,GEX,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+727,BVH,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,3.0
+728,DBC,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.0
 732,FIT,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,3.0
-734,DIG,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,5.0
-735,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,3.03
-736,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.97
-737,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,3.05
-738,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,121.07
-739,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.99
-740,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.01
-741,MPC,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
-743,"GEE, SAM",2023,Chênh lệch Tài sản cố định hữu hình,SUCCESS,,llm,llm,program,,,True,True,1751,439,0.4,True,2,894.98
-745,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.05
-747,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.67
-748,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
-749,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.0
-750,,,,ERROR,DATA_NOT_FOUND,,llm,program,,,True,True,1779,333,0.3,False,0,145.85
-751,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.01
-752,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,1.94
-753,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.03
-754,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
-755,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.05
-756,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.01
-757,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,118.75
-758,,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,5.0
-759,"SCR, NVL",2025,Chênh lệch Phải thu ngắn hạn của khách hàng,SUCCESS,,llm,llm,program,,,True,True,1777,408,0.6,True,2,921.72
+734,DIG,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,6.0
+735,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.0
+736,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
+737,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,5.0
+738,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,95.73
+739,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,7.01
+740,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.01
+741,MPC,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,5.0
+743,"GEE, SAM",2023,Chênh lệch Tài sản cố định hữu hình,SUCCESS,,llm,llm,program,,,True,True,1751,439,0.3,True,2,700.02
+745,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.1
+747,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.1
+748,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.99
+749,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.91
+750,,,,ERROR,DATA_NOT_FOUND,,llm,program,,,True,True,1779,333,0.3,False,0,125.49
+751,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.96
+752,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
+753,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.52
+754,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.0
+755,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.11
+756,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.99
+757,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,97.41
+758,,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,4.24
+759,"SCR, NVL",2025,Chênh lệch Phải thu ngắn hạn của khách hàng,SUCCESS,,llm,llm,program,,,True,True,1777,408,0.3,True,2,701.34
 760,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
-761,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.29
-762,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.99
-764,,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,3.01
-766,PVT,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
-768,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.0
-769,VSC,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.78
-771,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
-772,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
-773,VRE,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.8
-774,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.0
-775,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
-776,"MSN, MML",2021,Chênh lệch Lợi nhuận sau thuế,SUCCESS,,template_program,template,program,,,False,,,,,True,2,366.71
-777,"MCH, VNM",2018,Chênh lệch Chi phí thuế TNDN hiện hành,WARNING,,llm,llm,program,,,True,True,1762,533,0.3,True,2,405.29
-778,"HSG, DPM",2018,Chênh lệch Chi phí lãi vay,WARNING,,llm,llm,program,,,True,True,1766,395,0.3,True,2,407.87
-779,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.31
-780,,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,3.0
-781,PC1,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,5.55
-782,VNM,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.04
-783,,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,3.01
-784,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.09
-785,HUT,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
-787,,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,3.91
-788,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
-789,AAA,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,8.0
-790,VIB,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,5.0
-791,GEG,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.0
-792,,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,2.0
-793,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.96
-794,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
-795,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
-796,,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,4.0
-797,ACV,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.16
-798,"HHV, VSC",2022,Chênh lệch Tài sản cố định hữu hình,SUCCESS,,template_program,template,program,,,False,,,,,True,2,832.07
-799,"HBC, SAM",2021,Chênh lệch Vốn chủ sở hữu,SUCCESS,,template_program,template,program,,,False,,,,,True,2,922.46
-801,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.63
-803,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,6.0
-804,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.61
-806,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,7.0
-807,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,5.0
-808,,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,5.04
-809,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.99
-811,"HAG, BAF",2024,Chênh lệch Lợi nhuận sau thuế,SUCCESS,,template_program,template,program,,,False,,,,,True,2,393.75
-812,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.87
-814,GAS,"[2020, 2022, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
-815,OCB,"[2017, 2020, 2021, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.04
-816,MSN,"[2017, 2020, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,3.09
-817,HPG,"[2015, 2019, 2022, 2023, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.27
-818,FTS,"[2018, 2020, 2021, 2023, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,2.01
-819,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.99
-820,SNZ,"[2018, 2019, 2020, 2021, 2022]",Trung bình Doanh thu hoạt động tài chính,SUCCESS,,template_program,template,program,,,False,,,,,True,5,1049.29
-821,OCB,"[2017, 2020, 2024, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.75
-822,ASM,"[2016, 2021, 2022, 2024]",Lựa chọn theo Thu nhập khác,SUCCESS,,llm,llm,program,,,True,True,1759,346,0.3,True,4,748.7
-823,HSG,"[2019, 2021, 2024, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,8.25
-826,KBC,"[2016, 2019, 2020, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.03
-827,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,11.79
-828,ACB,"[2017, 2020, 2021, 2022, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.01
-831,"DLG, VJC, ACV, VSC",2015,Trung bình Doanh thu hoạt động tài chính,SUCCESS,,template_program,template,program,,,False,,,,,True,4,812.12
-832,MCH,"[2017, 2018, 2019, 2022, 2025]",Lựa chọn theo Tiền và các khoản tương đương tiền,SUCCESS,,template_program,template,program,,,False,,,,,True,5,1568.92
-833,VGT,"[2016, 2024, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.1
-834,GAS,"[2015, 2016, 2017, 2025]",Doanh thu thuần cao nhất,SUCCESS,,template_program,template,program,,,False,,,,,True,4,869.77
-835,FOX,"[2016, 2017, 2018, 2019, 2020]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.01
-838,MSN,"[2017, 2018, 2020, 2021, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.36
+761,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
+762,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.01
+764,,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,3.1
+766,PVT,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.0
+768,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.55
+769,VSC,2015,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.1
+771,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.0
+772,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.01
+773,VRE,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.0
+774,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.99
+775,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.11
+776,"MSN, MML",2021,Chênh lệch Lợi nhuận sau thuế,SUCCESS,,template_program,template,program,,,False,,,,,True,2,308.81
+777,"MCH, VNM",2018,Chênh lệch Chi phí thuế TNDN hiện hành,WARNING,,llm,llm,program,,,True,True,1762,533,0.3,True,2,324.06
+778,"HSG, DPM",2018,Chênh lệch Chi phí lãi vay,WARNING,,llm,llm,program,,,True,True,1766,395,0.3,True,2,331.03
+779,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
+780,,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,1.99
+781,PC1,2018,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,3.61
+782,VNM,2016,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.11
+783,,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,1.99
+784,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.99
+785,HUT,2020,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.92
+787,,2024,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,3.01
+788,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.99
+789,AAA,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
+790,VIB,2023,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.0
+791,GEG,2017,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
+792,,2022,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,1.0
+793,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
+794,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+795,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.71
+796,,2021,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,2.11
+797,ACV,2019,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.01
+798,"HHV, VSC",2022,Chênh lệch Tài sản cố định hữu hình,SUCCESS,,template_program,template,program,,,False,,,,,True,2,662.42
+799,"HBC, SAM",2021,Chênh lệch Vốn chủ sở hữu,SUCCESS,,template_program,template,program,,,False,,,,,True,2,727.32
+801,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.99
+803,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
+804,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.21
+806,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.73
+807,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.0
+808,,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_company,,False,,,,,False,0,3.09
+809,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.01
+811,"HAG, BAF",2024,Chênh lệch Lợi nhuận sau thuế,SUCCESS,,template_program,template,program,,,False,,,,,True,2,311.66
+812,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.89
+814,GAS,"[2020, 2022, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
+815,OCB,"[2017, 2020, 2021, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
+816,MSN,"[2017, 2020, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.0
+817,HPG,"[2015, 2019, 2022, 2023, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
+818,FTS,"[2018, 2020, 2021, 2023, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,4.0
+819,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,5.1
+820,SNZ,"[2018, 2019, 2020, 2021, 2022]",Trung bình Doanh thu hoạt động tài chính,SUCCESS,,template_program,template,program,,,False,,,,,True,5,812.75
+821,OCB,"[2017, 2020, 2024, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,5.02
+822,ASM,"[2016, 2021, 2022, 2024]",Lựa chọn theo Thu nhập khác,SUCCESS,,llm,llm,program,,,True,True,1759,346,0.3,True,4,662.25
+823,HSG,"[2019, 2021, 2024, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.0
+826,KBC,"[2016, 2019, 2020, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.0
+827,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,8.0
+828,ACB,"[2017, 2020, 2021, 2022, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
+831,"DLG, VJC, ACV, VSC",2015,Trung bình Doanh thu hoạt động tài chính,SUCCESS,,template_program,template,program,,,False,,,,,True,4,642.61
+832,MCH,"[2017, 2018, 2019, 2022, 2025]",Lựa chọn theo Tiền và các khoản tương đương tiền,SUCCESS,,template_program,template,program,,,False,,,,,True,5,1189.41
+833,VGT,"[2016, 2024, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
+834,GAS,"[2015, 2016, 2017, 2025]",Doanh thu thuần cao nhất,SUCCESS,,template_program,template,program,,,False,,,,,True,4,619.69
+835,FOX,"[2016, 2017, 2018, 2019, 2020]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.11
+838,MSN,"[2017, 2018, 2020, 2021, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
 839,BSR,"[2017, 2019, 2021, 2024, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,3.01
-840,HPG,"[2016, 2017, 2018, 2020, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.11
-841,VGT,"[2017, 2018, 2021, 2022, 2023]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.04
-842,PDR,"[2015, 2018, 2022]",Lựa chọn theo Tổng lợi nhuận kế toán trước thuế,SUCCESS,,template_program,template,program,,,False,,,,,True,3,632.13
-844,NLG,"[2015, 2018, 2024]",,ERROR,USER_INPUT_ERROR,,llm,refused,,,True,True,1757,364,0.3,False,0,4.0
-845,BVH,"[2017, 2019, 2022, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,3.49
-848,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
-851,GEX,"[2015, 2018, 2022, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.01
+840,HPG,"[2016, 2017, 2018, 2020, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,7.0
+841,VGT,"[2017, 2018, 2021, 2022, 2023]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.04
+842,PDR,"[2015, 2018, 2022]",Lựa chọn theo Tổng lợi nhuận kế toán trước thuế,SUCCESS,,template_program,template,program,,,False,,,,,True,3,477.63
+844,NLG,"[2015, 2018, 2024]",,ERROR,USER_INPUT_ERROR,,llm,refused,,,True,True,1757,364,0.3,False,0,5.39
+845,BVH,"[2017, 2019, 2022, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,3.52
+848,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
+851,GEX,"[2015, 2018, 2022, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
 852,BID,"[2020, 2022, 2024, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.0
-853,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.0
-854,NLG,"[2020, 2021, 2023]",Trung bình Doanh thu chưa thực hiện,WARNING,,template_program,template,program,,,False,,,,,True,6,1785.3
-855,HNG,"[2015, 2016, 2021, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.99
-856,PC1,"[2015, 2020, 2022, 2023, 2024]",Trung bình Lãi cơ bản trên cổ phiếu,WARNING,,llm,llm,program,,,True,True,1778,204,0.4,True,5,1049.07
-857,EIB,"[2016, 2018]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.02
-858,"SAB, DBC, MCH",2017,Tổng Chi phí bán hàng,WARNING,,template_program,template,program,,,False,,,,,True,3,676.58
-859,DCM,"[2022, 2023, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.89
-860,OGC,"[2017, 2022, 2023]",Lựa chọn theo Chi phí khác,WARNING,,template_program,template,program,,,False,,,,,True,3,660.67
-861,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,7.51
-862,"SCR, DXG, DIG, KBC, IJC",2016,Tổng Chi phí tài chính,WARNING,,template_program,template,program,,,False,,,,,True,5,1214.81
-863,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.02
+853,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.11
+854,NLG,"[2020, 2021, 2023]",Trung bình Doanh thu chưa thực hiện,WARNING,,template_program,template,program,,,False,,,,,True,6,1328.64
+855,HNG,"[2015, 2016, 2021, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
+856,PC1,"[2015, 2020, 2022, 2023, 2024]",Trung bình Lãi cơ bản trên cổ phiếu,WARNING,,llm,llm,program,,,True,True,1778,204,0.3,True,5,815.22
+857,EIB,"[2016, 2018]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.0
+858,"SAB, DBC, MCH",2017,Tổng Chi phí bán hàng,WARNING,,template_program,template,program,,,False,,,,,True,3,487.53
+859,DCM,"[2022, 2023, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
+860,OGC,"[2017, 2022, 2023]",Lựa chọn theo Chi phí khác,WARNING,,template_program,template,program,,,False,,,,,True,3,489.83
+861,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,7.1
+862,"SCR, DXG, DIG, KBC, IJC",2016,Tổng Chi phí tài chính,WARNING,,template_program,template,program,,,False,,,,,True,5,832.82
+863,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,5.0
 865,VIF,"[2017, 2020, 2021, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.0
-866,SJG,"[2018, 2019, 2020, 2021]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.01
-869,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,142.19
-871,MPC,"[2019, 2022, 2023, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.99
-873,DXG,"[2017, 2018, 2021, 2023, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.9
-874,VNM,"[2015, 2016, 2021, 2023, 2025]",Lựa chọn theo Tài sản cố định hữu hình,SUCCESS,,template_program,template,program,,,False,,,,,True,5,1511.75
-875,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,145.88
-876,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,390.29
+866,SJG,"[2018, 2019, 2020, 2021]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.04
+869,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,99.93
+871,MPC,"[2019, 2022, 2023, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.86
+873,DXG,"[2017, 2018, 2021, 2023, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.02
+874,VNM,"[2015, 2016, 2021, 2023, 2025]",Lựa chọn theo Tài sản cố định hữu hình,SUCCESS,,template_program,template,program,,,False,,,,,True,5,1173.86
+875,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,94.9
+876,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,321.67
 878,KBC,"[2015, 2017, 2019]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
-879,VNM,"[2019, 2022, 2023, 2024, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
-880,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.01
-882,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.1
-883,MBB,"[2022, 2023, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.14
-886,VIB,"[2015, 2022, 2023]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.9
-888,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.12
-889,FTS,"[2019, 2020, 2023, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,2.0
-890,NVL,"[2017, 2021, 2023]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,3.98
-891,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.52
-892,HAG,"[2015, 2016, 2017, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
-895,VIC,"[2015, 2019, 2022, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.99
-897,DXG,"[2016, 2018, 2020]",Lựa chọn theo Tiền và các khoản tương đương tiền,SUCCESS,,template_program,template,program,,,False,,,,,True,3,1051.54
-898,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,8.02
-899,MPC,"[2018, 2020, 2022, 2023]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,7.1
-900,MSN,"[2016, 2017, 2019, 2021]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.9
-903,MPC,"[2017, 2018, 2020, 2021, 2022]",Chi phí khác cao nhất,WARNING,,template_program,template,program,,,False,,,,,True,5,1105.54
-905,VIC,"[2020, 2021, 2023, 2025]",Tổng Doanh thu hoạt động tài chính,SUCCESS,,template_program,template,program,,,False,,,,,True,4,1031.13
-906,VGT,"[2015, 2017, 2018, 2020, 2022]",Lựa chọn theo Tài sản cố định hữu hình,SUCCESS,,template_program,template,program,,,False,,,,,True,5,1356.93
-907,NVB,"[2016, 2019, 2020, 2021]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.01
-908,ACB,"[2016, 2017, 2019, 2023, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
-910,DBC,"[2015, 2016, 2019, 2022, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.01
-911,VIF,"[2017, 2020, 2021, 2022, 2024]",Tài sản cố định hữu hình cao nhất,SUCCESS,,template_program,template,program,,,False,,,,,True,5,1414.54
-912,VIF,"[2022, 2024, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.96
-913,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,5.01
-914,SJG,"[2019, 2020, 2021, 2022, 2023]",Lãi cơ bản trên cổ phiếu cao nhất,WARNING,,llm,llm,program,,,True,True,1782,357,0.3,True,5,881.11
-915,"MPC, SAB, HAG",2016,Tổng Chi phí tài chính,WARNING,,template_program,template,program,,,False,,,,,True,3,590.34
-916,FOX,"[2016, 2018, 2019, 2020]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
-917,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.12
-918,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.0
-919,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,3.98
-920,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.9
-922,,,,ERROR,DATA_NOT_FOUND,,llm,program,,,True,True,1789,270,0.3,False,0,134.02
-923,OGC,"[2016, 2017, 2018, 2019]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.74
-924,DXG,"[2021, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.02
-925,VAB,"[2020, 2024, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.99
-926,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,11.12
-927,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.98
-928,OCB,"[2017, 2018, 2019, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.9
-929,MBB,"[2015, 2016, 2017, 2018, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.0
-930,PC1,"[2022, 2023, 2024, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,7.0
-931,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,8.0
-932,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.0
-933,VNM,"[2015, 2016, 2018, 2021]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.01
-934,"VGC, PC1, SJG",2018,Tổng Doanh thu hoạt động tài chính,WARNING,,template_program,template,program,,,False,,,,,True,3,632.06
-935,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,8.66
-936,CRE,"[2020, 2021, 2022, 2025]",Lựa chọn theo Doanh thu chưa thực hiện ngắn hạn,SUCCESS,,template_program,template,program,,,False,,,,,True,4,1166.18
-938,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.67
-940,SJG,"[2019, 2020, 2021]",Trung bình Doanh thu hoạt động tài chính,SUCCESS,,template_program,template,program,,,False,,,,,True,3,595.81
-942,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.99
-943,"DCM, VIF, NKG",2018,Trung bình Tiền và các khoản tương đương tiền,SUCCESS,,template_program,template,program,,,False,,,,,True,3,918.8
-945,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.58
-947,IJC,"[2016, 2017, 2020, 2024]",Trung bình Giá vốn hàng bán,WARNING,,template_program,template,program,,,False,,,,,True,4,850.2
-949,ACB,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.91
-950,VRE,"[2019, 2020, 2021, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.98
-954,"DPM, VIF, HSG",2018,Trung bình Chi phí lãi vay,WARNING,,template_program,template,program,,,False,,,,,True,3,599.77
-955,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.0
-957,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.03
-958,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,3.97
-959,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,258.24
-962,DNH,"[2016, 2017, 2018, 2021, 2022]",,ERROR,USER_INPUT_ERROR,,llm,refused,,,True,True,1790,325,0.5,False,0,10.88
-963,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,12.82
-964,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,5.98
-965,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,7.0
-966,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.01
-967,BID,"[2017, 2021, 2023, 2024, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,5.01
-969,DNH,"[2017, 2018, 2019]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.0
-970,ACB,"[2015, 2021, 2023, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,5.08
-972,DIG,"[2021, 2023, 2025]",Thu nhập khác cao nhất,SUCCESS,,template_program,template,program,,,False,,,,,True,3,729.73
-973,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,9.01
-975,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,319.79
-976,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,9.0
-977,,,,ERROR,USER_INPUT_ERROR,,llm,refused,,,True,True,1781,726,0.5,False,0,8.01
-979,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,5.01
-980,HDB,"[2018, 2021, 2022, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.1
-981,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.89
-982,PVT,"[2018, 2019, 2022, 2023, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.03
-983,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.06
-985,FIT,"[2016, 2017, 2019, 2020, 2021]",Lựa chọn theo Vay và nợ thuê tài chính ngắn hạn,SUCCESS,,llm,llm,program,,,True,True,1784,357,0.4,True,5,1419.96
-986,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,504.08
-987,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.05
-988,SJG,"[2019, 2021, 2022, 2023]",Lãi cơ bản trên cổ phiếu cao nhất,WARNING,,llm,llm,program,,,True,True,1764,300,0.3,True,4,714.64
-990,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,12.0
-991,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,6.0
-992,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.9
-993,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
-995,HAG,"[2017, 2018, 2019]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.13
-997,AAA,"[2019, 2023, 2025]",Lựa chọn theo Trả trước cho người bán ngắn hạn,SUCCESS,,llm,llm,program,,,True,True,1757,295,0.3,True,3,803.15
-1000,SAM,"[2020, 2021, 2023, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,2.01
-1001,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.01
-1002,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,6.0
-1003,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,104.03
-1004,IJC,"[2016, 2017, 2018, 2023, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.08
-1006,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.92
-1007,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.2
-1008,SSH,"[2020, 2021, 2022, 2023]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
-1009,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.03
-1010,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,1.88
-1012,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.87
+879,VNM,"[2019, 2022, 2023, 2024, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.61
+880,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.77
+882,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.84
+883,MBB,"[2022, 2023, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.1
+886,VIB,"[2015, 2022, 2023]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
+888,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,6.0
+889,FTS,"[2019, 2020, 2023, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_out_of_scope,,False,,,,,False,0,2.01
+890,NVL,"[2017, 2021, 2023]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.0
+891,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.9
+892,HAG,"[2015, 2016, 2017, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.0
+895,VIC,"[2015, 2019, 2022, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
+897,DXG,"[2016, 2018, 2020]",Lựa chọn theo Tiền và các khoản tương đương tiền,SUCCESS,,template_program,template,program,,,False,,,,,True,3,825.53
+898,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.01
+899,MPC,"[2018, 2020, 2022, 2023]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.95
+900,MSN,"[2016, 2017, 2019, 2021]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.11
+903,MPC,"[2017, 2018, 2020, 2021, 2022]",Chi phí khác cao nhất,WARNING,,template_program,template,program,,,False,,,,,True,5,810.84
+905,VIC,"[2020, 2021, 2023, 2025]",Tổng Doanh thu hoạt động tài chính,SUCCESS,,template_program,template,program,,,False,,,,,True,4,653.11
+906,VGT,"[2015, 2017, 2018, 2020, 2022]",Lựa chọn theo Tài sản cố định hữu hình,SUCCESS,,template_program,template,program,,,False,,,,,True,5,1184.51
+907,NVB,"[2016, 2019, 2020, 2021]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.53
+908,ACB,"[2016, 2017, 2019, 2023, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.56
+910,DBC,"[2015, 2016, 2019, 2022, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
+911,VIF,"[2017, 2020, 2021, 2022, 2024]",Tài sản cố định hữu hình cao nhất,SUCCESS,,template_program,template,program,,,False,,,,,True,5,1333.27
+912,VIF,"[2022, 2024, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.51
+913,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,6.51
+914,SJG,"[2019, 2020, 2021, 2022, 2023]",Lãi cơ bản trên cổ phiếu cao nhất,WARNING,,llm,llm,program,,,True,True,1782,357,0.4,True,5,914.85
+915,"MPC, SAB, HAG",2016,Tổng Chi phí tài chính,WARNING,,template_program,template,program,,,False,,,,,True,3,531.48
+916,FOX,"[2016, 2018, 2019, 2020]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.43
+917,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,8.07
+918,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,5.07
+919,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.51
+920,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.01
+922,,,,ERROR,DATA_NOT_FOUND,,llm,program,,,True,True,1789,270,0.3,False,0,116.83
+923,OGC,"[2016, 2017, 2018, 2019]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
+924,DXG,"[2021, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.58
+925,VAB,"[2020, 2024, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,2.0
+926,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,8.52
+927,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.55
+928,OCB,"[2017, 2018, 2019, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
+929,MBB,"[2015, 2016, 2017, 2018, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
+930,PC1,"[2022, 2023, 2024, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.32
+931,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.0
+932,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
+933,VNM,"[2015, 2016, 2018, 2021]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,3.0
+934,"VGC, PC1, SJG",2018,Tổng Doanh thu hoạt động tài chính,WARNING,,template_program,template,program,,,False,,,,,True,3,510.52
+935,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.5
+936,CRE,"[2020, 2021, 2022, 2025]",Lựa chọn theo Doanh thu chưa thực hiện ngắn hạn,SUCCESS,,template_program,template,program,,,False,,,,,True,4,1003.43
+938,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.5
+940,SJG,"[2019, 2020, 2021]",Trung bình Doanh thu hoạt động tài chính,SUCCESS,,template_program,template,program,,,False,,,,,True,3,514.19
+942,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.0
+943,"DCM, VIF, NKG",2018,Trung bình Tiền và các khoản tương đương tiền,SUCCESS,,template_program,template,program,,,False,,,,,True,3,842.97
+945,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,7.0
+947,IJC,"[2016, 2017, 2020, 2024]",Trung bình Giá vốn hàng bán,WARNING,,template_program,template,program,,,False,,,,,True,4,655.4
+949,ACB,2025,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,6.08
+950,VRE,"[2019, 2020, 2021, 2022]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.01
+954,"DPM, VIF, HSG",2018,Trung bình Chi phí lãi vay,WARNING,,template_program,template,program,,,False,,,,,True,3,495.49
+955,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,6.0
+957,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.0
+958,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,2.99
+959,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,169.64
+962,DNH,"[2016, 2017, 2018, 2021, 2022]",,ERROR,USER_INPUT_ERROR,,llm,refused,,,True,True,1790,325,0.3,False,0,7.02
+963,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,9.47
+964,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,3.41
+965,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.99
+966,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
+967,BID,"[2017, 2021, 2023, 2024, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.73
+969,DNH,"[2017, 2018, 2019]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,3.08
+970,ACB,"[2015, 2021, 2023, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.01
+972,DIG,"[2021, 2023, 2025]",Thu nhập khác cao nhất,SUCCESS,,template_program,template,program,,,False,,,,,True,3,500.3
+973,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,6.99
+975,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,217.34
+976,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,11.0
+977,,,,ERROR,USER_INPUT_ERROR,,llm,refused,,,True,True,1781,726,0.3,False,0,7.0
+979,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,5.51
+980,HDB,"[2018, 2021, 2022, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.5
+981,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.01
+982,PVT,"[2018, 2019, 2022, 2023, 2025]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,4.51
+983,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.0
+985,FIT,"[2016, 2017, 2019, 2020, 2021]",Lựa chọn theo Vay và nợ thuê tài chính ngắn hạn,SUCCESS,,llm,llm,program,,,True,True,1784,357,0.4,True,5,1143.76
+986,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,421.83
+987,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,7.1
+988,SJG,"[2019, 2021, 2022, 2023]",Lãi cơ bản trên cổ phiếu cao nhất,WARNING,,template_program,template,program,,,False,,,,,True,4,665.91
+990,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,9.9
+991,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.05
+992,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,4.04
+993,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,6.0
+995,HAG,"[2017, 2018, 2019]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.11
+997,AAA,"[2019, 2023, 2025]",Lựa chọn theo Trả trước cho người bán ngắn hạn,SUCCESS,,llm,llm,program,,,True,True,1757,295,0.3,True,3,874.57
+1000,SAM,"[2020, 2021, 2023, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,4.0
+1001,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,5.11
+1002,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,numeric_literal,,False,,,,,False,0,5.99
+1003,,,,ERROR,DATA_NOT_FOUND,,template,program,,,False,,,,,False,0,116.28
+1004,IJC,"[2016, 2017, 2018, 2023, 2024]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,unexplained_words,,False,,,,,False,0,7.1
+1006,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.9
+1007,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.22
+1008,SSH,"[2020, 2021, 2022, 2023]",,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.0
+1009,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.16
+1010,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,company_without_facts,,False,,,,,False,0,3.35
+1012,,,,ERROR,USER_INPUT_ERROR,,llm,not_attempted,no_catalog_item,,False,,,,,False,0,5.11
