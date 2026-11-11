@@ -20,7 +20,6 @@ from src.financial.program.catalog import (
     canonical_item,
     is_balance_sheet_item,
     item_components,
-    phrase_table,
 )
 from src.financial.program.models import LLMPlan
 from src.financial.program.planner import (
@@ -30,6 +29,7 @@ from src.financial.program.planner import (
     RANGE_REGEX,
     SCOPE_WORDS,
     STUB_PERIOD_REGEX,
+    TOTAL_BEFORE_ITEM,
     UNIT_REGEX,
     Period,
     _blank_companies,
@@ -76,12 +76,8 @@ CUES: Dict[str, "re.Pattern[str]"] = {
     "higher": re.compile(r"\b(cao hơn|lớn hơn|nhiều hơn)\b"),
     "lower": re.compile(r"\b(thấp hơn|ít hơn|bé hơn|nhỏ hơn)\b"),
 }
-# "tổng" right before a catalog item is usually part of its name ("tổng nợ ngắn hạn" is
-# current liabilities). It may still ask for a sum over several points, so it is the
-# cue "total": enough for a sum, never a reason to refuse another operation.
-TOTAL_BEFORE_ITEM = re.compile(
-    r"\btổng(?:\s+cộng|\s+số)?\s+(?=(?:" + "|".join(re.escape(phrase) for phrase, _ in phrase_table()) + r"))"
-)
+# TOTAL_BEFORE_ITEM (from the template planner): "tổng" right before a catalog item is part of
+# its name. It is the cue "total": enough for a sum, never a reason to refuse another operation.
 PERCENT_UNIT = re.compile(r"%|\bphần trăm\b")
 TIMES_UNIT = re.compile(r"\blần\b")
 CURRENCY_UNIT = re.compile(r"\b(đồng|vnd|vnđ)\b")

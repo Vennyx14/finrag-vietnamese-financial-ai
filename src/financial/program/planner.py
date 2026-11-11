@@ -70,6 +70,12 @@ OPERATION_WORD_LISTS = (
 )
 _PHRASES = phrase_table()
 _REGISTRY = build_extended_registry()
+# "tổng" right before a catalog item is usually part of its name ("tổng nợ ngắn hạn" is
+# current liabilities). It may still ask for a sum over several points, so it is a cue for a
+# sum, but it never adds year-end balances of several years (K48; layer 3 uses the same rule).
+TOTAL_BEFORE_ITEM = re.compile(
+    r"\btổng(?:\s+cộng|\s+số)?\s+(?=(?:" + "|".join(re.escape(phrase) for phrase, _ in _PHRASES) + r"))"
+)
 
 
 class Period(NamedTuple):
@@ -86,6 +92,7 @@ class Intent(NamedTuple):
     text: str
     residual: List[str]
     assumptions: Tuple[str, ...] = ()
+    separate_sum: bool = False
 
 
 def _blank_companies(text: str, companies: List[str]) -> str:
@@ -179,6 +186,8 @@ def parse_intent(question: str) -> Optional[Intent]:
     periods, text = _read_periods(text)
     if not periods:
         return None
+    # A sum word that is not part of a line name ("lũy kế", "tổng giá trị ...").
+    separate_sum = bool(SUM_WORDS.search(_read_items_detail(TOTAL_BEFORE_ITEM.sub(" ", text))[1]))
     items, text, assumptions = _read_items_detail(text)
     text = UNIT_REGEX.sub(" ", text)
     text = SCOPE_WORDS.sub(" ", text)
@@ -189,7 +198,9 @@ def parse_intent(question: str) -> Optional[Intent]:
     words = re.findall(r"[^\W\d_]+", text)
     residual = [word for word in words if word not in FILLER_WORDS]
     unique_periods = list(dict.fromkeys(periods))
-    return Intent(companies, unique_periods, items, scope, operation_text, residual, tuple(assumptions))
+    return Intent(
+        companies, unique_periods, items, scope, operation_text, residual, tuple(assumptions), separate_sum
+    )
 
 
 class _Builder:
@@ -310,6 +321,8 @@ def _plan(intent: Intent) -> Optional[Program]:
     if is_avg:
         return builder.program(builder.add("avg", operands=operands), f"Trung bình {label}", unit)
     if SUM_WORDS.search(text) and item not in DERIVED_ITEMS:
+        if len(intent.periods) > 1 and is_balance_sheet_item(item) and not intent.separate_sum:
+            return None
         return builder.program(builder.add("sum", operands=operands), f"Tổng {label}", unit)
     return None
 

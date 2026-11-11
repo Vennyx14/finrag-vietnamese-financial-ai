@@ -273,3 +273,40 @@ class TestK45PerShareWordingsReadAsBasicEps:
         assert [e.line_code for e in resp.evidence] == ["70"]
         assert resp.calculation.value == pytest.approx(997.0)
         assert any(self.ASSUMPTION in assumption.lower() for assumption in resp.resolution.assumptions)
+
+
+class TestK48BalancesAreNotAddedOverYearsOnANameWord:
+    """Owner decision 2026-11-11: layer 2 uses layer 3's rule. "tổng" or "tổng cộng" written right
+    before a line name is part of the name and does not ask to add year-end balances of several years."""
+
+    @pytest.mark.parametrize(
+        "question",
+        [
+            "Tổng cộng nợ phải trả của HPG năm 2022 và 2023 là bao nhiêu tỷ đồng?",
+            "Tổng số nợ phải trả của HPG năm 2022 và 2023 là bao nhiêu?",
+            "Tổng cộng hàng tồn kho của HPG năm 2022 và 2023",
+        ],
+    )
+    def test_name_word_does_not_add_balances_over_years(self, question):
+        from src.financial.program.planner import plan_question
+
+        assert plan_question(question) is None
+
+    @pytest.mark.parametrize(
+        "question, op",
+        [
+            # A separate sum word still adds balances over years.
+            ("Tổng giá trị hàng tồn kho của HPG năm 2022 và 2023 là bao nhiêu?", "sum"),
+            ("Lũy kế hàng tồn kho của HPG năm 2022 và 2023 là bao nhiêu?", "sum"),
+            # A flow may be added over years with the name word.
+            ("Tổng cộng chi phí bán hàng của HPG năm 2022 và 2023 là bao nhiêu?", "sum"),
+            # Balances of two companies at one date may be added.
+            ("Tổng cộng nợ phải trả của HPG và FPT năm 2023 là bao nhiêu?", "sum"),
+        ],
+    )
+    def test_other_sums_are_still_planned(self, question, op):
+        from src.financial.program.planner import plan_question
+
+        program = plan_question(question)
+        assert program is not None
+        assert program.steps[-1].op == op
