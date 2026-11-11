@@ -72,7 +72,7 @@ GROWTH_SUBJECT_WORDS = {"của", "năm", "doanh", "so", "từ", "giữa", "trong
 PER_SHARE_PATTERN = re.compile(r"\b(?:trên|mỗi)\s+(?:một\s+)?cổ phiếu|/\s*cổ phiếu|\beps\b")
 DERIVED_QUESTION_PATTERN = re.compile(
     r"\b(tỷ lệ|tỷ số|tỷ trọng|chênh lệch|hiệu số|biến động|thay đổi|cao hơn|thấp hơn|"
-    r"nhiều hơn|ít hơn|tăng bao nhiêu|giảm bao nhiêu|đầu năm|đầu kỳ|chiếm|phần trăm)\b|\btrên\s+(tổng|vốn|doanh thu|nợ|tài sản)"
+    r"nhiều hơn|ít hơn|tăng bao nhiêu|giảm bao nhiêu|đầu năm|đầu kỳ|chiếm|phần trăm)\b|\btrên\s+(tổng|vốn|vcsh|doanh thu|nợ|tài sản)"
     # The base amounts are never asked in percent, and "X/Y" between two words is a ratio (K44).
     # A slash between digits is a date ("31/12/2024") and is not matched.
     r"|%|[^\W\d_]\s*/\s*[^\W\d_]"

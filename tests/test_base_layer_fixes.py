@@ -302,3 +302,43 @@ class TestK48BalancesAreNotAddedOverYearsOnANameWord:
         program = plan_question(question)
         assert program is not None
         assert program.steps[-1].op == op
+
+
+class TestAbbreviatedRatiosAreRefused:
+    """"LNST trên VCSH" asks for a ratio; before the fix step it was answered with net income.
+    The owner approved no alias to ROE or ROA, so these are refused (re-review, 2026-11-11)."""
+
+    @pytest.mark.parametrize(
+        "question",
+        [
+            "LNST trên VCSH của FPT năm 2024 là bao nhiêu phần trăm?",
+            "LNST trên VCSH của FPT năm 2024 là bao nhiêu?",
+            "LNST trên VCSH đầu năm của FPT năm 2024 là bao nhiêu?",
+            "LNST trên VCSH bình quân của FPT năm 2024 là bao nhiêu?",
+            "LNST trên VCSH của công ty mẹ FPT năm 2024 là bao nhiêu?",
+            "Lợi nhuận sau thuế trên VCSH của FPT năm 2024 là bao nhiêu?",
+            "LNST trên vốn chủ của FPT năm 2024 là bao nhiêu?",
+            "LNST trên tổng tài sản của HPG năm 2023 là bao nhiêu?",
+            "LNST trên tổng tài sản đầu năm của HPG năm 2023 là bao nhiêu?",
+        ],
+    )
+    def test_abbreviated_ratio_is_refused(self, question):
+        res = resolve_query(question)
+        assert res.status == ResolutionStatus.UNSUPPORTED
+        assert res.metric is None
+
+    @pytest.mark.requires_full_data
+    @pytest.mark.parametrize(
+        "question",
+        [
+            "LNST trên VCSH của FPT năm 2024 là bao nhiêu?",
+            "LNST trên VCSH đầu năm của FPT năm 2024 là bao nhiêu?",
+            "LNST trên VCSH bình quân của FPT năm 2024 là bao nhiêu?",
+            "LNST trên VCSH của công ty mẹ FPT năm 2024 là bao nhiêu?",
+            "LNST trên tổng tài sản của HPG năm 2023 là bao nhiêu?",
+        ],
+    )
+    def test_app_gives_no_number_for_an_abbreviated_ratio(self, app, question):
+        resp = app.ask(question)
+        assert resp.status == ResponseStatus.ERROR
+        assert resp.calculation is None
