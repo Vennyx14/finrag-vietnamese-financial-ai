@@ -261,7 +261,7 @@ The reviewer asked for changes before merging, and the owner answered three open
 - **Rejected layer-3 plan in the UI:** a red rejection card says in Vietnamese which check failed and that no number was computed; the base path's guidance and Tier 01 are not shown.
 - The cached rerun also caught a regression of my own: "nghìn đồng/CP" left "nghìn" unexplained and question 914 stopped being sent to the LLM. The per-share unit now includes its scale word, and 914 is answered again (3,349 đồng per share, 2022).
 
-Rerun at commit `0d4ac57` (layer 3 on: same cache-only wrapper, `pacing.http_requests` = 0, `llm_fresh_calls` = 0; layer 3 off: the `finrag-regression` snapshot).
+Rerun at commit `d30bc57` and again at `0d4ac57` after the second review, with the same status for all 766 questions in both modes (the committed manifests are from `d30bc57`) (layer 3 on: same cache-only wrapper, `pacing.http_requests` = 0, `llm_fresh_calls` = 0; layer 3 off: the `finrag-regression` snapshot).
 
 | 766 development questions | Layer 3 off | Layer 3 on (reference) |
 |---|---:|---:|
