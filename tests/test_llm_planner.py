@@ -490,6 +490,40 @@ class TestRejectedPlanIsNotRun:
         assert response.status in (ResponseStatus.SUCCESS, ResponseStatus.WARNING)
         assert response.calculation.value == pytest.approx(1.5)
 
+    @pytest.mark.parametrize(
+        "question, bad_plan_json, failing_check, reason",
+        [
+            (*BAD[0], "chỉ tiêu"),
+            (*BAD[1], "năm"),
+            (*BAD[2], "phép tính"),
+        ],
+    )
+    def test_message_names_the_failed_check_in_vietnamese(self, facts_path, question, bad_plan_json, failing_check, reason):
+        app, _ = make_app(facts_path, bad_plan_json)
+        response = app.ask(question)
+        assert reason in response.error_message
+        assert failing_check in response.error_message
+
+    def test_rejected_plan_card_shows_the_rejection_not_the_base_refusal(self, facts_path, monkeypatch):
+        # Review of 2026-11-10: the card took its colour, guidance and Tier 01 from resolve_query's
+        # refusal, so the rejection read as "unsupported". It must read as a rejection.
+        import streamlit as st
+        from ui.theme import render_rejected_plan
+
+        rendered = []
+        monkeypatch.setattr(st, "markdown", lambda text, **kwargs: rendered.append(text))
+        question, bad_plan_json, _ = self.BAD[0]
+        app, _ = make_app(facts_path, bad_plan_json)
+        response = app.ask(question)
+        render_rejected_plan(response)
+        html = "\n".join(rendered)
+        assert "finrag-refusal-card red" in html
+        assert "Từ Chối Kiểm Định Độc Lập" in html
+        assert "chỉ tiêu" in html and "không đưa ra con số" in html
+        assert response.resolution.actionable_guidance not in html
+        assert "Gợi ý khắc phục" not in html
+        assert "TẦNG 01" not in html
+
     def test_ui_label_says_no_number_was_computed(self, facts_path):
         from ui.theme import planner_label_html
 

@@ -69,6 +69,15 @@ from src.retrieval.ranking import RetrievalResult
 DEFAULT_PARQUET_PATH = Path("data/processed/financial_facts.parquet")
 BALANCE_SHEET_IDENTITY_CODES = ("100", "200", "270", "300", "400", "429", "439")
 LLM_PLANNER_ENV = "FINRAG_LLM_PLANNER"
+# What each layer-3 plan check means for the user, when it fails (grounding.check_plan).
+PLAN_CHECK_REASONS = {
+    "llm_plan_metric_grounded": "chương trình dùng chỉ tiêu mà câu hỏi không nêu, hoặc đặt sai tử số và mẫu số",
+    "llm_plan_metric_complete": "chương trình bỏ sót chỉ tiêu mà câu hỏi nêu",
+    "llm_plan_ticker_match": "công ty trong chương trình khác công ty câu hỏi nêu, hoặc so sánh sai thứ tự",
+    "llm_plan_period_match": "năm hoặc kỳ trong chương trình khác kỳ câu hỏi nêu, hoặc lấy năm trước trừ năm sau",
+    "llm_plan_formula_cue": "phép tính trong chương trình không khớp với từ ngữ của câu hỏi",
+    "llm_plan_unit_cue": "đơn vị kết quả của chương trình khác đơn vị câu hỏi yêu cầu",
+}
 TEMPLATE_PLANNER_TRACE = PlannerTraceDTO(layer="template", outcome="program")
 
 
@@ -405,10 +414,12 @@ class FinRAGApplication:
             status=ResponseStatus.REJECTED,
             error_category=ErrorCategory.VERIFICATION_REJECTED,
             error_message=(
-                "Chương trình do LLM planner (thử nghiệm) chọn không khớp với câu hỏi, nên hệ thống không chạy "
-                "chương trình và không đưa ra con số. Kiểm tra không đạt: "
-                + ", ".join(c.check_name for c in failed)
-                + "."
+                "Chương trình do LLM planner (thử nghiệm) chọn không khớp với câu hỏi: "
+                + "; ".join(
+                    f"{PLAN_CHECK_REASONS.get(c.check_name, 'một kiểm tra so với câu hỏi không đạt')} ({c.check_name})"
+                    for c in failed
+                )
+                + ". Hệ thống không chạy chương trình này và không đưa ra con số."
             ),
             ticker=resolution_res.ticker,
             fiscal_year=resolution_res.fiscal_year,

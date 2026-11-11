@@ -989,7 +989,10 @@ def render_refusal_card(resp: FinRAGResponse):
     cat = resp.error_category
 
     color_cls = "red"
-    if res and res.status in {"unsupported", "ambiguous"}:
+    if cat == ErrorCategory.VERIFICATION_REJECTED:
+        # A rejection, not a refusal: the base path's status and guidance are not its reason.
+        res = None
+    elif res and res.status in {"unsupported", "ambiguous"}:
         color_cls = ""
     elif res and res.status == "needs_clarification":
         color_cls = "amber"
@@ -1027,6 +1030,16 @@ def render_refusal_card(resp: FinRAGResponse):
     </div>
     """
     st.markdown(html_code, unsafe_allow_html=True)
+
+
+def render_rejected_plan(resp: FinRAGResponse):
+    """A layer-3 plan rejected before it ran: the rejection card, the layer-3 label, the plan's
+    checks and the audit trail. No Tier 01, whose status would be the base path's refusal."""
+    render_refusal_card(resp)
+    render_planner_label(resp)
+    if resp.verification:
+        render_tier_3_verification(resp.verification)
+    render_tier_5_audit(resp)
 
 
 # ==============================================================================
