@@ -61,6 +61,11 @@ class TestK44ShareOfTotalIsNotOneOfItsItems:
             "Vốn chủ sở hữu chiếm bao nhiêu phần trăm tổng tài sản của FPT năm 2024?",
             "Lợi nhuận sau thuế chiếm bao nhiêu % doanh thu thuần của FPT năm 2024?",
             "Doanh thu thuần của FPT năm 2024 bằng bao nhiêu phần trăm tổng tài sản?",
+            # Found by the review of 2026-11-10: "%" and "/" also ask for a share.
+            "Nợ phải trả bằng bao nhiêu % tổng tài sản của HPG năm 2023?",
+            "Vốn chủ sở hữu/tổng tài sản của FPT năm 2024 là bao nhiêu %?",
+            "Vốn chủ sở hữu / tổng tài sản của FPT năm 2024 là bao nhiêu?",
+            "Tổng tài sản của FPT năm 2024 là bao nhiêu %?",
         ],
     )
     def test_share_of_total_is_not_resolved_to_an_amount(self, question):
@@ -74,6 +79,13 @@ class TestK44ShareOfTotalIsNotOneOfItsItems:
             ("Lợi nhuận sau thuế trên tổng tài sản cuối năm 2016 của CEO là bao nhiêu phần trăm?", "roa"),
             ("ROE của FPT năm 2024 là bao nhiêu phần trăm?", "roe"),
             ("Tổng tài sản của FPT năm 2024 là bao nhiêu tỷ đồng?", "total_assets"),
+            # Over-refusal probes of the review: ratios asked in "%" still resolve.
+            ("ROE của FPT năm 2024 là bao nhiêu %?", "roe"),
+            ("ROA của HPG năm 2023 (%) là bao nhiêu?", "roa"),
+            ("Biên lợi nhuận ròng (%) của VNM năm 2022 là bao nhiêu?", "net_margin"),
+            ("Tỷ lệ phần trăm tăng trưởng doanh thu của FPT năm 2024 là bao nhiêu?", "revenue_growth"),
+            ("Lợi nhuận sau thuế trên vốn chủ sở hữu của FPT năm 2024 là bao nhiêu phần trăm?", "roe"),
+            ("Tổng tài sản của GVR đến ngày 31/12/2017 là bao nhiêu nghìn tỷ đồng?", "total_assets"),
         ],
     )
     def test_ratios_and_plain_amounts_still_resolve(self, question, metric):
@@ -87,6 +99,8 @@ class TestK44ShareOfTotalIsNotOneOfItsItems:
         [
             "Nợ phải trả chiếm bao nhiêu phần trăm tổng tài sản của HPG năm 2023?",
             "Vốn chủ sở hữu chiếm bao nhiêu phần trăm tổng tài sản của FPT năm 2024?",
+            "Nợ phải trả bằng bao nhiêu % tổng tài sản của HPG năm 2023?",
+            "Vốn chủ sở hữu/tổng tài sản của FPT năm 2024 là bao nhiêu %?",
         ],
     )
     def test_app_does_not_answer_an_item_for_a_share_of_total(self, app, question):
