@@ -342,3 +342,36 @@ class TestAbbreviatedRatiosAreRefused:
         resp = app.ask(question)
         assert resp.status == ResponseStatus.ERROR
         assert resp.calculation is None
+
+
+class TestPerShareItemsAreNotSummed:
+    """Adding earnings per share of several companies or years has no meaning; layer 3 already
+    refuses it, and layer 2 now does too (re-review, 2026-11-11)."""
+
+    @pytest.mark.parametrize(
+        "question",
+        [
+            "Tổng EPS của FPT và HPG năm 2024 là bao nhiêu?",
+            "Tổng lãi cơ bản trên cổ phiếu của FPT và HPG năm 2024 là bao nhiêu?",
+            "Tổng lãi cơ bản trên cổ phiếu của FPT năm 2022 và 2023 là bao nhiêu?",
+            "Lũy kế lãi cơ bản trên cổ phiếu của FPT năm 2022 và 2023 là bao nhiêu?",
+        ],
+    )
+    def test_sum_of_eps_is_refused(self, question):
+        from src.financial.program.planner import plan_question
+
+        assert plan_question(question) is None
+
+    @pytest.mark.parametrize(
+        "question, op",
+        [
+            ("Lãi cơ bản trên cổ phiếu trung bình của FPT năm 2022 và 2023 là bao nhiêu?", "avg"),
+            ("Lãi cơ bản trên cổ phiếu cao nhất của FPT năm 2022 và 2023 là bao nhiêu?", "max"),
+            ("Chênh lệch lãi cơ bản trên cổ phiếu của FPT năm 2023 và 2024 là bao nhiêu?", "diff"),
+        ],
+    )
+    def test_averages_and_comparisons_of_eps_are_unchanged(self, question, op):
+        from src.financial.program.planner import plan_question
+
+        program = plan_question(question)
+        assert program is not None and program.steps[-1].op == op

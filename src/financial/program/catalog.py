@@ -88,6 +88,8 @@ ITEM_ALIASES: List[Tuple[str, str, str]] = [
 ]
 # A bare profit word asked in đồng per share is basic EPS too; matched only after the catalog
 # phrases, so "lợi nhuận sau thuế ... đồng/cổ phiếu" (an amount per share) is not.
+# Catalog items measured per share: they may be averaged or compared, never added up.
+PER_SHARE_ITEMS = frozenset({"basic_eps"})
 PER_SHARE_UNIT = r"(?:(?:nghìn|ngàn)\s+)?(?:đồng|vnd|vnđ)?\s*/\s*(?:cổ phiếu|cp)\b"
 BARE_PER_SHARE_ALIAS = (r"\b(?:lợi nhuận|lãi)\b", "basic_eps", EPS_ALIAS_ASSUMPTION)
 

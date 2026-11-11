@@ -29,6 +29,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from src.financial.program.catalog import (
     DERIVED_ITEMS,
+    PER_SHARE_ITEMS,
     PLAN_ITEMS,
     build_extended_registry,
     display_name,
@@ -229,7 +230,7 @@ def _check_shape(plan: LLMPlan) -> None:
         raise PlanFormatError("several companies and several periods at once are not supported")
     points = len(plan.companies) * len(plan.periods)
     derived = any(key in DERIVED_ITEMS for key in keys)
-    per_share = "basic_eps" in keys
+    per_share = any(key in PER_SHARE_ITEMS for key in keys)
     if any(period.point == "start" for period in plan.periods) and not all(is_balance_sheet_item(key) for key in keys):
         raise PlanFormatError("an opening balance exists only for balance-sheet items")
 

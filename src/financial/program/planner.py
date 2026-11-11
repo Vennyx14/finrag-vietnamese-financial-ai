@@ -17,6 +17,7 @@ from src.financial.program.catalog import (
     BARE_PER_SHARE_ALIAS,
     ITEM_ALIASES,
     OTHER_TEMPLATE_TICKERS,
+    PER_SHARE_ITEMS,
     PER_SHARE_UNIT,
     build_extended_registry,
     display_name,
@@ -320,7 +321,7 @@ def _plan(intent: Intent) -> Optional[Program]:
         return builder.program(builder.add("max" if is_max else "min", operands=operands), f"{label} {'cao nhất' if is_max else 'thấp nhất'}", unit)
     if is_avg:
         return builder.program(builder.add("avg", operands=operands), f"Trung bình {label}", unit)
-    if SUM_WORDS.search(text) and item not in DERIVED_ITEMS:
+    if SUM_WORDS.search(text) and item not in DERIVED_ITEMS and item not in PER_SHARE_ITEMS:
         if len(intent.periods) > 1 and is_balance_sheet_item(item) and not intent.separate_sum:
             return None
         return builder.program(builder.add("sum", operands=operands), f"Tổng {label}", unit)
