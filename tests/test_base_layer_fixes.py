@@ -36,6 +36,13 @@ class TestK45PerShareIsNeverAnAmount:
         assert res.status == ResolutionStatus.UNSUPPORTED
         assert res.metric is None
 
+    def test_refusal_suggests_no_question(self):
+        # Review of 2026-11-10: the guidance suggested asking "Lãi cơ bản trên cổ phiếu" even for
+        # companies without facts (development question 296, VIB).
+        res = resolve_query("Lợi nhuận trên mỗi cổ phiếu của VIB năm 2023 là bao nhiêu?")
+        text = f"{res.reason} {res.actionable_guidance}"
+        assert "Có thể hỏi" not in text and "hãy hỏi" not in text.lower()
+
     def test_a_ticker_written_as_stock_code_is_not_a_per_share_question(self):
         res = resolve_query("Lợi nhuận sau thuế của công ty có mã cổ phiếu FPT năm 2024")
         assert res.status == ResolutionStatus.RESOLVED

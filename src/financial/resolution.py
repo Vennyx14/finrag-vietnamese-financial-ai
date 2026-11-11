@@ -163,8 +163,9 @@ def resolve_query(
             fiscal_year=year_matches[0] if year_matches else None,
             reason="Chỉ tiêu tính trên mỗi cổ phiếu (EPS) không phải một trong các chỉ tiêu tổng số của FinRAG MVP.",
             actionable_guidance=(
-                "FinRAG MVP chưa trả lời chỉ tiêu trên mỗi cổ phiếu theo cách diễn đạt này. "
-                "Có thể hỏi 'Lãi cơ bản trên cổ phiếu' theo đúng tên dòng trên báo cáo kết quả kinh doanh."
+                "Chỉ tiêu trên mỗi cổ phiếu chỉ được đọc là lãi cơ bản trên cổ phiếu (Mã số 70), và chỉ khi "
+                "báo cáo của công ty có dòng này. Lãi suy giảm trên cổ phiếu và tổng số tính trên mỗi cổ phiếu "
+                "chưa được hỗ trợ."
             ),
             raw_query=text,
         )
