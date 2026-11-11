@@ -217,6 +217,7 @@ class TestK45PerShareWordingsReadAsBasicEps:
             "EPS của FPT năm 2024 là bao nhiêu?",
             "Lợi nhuận của FPT năm 2024 là bao nhiêu đồng/cổ phiếu?",
             "Lãi trên mỗi cổ phiếu của FPT năm 2023 và 2024 cao nhất là bao nhiêu?",
+            "Lợi nhuận trên mỗi cổ phiếu cơ bản của FPT năm 2024 là bao nhiêu?",
         ],
     )
     def test_per_share_wording_is_basic_eps_with_an_assumption(self, question):
@@ -226,6 +227,17 @@ class TestK45PerShareWordingsReadAsBasicEps:
         assert program is not None
         assert {step.item for step in program.steps if step.op == "lookup"} == {"basic_eps"}
         assert any(self.ASSUMPTION in assumption.lower() for assumption in program.assumptions)
+
+    def test_a_scaled_per_share_unit_is_one_unit(self):
+        # Development question 914 asks in "nghìn đồng/CP"; reading only "đồng/CP" as the unit
+        # left "nghìn" unexplained, and layer 3's gate stopped answering it (regression found
+        # by the cached rerun of 2026-11-11).
+        from src.financial.program.grounding import gate_reason
+        from src.financial.program.planner import plan_question
+
+        question = "Lãi cơ bản trên cổ phiếu cao nhất của FPT qua các năm 2022, 2023 và 2024 là bao nhiêu nghìn đồng/CP?"
+        assert plan_question(question) is not None
+        assert gate_reason(question) is None
 
     def test_the_statement_line_name_needs_no_assumption(self):
         from src.financial.program.planner import plan_question

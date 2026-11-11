@@ -80,7 +80,7 @@ BASE_PHRASES: Dict[str, Tuple[str, ...]] = {
 EPS_ALIAS_ASSUMPTION = "Hiểu là lãi cơ bản trên cổ phiếu (Mã số 70), không phải lãi suy giảm trên cổ phiếu."
 ITEM_ALIASES: List[Tuple[str, str, str]] = [
     (
-        r"\b(?:lợi nhuận|lãi|thu nhập)(?: sau thuế)? trên (?:mỗi |một )?cổ phiếu(?: phổ thông)?(?: đang lưu hành)?(?!\w)",
+        r"\b(?:lợi nhuận|lãi|thu nhập)(?: sau thuế)? trên (?:mỗi |một )?cổ phiếu(?: phổ thông)?(?: đang lưu hành)?(?: cơ bản)?(?!\w)",
         "basic_eps",
         EPS_ALIAS_ASSUMPTION,
     ),
@@ -88,7 +88,7 @@ ITEM_ALIASES: List[Tuple[str, str, str]] = [
 ]
 # A bare profit word asked in đồng per share is basic EPS too; matched only after the catalog
 # phrases, so "lợi nhuận sau thuế ... đồng/cổ phiếu" (an amount per share) is not.
-PER_SHARE_UNIT = r"(?:đồng|vnd|vnđ)?\s*/\s*(?:cổ phiếu|cp)\b"
+PER_SHARE_UNIT = r"(?:(?:nghìn|ngàn)\s+)?(?:đồng|vnd|vnđ)?\s*/\s*(?:cổ phiếu|cp)\b"
 BARE_PER_SHARE_ALIAS = (r"\b(?:lợi nhuận|lãi)\b", "basic_eps", EPS_ALIAS_ASSUMPTION)
 
 # Companies with facts whose statements follow the securities-firm or insurer templates
