@@ -86,7 +86,7 @@ All figures below are self-authored regression benchmarks, not accuracy on unsee
 | **Verification Engine** | Valid Acceptance Rate | **100.0%** (30/30) | 60-case self-authored regression benchmark, not accuracy on unseen data |
 | | Mutation Detection Rate | **100.0%** (30/30) | 60-case self-authored regression benchmark, not accuracy on unseen data (mutations injected after reasoning) |
 | | False Acceptance Rate | **0.00%** | 60-case self-authored regression benchmark, not accuracy on unseen data |
-| **Engineering** | Test Suite Pass Rate | **100.0%** (921/921, 0 skipped) | Full `pytest` suite with local data present; see [Reproducibility](#15-reproducibility) for a fresh clone |
+| **Engineering** | Test Suite Pass Rate | **100.0%** (968/968, 0 skipped) | Full `pytest` suite with local data present; see [Reproducibility](#15-reproducibility) for a fresh clone |
 
 | **Silver benchmark** | Numeric labels frozen before M4 code | **37 correct, 0 wrong, 5 refused** of 42 | LLM-prefilled labels, not verified by a person; see [the M4 report](docs/m4_layers_1_2_report.md) |
 
@@ -211,7 +211,7 @@ finrag-vietnamese-financial-ai/
 
 ## 17. Limitations
 FinRAG is an early MVP and operates under strict, deliberate constraints:
-- **Low Question Coverage:** with the LLM planner on, 128 of the 766 development questions (16.7%) receive an answer; with it off, 110 (14.4%) (`scripts/run_layer3_coverage.py` and `scripts/run_question_coverage.py`, 2026-11-10, after a question about earnings per share stopped being answered with net income). This is answer coverage, not accuracy. Another 246 questions are sealed for a one-time evaluation.
+- **Low Question Coverage:** with the LLM planner on, 128 of the 766 development questions (16.7%) receive an answer; with it off, 111 (14.5%) (`scripts/run_layer3_coverage.py` and `scripts/run_question_coverage.py`, 2026-11-11, after the fix step before P4). This is answer coverage, not accuracy. Another 246 questions are sealed for a one-time evaluation.
 - **Limited Metric Support:** Covers 8 core metrics and 41 statement lines. Note-level items are not extracted.
 - **Deterministic Keyword Parsing:** Natural language understanding relies on deterministic matching rather than a highly generalizable LLM semantic parser.
 - **BM25 Constraints:** Relies strictly on BM25 and exact metadata filters; cannot resolve conceptually distant synonyms.

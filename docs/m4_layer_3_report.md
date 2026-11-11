@@ -245,6 +245,45 @@ No other question changed status, answer or metric in either mode. The reasoning
 
 ### Not fixed here
 
-- **K48** (recorded): layer 2 adds year-end balances over several years when "tổng cộng" stands before a line name ("Tổng cộng nợ phải trả … 2022 và 2023"); layer 3's check refuses such a plan, so layer 3 is stricter than layer 2 here. No answered development question has this form.
+- **K48** (recorded here, fixed in the review round below): layer 2 adds year-end balances over several years when "tổng cộng" stands before a line name ("Tổng cộng nợ phải trả … 2022 và 2023"); layer 3's check refuses such a plan, so layer 3 is stricter than layer 2 here. No answered development question has this form.
 - **K49** (recorded): bare "lợi nhuận" fires inside "Dự thu cổ tức, lợi nhuận được chia" (question 144, BVH), which is answered with net income, VERIFIED.
 - The base path still answers its eight base metrics for SSI, MBS, FTS and BVH (questions 123 and 144); K46 was fixed for layers 1 and 2 only.
+
+### Review round (2026-11-11)
+
+The reviewer asked for changes before merging, and the owner answered three open questions:
+
+- **K44, widened:** "%" and a slash between two words ("Vốn chủ sở hữu/tổng tài sản … bao nhiêu %", "Nợ phải trả bằng bao nhiêu % tổng tài sản") also mark a base amount as one operand of a derived question. ROE, ROA, net margin and revenue growth asked in "%" still resolve; "LNST trên VCSH" and "LNST trên tổng tài sản" now resolve to ROE and ROA (before the fix step they were answered with net income).
+- **K45, owner policy:** "lợi nhuận/lãi/thu nhập (sau thuế) trên (mỗi) cổ phiếu (đang lưu hành)", "EPS" and a bare profit word asked in đồng per share are read as catalog line 70, "Lãi cơ bản trên cổ phiếu", with the shown assumption "Hiểu là lãi cơ bản trên cổ phiếu (Mã số 70), không phải lãi suy giảm trên cổ phiếu", on layer 2 and on layer 3. Diluted EPS and a total amount asked per share are refused. Question 657 asks for FOX's EPS in its 2020 separate statement; I read that page (OCR p9 of `FOX_financial_statements_2020_separate`): the income statement ends at line 60 and prints no EPS line, so the system now looks for line 70 and refuses with "data not found". This reading is mine, by the agent that wrote the change, and is not independent verification. The 2020 consolidated report's EPS cell for 2020 is also empty in the OCR text (prior year 4,375).
+- **K46:** the owner kept the base path answering SSI, MBS, FTS and BVH. **K49** stays open for a later step.
+- **K48, fixed:** layer 2 applies layer 3's rule; "Tổng cộng nợ phải trả của HPG năm 2022 và 2023" is refused, "Tổng giá trị hàng tồn kho … 2022 và 2023" is still added.
+- **Rejected layer-3 plan in the UI:** a red rejection card says in Vietnamese which check failed and that no number was computed; the base path's guidance and Tier 01 are not shown.
+- The cached rerun also caught a regression of my own: "nghìn đồng/CP" left "nghìn" unexplained and question 914 stopped being sent to the LLM. The per-share unit now includes its scale word, and 914 is answered again (3,349 đồng per share, 2022).
+
+Rerun at commit `d30bc57` (layer 3 on: same cache-only wrapper, `pacing.http_requests` = 0, `llm_fresh_calls` = 0; layer 3 off: the `finrag-regression` snapshot).
+
+| 766 development questions | Layer 3 off | Layer 3 on (reference) |
+|---|---:|---:|
+| Before the fix step (commit `e587828`) | 111 | 129 |
+| **After the review round** | **111** (14.5%, Wilson 95% 12.2–17.2%) | **128** (16.7%, Wilson 95% 14.2–19.5%) |
+| of which by layer 3 | — | 17 |
+
+Every change against the state before the fix step:
+
+| Question | Layer 3 | Before | After | Reason |
+|---:|---|---|---|---|
+| 657 | off and on | SUCCESS, net income | ERROR / `DATA_NOT_FOUND` | K45: read as basic EPS; FOX's 2020 separate statement prints no EPS line |
+| 988 | off | ERROR / `USER_INPUT_ERROR` | WARNING, 3,349 đồng per share (2022) | Layer 2 now reads "(VNĐ/cp)" as the unit of basic EPS; the four cited rows are those of the silver label (350, 796, 3,349, 944) |
+| 988 | on | WARNING by layer 3 | WARNING by layer 2, same value | as above |
+| 296 | off and on | ERROR / `USER_INPUT_ERROR` | ERROR / `DATA_NOT_FOUND` | "Lãi trên mỗi cổ phiếu của VIB": now planned as basic EPS; VIB is a bank without facts (K17) |
+| 24 | on | REJECTED with a value | REJECTED without a value | Decision B |
+| 741 | on | refused, gate `no_catalog_item` | refused, gate `unexplained_words` | the EPS wording is now read; a company name is still unexplained |
+
+| Silver v2 (148 labels; LLM-prefilled, no person verified them) | Layer 3 off | Layer 3 on (reference) |
+|---|---:|---:|
+| Correct | 148/148 (Wilson 95% 97.5–100%) | 148/148 (Wilson 95% 97.5–100%) |
+| Wrong answers / over-answers | 0 / 0 | 0 / 0 |
+| `verified_wrong` | 0 (Wilson 95% upper bound 5.8% on 62 answered cases) | 0 (upper bound 5.6% on 65 answered cases) |
+| 42 labels frozen before M4: correct / wrong / refused | 37 / 0 / 5 | 37 / 0 / 5 |
+
+The reasoning (30), verification (60) and retrieval benchmarks and the unit audit are unchanged. `python -m pytest -rs`: 968 passed, 0 failed, 0 skipped.

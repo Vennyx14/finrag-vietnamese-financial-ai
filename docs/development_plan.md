@@ -38,6 +38,8 @@ Cập nhật 2026-11-09, sau P2: 742 test pass, 0 skip (có dữ liệu cục b�
 
 Cập nhật 2026-11-10, sau P3.1–P3.6 và các sửa đổi sau rà soát: 884 test pass, 0 skip (có dữ liệu cục bộ). Lớp 3 (LLM planner) đã xây xong và đã đo, nhưng đang **tắt** trong ứng dụng cho tới khi bạn trả lời P3.7. Khi bật, 129 trong 766 câu phát triển được trả lời (16,8%; trước là 111); đây là độ phủ, không phải độ chính xác. Chi tiết trong `docs/m4_layer_3_report.md`.
 
+Cập nhật 2026-11-11, sau bước sửa trước P4 và các sửa đổi sau rà soát: 968 test pass, 0 skip. Theo quyết định của bạn ngày 2026-11-11: câu hỏi "lợi nhuận trên mỗi cổ phiếu", "EPS" được hiểu là lãi cơ bản trên cổ phiếu và hiện ghi chú giả định; K48 đã sửa; đường cơ sở vẫn trả lời SSI, MBS, FTS, BVH; K49 để bước sau. Độ phủ: 128/766 khi bật lớp 3, 111/766 khi tắt; silver v2 148/148 cả hai chế độ.
+
 Cập nhật 2026-11-10, sau bước sửa trước P4: 921 test pass, 0 skip. Bạn đã trả lời P3.7: **bật lớp 3 trên tập phát triển**, có nhãn "thử nghiệm" trên giao diện; công tắc chỉ nằm trong `.env` của bạn (`FINRAG_LLM_PLANNER=on`), mặc định trong code và `.env.example` vẫn là tắt. Từ nay số đo tham chiếu là số khi bật lớp 3 (báo cáo kèm số khi tắt): 128 trong 766 câu được trả lời khi bật (16,7%), 110 khi tắt; silver v2 148/148 cả hai chế độ, `verified_wrong` 0. Đây là độ phủ, không phải độ chính xác; nhãn silver chưa có người kiểm định.
 
 655 câu phát triển còn bị từ chối. Lý do lớn nhất theo `data/manifests/question_coverage.csv`:
