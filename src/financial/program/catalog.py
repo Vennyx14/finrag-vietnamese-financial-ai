@@ -38,7 +38,7 @@ LINE_ITEMS: List[LineItem] = [
     LineItem("other_profit", "Lợi nhuận khác", "40", INCOME_STATEMENT, ("khác",), ("lợi nhuận khác",)),
     LineItem("profit_before_tax", "Tổng lợi nhuận kế toán trước thuế", "50", INCOME_STATEMENT, ("trước thuế",), ("tổng lợi nhuận kế toán trước thuế", "lợi nhuận kế toán trước thuế", "lợi nhuận trước thuế", "lntt")),
     LineItem("current_tax", "Chi phí thuế TNDN hiện hành", "51", INCOME_STATEMENT, ("hiện hành",), ("chi phí thuế tndn hiện hành", "chi phí thuế thu nhập doanh nghiệp hiện hành")),
-    LineItem("basic_eps", "Lãi cơ bản trên cổ phiếu", "70", INCOME_STATEMENT, ("cổ phiếu",), ("lãi cơ bản trên cổ phiếu",)),
+    LineItem("basic_eps", "Lãi cơ bản trên cổ phiếu", "70", INCOME_STATEMENT, ("cổ phiếu",), ("lãi cơ bản trên cổ phiếu", "lãi cơ bản trên mỗi cổ phiếu")),
     LineItem("current_assets", "Tài sản ngắn hạn", "100", BALANCE_SHEET, ("ngắn hạn",), ("tổng tài sản ngắn hạn", "tài sản ngắn hạn")),
     LineItem("cash_and_equivalents", "Tiền và các khoản tương đương tiền", "110", BALANCE_SHEET, ("tiền",), ("tiền và các khoản tương đương tiền", "tiền và tương đương tiền")),
     LineItem("short_term_receivables", "Các khoản phải thu ngắn hạn", "130", BALANCE_SHEET, ("phải thu",), ("các khoản phải thu ngắn hạn",)),
@@ -73,6 +73,23 @@ BASE_PHRASES: Dict[str, Tuple[str, ...]] = {
     "total_assets": ("tổng cộng tài sản", "tổng tài sản"),
     "equity": ("tổng cộng vốn chủ sở hữu", "vốn chủ sở hữu", "vcsh"),
 }
+
+# Wordings read as a catalog line under an assumption that is shown to the user (owner
+# decision 2026-11-11, K45): "lợi nhuận trên mỗi cổ phiếu", "EPS" and the like are basic EPS.
+# Diluted EPS ("suy giảm", "pha loãng") is not covered: those words stay unexplained.
+EPS_ALIAS_ASSUMPTION = "Hiểu là lãi cơ bản trên cổ phiếu (Mã số 70), không phải lãi suy giảm trên cổ phiếu."
+ITEM_ALIASES: List[Tuple[str, str, str]] = [
+    (
+        r"\b(?:lợi nhuận|lãi|thu nhập)(?: sau thuế)? trên (?:mỗi |một )?cổ phiếu(?: phổ thông)?(?: đang lưu hành)?(?!\w)",
+        "basic_eps",
+        EPS_ALIAS_ASSUMPTION,
+    ),
+    (r"\beps\b", "basic_eps", EPS_ALIAS_ASSUMPTION),
+]
+# A bare profit word asked in đồng per share is basic EPS too; matched only after the catalog
+# phrases, so "lợi nhuận sau thuế ... đồng/cổ phiếu" (an amount per share) is not.
+PER_SHARE_UNIT = r"(?:đồng|vnd|vnđ)?\s*/\s*(?:cổ phiếu|cp)\b"
+BARE_PER_SHARE_ALIAS = (r"\b(?:lợi nhuận|lãi)\b", "basic_eps", EPS_ALIAS_ASSUMPTION)
 
 # Companies with facts whose statements follow the securities-firm or insurer templates
 # rather than Circular 200, so the line codes above do not mean the same lines (SSI line

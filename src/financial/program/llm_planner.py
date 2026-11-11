@@ -35,7 +35,7 @@ from src.financial.program.catalog import (
     is_balance_sheet_item,
 )
 from src.financial.program.models import ALLOWED_OPERATIONS, LLMPlan, LLMRefusal, PlanPeriod, Program
-from src.financial.program.planner import Period, _Builder, _item_unit
+from src.financial.program.planner import Period, _Builder, _item_unit, alias_assumptions
 from src.nlp.llm import LLMError, LLMProvider
 from src.pipeline.query import extract_all_tickers, extract_fiscal_years, extract_statement_scope
 
@@ -261,6 +261,9 @@ def build_program(plan: LLMPlan, question: str) -> Program:
     scope = extract_statement_scope(question, default="consolidated") or "consolidated"
     builder = _Builder(scope)
     keys = [PLAN_ITEMS[item] for item in plan.items]
+    if "basic_eps" in keys:
+        # An EPS wording such as "lợi nhuận trên mỗi cổ phiếu" is read as basic EPS (K45).
+        builder.assumptions.extend(alias_assumptions(question))
     points = [
         (company, Period(period.year, period.point == "start"))
         for company in plan.companies

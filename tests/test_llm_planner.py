@@ -229,6 +229,13 @@ class TestBuildProgram:
         assert [step.item for step in program.steps[:2]] == ["net_income", "equity"]
         assert program.assumptions
 
+    def test_eps_wording_carries_the_basic_eps_assumption(self):
+        # Owner decision 2026-11-11 (K45): the assumption is shown whichever layer planned.
+        program = build_program(plan("lookup", ["basic_eps"], ["ZQX"], [(2024, "end")]), "EPS của ZQX năm 2024")
+        assert any("lãi cơ bản trên cổ phiếu" in a.lower() for a in program.assumptions)
+        exact = build_program(plan("lookup", ["basic_eps"], ["ZQX"], [(2024, "end")]), "Lãi cơ bản trên cổ phiếu của ZQX năm 2024")
+        assert not any("lãi cơ bản trên cổ phiếu" in a.lower() for a in exact.assumptions)
+
     def test_opening_balance_reads_the_prior_year_end(self):
         program = build_program(
             plan("lookup", ["total_assets"], ["ZQX"], [(2024, "start")]), "Tổng tài sản đầu năm 2024 của ZQX"

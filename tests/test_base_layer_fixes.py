@@ -2,7 +2,7 @@
 
 import pytest
 
-from src.application.models import ResponseStatus
+from src.application.models import ErrorCategory, ResponseStatus
 from src.application.service import FinRAGApplication
 from src.financial.resolution import ResolutionStatus, resolve_query
 
@@ -192,3 +192,77 @@ class TestRatioAbbreviations:
         assert res.status == ResolutionStatus.RESOLVED
         assert res.metric == metric
         assert res.operation == "ratio"
+
+
+class TestK45PerShareWordingsReadAsBasicEps:
+    """Owner decision 2026-11-11: per-share wordings are read as basic EPS (line 70) with a
+    recorded assumption; diluted EPS is never answered with basic EPS."""
+
+    ASSUMPTION = "lãi cơ bản trên cổ phiếu"
+
+    @pytest.mark.parametrize(
+        "question",
+        [
+            "Lợi nhuận trên mỗi cổ phiếu của FPT năm 2024 là bao nhiêu?",
+            "Lợi nhuận trên cổ phiếu của HPG năm 2023",
+            "Lợi nhuận sau thuế trên mỗi cổ phiếu của VNM năm 2022 là bao nhiêu đồng?",
+            "Thu nhập trên mỗi cổ phiếu của FPT năm 2024",
+            "EPS của FPT năm 2024 là bao nhiêu?",
+            "Lợi nhuận của FPT năm 2024 là bao nhiêu đồng/cổ phiếu?",
+            "Lãi trên mỗi cổ phiếu của FPT năm 2023 và 2024 cao nhất là bao nhiêu?",
+        ],
+    )
+    def test_per_share_wording_is_basic_eps_with_an_assumption(self, question):
+        from src.financial.program.planner import plan_question
+
+        program = plan_question(question)
+        assert program is not None
+        assert {step.item for step in program.steps if step.op == "lookup"} == {"basic_eps"}
+        assert any(self.ASSUMPTION in assumption.lower() for assumption in program.assumptions)
+
+    def test_the_statement_line_name_needs_no_assumption(self):
+        from src.financial.program.planner import plan_question
+
+        program = plan_question("Lãi cơ bản trên cổ phiếu của FPT năm 2024 là bao nhiêu?")
+        assert [step.item for step in program.steps] == ["basic_eps"]
+        assert not any(self.ASSUMPTION in assumption.lower() for assumption in program.assumptions)
+
+    @pytest.mark.parametrize(
+        "question",
+        [
+            "Lãi suy giảm trên cổ phiếu của FPT năm 2024 là bao nhiêu?",
+            "EPS suy giảm của FPT năm 2024 là bao nhiêu?",
+            "EPS pha loãng của FPT năm 2024 là bao nhiêu?",
+            "Lợi nhuận suy giảm trên mỗi cổ phiếu của FPT năm 2024",
+            # A total amount asked per share is not EPS.
+            "Lợi nhuận sau thuế của FPT năm 2024 là bao nhiêu đồng/cổ phiếu?",
+            "Doanh thu thuần của FPT năm 2024 là bao nhiêu đồng/cổ phiếu?",
+        ],
+    )
+    def test_diluted_eps_and_amounts_per_share_are_not_basic_eps(self, question):
+        from src.financial.program.planner import plan_question
+
+        program = plan_question(question)
+        assert program is None or "basic_eps" not in {step.item for step in program.steps}
+        res = resolve_query(question)
+        assert res.status != ResolutionStatus.RESOLVED
+
+    @pytest.mark.requires_full_data
+    def test_question_657_looks_for_basic_eps_and_finds_none_in_the_separate_statement(self, app):
+        # FOX's 2020 separate income statement (p9) ends at line 60: it prints no EPS line, so
+        # the honest answer is "not found", never net income.
+        resp = app.ask(TestK45PerShareIsNeverAnAmount.QUESTION_657)
+        assert resp.status == ResponseStatus.ERROR
+        assert resp.error_category == ErrorCategory.DATA_NOT_FOUND
+        assert resp.calculation is None
+        assert resp.resolution.metric == "Lãi cơ bản trên cổ phiếu"
+        assert any(self.ASSUMPTION in assumption.lower() for assumption in resp.resolution.assumptions)
+
+    @pytest.mark.requires_full_data
+    def test_per_share_wording_is_answered_from_line_70(self, app):
+        # HAG 2024 consolidated basic EPS is 997 đồng per share (K26).
+        resp = app.ask("Lợi nhuận trên mỗi cổ phiếu của HAG năm 2024 là bao nhiêu?")
+        assert resp.status in (ResponseStatus.SUCCESS, ResponseStatus.WARNING)
+        assert [e.line_code for e in resp.evidence] == ["70"]
+        assert resp.calculation.value == pytest.approx(997.0)
+        assert any(self.ASSUMPTION in assumption.lower() for assumption in resp.resolution.assumptions)

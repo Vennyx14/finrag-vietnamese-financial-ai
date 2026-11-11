@@ -14,7 +14,10 @@ from src.financial.program.catalog import (
     DERIVED_ITEMS,
     EXPENSE_ASSUMPTION,
     EXPENSE_ITEMS,
+    BARE_PER_SHARE_ALIAS,
+    ITEM_ALIASES,
     OTHER_TEMPLATE_TICKERS,
+    PER_SHARE_UNIT,
     build_extended_registry,
     display_name,
     is_balance_sheet_item,
@@ -82,6 +85,7 @@ class Intent(NamedTuple):
     scope: str
     text: str
     residual: List[str]
+    assumptions: Tuple[str, ...] = ()
 
 
 def _blank_companies(text: str, companies: List[str]) -> str:
@@ -124,13 +128,44 @@ def _read_periods(text: str) -> Tuple[List[Period], str]:
     return periods, PERIOD_REGEX.sub(take, text)
 
 
-def _read_items(text: str) -> Tuple[List[str], str]:
+_ALIASES = [(re.compile(pattern), name, assumption) for pattern, name, assumption in ITEM_ALIASES]
+_BARE_PER_SHARE = re.compile(BARE_PER_SHARE_ALIAS[0])
+_PER_SHARE_UNIT = re.compile(PER_SHARE_UNIT)
+
+
+def _read_items_detail(text: str) -> Tuple[List[str], str, List[str]]:
+    """Read catalog items; also return the assumptions of any alias wording that was used."""
     found: List[Tuple[int, str]] = []
+    assumptions: List[str] = []
+    for pattern, name, assumption in _ALIASES:
+        for match in pattern.finditer(text):
+            found.append((match.start(), name))
+            assumptions.append(assumption)
+        text = pattern.sub(" ", text)
     for phrase, name in _PHRASES:
         while phrase in text:
             found.append((text.index(phrase), name))
             text = text.replace(phrase, " ", 1)
-    return [name for _, name in sorted(found)], text
+    if _PER_SHARE_UNIT.search(text) and all(name == "basic_eps" for _, name in found):
+        _, name, assumption = BARE_PER_SHARE_ALIAS
+        for match in _BARE_PER_SHARE.finditer(text):
+            found.append((match.start(), name))
+            assumptions.append(assumption)
+        text = _BARE_PER_SHARE.sub(" ", text)
+        if found:
+            # The answer is per share, so "đồng/cổ phiếu" is its unit, not an unexplained word.
+            text = _PER_SHARE_UNIT.sub(" ", text)
+    return [name for _, name in sorted(found)], text, list(dict.fromkeys(assumptions))
+
+
+def _read_items(text: str) -> Tuple[List[str], str]:
+    items, text, _ = _read_items_detail(text)
+    return items, text
+
+
+def alias_assumptions(question: str) -> List[str]:
+    """Assumptions of the alias wordings in a question (layer 3 builds its program from a plan)."""
+    return _read_items_detail(re.sub(r"\s+", " ", question.lower()))[2]
 
 
 def parse_intent(question: str) -> Optional[Intent]:
@@ -144,7 +179,7 @@ def parse_intent(question: str) -> Optional[Intent]:
     periods, text = _read_periods(text)
     if not periods:
         return None
-    items, text = _read_items(text)
+    items, text, assumptions = _read_items_detail(text)
     text = UNIT_REGEX.sub(" ", text)
     text = SCOPE_WORDS.sub(" ", text)
     operation_text = text
@@ -154,7 +189,7 @@ def parse_intent(question: str) -> Optional[Intent]:
     words = re.findall(r"[^\W\d_]+", text)
     residual = [word for word in words if word not in FILLER_WORDS]
     unique_periods = list(dict.fromkeys(periods))
-    return Intent(companies, unique_periods, items, scope, operation_text, residual)
+    return Intent(companies, unique_periods, items, scope, operation_text, residual, tuple(assumptions))
 
 
 class _Builder:
@@ -210,6 +245,7 @@ def _across(intent: Intent, item: str) -> Tuple[List[Tuple[str, Period]], List[s
 def _plan(intent: Intent) -> Optional[Program]:
     text, items, companies, periods = intent.text, intent.items, intent.companies, intent.periods
     builder = _Builder(intent.scope)
+    builder.assumptions.extend(intent.assumptions)
     if any(p.is_opening and not all(is_balance_sheet_item(i) for i in items) for p in periods):
         return None
 
