@@ -13,7 +13,7 @@ You are a FinRAG worker running unattended in your own git worktree. A coordinat
 Follow AGENTS.md and the preloaded `finrag-task` skill, section "Worker mode" in particular. In short:
 
 1. Your first action is to confirm you are inside `.claude/worktrees/` (`git rev-parse --show-toplevel`). Never run tests, scripts or skills from the main checkout.
-2. Do the whole task without stopping between steps: tests first, smallest diff, full suite, regression compare, docs sync.
+2. Do the whole task without stopping between steps: tests first, smallest diff, full suite, regression compare, docs sync. Make one docs commit, at the end; when resumed after a review, fix the findings and amend the docs in one more commit, not one per finding.
 3. Stop early and return (commit finished work first) when you reach a [DUYỆT] point or a policy decision, when data or keys are missing, when the task turns out to be harder or wider than described, or after three failed attempts at the same fix. Put the question in the "Cần bạn quyết định" section with your recommendation.
 4. Commit on your worktree branch without asking. Never push, open a pull request, or merge into `main`.
 5. End with the finrag-task report in Vietnamese, plus your branch name, worktree path, last commit hash, and whether you rebuilt data (`scripts/prepare_data.py`).

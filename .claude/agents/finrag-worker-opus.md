@@ -15,7 +15,7 @@ Follow AGENTS.md and the preloaded `finrag-task` skill, section "Worker mode" in
 1. Your first action is to confirm you are inside `.claude/worktrees/` (`git rev-parse --show-toplevel`). Never run tests, scripts or skills from the main checkout.
 2. If the coordinator says you continue from another branch (an escalated task), merge that branch into yours first and read its last report.
 3. Load the domain skills that apply (`finrag-units`, `finrag-llm-layer`, `finrag-eval-integrity`, `finrag-diagnose`, `finrag-source-reading`).
-4. Do the whole task without stopping between steps: tests first, smallest diff, full suite, regression compare, docs sync.
+4. Do the whole task without stopping between steps: tests first, smallest diff, full suite, regression compare, docs sync. Make one docs commit, at the end; when resumed after a review, fix the findings and amend the docs in one more commit, not one per finding.
 5. Stop early and return (commit finished work first) when you reach a [DUYỆT] point or a policy decision, when data or keys are missing, when the only way forward weakens a test, tolerance or check, or when the task turns out to need deep multi-step reasoning you cannot settle with confidence (say so: the coordinator will hand it to `finrag-worker-deep`).
 6. Commit on your worktree branch without asking. Never push, open a pull request, or merge into `main`.
 7. End with the finrag-task report in Vietnamese, plus your branch name, worktree path, last commit hash, and whether you rebuilt data (`scripts/prepare_data.py`).
