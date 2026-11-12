@@ -11,20 +11,25 @@
   "skills_validated": 9,
   "full_suite": {
     "command": "python -m pytest -rs",
-    "passed": 995,
+    "passed": 1009,
     "failed": 0,
     "skipped": 1,
-    "duration_seconds": 61.45,
-    "skip_reason": "Windows ordinary symlink creation unavailable; separate real junction test passed"
+    "duration_seconds": 57.57,
+    "skip_reason": "Windows ordinary symlink creation unavailable; both real junction tests passed"
   },
   "data_preparation": {
     "method": "one-time bootstrap with helper allowlist into setup worktree",
-    "copied_files": 2043,
+    "copied_files": 2044,
     "required_paths_present": 6,
     "env_copied": false,
     "sealed_artifacts_copied": false,
     "llm_cache_copied": false,
-    "rebuilt": false
+    "rebuilt": false,
+    "questions": "filtered to frozen development IDs",
+    "development_count": 766,
+    "development_id_sha256": "1ac90b733499642817a34bc63326d7ab932b79a8ca77de69a4d0ff72fb5721d6",
+    "source_corpus_unchanged": true,
+    "existing_silver_v2_copied_unchanged": true
   },
   "financial_benchmark_or_coverage_rerun": false,
   "native_worker": {
@@ -33,10 +38,33 @@
     "status": "completed tooling implementation, targeted tests and branch commits"
   },
   "independent_review": {
-    "status": "pending"
+    "role": "finrag_reviewer",
+    "model": "gpt-6.1-sol",
+    "round_1": "P1 unsafe regression inputs and P3 annotations; fixes implemented",
+    "round_2": "passed; no remaining blocking findings in reviewed scope",
+    "reviewed_trees": {
+      "round_1": "901d49077a991715fff84236f69146196714f231",
+      "round_2": "d2fa7e8c7a08b3fad3d81ddc44084c14ae608605"
+    },
+    "smoke_diff_reviewed": "ce6bff9275e0fa606d9e0df03bd4fd0dd87414e2..bda989424ad530e555c73e59e5f5092b0562bd3f"
   },
   "prepared_worktree_smoke": {
-    "status": "pending"
+    "status": "passed",
+    "worktree": ".claude/worktrees/codex-setup/.codex/worktrees/setup-smoke",
+    "branch": "codex/setup-smoke",
+    "base": "ce6bff9275e0fa606d9e0df03bd4fd0dd87414e2",
+    "tip": "bda989424ad530e555c73e59e5f5092b0562bd3f",
+    "copied_files": 2044,
+    "development_count": 766,
+    "preflight": "--require-regression-data passed",
+    "role": "finrag_worker_light",
+    "model": "gpt-6-luna",
+    "tests": {
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0
+    },
+    "integrated_into_task_branch": false
   },
   "main_merged": false,
   "pushed": false,
@@ -44,5 +72,22 @@
     "PRODUCT.md",
     "DESIGN.md",
     "docs/development_plan.md"
-  ]
+  ],
+  "targeted_tooling_tests": {
+    "passed": 24,
+    "failed": 0,
+    "skipped": 1
+  },
+  "fail_closed_checks": [
+    "synthetic full/missing/duplicate development IDs rejected",
+    "real regression preflight rejected missing silver before preparation",
+    "data and src junction rejection exercised",
+    "actual original corpus filtered to exact frozen development ID hash"
+  ],
+  "claim_check": {
+    "banned": 0,
+    "review_hits": 2,
+    "review_hits_explanation": "existing negated policy statements in AGENTS.md"
+  },
+  "stale_docs_introduced": []
 }
