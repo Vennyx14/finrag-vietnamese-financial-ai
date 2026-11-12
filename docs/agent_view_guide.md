@@ -1,5 +1,7 @@
 # Hướng dẫn dùng Agent view cho FinRAG
 
+> This guide is for Claude Code. For the GPT-only Codex coordinator, roles and workspace procedure, use [the Codex guide](../.codex/README.md) and AGENTS.md section 10 rule 12.
+
 Lập ngày 2026-11-08 với Claude Code 2.1.304, gói Claude Pro, Windows. Agent view đang ở dạng *research preview*, nên phím tắt và hành vi có thể đổi theo phiên bản. Khi thấy khác tài liệu này, gõ `?` trong agent view hoặc xem <https://code.claude.com/docs/en/agent-view>.
 
 Quy tắc cho agent nằm ở `AGENTS.md`, Mục 10, quy tắc 11. Tài liệu này dành cho bạn, người giao việc và gộp kết quả.

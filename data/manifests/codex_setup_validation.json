@@ -1,0 +1,48 @@
+{
+  "date": "2026-11-12",
+  "scope": "Codex development tooling only",
+  "application_behavior_changed": false,
+  "codex_cli": "0.167.0-alpha.4.1",
+  "python_version": "3.11.9",
+  "source_base": "35d6a6b30c6089453c47606da67e259eb35b9418",
+  "worktree": ".claude/worktrees/codex-setup",
+  "branch": "codex/setup-multi-agent",
+  "toml_files_validated": 8,
+  "skills_validated": 9,
+  "full_suite": {
+    "command": "python -m pytest -rs",
+    "passed": 995,
+    "failed": 0,
+    "skipped": 1,
+    "duration_seconds": 61.45,
+    "skip_reason": "Windows ordinary symlink creation unavailable; separate real junction test passed"
+  },
+  "data_preparation": {
+    "method": "one-time bootstrap with helper allowlist into setup worktree",
+    "copied_files": 2043,
+    "required_paths_present": 6,
+    "env_copied": false,
+    "sealed_artifacts_copied": false,
+    "llm_cache_copied": false,
+    "rebuilt": false
+  },
+  "financial_benchmark_or_coverage_rerun": false,
+  "native_worker": {
+    "role": "finrag_worker",
+    "model": "gpt-6.1-terra",
+    "status": "completed tooling implementation, targeted tests and branch commits"
+  },
+  "independent_review": {
+    "status": "pending"
+  },
+  "prepared_worktree_smoke": {
+    "status": "pending"
+  },
+  "main_merged": false,
+  "pushed": false,
+  "docs_unaffected": [
+    "PRODUCT.md",
+    "DESIGN.md",
+    "docs/development_plan.md"
+  ]
+}

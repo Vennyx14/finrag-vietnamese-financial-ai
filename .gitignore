@@ -22,6 +22,9 @@ env/
 .claude/worktrees/
 .claude/settings.local.json
 
+# Codex: isolated worker checkouts (roles and skills stay tracked)
+.codex/worktrees/
+
 # OS
 .DS_Store
 Thumbs.db

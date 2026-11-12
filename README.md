@@ -189,6 +189,10 @@ The datasets are not in this repository, so what runs depends on what you have l
 
 CI installs `requirements.txt` and runs the fresh-clone configuration.
 
+### Codex development workflow
+
+For GPT-only development delegation, see [the Codex setup guide](.codex/README.md). The main conversation selects workers and independent review, uses explicit Python 3.11 interpreters and isolated worktrees, and asks before merging into `main`. This is development tooling; it does not change the application's QA pipeline or LLM provider. The setup and helper are tracked so new worker checkouts receive the same instructions.
+
 ## 16. Repository Structure
 ```text
 finrag-vietnamese-financial-ai/
