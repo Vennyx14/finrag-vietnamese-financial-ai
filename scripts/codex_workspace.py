@@ -137,6 +137,7 @@ def prepare(args, root):
         if git(target, 'rev-parse', 'HEAD') != base:
             raise WorkspaceError('Worktree base mismatch')
         tracked_target = set(git(target, 'ls-files').splitlines())
+        copied = 0
         for relative in files:
             source, dest = root / relative, target / relative
             no_links(source)
@@ -148,13 +149,18 @@ def prepare(args, root):
             dest.parent.mkdir(parents=True, exist_ok=True)
             no_links(dest)
             shutil.copyfile(source, dest)
+            copied += 1
     except (OSError, WorkspaceError) as exc:
         raise WorkspaceError('Worktree created but preparation failed; retain it for recovery', worktree=str(target), reason=str(exc)) from exc
-    return {'status': 'ok', 'worktree': str(target), 'branch': branch, 'base': base, 'copied_files': len(files), 'missing_optional': optional, 'data_copy': 'copied' if args.copy_data else 'skipped'}
+    return {'status': 'ok', 'worktree': str(target), 'branch': branch, 'base': base, 'copied_files': copied, 'missing_optional': optional, 'data_copy': 'copied' if args.copy_data else 'skipped'}
 
 
 def preflight(args, root):
     branch = registered(root)
+    if args.worker:
+        no_links(root / '.git')
+        if not (root / '.git').is_file() or not branch.startswith('codex/'):
+            raise WorkspaceError('Worker requires a linked worktree on a codex/ branch', worktree=str(root), branch=branch)
     base = git(root, 'rev-parse', 'HEAD')
     python = Path(os.path.abspath(args.python)) if args.python else root / '.venv' / ('Scripts/python.exe' if os.name == 'nt' else 'bin/python')
     result = {'status': 'error', 'worktree': str(root), 'branch': branch, 'base': base, 'interpreter': str(python), 'missing': data_missing(root) if args.require_data else []}
@@ -199,6 +205,7 @@ def main():
     prep.add_argument('--copy-data', action='store_true')
     check = sub.add_parser('preflight')
     check.add_argument('--require-data', action='store_true')
+    check.add_argument('--worker', action='store_true')
     check.add_argument('--python')
     for p in (prep, check):
         p.add_argument('--repo', default='.')

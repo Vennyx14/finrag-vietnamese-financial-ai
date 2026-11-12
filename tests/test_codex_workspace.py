@@ -111,10 +111,10 @@ def test_reject_symlink_in_copy_source(repo, tmp_path):
 
 def test_preflight_succeeds_with_checkout_import(repo):
     code, result = run(repo, 'preflight', '--python', sys.executable)
-    assert code == 0, result
     assert Path(result['src']) == (repo / 'src/__init__.py').resolve()
-    assert result['version'][:2] == [3, 11]
+    assert result['version'][:2] == list(sys.version_info[:2])
     assert result['missing_modules'] == []
+    assert (code == 0) == (sys.version_info[:2] == (3, 11))
 
 
 def test_dirty_tracked_and_missing_committed_setup(repo):
@@ -139,3 +139,55 @@ def test_explicit_base_must_contain_setup(repo):
     assert code != 0
     code, result = run(repo, 'prepare', 'pinned', '--base', old)
     assert code == 0 and result['base'] == old
+
+
+def test_worker_preflight_requires_linked_codex_branch(repo):
+    code, result = run(repo, 'preflight', '--worker', '--python', sys.executable)
+    assert code != 0 and 'worker' in result['error'].lower()
+    code, result = run(repo, 'prepare', 'worker')
+    assert code == 0, result
+    target = Path(result['worktree'])
+    code, result = run(target, 'preflight', '--worker', '--python', sys.executable)
+    if sys.version_info[:2] == (3, 11):
+        assert code == 0, result
+        assert result['branch'] == 'codex/worker'
+        assert Path(result['src']) == (target / 'src/__init__.py').resolve()
+    else:
+        assert code != 0 and result['version'][:2] == list(sys.version_info[:2])
+    git(target, 'checkout', '-b', 'other')
+    code, result = run(target, 'preflight', '--worker', '--python', sys.executable)
+    assert code != 0 and 'worker' in result['error'].lower()
+
+
+@pytest.mark.skipif(os.name != 'nt', reason='Windows junctions require Windows')
+def test_reject_real_windows_junction_before_worktree_creation(repo, tmp_path):
+    for name in REQUIRED:
+        if not name.endswith('review_packets'):
+            put(repo, name)
+    outside = tmp_path / 'outside_dir'
+    outside.mkdir()
+    put(outside, 'packet.json')
+    junction = repo / 'data/benchmark/review_packets'
+    junction.parent.mkdir(parents=True, exist_ok=True)
+    created = subprocess.run(['cmd', '/c', 'mklink', '/J', str(junction), str(outside)], capture_output=True, text=True)
+    if created.returncode:
+        pytest.skip('Windows junction creation unavailable: ' + created.stderr.strip())
+    code, result = run(repo, 'prepare', 'junction', '--copy-data')
+    assert code != 0 and 'reparse' in result['error'].lower()
+    assert not (repo / '.codex/worktrees/junction').exists()
+
+
+def test_copy_count_excludes_tracked_files(repo):
+    tracked = 'data/benchmark/retrieval_smoke.jsonl'
+    put(repo, tracked, 'tracked')
+    git(repo, 'add', '-f', tracked)
+    git(repo, 'commit', '-m', 'track optional file')
+    for name in REQUIRED:
+        if name.endswith('review_packets'):
+            put(repo, name + '/packet')
+        else:
+            put(repo, name)
+    code, result = run(repo, 'prepare', 'count', '--copy-data')
+    assert code == 0, result
+    assert result['copied_files'] == 6
+    assert (Path(result['worktree']) / tracked).read_text() == 'tracked'
