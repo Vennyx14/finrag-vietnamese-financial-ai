@@ -86,7 +86,7 @@ All figures below are self-authored regression benchmarks, not accuracy on unsee
 | **Verification Engine** | Valid Acceptance Rate | **100.0%** (30/30) | 60-case self-authored regression benchmark, not accuracy on unseen data |
 | | Mutation Detection Rate | **100.0%** (30/30) | 60-case self-authored regression benchmark, not accuracy on unseen data (mutations injected after reasoning) |
 | | False Acceptance Rate | **0.00%** | 60-case self-authored regression benchmark, not accuracy on unseen data |
-| **Engineering** | Test suite | **1009 passed, 0 failed, 1 skipped** | Full `pytest` suite with local development inputs, 2026-11-12; the skipped tooling test needs Windows symlink privileges. See [Codex validation](.codex/validation.md) and [Reproducibility](#15-reproducibility) for a fresh clone |
+| **Engineering** | Test suite | **1009 passed, 0 failed, 1 skipped** | Full `pytest` suite with local development inputs, 2026-11-13; the skipped tooling test needs Windows symlink privileges. See [Codex validation](.codex/validation.md) and [Reproducibility](#15-reproducibility) for a fresh clone |
 
 | **Silver benchmark** | Numeric labels frozen before M4 code | **37 correct, 0 wrong, 5 refused** of 42 | LLM-prefilled labels, not verified by a person; see [the M4 report](docs/m4_layers_1_2_report.md) |
 
@@ -191,7 +191,7 @@ CI installs `requirements.txt` and runs the fresh-clone configuration.
 
 ### Codex development workflow
 
-For GPT-only development delegation, see [the Codex setup guide](.codex/README.md). The main conversation selects workers and independent review, uses explicit Python 3.11 interpreters and isolated worktrees, and asks before merging into `main`. This is development tooling; it does not change the application's QA pipeline or LLM provider. The setup and helper are tracked so new worker checkouts receive the same instructions.
+For GPT-only development delegation **in Codex**, see [the Codex setup guide](.codex/README.md). Its `finrag-codex-*` skills select workers and independent review, use explicit Python 3.11 interpreters and isolated worktrees, and ask before merging into `main`. Other clients retain their own model and orchestration settings; the scope table in `AGENTS.md` separates shared project rules from client-specific procedures. This is development tooling; it does not change the application's QA pipeline or LLM provider. The setup and helper are tracked so new worker checkouts receive the same instructions.
 
 ## 16. Repository Structure
 ```text

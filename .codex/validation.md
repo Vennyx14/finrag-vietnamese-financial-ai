@@ -1,6 +1,6 @@
-# Codex setup validation ? 2026-11-12
+# Codex setup validation
 
-Scope: development tooling and instructions only; no financial/application behavior or milestone was changed. The source base is `35d6a6b30c6089453c47606da67e259eb35b9418`. Work is on `codex/setup-multi-agent` in `.claude/worktrees/codex-setup`, a registered bootstrap worktree permitted by the previous rules. Future worker creation uses `.codex/worktrees/`.
+Scope: development tooling and instructions only; no financial/application behavior or milestone was changed. The source base is `35d6a6b30c6089453c47606da67e259eb35b9418`. The initial 2026-11-12 validation ran on `codex/setup-multi-agent` in the then-bootstrap `.claude/worktrees/codex-setup` location. On 2026-11-13, all Codex worktrees were moved with Git under the main checkout's `.codex/worktrees/`. The current follow-up is on `codex/isolate-agent-config` in `.codex/worktrees/codex-setup`; earlier paths and branch names below describe historical executions.
 
 ## Executed checks
 
@@ -30,3 +30,16 @@ Independent review round two by the same Sol reviewer found no remaining blocker
 Configuration availability is not proof every model can complete a request. Only actually exercised roles are reported as executed: Terra worker, Sol reviewer and Luna light worker. Astra, researcher and other role configurations were parsed but not invoked. Instruction files guide scheduling and file ownership; they do not add a separate sandbox. The helper rejects linked/reparse paths but does not synchronize against another process deliberately changing filesystem entries during copying. Ordinary symlink rejection could not be exercised here; both real Windows junction rejections were exercised. Bootstrap data copies are development inputs, not new gold labels or an independent accuracy measurement.
 
 Final configuration/skill validation passed (eight TOML files, nine skills). The claims checker reported zero banned hits; its two review hits are existing negated policy statements in AGENTS.md. `git diff --check` passed. No stale product/design document was introduced.
+
+## Client-separation follow-up - 2026-11-13
+
+The owner approved moving Codex worktrees out of the Claude area, namespacing the three Codex orchestration skills, and preserving independent model/dispatch policies for other clients. The follow-up base is `2133fb237cb6d6ed7c4016cf360cb3f659940182`; it does not advance a financial milestone or modify executable helper/application code.
+
+- `git worktree move` relocated the setup, tooling and smoke checkouts to `.codex/worktrees/codex-setup`, `.codex/worktrees/codex-tooling` and `.codex/worktrees/setup-smoke`. Absolute source/destination paths, clean status and reparse boundaries were checked before each move. Git registration and branches were checked afterward. No data was rebuilt or newly copied by these moves.
+- The names are now `finrag-codex-task`, `finrag-codex-multi-agent`, and `finrag-codex-regression`; corresponding generic Codex aliases are absent from this branch. Role references, relative links and discovery frontmatter were checked. All nine skills and eight TOML files validate.
+- AGENTS.md has a client-scope table. Six domain wrappers share financial/evaluation methods while deferring dispatch/model/permission choices to the executing client. Claude Code's actual configuration, roles and skills have no diff; its generic skill names remain unchanged. The handoff guide now explicitly scopes itself to Claude Code/Antigravity.
+- Relocated workspace preflight (`--require-regression-data` with the explicit interpreter) passed with Python 3.11.9 and imports from `.codex/worktrees/codex-setup/src/`.
+- Full suite at the new location: `python -m pytest -rs` using the explicit project venv: **1009 passed, 0 failed, 1 skipped**, 76.89 seconds. After refreshing one relocated pytest bytecode cache carrying an old filename, targeted workspace tests confirmed **24 passed, 0 failed, 1 skipped**, 24.05 seconds, with the current test path. The remaining skip requires ordinary Windows symlink privileges.
+- A separate native Sol review of this follow-up found no blocker. The reviewer inspected the changes from `2133fb2`, verified all three current worktree locations and table-top routing for Codex, Claude Code and Antigravity. This was an instruction-scope review, not a live test of Claude Code or Antigravity. Their runtime behavior is not claimed as verified.
+
+PRODUCT.md, DESIGN.md and the development plan remain unaffected. Main is not merged or pushed. Before an approved merge, preserve the main checkout's old untracked skills outside discoverable skill directories so they do not remain as stale aliases; do not overwrite the owner's copies silently. Start a new Codex conversation after installing the renamed skills.

@@ -1,19 +1,21 @@
 ---
-name: finrag-task
+name: finrag-codex-task
 description: Execute approved FinRAG development work in Codex, automatically coordinating workers and independent review when needed.
 ---
 
 # FinRAG development in Codex
 
+Scope: apply this skill only when running in Codex. Another client that discovers this file must use its own integration and the shared AGENTS.md contract; this skill does not configure its model, tools or delegation.
+
 Read the current `AGENTS.md`, relevant plan step and affected source/tests. Check status and the milestone gate before editing. This is the Codex procedure; do not apply Claude model names, `isolation: worktree`, `.worktreeinclude` or Claude tool names as Codex mechanisms.
 
 ## Coordinator
 
-For an approved development task, use [finrag-multi-agent](../finrag-multi-agent/SKILL.md) to delegate implementation and necessary independent review automatically. A small clear low-risk fix (about 30 changed lines, outside financial policy, verification, ingestion, numerical semantics, labels and holdout) may be done directly. Read-only or sequential questions may be handled directly. Do not ask again whether to delegate. Keep work within the approved concern and milestone.
+For an approved development task, use [finrag-codex-multi-agent](../finrag-codex-multi-agent/SKILL.md) to delegate implementation and necessary independent review automatically. A small clear low-risk fix (about 30 changed lines, outside financial policy, verification, ingestion, numerical semantics, labels and holdout) may be done directly. Read-only or sequential questions may be handled directly. Do not ask again whether to delegate. Keep work within the approved concern and milestone.
 
 1. Record the goal, owned files, acceptance checks and owner decisions. Resolve policy questions before dispatch; handle routine technical decisions yourself. Protect existing edits.
 2. Prepare a clean task/worker branch using the commands in [.codex/README.md](../../../.codex/README.md). Commit only authorized setup first if a worktree would otherwise miss it; never silently stage unrelated changes. Run the helper's preflight with the explicit Python 3.11 executable. Full-data validation requires `--require-data`. A blocked permission is a blocker, not permission to disable safeguards.
-3. For behavior changes, use `finrag-regression` before editing, and require a meaningful failing test before implementation. Before any snapshot/coverage command, require workspace `preflight --worker --require-regression-data` with the explicit interpreter: the worker questions must match the committed development-only ID set, and silver input must exist. Never rely on the legacy coverage script to exclude sealed cases when its holdout metadata is absent. Inspect side effects first; all manifest-writing commands run in the assigned worktree. Tooling-only changes need focused tooling tests, not financial coverage reruns.
+3. For behavior changes, use `finrag-codex-regression` before editing, and require a meaningful failing test before implementation. Before any snapshot/coverage command, require workspace `preflight --worker --require-regression-data` with the explicit interpreter: the worker questions must match the committed development-only ID set, and silver input must exist. Never rely on the legacy coverage script to exclude sealed cases when its holdout metadata is absent. Inspect side effects first; all manifest-writing commands run in the assigned worktree. Tooling-only changes need focused tooling tests, not financial coverage reruns.
 4. Dispatch a self-contained brief using the multi-agent skill. Review returned diffs and evidence yourself. Integrating worker commits into the task branch is allowed; merging into `main` waits for the owner. Preserve each worker's base and commit SHA so later reviews compare the correct revision.
 5. Independently review logic, verification, ingestion, LLM, evaluation and workspace-tooling changes. Prefer one reviewer; add a verifier only for a distinct validation concern. Reuse the worker for fixes, with at most two independent review rounds. The second reviews changes since the first tip and whether its findings were resolved; a blocking second review goes to the owner.
 6. Run `python -m pytest -rs` using the verified explicit interpreter, in the task worktree after integration; report passed/failed/skipped. Run relevant regression checks only when behavior changed. Do not run the same tests concurrently in a checkout. Inspect final status/diff and confirm immutable evaluation data and unrelated files are unchanged.
@@ -30,4 +32,4 @@ Commit completed owned files on your branch without asking. Return the branch, c
 
 ## Domain procedures
 
-Load only the relevant skill: `finrag-diagnose`, `finrag-units`, `finrag-source-reading`, `finrag-eval-integrity`, `finrag-regression`, `finrag-llm-layer`, or `finrag-docs-sync`. Those entrypoints can reference maintained domain procedures under `.claude/skills/`; reading them does not invoke Claude. This Codex procedure governs orchestration, model routing and workspace handling.
+Load only the relevant skill: `finrag-diagnose`, `finrag-units`, `finrag-source-reading`, `finrag-eval-integrity`, `finrag-codex-regression`, `finrag-llm-layer`, or `finrag-docs-sync`. Those entrypoints can reference maintained domain procedures under `.claude/skills/`; reading them does not invoke Claude. This Codex procedure governs orchestration, model routing and workspace handling.

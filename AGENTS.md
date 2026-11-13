@@ -1,10 +1,22 @@
 # FinRAG Development Rules (AGENTS.md)
 
-Last reviewed: 2026-11-12
+Last reviewed: 2026-11-13
 
 This file is the operating contract for every human or AI agent (including Antigravity) that changes this repository. Read it fully before making any change.
 
 **Precedence:** explicit user instruction in the current task > this file > README.md / PRODUCT.md / DESIGN.md / docs/. If two documents disagree, do not silently pick one: report the conflict and ask.
+
+**Client scope:** the project, financial, data, evaluation and approval rules are shared. A client-specific model, dispatch command, permission setting or worktree convention applies only to that client. Identify the executing client from the actual session, not the model's brand or a referenced directory name. Reading another client's reference does not activate its integration. If the client is unknown, apply the shared contract and leave model/tool selection to the host rather than importing another client's defaults.
+
+| Source | Applies to | Responsibility |
+|---|---|---|
+| `AGENTS.md` shared sections, PRODUCT/DESIGN and project evidence | Every client | Product scope, financial integrity, tests, provenance and owner gates |
+| Section 10 rule 11, `.claude/agents/`, `.claude/settings.json`, `.claude/skills/finrag-task/` | Claude Code only | Claude dispatch, model and workspace procedure |
+| Section 10 rule 12, `.codex/`, `.agents/skills/finrag-codex-*/` | Codex only | GPT routing, Codex dispatch, workspace and regression entrypoints |
+| Other `.agents/skills/finrag-*/` domain entrypoints | Optional shared domain guidance | Read the linked financial/evaluation methods; use the executing client's orchestration and permissions |
+| `docs/agent_handoff.md` | Explicit Claude Code/Antigravity handoff | Handoff procedure, not a model policy for every client |
+
+Antigravity and other clients keep their own configured models, skills and permissions. The Codex GPT-only policy does not select or restrict their models and does not change FinRAG's application LLM provider. Do not create aliases that give a Codex orchestration skill the same generic name as a Claude skill. A linked domain reference is a source of methods, not authorization to launch another client or apply its model defaults.
 
 ---
 
@@ -309,9 +321,9 @@ Follow this loop for every task: **Understand → Plan → Implement → Diff �
 
 ### Codex development delegation (rule 12; owner approved 2026-11-12)
 
-This is development tooling, not an autonomous agent inside the FinRAG product. For Codex, this rule and `.agents/skills/finrag-task/SKILL.md` replace Claude-specific dispatch, model and worktree instructions in rule 11 and `.claude/skills/finrag-task/`.
+This is development tooling, not an autonomous agent inside the FinRAG product. For Codex, this rule and `.agents/skills/finrag-codex-task/SKILL.md` replace Claude-specific dispatch, model and worktree instructions in rule 11 and `.claude/skills/finrag-task/`.
 
-- For an approved development task, proactively delegate scoped implementation and necessary independent review using `.agents/skills/finrag-multi-agent/SKILL.md`. Do small, clear, low-risk work directly; a read-only question does not require delegation. Technical decisions are delegated; policy decisions, milestone gates and sealed-holdout authorization remain with the owner.
+- For an approved development task, proactively delegate scoped implementation and necessary independent review using `.agents/skills/finrag-codex-multi-agent/SKILL.md`. Do small, clear, low-risk work directly; a read-only question does not require delegation. Technical decisions are delegated; policy decisions, milestone gates and sealed-holdout authorization remain with the owner.
 - Use GPT models only: Sol for coordination/review, Luna for light work, Terra for ordinary implementation, Astra for difficult work or a concrete escalation. Roles and effort settings live in `.codex/agents/`; runtime availability and permissions still apply. Do not launch other providers or silently substitute a model. This choice does not change the application's LLM provider.
 - Limit concurrent subagents to three, including read-only agents, with at most two editing workers on disjoint files in separate registered Git worktrees. Native subagents share a filesystem; assigning a role does not create a worktree. Give each agent an absolute checkout path, explicit file ownership, base commit, interpreter and acceptance criteria. Do not change shared working-directory state; use per-command working directories and absolute edit paths.
 - Before a worker edits or runs tests/scripts, prepare and check its checkout with `scripts/codex_workspace.py` as documented in `.codex/README.md`. Worktrees normally live under `.codex/worktrees/`; a verified registered worktree elsewhere is acceptable. Use Python 3.11 explicitly. Copy only the helper's allowlisted local development inputs when needed; never automatically copy secrets, sealed-holdout artifacts or caches. Worker questions must be filtered to the frozen public development IDs in `.codex/development_question_ids.json`; never give the legacy coverage runner an unfiltered corpus without its exclusion metadata. Require `preflight --worker --require-regression-data` before snapshot/coverage commands. Missing data must be reported, not counted as successful integration tests.

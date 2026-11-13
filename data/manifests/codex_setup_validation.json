@@ -5,8 +5,8 @@
   "codex_cli": "0.167.0-alpha.4.1",
   "python_version": "3.11.9",
   "source_base": "35d6a6b30c6089453c47606da67e259eb35b9418",
-  "worktree": ".claude/worktrees/codex-setup",
-  "branch": "codex/setup-multi-agent",
+  "worktree": ".codex/worktrees/codex-setup",
+  "branch": "codex/isolate-agent-config",
   "toml_files_validated": 8,
   "skills_validated": 9,
   "full_suite": {
@@ -50,7 +50,7 @@
   },
   "prepared_worktree_smoke": {
     "status": "passed",
-    "worktree": ".claude/worktrees/codex-setup/.codex/worktrees/setup-smoke",
+    "worktree": ".codex/worktrees/setup-smoke",
     "branch": "codex/setup-smoke",
     "base": "ce6bff9275e0fa606d9e0df03bd4fd0dd87414e2",
     "tip": "bda989424ad530e555c73e59e5f5092b0562bd3f",
@@ -64,7 +64,8 @@
       "failed": 0,
       "skipped": 0
     },
-    "integrated_into_task_branch": false
+    "integrated_into_task_branch": false,
+    "original_worktree": ".claude/worktrees/codex-setup/.codex/worktrees/setup-smoke"
   },
   "main_merged": false,
   "pushed": false,
@@ -89,5 +90,49 @@
     "review_hits": 2,
     "review_hits_explanation": "existing negated policy statements in AGENTS.md"
   },
-  "stale_docs_introduced": []
+  "stale_docs_introduced": [],
+  "original_worktree": ".claude/worktrees/codex-setup",
+  "original_branch": "codex/setup-multi-agent",
+  "client_separation_followup": {
+    "date": "2026-11-13",
+    "base": "2133fb237cb6d6ed7c4016cf360cb3f659940182",
+    "worktrees": [
+      ".codex/worktrees/codex-setup",
+      ".codex/worktrees/codex-tooling",
+      ".codex/worktrees/setup-smoke"
+    ],
+    "codex_skill_names": [
+      "finrag-codex-task",
+      "finrag-codex-multi-agent",
+      "finrag-codex-regression"
+    ],
+    "generic_codex_aliases_present": false,
+    "other_client_config_diff": [],
+    "skills_validated": 9,
+    "toml_files_validated": 8,
+    "relocated_preflight": "passed",
+    "full_suite": {
+      "command": "python -m pytest -rs",
+      "passed": 1009,
+      "failed": 0,
+      "skipped": 1,
+      "duration_seconds": 76.89,
+      "skip_reason": "Windows ordinary symlink privileges unavailable"
+    },
+    "targeted_workspace_tests": {
+      "passed": 24,
+      "failed": 0,
+      "skipped": 1,
+      "duration_seconds": 24.05
+    },
+    "independent_review": "passed; no blocking findings in client-separation scope",
+    "tabletop_clients": [
+      "Codex",
+      "Claude Code",
+      "Antigravity"
+    ],
+    "live_other_client_tests_run": false,
+    "new_data_copy_or_rebuild": false,
+    "main_merged": false
+  }
 }

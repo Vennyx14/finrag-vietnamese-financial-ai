@@ -1,9 +1,11 @@
 ---
-name: finrag-multi-agent
+name: finrag-codex-multi-agent
 description: Automatically delegate approved FinRAG development tasks in Codex to GPT workers and independent reviewers, with isolated worktrees and owner approval before merging main.
 ---
 
 # Codex coordinator and subagents
+
+Scope: Codex only. If another client discovers this skill, do not apply its GPT routing, native tool calls or workspace commands; follow that client's own integration and shared AGENTS.md rules.
 
 Read `AGENTS.md` rule 12 and [.codex/README.md](../../../.codex/README.md). The owner authorizes proactive delegation within approved development work; use the fewest agents needed. Small low-risk tasks and read-only questions can stay with the coordinator. Independent tasks can run in parallel; dependent steps wait for their inputs.
 

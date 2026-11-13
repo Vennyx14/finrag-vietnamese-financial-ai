@@ -1,5 +1,7 @@
 # Bàn giao giữa Claude Code và Antigravity
 
+> Scope: this guide applies to explicit Claude Code/Antigravity handoffs. Codex uses its separate [Codex guide](../.codex/README.md) and `finrag-codex-*` skills. The GPT routing in that integration does not change Antigravity's configured model or this handoff procedure.
+
 Lập ngày 2026-11-09. Tài liệu này dành cho bạn (người giao việc và gộp kết quả). Quy tắc cho agent vẫn nằm ở `AGENTS.md`; tài liệu này không thay thế nó. Cách dùng agent con của Claude Code nằm ở `docs/agent_view_guide.md`.
 
 Ý chính: Claude Code làm việc cần suy luận và có rủi ro về số liệu. Antigravity làm việc lặp lại, phạm vi rõ, kiểm tra được bằng test. Hai bên trao đổi qua **file task** trong git, không qua hội thoại.

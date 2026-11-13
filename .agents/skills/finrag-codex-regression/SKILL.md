@@ -1,9 +1,11 @@
 ---
-name: finrag-regression
-description: Plan and perform approved FinRAG regression comparisons for a behavioral change.
+name: finrag-codex-regression
+description: Prepare and run approved FinRAG development regression comparisons in Codex only, with isolated-worktree and development-input checks.
 ---
 
-# finrag-regression
+# FinRAG regression in Codex
+
+Scope: Codex only. Other clients keep their own regression entrypoint and execution environment; the shared financial/evaluation requirements in AGENTS.md still apply.
 
 Before any snapshot or coverage run in Codex, use the assigned explicit Python 3.11 to run `scripts/codex_workspace.py preflight --worker --require-regression-data --python <assigned executable>` in the assigned checkout. Stop if it fails. This requires the development-only question ID set from committed `.codex/development_question_ids.json`, full integration inputs and the existing silver v2 file. `prepare --copy-data` filters copied questions to the frozen development IDs; it never copies sealed artifacts. Never run coverage on an unfiltered corpus with absent holdout metadata: the legacy `load_ids()` silently returns an empty set.
 

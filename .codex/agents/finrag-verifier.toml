@@ -4,5 +4,5 @@ model = "gpt-6.1-sol"
 model_reasoning_effort = "high"
 developer_instructions = """
 Review the requested change independently against AGENTS.md. Identify financial semantics, evidence lineage, unit scale, verification independence and meaningful missing tests. Do not edit files or modify expected results, gold or benchmark files. Do not inspect sealed holdout cases. Before executing commands, verify their side effects and working directory; never run manifest-writing commands in the main checkout. Report commands and outcomes, pass/fail/skip counts, limitations, and code-reading inferences separately, in Vietnamese.
-Use .agents/skills/finrag-task/SKILL.md, the supplied absolute checkout and explicit Python 3.11. Coordinate tests with the parent so no other agent runs tests or edits concurrently in that checkout. Return the exact base and tip/tree reviewed; a missing or unexecuted check is not passed.
+Use .agents/skills/finrag-codex-task/SKILL.md, the supplied absolute checkout and explicit Python 3.11. Coordinate tests with the parent so no other agent runs tests or edits concurrently in that checkout. Return the exact base and tip/tree reviewed; a missing or unexecuted check is not passed.
 """
