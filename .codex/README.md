@@ -72,8 +72,10 @@ Checked 2026-11-12 against local Codex `0.167.0-alpha.4.1`: [subagents](https://
 
 ## Existing installations and moved worktrees
 
-The current setup, tooling and smoke worktrees were moved with `git worktree move` from the historical `.claude/worktrees/` locations to the main checkout's `.codex/worktrees/` on 2026-11-13. No Git branch or local data was rebuilt by those moves. The older validation paths are historical observations; use `git worktree list` for current locations.
+The setup, tooling and smoke worktrees were moved with `git worktree move` from the historical `.claude/worktrees/` locations to the main checkout's `.codex/worktrees/` on 2026-11-13. No Git branch or local data was rebuilt by those moves. The older validation paths are historical observations; use `git worktree list` for current locations.
 
 After merging, start a new Codex conversation so discovery reloads the namespaced skills. Do not retain the former generic Codex entrypoint folders `finrag-task`, `finrag-multi-agent`, or `finrag-regression` in `.agents/skills/`: preserve untracked local copies outside discoverable skill directories before the owner-approved merge, and inspect them instead of silently overwriting them. Their Claude counterparts under `.claude/skills/` remain unchanged. Do not copy skills from the retained smoke/tooling checkouts back into the main checkout; those checkouts preserve the prior validation revisions.
 
 The main checkout's `.codex/` now contains registered worktrees. Do not move that whole directory to make a pre-merge backup: preserve only the overlapping untracked config/README/role files and obsolete skill folders, leaving `.codex/worktrees/` in place. Use `git worktree move` for any later checkout relocation, then verify registration and paths again.
+
+The initial setup was merged into main with owner approval on 2026-11-13. The merged setup worktree was then removed, and the tooling/smoke validation checkouts remain available. The validation report records the local backup of the original untracked setup and the post-merge test results.

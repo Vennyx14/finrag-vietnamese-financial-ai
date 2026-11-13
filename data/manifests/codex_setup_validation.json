@@ -5,8 +5,8 @@
   "codex_cli": "0.167.0-alpha.4.1",
   "python_version": "3.11.9",
   "source_base": "35d6a6b30c6089453c47606da67e259eb35b9418",
-  "worktree": ".codex/worktrees/codex-setup",
-  "branch": "codex/isolate-agent-config",
+  "worktree": ".",
+  "branch": "main",
   "toml_files_validated": 8,
   "skills_validated": 9,
   "full_suite": {
@@ -67,7 +67,7 @@
     "integrated_into_task_branch": false,
     "original_worktree": ".claude/worktrees/codex-setup/.codex/worktrees/setup-smoke"
   },
-  "main_merged": false,
+  "main_merged": true,
   "pushed": false,
   "docs_unaffected": [
     "PRODUCT.md",
@@ -133,7 +133,7 @@
     ],
     "live_other_client_tests_run": false,
     "new_data_copy_or_rebuild": false,
-    "main_merged": false,
+    "main_merged": true,
     "claim_check": {
       "banned": 0,
       "review_hits": 2,
@@ -144,5 +144,36 @@
       "equivalent handoff claims-policy reference",
       "pre-merge backup instruction preserves registered .codex/worktrees"
     ]
+  },
+  "merge_validation": {
+    "date": "2026-11-13",
+    "approved_branch": "codex/isolate-agent-config",
+    "reviewed_tip": "cbe150e41aca839ad66b79058f04727e031989fb",
+    "previous_main": "35d6a6b30c6089453c47606da67e259eb35b9418",
+    "method": "git merge --ff-only",
+    "owner_approved": true,
+    "untracked_setup_backup": ".git/finrag-backups/codex-premerge-20261113-8f315150",
+    "backup_files": 18,
+    "backup_sha256_verified": true,
+    "main_preflight": "passed with explicit .venv Python 3.11.9 and main checkout src",
+    "full_suite": {
+      "command": ".venv/Scripts/python.exe -m pytest -rs",
+      "passed": 1009,
+      "failed": 0,
+      "skipped": 1,
+      "duration_seconds": 73.6,
+      "skip_reason": "ordinary Windows symlink creation unavailable"
+    },
+    "merged_worktree_removed": ".codex/worktrees/codex-setup",
+    "merged_branches_removed": [
+      "codex/isolate-agent-config",
+      "codex/setup-multi-agent"
+    ],
+    "retained_validation_branches": [
+      "codex/agent-tooling",
+      "codex/setup-smoke"
+    ],
+    "pushed": false,
+    "data_rebuilt": false
   }
 }
