@@ -78,7 +78,7 @@ Claude Code bị chặn cứng bởi `.claude/settings.json` (push, đọc `.env
 6. Không gọi mạng hoặc LLM trong test.
 7. Các script benchmark và độ phủ **ghi đè file trong `data/manifests/`**. Chỉ chạy chúng trong nhánh riêng, không chạy ở thư mục chính của bạn.
 8. Chuỗi hiển thị cho người dùng viết bằng tiếng Việt; code, chú thích, tài liệu viết bằng tiếng Anh.
-9. Không viết các cụm "không ảo giác", "đảm bảo", "100% kiểm toán", "chuẩn production" (AGENTS.md Mục 9). Số liệu đo phải kèm tên benchmark, cỡ mẫu và ghi chú nó do dự án tự viết.
+9. Tuân thủ toàn bộ các giới hạn về cách diễn đạt và tuyên bố trong AGENTS.md Mục 9; mục đó là nguồn quy tắc chính thức. Số liệu đo phải kèm tên benchmark, cỡ mẫu và ghi chú nó do dự án tự viết.
 10. Kết thúc bằng báo cáo theo mẫu ở Mục 5, nêu cả những gì **chưa làm**.
 
 Cần kiểm tra thêm: Antigravity đọc file quy tắc nào khi khởi động. Tài liệu này không xác nhận điều đó. Nếu nó không tự đọc `AGENTS.md`, hãy ghi dòng "Đọc AGENTS.md và docs/agent_handoff.md Mục 3" ngay trong lời giao việc.

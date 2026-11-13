@@ -133,6 +133,16 @@
     ],
     "live_other_client_tests_run": false,
     "new_data_copy_or_rebuild": false,
-    "main_merged": false
+    "main_merged": false,
+    "claim_check": {
+      "banned": 0,
+      "review_hits": 2,
+      "review_hits_explanation": "existing negated AGENTS policy statements; handoff guide references the authoritative claims policy instead of duplicating banned examples"
+    },
+    "documentation_only_after_review": [
+      "measured follow-up report/manifest",
+      "equivalent handoff claims-policy reference",
+      "pre-merge backup instruction preserves registered .codex/worktrees"
+    ]
   }
 }
